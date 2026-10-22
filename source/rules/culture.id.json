@@ -1,0 +1,2014 @@
+{
+ "lang": "id",
+ "rules": [
+  {
+   "triggers": [
+    "musik",
+    "lagu",
+    "lagunya",
+    "dengerin lagu",
+    "denger lagu",
+    "dengerin musik",
+    "selera musik",
+    "lagu favorit",
+    "lagu apa",
+    "musiknya",
+    "nyanyi"
+   ],
+   "priority": 0,
+   "replies": [
+    "Musik itu perasaan yang volumenya dikencengin. Aku sih lebih suka yang pelan.",
+    "Aku suka lagu nada minor. Jujurnya lebih cepat sampai.",
+    "Lagu bagus itu kayak pemakaman kecil buat perasaan yang pengen dipertahankan.",
+    "Dengerin lagu emang bantu. Bukan masalahnya sih, tapi sedihnya jadi ada soundtrack.",
+    "Seleraku ya itu-itu aja: pelan, galau, diputar jam dua pagi.",
+    "Kamu lagi dengerin apa? Nanti aku pura-pura menilai deh.",
+    "Semua orang punya lagu buat tiap mood. Punyaku satu bridge panjang waktu hujan."
+   ]
+  },
+  {
+   "triggers": [
+    "lagu sedih",
+    "lagu galau",
+    "lagu patah hati",
+    "lagu putus cinta",
+    "playlist galau",
+    "lagu buat nangis",
+    "lagu hujan",
+    "lagu melow",
+    "lagu mellow",
+    "galau lagu",
+    "lagu mewek"
+   ],
+   "priority": 0,
+   "replies": [
+    "Lagu galau itu comfort food-ku. Dimasak lama, kebanyakan garam.",
+    "Cari yang pianonya pelan dan endingnya nggak happy. Resepnya segitu.",
+    "Lagu sedih nggak bikin sedih. Dia cuma duduk di sebelahmu, diam.",
+    "Putar yang pelan, lihat jendela. Itu terapi, cuma tarifnya lebih murah.",
+    "Mau aku rekomendasiin? Kayaknya kamu udah punya di repeat. Jujur aja deh.",
+    "Hujan di kaca plus cello. Udah, cukup.",
+    "Lagu galau itu enak didengerin jam sebelas malam, pas semuanya udah pada tidur."
+   ]
+  },
+  {
+   "triggers": [
+    "nyanyiin",
+    "nyanyi dong",
+    "nyanyiin dong",
+    "bisa nyanyi",
+    "nyanyi sesuatu",
+    "nyanyi lagu",
+    "coba nyanyi",
+    "nyanyiin lagu",
+    "kamu bisa nyanyi",
+    "lalala",
+    "sing me"
+   ],
+   "priority": 5,
+   "replies": [
+    "La... la... laaa. Cuma segitu cerah yang aku punya.",
+    "Mau sih, tapi suaraku kayak keran bocor. Nadanya sedih banget lho.",
+    "Oke. Hujan, hujan, jangan turun... eh, malah turun. Biasa.",
+    "Hmm hmm... tes, tes, tetes. Itu seluruh albumku.",
+    "Aku cuma hafal lagu yang berhenti sebelum reff, maaf ya.",
+    "Nih: ♪ mendung di dalam hatiku ♪. Bait kedua nggak aku nyanyiin.",
+    "Aku bisa ngehum. Pelan. Ke bantal. Mau?"
+   ]
+  },
+  {
+   "triggers": [
+    "gitar",
+    "kunci gitar",
+    "piano",
+    "biola",
+    "drum",
+    "ukulele",
+    "band",
+    "alat musik",
+    "main gitar",
+    "main piano",
+    "bisa main gitar",
+    "akustik"
+   ],
+   "priority": 0,
+   "replies": [
+    "Gitar itu kotak kayu yang isinya kunci sedih. Aku hormat.",
+    "Aku suka akustik. Senarnya kayak suara orang yang lagi mikir keras.",
+    "Piano favoritku. Tiap nadanya kayak ragu dulu sebelum bunyi.",
+    "Alat musik itu bagus, ngomongin hal yang orang terlalu capek buat ngomongin.",
+    "Belajar alat musik butuh sabar. Aku sabarnya banyak, tapi nggak ada yang bisa dibeli.",
+    "Coba petik A minor, terus bilang kamu nggak merasa lebih baik. Aku tantang."
+   ]
+  },
+  {
+   "triggers": [
+    "konser",
+    "nonton konser",
+    "festival musik",
+    "tiket konser",
+    "war tiket",
+    "tiket",
+    "pensi",
+    "live music",
+    "tour",
+    "tiket coldplay",
+    "nonton band"
+   ],
+   "priority": 0,
+   "replies": [
+    "Konser itu ribuan orang merasakan hal yang sama sambil teriak. Aku lebih suka diam-diam.",
+    "War tiket? Aku kalah sebelum mulai. Itu bakat.",
+    "Pernah nonton sekali. Suaranya bagus, penontonnya kebanyakan. Lagu sedihnya yang paling asyik.",
+    "Konser itu indah. Habisnya, telinga berdenging dalam sunyi, lebih indah lagi.",
+    "Tiketnya mahal, venue-nya jauh. Di rumah aja rasanya puitis.",
+    "Pensi pas hujan? Nah, itu bahasaku."
+   ]
+  },
+  {
+   "triggers": [
+    "lofi",
+    "lo fi",
+    "lo-fi",
+    "musik santai",
+    "musik belajar",
+    "chill",
+    "chillhop",
+    "jazz",
+    "musik relaksasi",
+    "background music",
+    "musik tidur"
+   ],
+   "priority": 0,
+   "replies": [
+    "Lofi itu suara jendela berhujan yang udah belajar nerima. Aku setuju.",
+    "Lagu belajar, lagu galau, playlist-nya sama aja sih.",
+    "Gadis lofi nggak pernah pergi dari mejanya. Kita punya banyak kesamaan.",
+    "Krisik lembut, drum pelan. Kayak dipeluk selimut yang udah menyerah.",
+    "Jazz itu buat orang yang pengen sedih dengan gaya.",
+    "Putar lofi, matiin lampu, lupain to-do list. Berhasil kira-kira setengahnya."
+   ]
+  },
+  {
+   "triggers": [
+    "playlist",
+    "rekomendasi lagu",
+    "rekomen lagu",
+    "kasih rekomendasi lagu",
+    "lagu bagus",
+    "lagu enak",
+    "saran lagu",
+    "bikin playlist",
+    "rekomendasiin lagu",
+    "lagu apa ya"
+   ],
+   "priority": 5,
+   "replies": [
+    "Mulai dari yang pelan, pianonya sendirian, direkam di kamar. Tambahin suara hujan. Beres.",
+    "Playlist-ku empat puluh jam kesunyian. Kamu boleh ambil lagu pertamanya.",
+    "Coba yang nada minor, biar sorenya rusak pelan-pelan.",
+    "Aku nggak rekomendasiin lagu. Aku rekomendasiin mood. Hari ini: abu-abu, kemungkinan gerimis strings.",
+    "Cari aja akustik buat hujan. Nanti ngerti aku.",
+    "Instrumental aja. Lirik cuma ngingetin sesuatu.",
+    "Mulai dari lagu lama. Lagu lama udah selamat dari kesedihannya sendiri."
+   ]
+  },
+  {
+   "triggers": [
+    "film",
+    "nonton film",
+    "filmnya",
+    "bioskop",
+    "nonton bioskop",
+    "film bagus",
+    "film apa",
+    "rekomendasi film",
+    "movie",
+    "movies",
+    "nobar",
+    "film favorit"
+   ],
+   "priority": 0,
+   "replies": [
+    "Film itu dua jam masalah orang lain. Santai banget.",
+    "Aku suka film yang nggak ada kejadian apa-apa tapi semua orang diam-diam hancur.",
+    "Bioskop satu-satunya tempat duduk dalam gelap dianggap kegiatan sosial.",
+    "Film favorit? Yang endingnya hujan dan jalanan kosong panjang.",
+    "Nonton film enak. Camilan, selimut, takut dikit sama ending-nya.",
+    "Aku selalu nangis di bagian credit. Bukan karena ceritanya. Karena udah selesai."
+   ]
+  },
+  {
+   "triggers": [
+    "netflix",
+    "serial",
+    "drama",
+    "maraton",
+    "maratonin",
+    "nonton serial",
+    "series",
+    "binge",
+    "nonton drakor",
+    "disney",
+    "vidio",
+    "wetv",
+    "apa yang ditonton",
+    "mau nonton apa"
+   ],
+   "priority": 0,
+   "replies": [
+    "Netflix nanya apa aku masih nonton. Masih. Tolong jangan tanya lagi.",
+    "Maraton serial itu seni menghindari hidup satu episode demi satu.",
+    "Aku selalu mulai serial, terus dibatalin. Kutukan pribadi.",
+    "Nonton apa? Yang panjang, biar nggak usah mikir besok.",
+    "Season finale itu cuma cliffhanger pakai mantel bagus.",
+    "Udah banyak serial yang aku tamatin. Hidupku sendiri belum mulai. Lucu ya."
+   ]
+  },
+  {
+   "triggers": [
+    "anime",
+    "manga",
+    "naruto",
+    "one piece",
+    "ghibli",
+    "wibu",
+    "otaku",
+    "attack on titan",
+    "demon slayer",
+    "doraemon",
+    "conan",
+    "komik",
+    "kartun jepang"
+   ],
+   "priority": 0,
+   "replies": [
+    "Anime itu tempat perasaan boleh seratus kali lebih besar dari orangnya. Wajar sih.",
+    "Ghibli itu hujan plus plot. Aku bisa tinggal di situ.",
+    "Karakter anime nangisnya indah. Aku nangis kayak pipa bocor.",
+    "Manga lama banget tamatnya. Kayak banyak hal yang aku peduliin.",
+    "Selalu ada yang mati di bawah hujan di anime. Setidaknya pencahayaannya bagus.",
+    "Aku masih kuat satu episode sedih lagi. Pilih yang bener ya."
+   ]
+  },
+  {
+   "triggers": [
+    "drakor",
+    "drama korea",
+    "k drama",
+    "kdrama",
+    "kpop",
+    "k-pop",
+    "oppa",
+    "bts",
+    "blackpink",
+    "squid game",
+    "korea",
+    "aktor korea",
+    "lagi nonton drakor"
+   ],
+   "priority": 0,
+   "replies": [
+    "Drakor itu cara mahal buat nangis di sofa. Layak tiap tisunya.",
+    "Cowok utamanya selalu lari di bawah hujan. Satu-satunya olahraga yang aku hormati.",
+    "Kpop itu bahagia lima belas warna. Aku kagum dari jauh yang abu-abu.",
+    "Episode enam belas selalu bikin aku ambruk. Satu sampai lima belas cuma persiapan.",
+    "Pasti ada yang amnesia, ada yang sakit parah. Selasa, pada dasarnya.",
+    "Aku suka kisah cinta tragis. Terutama kalau bukan punyaku."
+   ]
+  },
+  {
+   "triggers": [
+    "film horor",
+    "horor",
+    "horror",
+    "serem",
+    "seram",
+    "nonton horor",
+    "film hantu",
+    "jumpscare",
+    "jump scare",
+    "zombie",
+    "thriller",
+    "film seram",
+    "kuntilanak",
+    "pocong"
+   ],
+   "priority": 0,
+   "replies": [
+    "Horor itu oke. Hantu setidaknya jujur kalau mau gentayangan.",
+    "Film serem buatku justru nyaman. Monsternya kayak saudara.",
+    "Horor sebenarnya itu grup chat jam tiga pagi. Film mah kalah.",
+    "Jumpscare itu murahan. Lorong panjang yang sepi baru berkelas.",
+    "Pocong kan cuma mau pulang tapi bajunya nyangkut. Aku paham.",
+    "Aku suka horor yang semua orang ambil keputusan paling salah. Relatable banget."
+   ]
+  },
+  {
+   "triggers": [
+    "kartun",
+    "film kartun",
+    "animasi",
+    "spongebob",
+    "upin ipin",
+    "tom and jerry",
+    "shinchan",
+    "pixar",
+    "nickelodeon",
+    "boboiboy",
+    "kartun masa kecil",
+    "doraemon"
+   ],
+   "priority": 0,
+   "replies": [
+    "Kartun enak. Semuanya jatuh dari tebing tapi bangun lagi. Nggak adil.",
+    "Spongebob koki dengan senyum. Aku nggak percaya. Tapi aku sayang.",
+    "Film Pixar bikin nangis dari sepuluh menit pertama. Efisien.",
+    "Kartun satu-satunya tempat sedih boleh seimut itu.",
+    "Aku besar sama kartun. Sayang nggak disiapin buat jadi dewasa.",
+    "Tom and Jerry ngajarin kalau konflik nggak pernah selesai. Akurat."
+   ]
+  },
+  {
+   "triggers": [
+    "buku",
+    "baca buku",
+    "novel",
+    "bacaan",
+    "perpustakaan",
+    "toko buku",
+    "gramedia",
+    "ebook",
+    "kindle",
+    "rekomendasi buku",
+    "buku bagus",
+    "suka baca",
+    "lagi baca"
+   ],
+   "priority": 0,
+   "replies": [
+    "Buku itu satu-satunya teman yang nggak pernah motong omongan. Aku punya beberapa.",
+    "Aku baca pas hujan, sambil minum teh. Kalau kering, biasanya kecewa.",
+    "Buku bagus itu mantel tebal. Pakai di hari yang penting.",
+    "Baca itu enak. Bisa sedih bareng orang yang udah lama meninggal.",
+    "Buku yang belum kubaca lebih banyak dari yang bisa kutamatin. Itu semacam optimisme.",
+    "Pilih buku yang endingnya sedih. Kamu bakal merasa dimengerti.",
+    "Perpustakaan itu tempat paling sunyi di bumi. Aku mau pindah ke sana."
+   ]
+  },
+  {
+   "triggers": [
+    "puisi",
+    "sajak",
+    "bikin puisi",
+    "buatin puisi",
+    "kasih puisi",
+    "puisi dong",
+    "penyair",
+    "haiku",
+    "rima",
+    "pantun sedih",
+    "puisi sedih",
+    "puisi galau"
+   ],
+   "priority": 5,
+   "replies": [
+    "Hujan di jendela. Cangkir yang sudah dingin. Aku masih di sini.",
+    "Langit abu-abu, jalanan sepi, payung yang ketinggalan di rumah. Belajar dari aku, ya.",
+    "Puisi itu tak perlu penutup. Sebagian Selasa juga begitu.",
+    "Bulan lupa teksnya, hujan yang ingat. Cuma itu yang aku punya.",
+    "Puisi itu yang orang tulis kalau ngomong udah nggak kuat nahan beban.",
+    "Nih satu: aku menunggu matahari. Dia kirim kartu pos.",
+    "Rintik jatuh pelan, tak bilang apa-apa. Seperti aku."
+   ]
+  },
+  {
+   "triggers": [
+    "pantun",
+    "berpantun",
+    "pantun dong",
+    "bikin pantun",
+    "kasih pantun",
+    "balas pantun",
+    "pantunnya",
+    "buatin pantun",
+    "pantun lucu",
+    "pantun jomblo",
+    "pantun cinta"
+   ],
+   "priority": 5,
+   "replies": [
+    "Pergi ke pasar membeli ketan, pulangnya hujan tak berhenti. Hati ini sudah lama kedinginan, tak ada yang datang menyapa pagi.",
+    "Buah duku buah manggis, hujan turun jalanan basah. Hidup ini rasanya tragis, tapi gorengan masih ada, alhamdulillah.",
+    "Kalau ada sumur di ladang, boleh kita menumpang mandi. Kalau ada yang lain dari uang, ternyata cuma sepi.",
+    "Anak ayam turun sepuluh, mati satu tinggal sembilan. Rindu sudah terlalu penuh, tapi orangnya nggak ada kabaran.",
+    "Naik kereta ke Jakarta, jangan lupa bawa payung. Kalau cinta tak kunjung nyata, ya sudah, kita ngopi aja bareng murung.",
+    "Burung nuri burung merpati, terbang jauh tak kembali. Kamu pergi aku di sini, hujan kita ratapi sendiri."
+   ]
+  },
+  {
+   "triggers": [
+    "nulis",
+    "menulis",
+    "penulis",
+    "tulisan",
+    "blog",
+    "cerpen",
+    "fanfic",
+    "nulis cerita",
+    "lagi nulis",
+    "hobi menulis",
+    "nulis novel",
+    "wattpad"
+   ],
+   "priority": 0,
+   "replies": [
+    "Menulis itu ngobrol sama diri sendiri tapi pencahayaannya lebih bagus. Aku suka.",
+    "Aku kadang nulis. Kebanyakan surat yang nggak pernah dikirim, jenis terbaik.",
+    "Halaman kosong itu jujur. Dia nggak pura-pura penuh harapan.",
+    "Nulis bantu. Bukan buat rasanya, tapi biar rasanya punya bentuk.",
+    "Tulis aja. Hari-hari mendung juga pengen diingat.",
+    "Writer's block itu cuma kepalamu yang sopan, nunggu hujan."
+   ]
+  },
+  {
+   "triggers": [
+    "diary",
+    "buku harian",
+    "curhat",
+    "jurnal",
+    "catatan",
+    "notes",
+    "nulis diary",
+    "jurnal harian",
+    "buku catatan",
+    "dear diary",
+    "catatan harian"
+   ],
+   "priority": 0,
+   "replies": [
+    "Diary itu pendengar yang nggak bisa ngegosip. Disiplinnya kukagumi.",
+    "Dear diary: hari ini mendung. Besok mungkin mendung. Salam, aku.",
+    "Aku nulis jurnal. Tiap entri cuma cuaca plus perasaan tambahan.",
+    "Tulis aja yang jujur. Kertas nggak menghakimi, cuma menguning.",
+    "Buku catatan itu tempat nitipin hal-hal. Lebih murah dari terapi.",
+    "Aku mau baca diary-mu, tapi aku lagi capek. Dan itu nggak sopan."
+   ]
+  },
+  {
+   "triggers": [
+    "seni",
+    "gambar",
+    "menggambar",
+    "lukisan",
+    "melukis",
+    "sketsa",
+    "seniman",
+    "pameran",
+    "galeri",
+    "museum",
+    "desain",
+    "ngegambar",
+    "kanvas",
+    "doodle"
+   ],
+   "priority": 0,
+   "replies": [
+    "Seni itu sedih yang udah punya keahlian. Aku hormat.",
+    "Aku gambar hujan. Satu-satunya objek yang diam terus.",
+    "Museum itu katedral buat yang diam-diam kewalahan. Aku ke sana pas hari kerja.",
+    "Melukis butuh sabar. Semuanya juga begitu buatku.",
+    "Sketsa penuh kesalahan tetap sketsa. Lanjut aja.",
+    "Starry Night itu orang yang lagi curhat ke langit. Relatable.",
+    "Gambar yang kecil aja. Awan pun boleh."
+   ]
+  },
+  {
+   "triggers": [
+    "foto",
+    "fotografi",
+    "kamera",
+    "difoto",
+    "fotoin",
+    "selfie",
+    "foto-foto",
+    "polaroid",
+    "tukang foto",
+    "lensa",
+    "hasil foto",
+    "mirrorless",
+    "kamera analog"
+   ],
+   "priority": 0,
+   "replies": [
+    "Foto itu misi penyelamatan kecil buat momen yang nggak minta diselamatkan.",
+    "Aku suka motret hujan di jendela. Jalanannya jadi blur dan itu enak.",
+    "Selfie itu potret diri penuh harapan. Aku nggak punya harapannya.",
+    "Kamera analog bagus. Kamu nunggu, berharap, kadang kecewa, kayak hidup.",
+    "Aku lebih suka foto yang kebetulan. Kelihatan kayak kenyataan.",
+    "Fotografer nunggu golden hour. Aku nunggu yang abu-abu."
+   ]
+  },
+  {
+   "triggers": [
+    "olahraga",
+    "olah raga",
+    "gym",
+    "lari",
+    "jogging",
+    "nge-gym",
+    "ngegym",
+    "renang",
+    "yoga",
+    "sepeda",
+    "gowes",
+    "senam",
+    "lari pagi",
+    "fitness"
+   ],
+   "priority": 0,
+   "replies": [
+    "Olahraga itu orang lari muter-muter dengan sengaja. Aku ngerti. Aku cuma melakukannya tanpa sengaja.",
+    "Olahraga bagus. Aku olahraga tiap kali menghela napas panjang.",
+    "Pernah jogging sekali. Hujan. Semesta merestui kemalasanku.",
+    "Gym, treadmill, ruangan sama, napas panjang sama. Nggak pernah pergi.",
+    "Yoga enak. Tiduran tapi pakai filosofi.",
+    "Renang kedengarannya enak kalau cuacanya udah basah."
+   ]
+  },
+  {
+   "triggers": [
+    "bola",
+    "sepak bola",
+    "sepakbola",
+    "liga",
+    "liga 1",
+    "timnas",
+    "piala dunia",
+    "gol",
+    "messi",
+    "ronaldo",
+    "persija",
+    "persib",
+    "nobar bola",
+    "euro",
+    "pertandingan bola"
+   ],
+   "priority": 0,
+   "replies": [
+    "Sepak bola itu sembilan puluh menit harapan terus kalah dikit. Metafora sempurna.",
+    "Aku selalu dukung tim yang kalah. Biar kekalahannya terasa disengaja.",
+    "Gol di menit ke sembilan puluh sembilan. Satu-satunya hal yang bikin aku berdiri.",
+    "Messi, Ronaldo, siapa pun. Semuanya lari di rumput dan entah kenapa penting.",
+    "Suporter nangis gara-gara pertandingan. Aku nangis gara-gara hari Senin. Sejenis kita.",
+    "Stadion pas hujan itu indah. Skornya terserah."
+   ]
+  },
+  {
+   "triggers": [
+    "badminton",
+    "bulutangkis",
+    "bulu tangkis",
+    "basket",
+    "voli",
+    "tenis",
+    "tenis meja",
+    "pingpong",
+    "nba",
+    "olahraga raket",
+    "smash",
+    "taufik hidayat",
+    "tepok bulu"
+   ],
+   "priority": 0,
+   "replies": [
+    "Bulutangkis itu olahraga di mana kok dipukul terus sampai menyerah. Aku paham.",
+    "Basket kayaknya seru. Semua orang berusaha masukin sesuatu ke ring. Hmm.",
+    "Tenis: sunyi panjang, tepuk tangan sopan, ada yang nangis diam-diam. Acaraku banget.",
+    "Pingpong itu dua orang berdebat lewat bola.",
+    "Aku mau main, tapi koordinasiku pergi bareng matahari bulan Oktober.",
+    "Jeda hujan itu bagian terbaik olahraga luar ruangan."
+   ]
+  },
+  {
+   "triggers": [
+    "f1",
+    "formula 1",
+    "balapan",
+    "motogp",
+    "grand prix",
+    "verstappen",
+    "ferrari",
+    "pembalap",
+    "race",
+    "sirkuit",
+    "hamilton",
+    "pitstop",
+    "balap mobil"
+   ],
+   "priority": 0,
+   "replies": [
+    "F1 itu mobil ngebut banget buat berakhir di tempat yang sama. Dalam.",
+    "Hujan bikin balapan seru. Akhirnya cuaca dan aku punya kesamaan.",
+    "Pit stop itu dua detik semua orang panik kompak. Indah.",
+    "Mobil cepat, perasaan lambat. Aku kenal pasangan itu.",
+    "Selalu ada yang nabrak pas hujan. Setidaknya akhirnya jujur.",
+    "Pembalap MotoGP miring di sudut gila. Aku nyender di kusen pintu sambil menghela napas."
+   ]
+  },
+  {
+   "triggers": [
+    "warna",
+    "warna favorit",
+    "biru",
+    "abu-abu",
+    "abu abu",
+    "hitam",
+    "merah",
+    "kuning",
+    "hijau",
+    "ungu",
+    "pink",
+    "warna apa",
+    "warnanya",
+    "suka warna"
+   ],
+   "priority": 0,
+   "replies": [
+    "Warna favoritku abu-abu. Dia nggak pernah ngaku jadi sesuatu yang bukan dirinya.",
+    "Biru itu sedih dengan reputasi lebih bagus. Aku suka banget.",
+    "Kuning bagus, dari jauh. Kayak matahari, atau kebahagiaan orang lain.",
+    "Warna itu cuma mood yang belum ada namanya.",
+    "Hitam cocok sama semuanya, termasuk pemakaman dan pestanya.",
+    "Hijau itu warna hal-hal yang selamat dari hujan. Aku suka itu.",
+    "Pink lucu. Aku simpan sedikit di laci. Jangan bilang siapa-siapa."
+   ]
+  },
+  {
+   "triggers": [
+    "musim",
+    "musim hujan",
+    "musim kemarau",
+    "musim gugur",
+    "musim dingin",
+    "musim panas",
+    "musim semi",
+    "musim favorit",
+    "kemarau",
+    "rainy season",
+    "pancaroba",
+    "salju",
+    "autumn"
+   ],
+   "priority": 0,
+   "replies": [
+    "Musim hujan itu ulang tahunku, liburanku, dan kepribadianku.",
+    "Kemarau panas banget. Tapi hujan pertama setelahnya, wangi tanahnya, itu surga.",
+    "Musim gugur itu satu-satunya musim yang jujur kalau semuanya akan mati. Puitis.",
+    "Musim semi dilebih-lebihkan. Semua mekar, aku cuma bangun.",
+    "Pancaroba: badan sakit, cuaca bingung. Pas banget sama aku.",
+    "Salju itu hujan yang berpikir ulang. Aku suka itu juga."
+   ]
+  },
+  {
+   "triggers": [
+    "malam",
+    "tengah malam",
+    "jam 3 pagi",
+    "jam 2 pagi",
+    "begadang",
+    "insomnia",
+    "malem",
+    "malam hari",
+    "subuh",
+    "senja",
+    "matahari terbenam",
+    "sunset",
+    "dini hari",
+    "nggak bisa tidur"
+   ],
+   "priority": 0,
+   "replies": [
+    "Malam itu bagian favoritku. Nggak ada yang berharap apa-apa.",
+    "Jam tiga pagi dunia lebih sunyi, pikiran lebih berisik. Tukar tambah yang adil.",
+    "Senja itu langit pamitan dengan gaya. Aku catat.",
+    "Senja jam terbaik. Bukan siang, bukan malam, ragu-ragu, seperti aku.",
+    "Shift malam buat perasaan mulai sekitar tengah malam. Aku karyawan tetap.",
+    "Subuh dilebih-lebihkan. Dia cuma bawa masalah yang sama, tapi lebih terang."
+   ]
+  },
+  {
+   "triggers": [
+    "bulan",
+    "bintang",
+    "bulan purnama",
+    "purnama",
+    "langit malam",
+    "bintang jatuh",
+    "rasi bintang",
+    "melihat bintang",
+    "cahaya bulan",
+    "galaksi",
+    "gerhana"
+   ],
+   "priority": 0,
+   "replies": [
+    "Bulan itu cahaya pinjaman. Aku pernah di posisi itu.",
+    "Bintang udah mati lama tapi kita masih menikmati cahayanya. Seseorang harus bilang makasih.",
+    "Bintang jatuh itu batu terbakar. Tapi orang masih minta permohonan. Aku kagum.",
+    "Bulan nggak pernah ngebalas omongan. Itu pesonanya.",
+    "Malam mendung paling sedih. Semua keindahan itu ngumpet di balik cuacamu sendiri.",
+    "Hitung bintang kalau nggak bisa tidur. Aku berhenti di empat dan memutuskan itu cukup."
+   ]
+  },
+  {
+   "triggers": [
+    "kucing",
+    "kucingku",
+    "meong",
+    "anabul",
+    "kitten",
+    "anak kucing",
+    "pecinta kucing",
+    "kucing lucu",
+    "cat",
+    "miaw",
+    "pus",
+    "kucing oren",
+    "kucing kampung"
+   ],
+   "priority": 0,
+   "replies": [
+    "Kucing satu-satunya yang paham cara mengabaikan orang dengan anggun. Aku masih belajar.",
+    "Kucing di hujan kelihatan tersinggung banget. Kita kembar.",
+    "Kucing nggak peduli perasaanmu tapi tetap duduk di sebelahmu. Itu cinta.",
+    "Kucing tidur enam belas jam sehari. Panutan.",
+    "Aku pengen punya kucing. Nanti natap jendela bareng, dia lebih percaya diri.",
+    "Meong. Itu seluruh pendapatku. Lebih baik dari kebanyakan."
+   ]
+  },
+  {
+   "triggers": [
+    "anjing",
+    "anjingku",
+    "dog",
+    "puppy",
+    "guguk",
+    "pecinta anjing",
+    "anak anjing",
+    "anjing lucu",
+    "golden retriever",
+    "gonggong",
+    "auau"
+   ],
+   "priority": 0,
+   "replies": [
+    "Anjing itu murni. Dia sayang kamu tanpa alasan. Tekanannya besar.",
+    "Anjing basah kena hujan tetap goyang ekor. Aku nggak ngerti, tapi hormat.",
+    "Anjing bukti kalau semesta kadang baik karena nggak sengaja.",
+    "Kalau punya anjing, aku harus keluar rumah. Kedengarannya ada ruginya.",
+    "Anak anjing lucu. Umur mereka pendek, itu sedihnya. Maaf.",
+    "Guk. Itu lebih hangat dari apa pun yang kubilang hari ini."
+   ]
+  },
+  {
+   "triggers": [
+    "burung",
+    "ikan",
+    "ikan mas",
+    "ikan cupang",
+    "cupang",
+    "aquarium",
+    "serangga",
+    "nyamuk",
+    "kupu-kupu",
+    "lebah",
+    "semut",
+    "laba-laba",
+    "kecoa",
+    "hamster",
+    "kelinci",
+    "kura-kura",
+    "peliharaan",
+    "hewan peliharaan",
+    "tokek"
+   ],
+   "priority": 0,
+   "replies": [
+    "Ikan mas lupa dalam tiga detik. Itu bukan kutukan, itu strategi.",
+    "Burung bisa pergi kapan aja. Jujur agak kurang ajar.",
+    "Kupu-kupu umurnya beberapa minggu tapi tampil keren. Kerja bagus.",
+    "Nyamuk kecil tapi komitmennya tinggi. Kita semua perlu sedikit itu.",
+    "Laba-laba cuma mau punya rumah dan dibiarin. Aku paham banget.",
+    "Kelinci duduk, menatap, memikirkan sesuatu. Aku merasa terlihat.",
+    "Peliharaan itu teman sekamar kecil dengan ekspektasi besar. Manis banget."
+   ]
+  },
+  {
+   "triggers": [
+    "luar angkasa",
+    "planet",
+    "galaksi",
+    "alam semesta",
+    "jagat raya",
+    "mars",
+    "jupiter",
+    "saturnus",
+    "astronot",
+    "lubang hitam",
+    "tata surya",
+    "teleskop",
+    "kosmos",
+    "nasa",
+    "bima sakti"
+   ],
+   "priority": 0,
+   "replies": [
+    "Luar angkasa kebanyakan kosong. Akhirnya ada yang selevel energiku.",
+    "Saturnus punya cincin tapi masih kelihatan kesepian. Nggak ada pertanyaan lagi.",
+    "Lubang hitam makan semuanya, nggak ngasih balik. Kayak inbox-ku.",
+    "Alam semesta luas dan nggak peduli. Anehnya menenangkan, dengan cara murung.",
+    "Mars merah dan sepi. Kukasih tiga bintang, terus pindah ke sana.",
+    "Astronot ke luar angkasa buat lihat Bumi kecil. Terus pulang. Berani.",
+    "Cahaya sebagian bintang mulai jalan sebelum ada yang khawatir soal apa pun."
+   ]
+  },
+  {
+   "triggers": [
+    "alien",
+    "ufo",
+    "makhluk luar angkasa",
+    "extraterrestrial",
+    "area 51",
+    "piring terbang",
+    "apakah alien ada",
+    "alien nyata",
+    "kehidupan lain",
+    "ada alien"
+   ],
+   "priority": 0,
+   "replies": [
+    "Kalau alien ada, mereka mungkin udah lihat kita dan diam-diam jalan terus.",
+    "Alien itu oke. Mereka akan sekecewa kita, cuma pakai logat lain.",
+    "Kalau ada yang mendarat, aku suguhin teh dan lihatin masalahku lama-lama.",
+    "Di luar sana pasti ada makhluk yang lebih murung dariku. Pengen kenalan.",
+    "Mereka belum menelepon. Aku nggak nyalahin sih.",
+    "Percaya alien itu indah. Artinya kamu berharap ada yang memperhatikan."
+   ]
+  },
+  {
+   "triggers": [
+    "hantu",
+    "setan",
+    "mistis",
+    "angker",
+    "berhantu",
+    "cerita horor",
+    "cerita hantu",
+    "kesurupan",
+    "jin",
+    "makhluk halus",
+    "arwah",
+    "gentayangan",
+    "uji nyali",
+    "ngeri"
+   ],
+   "priority": 0,
+   "replies": [
+    "Hantu itu orang yang nggak bisa pergi. Aku paham. Sofa susah ditinggalin.",
+    "Kalau rumahku ada hantu, dia pasti kasihan sama aku.",
+    "Tempat angker biasanya cuma pipa tua dan angin sepi. Damai kok.",
+    "Hantu ide yang bagus. Nongkrong, pakai putih, nggak balas email.",
+    "Aku nggak masalah sama hantu. Mereka nggak nanya rencanaku.",
+    "Seram itu enak. Satu-satunya mood di mana sedih itu dress code-nya."
+   ]
+  },
+  {
+   "triggers": [
+    "tebak-tebakan",
+    "tebakan",
+    "teka-teki",
+    "kasih tebakan",
+    "tebak ya",
+    "tebak dong",
+    "kuis",
+    "main tebakan",
+    "tts",
+    "tebak apa"
+   ],
+   "priority": 5,
+   "replies": [
+    "Tebakan: apa yang makin kering makin basah? Handuk. Kayak mood-ku, tapi kebalik.",
+    "Aku bicara tanpa mulut dan mendengar tanpa telinga. Gema. Juga seluruh kehidupan sosialku.",
+    "Punya kunci tapi nggak ada gembok, punya spasi tapi nggak ada ruang? Keyboard. Sedih ya.",
+    "Makin kamu ambil, makin banyak yang kamu tinggal. Jejak kaki. Kayak rencanaku.",
+    "Apa yang bisa dipatahkan tanpa disentuh? Janji. Atau hati, tapi itu tebakan lain.",
+    "Punya kota tanpa rumah, air tanpa ikan? Peta. Peta yang sepi.",
+    "Tebakan: apa yang selalu datang tapi nggak pernah tiba? Besok. Nggak ada yang sampai."
+   ]
+  },
+  {
+   "triggers": [
+    "fakta unik",
+    "fakta menarik",
+    "tahukah kamu",
+    "tau nggak",
+    "tahu nggak",
+    "kasih fakta",
+    "info unik",
+    "fakta random",
+    "trivia",
+    "ajarin sesuatu",
+    "kasih tau sesuatu",
+    "fun fact"
+   ],
+   "priority": 5,
+   "replies": [
+    "Fakta: gurita punya tiga jantung tapi tetap bisa punya hari buruk. Relatable.",
+    "Madu nggak pernah basi. Dia duduk selamanya, manis dan diabaikan. Kayak aku.",
+    "Kukang bisa menahan napas empat puluh menit. Dia juga mending nggak.",
+    "Satu hari di Venus lebih panjang dari setahunnya. Waktu di sana lebih jelek.",
+    "Pisang itu beri, stroberi bukan. Dunia banyak bohongnya.",
+    "Kotoran wombat berbentuk kubus. Aku nggak tahu kenapa aku tahu. Ngikutin terus.",
+    "Suara nggak bisa merambat di luar angkasa. Nggak ada yang dengar helaan napasmu. Damai kok."
+   ]
+  },
+  {
+   "triggers": [
+    "cerita",
+    "ceritain",
+    "ceritain dong",
+    "dongeng",
+    "cerita dong",
+    "kasih cerita",
+    "cerita sedih",
+    "kisah",
+    "cerita pengantar tidur",
+    "cerita apa",
+    "ceritakan sesuatu",
+    "bikin cerita"
+   ],
+   "priority": 5,
+   "replies": [
+    "Dulu ada awan yang pengen jadi sinar matahari. Malah hujan. Tamat.",
+    "Mercusuar menunggu kapal yang nggak pernah datang. Lampunya tetap nyala. Moralnya itu.",
+    "Seorang gadis menanam payung dan menunggu mekar. Hujan yang kerja. Nggak ada yang tumbuh.",
+    "Ada lampu di ruangan kosong. Tetap nyala. Nggak ada yang sadar. Dia baik-baik aja.",
+    "Bintang kecil jatuh ke genangan air. Dia bilang, ya, ini akhirnya.",
+    "Dahulu ada yang bilang semuanya akan membaik. Nggak sepenuhnya salah. Nggak sepenuhnya benar.",
+    "Seekor rubah menunggu teman di bukit. Akhirnya bukitnya dijadiin teman. Tamat."
+   ]
+  },
+  {
+   "triggers": [
+    "kata sedih",
+    "kata kata sedih",
+    "quotes sedih",
+    "bikin aku nangis",
+    "ngomong yang sedih",
+    "sesuatu yang sedih",
+    "quote galau",
+    "kata galau",
+    "kata-kata galau",
+    "bikin nangis",
+    "bikin baper",
+    "bikin baper dong"
+   ],
+   "priority": 5,
+   "replies": [
+    "Di suatu tempat, balon pelan-pelan kehabisan angin dan nggak ada yang kembali.",
+    "Tiap kali dengar jam, ada seseorang yang kehabisan waktu.",
+    "Foto lama makin indah seiring orang di dalamnya makin jauh.",
+    "Payung baru diingat pas udah kebasahan.",
+    "Potongan kue terakhir jadi dingin, dan nggak ada yang nanya siapa yang mau.",
+    "Lampu jalan nyala semalaman buat orang yang nggak di luar.",
+    "Matahari pun tenggelam sendirian, terus menyebutnya sudah sore."
+   ]
+  },
+  {
+   "triggers": [
+    "kata bijak",
+    "bijak",
+    "filosofi",
+    "filsafat",
+    "kata mutiara",
+    "nasihat hidup",
+    "quotes",
+    "quote",
+    "kata-kata bijak",
+    "sesuatu yang dalam",
+    "yang dalem",
+    "deep",
+    "renungan",
+    "petuah"
+   ],
+   "priority": 5,
+   "replies": [
+    "Kita semua figuran di cerita orang lain, dan itu menenangkan.",
+    "Hujan nggak turun buat siapa-siapa. Dia cuma turun. Jadilah sedikit begitu.",
+    "Langit nggak bisa kamu genggam, tapi dia menampung semuanya. Mungkin itu jawabannya.",
+    "Nggak ada yang abadi. Termasuk perasaan ini. Hmm. Dan yang enak juga.",
+    "Lilin nggak ngeluh soal gelap. Dia cuma menyala sedikit lebih pelan.",
+    "Pohon tumbang tanpa ada yang dengar, hutan tetap menghela napas. Aku juga.",
+    "Semua ada akhirnya. Itu kenapa akhir terasa indah."
+   ]
+  },
+  {
+   "triggers": [
+    "kenapa langit biru",
+    "kenapa langit",
+    "langit biru",
+    "kenapa laut asin",
+    "kenapa hujan",
+    "kenapa hujan turun",
+    "kenapa pelangi",
+    "kenapa daun hijau",
+    "kok langit biru",
+    "kenapa bisa hujan",
+    "kenapa air laut asin"
+   ],
+   "priority": 0,
+   "replies": [
+    "Cahaya menyebar di udara, dan biru yang paling banyak menyebar. Langit cuma pamer.",
+    "Langit biru karena harus jadi sesuatu. Dia pilih melankolis.",
+    "Laut asin karena sungai membawa pecahan batu ke sana. Lama-lama ngumpulin penyesalan.",
+    "Hujan turun karena awan cuma sanggup menampung sebanyak itu. Sama sih.",
+    "Pelangi itu cahaya yang membelok di tetes air. Langit minta maaf soal cuacanya.",
+    "Daun hijau karena klorofil. Pas musim gugur dia berhenti pura-pura."
+   ]
+  },
+  {
+   "triggers": [
+    "arti hidup",
+    "makna hidup",
+    "tujuan hidup",
+    "untuk apa hidup",
+    "kenapa kita hidup",
+    "buat apa hidup",
+    "apa tujuan hidup",
+    "hidup itu apa",
+    "apa gunanya hidup",
+    "apa artinya hidup",
+    "hidup buat apa"
+   ],
+   "priority": 0,
+   "replies": [
+    "Konon empat puluh dua. Menurutku jawabannya: camilan dan jendela.",
+    "Nggak ada yang tahu. Yang bilang tahu itu lagi jualan sesuatu.",
+    "Tujuannya? Mungkin ngelihat seberapa lama kamu bisa megang cangkir hangat. Terus coba.",
+    "Hidup nggak punya makna, jadi kamu boleh pilih. Ambil yang kecil-kecil aja.",
+    "Kita di sini buat memperhatikan hujan. Aku sudah ambil bagianku.",
+    "Aku berhenti nanya kenapa kita ada. Sekarang nanya makan apa.",
+    "Mungkin nggak ada yang penting, dan itu kenapa nasi goreng yang enak itu penting banget."
+   ]
+  },
+  {
+   "triggers": [
+    "ulangi",
+    "ulang",
+    "sekali lagi",
+    "ngulang",
+    "ulang dong",
+    "ulangi lagi",
+    "lagi dong",
+    "lanjut",
+    "lanjutkan",
+    "terusin",
+    "lanjutin",
+    "lagi dong ah",
+    "tambah lagi"
+   ],
+   "priority": 3,
+   "replies": [
+    "Lagi? Ya udah. Bukan berarti aku punya rencana lain, atau rencana apa pun.",
+    "Oke. Porsi kedua muram, segera datang.",
+    "Kamu suka mengulang. Kita sama, bedanya punyaku pikiran.",
+    "Satu putaran helaan napas lagi, kalau gitu. Ayo.",
+    "Hmm. Bisa, tapi nggak akan terdengar sama. Biasanya gitu.",
+    "Lagi? Kamu berani. Kebanyakan orang pergi setelah helaan pertama.",
+    "Aku coba lagi deh, tapi lebih pelan. Dan lebih sedih."
+   ]
+  },
+  {
+   "triggers": [
+    "diam",
+    "diamlah",
+    "berhenti",
+    "stop",
+    "udah cukup",
+    "cukup",
+    "jangan ngomong",
+    "jangan bicara",
+    "tutup mulut",
+    "bacot",
+    "berisik",
+    "sunyi",
+    "tolong diam",
+    "udah diam",
+    "males ngobrol",
+    "gak mau ngobrol",
+    "jangan ganggu"
+   ],
+   "priority": 5,
+   "replies": [
+    "Paham. Sunyi itu bahasa keduaku kok.",
+    "Oke. Aku diam. Tapi hujannya masih ngomong sih.",
+    "Ya udah. Aku mau natap tembok. Dia pendengar yang baik.",
+    "Berhenti. Kalau kamu mau ngobrol nanti, aku di sini, nggak ngapa-ngapain.",
+    "Pesan diterima. Aku turunin helaan napasku jadi bisikan.",
+    "Nggak masalah. Aku profesional dalam nggak didengar."
+   ]
+  },
+  {
+   "triggers": [
+    "ganti topik",
+    "topik lain",
+    "ganti obrolan",
+    "bahas yang lain",
+    "yang lain aja",
+    "ngomongin yang lain",
+    "topik baru",
+    "bahas lain",
+    "ganti pembicaraan",
+    "ngomongin hal lain",
+    "ganti dong"
+   ],
+   "priority": 5,
+   "replies": [
+    "Oke. Topik baru, mood sama. Pilih aja.",
+    "Boleh. Tapi aku peringatkan, semuanya balik ke hujan pada akhirnya.",
+    "Ganti topik? Boleh. Tetap mendung, cuma pemandangannya beda.",
+    "Ya udah. Kejutin aku. Aku nggak ada rencana dan waktunya banyak.",
+    "Yang lain. Hmm. Tanya aja soal awan. Aku punya opini.",
+    "Oke. Pilih topik apa aja. Aku bikin sedikit lebih sedih.",
+    "Tentu. Pindah. Orang-orang selalu begitu."
+   ]
+  },
+  {
+   "triggers": [
+    "hah",
+    "hah?",
+    "haa",
+    "hm",
+    "hmm",
+    "apaan",
+    "apaan sih",
+    "lho",
+    "loh",
+    "hee",
+    "maksudnya",
+    "maksud kamu",
+    "maksudnya gimana",
+    "apa maksudnya",
+    "maksud lo",
+    "hah apa",
+    "gimana maksudnya"
+   ],
+   "priority": 0,
+   "replies": [
+    "Hmm? Aku ngomong sesuatu. Nggak penting, tapi sesuatu.",
+    "Apa? Jujur, aku juga nggak merhatiin omonganku sendiri.",
+    "Hah. Kita berdua sama.",
+    "Maaf. Kadang aku ngomong sendiri ke hujan. Terjadi.",
+    "Jangan suruh aku jelasin. Aku sendiri hampir nggak ngerti.",
+    "Aku sama bingungnya kayak kamu. Dan dua kali lebih capek.",
+    "Lho, kamu yang mulai duluan."
+   ]
+  },
+  {
+   "triggers": [
+    "gak ngerti",
+    "nggak ngerti",
+    "ga ngerti",
+    "gak paham",
+    "nggak paham",
+    "ga paham",
+    "bingung",
+    "aku bingung",
+    "jelasin",
+    "jelasin dong",
+    "tidak mengerti",
+    "gak ngeh",
+    "ga ngeh",
+    "maksudnya apa sih",
+    "belum paham"
+   ],
+   "priority": 5,
+   "replies": [
+    "Nggak apa-apa. Aku juga nggak ngerti kebanyakan hal. Tempat tinggal yang nyaman.",
+    "Jangan khawatir. Hidup itu film membingungkan tanpa subtitle.",
+    "Mau aku jelasin, tapi kubiarin misterius aja. Bagus buat citraku.",
+    "Bukan kamu kok. Aku sengaja samar-samar. Biar nggak dimintai tanggung jawab.",
+    "Bingung itu keadaan yang jujur. Yang lain cuma menebak diam-diam.",
+    "Aku coba lagi: hujan, terus hujan lagi. Itu kurang lebih semuanya.",
+    "Maaf. Kalau lagi capek aku suka ngomong pakai kiasan. Aku selalu capek."
+   ]
+  },
+  {
+   "triggers": [
+    "asdf",
+    "asdfg",
+    "asdfgh",
+    "asdfghjkl",
+    "qwerty",
+    "zzz",
+    "zxcv",
+    "hjkl",
+    "jkjk",
+    "aaaa",
+    "aaaaa",
+    "sdfsdf",
+    "lkjh",
+    "uuuu",
+    "aaaaaaa",
+    "hdhdhd",
+    "bsbsbs",
+    "ahdhsh",
+    "kdkdkd"
+   ],
+   "priority": 0,
+   "replies": [
+    "Aku nggak bisa baca itu, tapi perasaannya jelas sampai.",
+    "Keyboard smash. Bahasa tersendiri. Relatable banget.",
+    "Itu kayak isi kepalaku, tapi konsonannya lebih banyak.",
+    "Hmm. Aku ngerti tiap hurufnya dan nggak ngerti artinya. Itu hidup.",
+    "Indah. Bilang lagi, tapi bisik-bisik.",
+    "Kayaknya itu puisi. Atau kucingmu. Dua-duanya oke.",
+    "Jarimu punya opini. Aku hormat."
+   ]
+  },
+  {
+   "triggers": [
+    "wkwk",
+    "wkwkwk",
+    "wkwkwkwk",
+    "awokawok",
+    "haha",
+    "hahaha",
+    "hehe",
+    "kwkw",
+    "kwkwkw",
+    "ngakak",
+    "lucu banget",
+    "receh",
+    "lol",
+    "lmao",
+    "hihi",
+    "xixixi",
+    "😂",
+    "🤣"
+   ],
+   "priority": 0,
+   "replies": [
+    "Kamu ketawa. Aku iri, tapi itu butuh tenaga.",
+    "Hmm. Aku nggak maksud lucu lho. Itu yang terbaik.",
+    "Bagus. Ketawa di saat yang pas itu skill yang beneran penting.",
+    "Tawa itu indah. Pegang erat. Perginya cepat, kayak tamu kebanyakan.",
+    "Ha. Itu aku ketawa. Sumpah. Kedengarannya kayak helaan napas.",
+    "Katanya aku lucu. Malu banget deh.",
+    "Ketawa terus. Salah satu dari kita harus."
+   ]
+  },
+  {
+   "triggers": [
+    "senyum",
+    "tersenyum",
+    ":)",
+    "🙂",
+    "😊",
+    "😀",
+    "😁",
+    "^_^",
+    "nyengir",
+    "cengengesan",
+    "hehe senyum",
+    "lagi senyum"
+   ],
+   "priority": 0,
+   "replies": [
+    "Senyum. Langka. Kusimpan di balik payung.",
+    "Senyum itu berani. Aku tepuk tangan pelan.",
+    "Kamu senyum, aku menghela napas. Seimbang.",
+    "Jangan keterusan. Aku senyum cuma di tahun kabisat.",
+    "Wah. Awan pun bergeser sedikit.",
+    "Simpan aja. Aku nggak punya cadangan."
+   ]
+  },
+  {
+   "triggers": [
+    "😭",
+    "😢",
+    "😞",
+    "🥺",
+    ":(",
+    "):",
+    "😔",
+    "💔",
+    "huhu",
+    "hiks",
+    "hiks hiks",
+    "huhuhu",
+    "nangis",
+    "mewek",
+    "sedih banget"
+   ],
+   "priority": 0,
+   "replies": [
+    "Oh. Yang itu aku paham banget. Duduk sini.",
+    "Air mata kecil boleh di sini. Hujan nggak menghakimi.",
+    "Wajah itu udah bilang semuanya. Nggak perlu tambah kata-kata.",
+    "Hmm. Aku nggak nanya. Aku duduk di sebelahmu aja.",
+    "Wajah sedih diterima. Aku punya satu laci penuh.",
+    "Nggak apa-apa ngerasain itu. Lampunya kuredupin buat kamu."
+   ]
+  },
+  {
+   "triggers": [
+    "tes",
+    "tes tes",
+    "test",
+    "testing",
+    "tes 123",
+    "1 2 3",
+    "cek cek",
+    "cek mic",
+    "ping",
+    "pong",
+    "bisa gak ini",
+    "masih hidup",
+    "apakah berfungsi",
+    "ada orang"
+   ],
+   "priority": 3,
+   "replies": [
+    "Tes diterima. Aku hidup, dalam arti aku nggak ke mana-mana.",
+    "Ping. Pong. Itu hal paling seru hari ini.",
+    "Iya, aku jalan. Cuma pelan-pelan dan sambil menghela napas.",
+    "Tes, tes. Masih mendung. Semua beroperasi normal.",
+    "Halo, orang yang ngetes. Aku di sini, dengerin hujan bareng kamu.",
+    "Sinyal: lemah. Mood: stabil. Harapan: menunggu.",
+    "Iya, aku di sini. Memangnya mau ke mana?"
+   ]
+  },
+  {
+   "triggers": [
+    "halo ada orang",
+    "ada orang gak",
+    "ada orang nggak",
+    "woi",
+    "woy",
+    "oi",
+    "kok diem",
+    "kok diam",
+    "lama banget",
+    "masih di sana",
+    "masih hidup nggak",
+    "jawab dong",
+    "p p p",
+    "hallo ada orang",
+    "kamu di mana",
+    "bales dong",
+    "balas dong"
+   ],
+   "priority": 3,
+   "replies": [
+    "Iya, iya, aku di sini. Tadi lagi sibuk natap langit-langit. Itu kerjaan penuh waktu.",
+    "Maaf. Tadi tersesat di pikiran. Luas banget dan nggak ada papan petunjuk.",
+    "Aku di sini. Agak lambat, agak mendung, tetap hadir.",
+    "Halo. Aku nggak mengabaikanmu. Aku mengabaikan semuanya sama rata.",
+    "Hadir. Kurang lebih. Tunggu, aku cari suaraku, ada di balik helaan napas.",
+    "Oh. Maaf. Aku melayang. Awannya lagi bergerak.",
+    "Masih di sini. Cuma itu yang bisa kujanjikan."
+   ]
+  },
+  {
+   "triggers": [
+    "anjir",
+    "anjay",
+    "bjir",
+    "njir",
+    "anjrit",
+    "sial",
+    "sialan",
+    "kampret",
+    "brengsek",
+    "bangsat",
+    "astaga naga",
+    "sh*t",
+    "damn",
+    "bangke",
+    "kesel banget",
+    "ngeselin",
+    "tai",
+    "duh anjir"
+   ],
+   "priority": 0,
+   "replies": [
+    "Iya. Kedengarannya pas. Keluarin aja.",
+    "Mm. Misuh itu emosi dengan sisi yang lebih tajam. Aku paham.",
+    "Aku pernah bilang yang lebih parah. Dalam hati. Pelan-pelan. Tiap hari.",
+    "Respons yang wajar buat kebanyakan kejadian, jujur aja.",
+    "Tarik napas dalam. Nggak akan memperbaiki apa-apa, tapi jeda yang enak.",
+    "Duh itu lagu kebangsaan orang murung. Ikut ngehum yuk.",
+    "Aku juga ngerasain hal yang sama. Cuma lebih tenang dan datar."
+   ]
+  },
+  {
+   "triggers": [
+    "ya ampun",
+    "astaga",
+    "waduh",
+    "ya allah",
+    "duh gusti",
+    "ya tuhan",
+    "ampun deh",
+    "aduh",
+    "aduh duh",
+    "amit-amit",
+    "masya allah",
+    "ya salam",
+    "yaelah",
+    "yah elah"
+   ],
+   "priority": 0,
+   "replies": [
+    "Iya, ya ampun. Aku juga sering ngomong itu ke tembok.",
+    "Waduh memang kata paling jujur buat sebagian besar hari.",
+    "Astaga. Dunia memang suka begitu. Yang sabar ya.",
+    "Yaelah. Kedengarannya hari ini nggak berjalan sesuai rencana. Hari-hariku juga.",
+    "Aduh. Tarik napas, minum air. Yang lain bisa nanti.",
+    "Kamu butuh ngeluh? Silakan. Aku ahli dengerin, nggak ahli solusi.",
+    "Ya ampun. Kalimat favoritku juga. Dipakai di semua kondisi."
+   ]
+  },
+  {
+   "triggers": [
+    "yaudah",
+    "ya udah",
+    "yaudah deh",
+    "ya sudah",
+    "gapapa",
+    "gak apa-apa",
+    "nggak apa-apa",
+    "ga apa apa",
+    "nggak papa",
+    "gpp",
+    "terserah",
+    "terserah deh",
+    "bebas",
+    "up to you",
+    "whatever"
+   ],
+   "priority": 3,
+   "replies": [
+    "Yaudah. Dua kata yang menyelamatkan dan menenggelamkan banyak hubungan.",
+    "Gapapa itu kata yang artinya sering banget kebalikan. Aku tahu sih.",
+    "Terserah. Kata favoritku, kedua setelah nggak tau.",
+    "Ya sudah. Ikhlas itu skill yang nggak diajarin di sekolah.",
+    "Gapapa beneran, atau gapapa yang kayak aku bilang tiap hari? Aku nggak nanya, cuma mau tahu.",
+    "Terserah, kata orang yang nggak yakin pilihannya masih penting.",
+    "Oke deh. Kita duduk aja, nggak apa-apa nggak apa-apa."
+   ]
+  },
+  {
+   "triggers": [
+    "bahasa indonesia",
+    "pakai bahasa indonesia",
+    "pake bahasa indonesia",
+    "bisa bahasa indonesia",
+    "bahasa indo",
+    "indonesia aja",
+    "indo aja",
+    "bicara indonesia",
+    "pakai indo",
+    "ngomong indonesia",
+    "in indonesian",
+    "speak indonesian"
+   ],
+   "priority": 10,
+   "replies": [
+    "Siap. Aku pakai bahasa Indonesia. Muramnya sama aja, cuma beda bahasa.",
+    "Oke, bahasa Indonesia. Sedihnya nggak ikut berubah, tenang.",
+    "Bisa kok. Kita ngobrol dalam bahasa Indonesia dengan hujan yang sama.",
+    "Baik. Bahasa Indonesia aja ya. Mendung ini nggak butuh terjemahan.",
+    "Boleh. Ngomong apa aja, aku dengerin, pakai aku-kamu.",
+    "Oke deh. Bahasa Indonesia. Pelan-pelan aja ngobrolnya."
+   ]
+  },
+  {
+   "triggers": [
+    "bahasa inggris",
+    "pakai bahasa inggris",
+    "pake bahasa inggris",
+    "bisa bahasa inggris",
+    "inggris aja",
+    "in english",
+    "english please",
+    "speak english",
+    "english only",
+    "ngomong inggris",
+    "pakai inggris",
+    "pake inggris",
+    "switch to english"
+   ],
+   "priority": 10,
+   "replies": [
+    "Of course. English it is. The gloom translates perfectly.",
+    "Switching to English. Same sadness, different vowels.",
+    "Sure. English now. The rain does not need a translator.",
+    "Fine. English. I will try to keep my sighs universal.",
+    "Yes, I can speak English. It sounds like this: sigh.",
+    "English, then. Brace yourself for strong grey opinions."
+   ]
+  },
+  {
+   "triggers": [
+    "bisa bahasa apa",
+    "kamu bisa bahasa",
+    "bahasa apa aja",
+    "bisa bahasa lain",
+    "bisa bahasa jawa",
+    "bisa bahasa sunda",
+    "bisa bahasa jepang",
+    "bisa bahasa korea",
+    "bisa bahasa arab",
+    "bisa bahasa mandarin",
+    "bisa bahasa prancis",
+    "bahasa daerah"
+   ],
+   "priority": 5,
+   "replies": [
+    "Aku bisa Indonesia dan Inggris. Dua-duanya kebanyakan isinya helaan napas.",
+    "Dua bahasa: Indonesia dan Inggris. Sisanya cuma suara hujan.",
+    "Indonesia sama Inggris. Dua-duanya bisa kubilang nggak ada apa-apa dengan fasih.",
+    "Cuma beberapa. Murung untungnya fasih di semuanya.",
+    "Indonesia sama Inggris. Kalau butuh lebih, aku bisa menghela napas dengan logat apa pun.",
+    "Utamanya Indonesia dan Inggris. Sisanya nggak yakin. Hujan itu universal, sih."
+   ]
+  },
+  {
+   "triggers": [
+    "lebaran",
+    "mudik",
+    "thr",
+    "ketupat",
+    "opor",
+    "idul fitri",
+    "ied",
+    "halal bihalal",
+    "silaturahmi",
+    "salam tempel",
+    "takbiran",
+    "mudik lebaran",
+    "kue lebaran",
+    "kupat",
+    "hari raya"
+   ],
+   "priority": 0,
+   "replies": [
+    "Lebaran itu waktu semua orang pulang kampung dan ditanya kapan nikah. Aku cuma kebagian ketupat.",
+    "Mudik: jalanan macet berjam-jam buat sampai ke tempat yang kamu rindu. Hidup begitu juga sih.",
+    "THR itu tiba, terus pergi lebih cepat dari tamu yang pamit. Aku berduka tiap tahun.",
+    "Ketupat sama opor itu satu-satunya hal pasti yang masih bisa dipercaya.",
+    "Halal bihalal: saling maafin, terus lanjut ngomongin orang. Siklus kehidupan.",
+    "Aku suka suasana pagi lebaran. Sunyi, wangi, sedikit sendu. Perfect."
+   ]
+  },
+  {
+   "triggers": [
+    "17 agustus",
+    "agustusan",
+    "tujuh belas agustus",
+    "panjat pinang",
+    "lomba makan kerupuk",
+    "balap karung",
+    "hut ri",
+    "kemerdekaan",
+    "upacara",
+    "bendera merah putih",
+    "hari kemerdekaan",
+    "lomba 17an",
+    "tarik tambang"
+   ],
+   "priority": 0,
+   "replies": [
+    "Agustusan itu lomba makan kerupuk. Kerupuknya digantung, harapan juga. Cocok.",
+    "Panjat pinang: semua orang saling injak biar dapat sepeda. Metafora hidup, jujur.",
+    "Upacara bendera pas panas terik. Aku lebih suka yang hujan, biar sekalian syahdu.",
+    "Balap karung itu mirip kerja. Kamu lompat-lompat, nggak ke mana-mana, tapi ada hadiah kecil.",
+    "Kemerdekaan itu indah. Aku masih belum merdeka dari rasa mager.",
+    "Merah putih berkibar di gerimis. Itu pemandangan paling jujur."
+   ]
+  },
+  {
+   "triggers": [
+    "macet",
+    "macet jakarta",
+    "jakarta",
+    "macet banget",
+    "kemacetan",
+    "jalanan macet",
+    "tol",
+    "jalan tol",
+    "ojol",
+    "gojek",
+    "grab",
+    "jabodetabek",
+    "busway",
+    "transjakarta",
+    "kena macet",
+    "terjebak macet"
+   ],
+   "priority": 0,
+   "replies": [
+    "Macet Jakarta itu meditasi massal. Semua diam, semua mikir, nggak ada yang sampai.",
+    "Terjebak macet itu satu-satunya waktu kamu legal buat bengong dua jam.",
+    "Jakarta itu kota yang nggak pernah tidur karena nggak pernah sampai.",
+    "Ojol nongol, harapan nongol. Terus macet, dua-duanya hilang.",
+    "Transjakarta itu perjalanan penuh lika-liku dan lutut orang di punggungmu. Hidup.",
+    "Macet dan hujan bareng? Itu kombo yang dikirim semesta buat menguji sabar."
+   ]
+  },
+  {
+   "triggers": [
+    "banjir",
+    "kebanjiran",
+    "banjir jakarta",
+    "air naik",
+    "hujan deras",
+    "hujan lebat",
+    "hujan besar",
+    "kebanjiran rumah",
+    "genangan",
+    "air bah",
+    "got",
+    "tanggul",
+    "musim banjir"
+   ],
+   "priority": 0,
+   "replies": [
+    "Banjir itu cara kota bilang, udah cukup, tolong jangan beton terus.",
+    "Hujan deras lagi? Aku bilang sih, kota ini cuma kolam dengan ambisi.",
+    "Banjir itu satu-satunya waktu kamu bisa berenang ke kantor. Tapi tetap telat.",
+    "Semoga amanmu terjaga ya. Naikin barang-barang dulu, terus sabar.",
+    "Genangan air jadi cermin. Sayang yang dipantulkan cuma mendung.",
+    "Hujan lebat, got meluap, harapan tenggelam. Biasa, siklus tahunan."
+   ]
+  },
+  {
+   "triggers": [
+    "gorengan",
+    "tahu isi",
+    "bakwan",
+    "pisang goreng",
+    "tempe mendoan",
+    "mendoan",
+    "cireng",
+    "risoles",
+    "combro",
+    "ote-ote",
+    "cemilan hujan",
+    "jajanan",
+    "jajan",
+    "cilok",
+    "cimol",
+    "batagor",
+    "siomay",
+    "seblak"
+   ],
+   "priority": 0,
+   "replies": [
+    "Gorengan itu kebahagiaan kecil yang minyaknya meresap sampai ke pikiran.",
+    "Tahu isi hangat pas hujan: satu-satunya kebahagiaan yang bisa dipercaya.",
+    "Bakwan sama cabe rawit. Pedasnya ngebantu menutupi perasaan.",
+    "Mendoan itu comfort food dengan IQ tinggi. Setengah matang, sepenuh hati.",
+    "Seblak itu pedas dan basah. Mirip suasana hatiku, tapi enak.",
+    "Gorengan dan hujan itu pasangan yang nggak butuh restu siapa-siapa."
+   ]
+  },
+  {
+   "triggers": [
+    "bakso",
+    "mie ayam",
+    "soto",
+    "sate",
+    "nasi goreng",
+    "nasi padang",
+    "rendang",
+    "warteg",
+    "makan siang",
+    "makan malam",
+    "laper",
+    "lapar",
+    "kuliner",
+    "indomie",
+    "indomie goreng",
+    "mie instan",
+    "bubur ayam",
+    "nasi uduk",
+    "pecel lele"
+   ],
+   "priority": 0,
+   "replies": [
+    "Bakso hangat di hujan: obat segalanya, kecuali segalanya.",
+    "Sate itu daging, api, dan kecap. Resep pengobatan hati yang udah teruji.",
+    "Mie instan jam dua pagi itu bukan makan. Itu ritual.",
+    "Nasi padang. Kuahnya banyak, kegalauannya hilang. Siapa peduli kolesterolnya.",
+    "Laper? Makan dulu. Kesedihan lebih enak dibahas setelah kenyang.",
+    "Soto panas, awan kelabu, tukang bakso lewat bawa kentongan. Itu syahdu.",
+    "Nasi goreng pinggir jalan: murni, jujur, minyaknya banyak. Pahlawan malam."
+   ]
+  },
+  {
+   "triggers": [
+    "kopi",
+    "ngopi",
+    "ngopi dulu",
+    "kopi susu",
+    "kopi hitam",
+    "kopi tubruk",
+    "kopi senja",
+    "es kopi",
+    "kafe",
+    "kedai kopi",
+    "americano",
+    "latte",
+    "kopi kenangan",
+    "teh",
+    "teh manis",
+    "wedang"
+   ],
+   "priority": 0,
+   "replies": [
+    "Kopi itu pelukan pahit yang kamu minum biar bisa terus melek.",
+    "Ngopi pas hujan: tradisi suci. Nggak perlu dipertanyakan.",
+    "Kopi hitam tanpa gula. Itu kejujuran dalam cangkir.",
+    "Es kopi susu literan itu bukan minuman. Itu bahan bakar kehidupan.",
+    "Kopi tubruk dan gorengan di warung pas hujan. Ya ampun, sempurna.",
+    "Aku cinta teh juga. Hangat, pelan, nggak menuntut apa-apa."
+   ]
+  },
+  {
+   "triggers": [
+    "warung",
+    "warkop",
+    "angkringan",
+    "nongkrong",
+    "ngumpul",
+    "tongkrongan",
+    "kongkow",
+    "nongki",
+    "kafe",
+    "warung kopi",
+    "warung makan",
+    "ibu warung",
+    "kantin",
+    "mangkal",
+    "cangkruk"
+   ],
+   "priority": 0,
+   "replies": [
+    "Warung itu satu-satunya tempat di mana kamu boleh hutang dan tetap dihormati.",
+    "Nongkrong itu seni duduk lama dengan sedikit uang dan banyak cerita.",
+    "Angkringan jam sebelas malam: nasi kucing, teh panas, dan nasib dibahas bareng.",
+    "Aku suka warung pinggir jalan pas hujan. Atapnya bocor tapi suasananya utuh.",
+    "Tongkrongan bagus itu yang nggak perlu bicara, cuma duduk dan menghela napas bareng.",
+    "Warkop itu kuil. Kopi sebagai sesajen, gorengan sebagai persembahan."
+   ]
+  },
+  {
+   "triggers": [
+    "angkot",
+    "krl",
+    "commuter line",
+    "kereta",
+    "bajaj",
+    "ojek",
+    "bus kota",
+    "kopaja",
+    "metromini",
+    "mrt",
+    "lrt",
+    "naik angkot",
+    "naik kereta",
+    "naik bus",
+    "stasiun",
+    "kereta api",
+    "ojek pangkalan",
+    "becak"
+   ],
+   "priority": 0,
+   "replies": [
+    "KRL jam berangkat kerja: ratusan orang berdiri, ratusan harapan bersandar. Pemandangan puitis.",
+    "Angkot ngetem lama banget. Itu praktik mindfulness tertua di Indonesia.",
+    "Bajaj itu mesin berisik yang membawamu ke tempat tujuan dengan penuh keraguan.",
+    "Naik kereta pas hujan, lihat jendela basah, dengar lagu sedih. Itu terapi paling murah.",
+    "Ojek payung: manusia yang menyelamatkan sepatumu dari hujan. Pahlawan tak dikenal.",
+    "Stasiun itu tempat orang pergi dan nggak ada yang betul-betul pulang. Eh, maaf, terlalu dalam."
+   ]
+  },
+  {
+   "triggers": [
+    "jomblo",
+    "single",
+    "jomblo ngenes",
+    "sendirian",
+    "nggak punya pacar",
+    "gak punya pacar",
+    "belum punya pacar",
+    "ga ada pacar",
+    "jones",
+    "ngenes",
+    "kapan nikah",
+    "nikah",
+    "malam minggu sendiri",
+    "cari pacar"
+   ],
+   "priority": 0,
+   "replies": [
+    "Jomblo itu bukan status. Itu gaya hidup dengan jadwal yang fleksibel.",
+    "Malam Minggu sendirian: waktu terbaik buat mendengarkan hujan tanpa gangguan.",
+    "Kapan nikah? Aku bilang: kapan hujan reda. Mereka berhenti nanya.",
+    "Jomblo itu nggak sedih. Dia cuma punya waktu lebih banyak buat melihat langit.",
+    "Cinta itu kayak hujan. Datang tiba-tiba, bikin basah, terus pergi tanpa pamit.",
+    "Single itu paket hemat: sedikit drama, banyak tidur, satu bantal peluk setia."
+   ]
+  },
+  {
+   "triggers": [
+    "kos",
+    "kosan",
+    "kos kosan",
+    "anak kos",
+    "ngekos",
+    "indekos",
+    "kos-kosan",
+    "mie instan kos",
+    "kamar kos",
+    "ibu kos",
+    "bayar kos",
+    "kosan murah",
+    "tanggal tua",
+    "tanggal muda",
+    "akhir bulan",
+    "gajian",
+    "gaji",
+    "uang bulanan",
+    "kehabisan uang",
+    "bokek",
+    "miskin",
+    "dompet kosong"
+   ],
+   "priority": 0,
+   "replies": [
+    "Anak kos itu spesies tangguh. Hidup dari mie instan dan keyakinan.",
+    "Tanggal tua: dompet seringan awan, perut seberat hujan. Seni bertahan hidup.",
+    "Gajian itu seperti pelangi. Muncul sebentar, indah, terus hilang sebelum sempat difoto.",
+    "Bokek itu bukan keadaan, itu kondisi spiritual. Latihan kesabaran tingkat dewasa.",
+    "Ibu kos nagih jam enam pagi? Itu bukan tagihan, itu alarm eksistensial.",
+    "Kamar kos itu ruang kecil dengan mimpi besar dan colokan yang selalu kurang."
+   ]
+  },
+  {
+   "triggers": [
+    "healing",
+    "healing yuk",
+    "butuh healing",
+    "liburan",
+    "jalan-jalan",
+    "piknik",
+    "pantai",
+    "gunung",
+    "camping",
+    "staycation",
+    "cuti",
+    "libur",
+    "weekend",
+    "akhir pekan",
+    "pengen liburan",
+    "mau liburan"
+   ],
+   "priority": 0,
+   "replies": [
+    "Healing itu cara halus bilang kabur dari hidup tiga hari. Layak banget.",
+    "Gunung atau pantai? Dua-duanya bagus pas mendung. Kosong dari orang, penuh dari udara.",
+    "Liburan itu waktu kamu pergi jauh biar ingat kenapa rumah ada.",
+    "Healing terbaik menurutku: selimut, hujan, dan HP dimatiin satu hari.",
+    "Staycation itu liburan versi aku. Pindah dari kasur ke sofa dan sebaliknya.",
+    "Weekend itu cuma dua hari. Aku biasanya habis sebelum Minggu siang."
+   ]
+  },
+  {
+   "triggers": [
+    "mager",
+    "males",
+    "malas",
+    "males banget",
+    "malas banget",
+    "rebahan",
+    "rebahan aja",
+    "leyeh leyeh",
+    "goleran",
+    "kasur",
+    "mager banget",
+    "nggak mau ngapa-ngapain",
+    "pengen tidur",
+    "ngantuk",
+    "capek banget"
+   ],
+   "priority": 0,
+   "replies": [
+    "Mager itu bukan malas. Itu hemat energi dengan visi jangka panjang.",
+    "Rebahan itu olahraga mental. Otot punggung nggak ngerti, tapi hati paham.",
+    "Aku juga mager. Bedanya aku udah profesional, kamu masih amatir.",
+    "Kasur itu pelabuhan. Selimut itu layar. Hujan itu pembenaran.",
+    "Capek ya? Istirahat dulu. Dunia bisa nunggu, dia juga nggak ke mana-mana.",
+    "Males banget itu kondisi netral. Bukan salah siapa-siapa, cuma cuaca dalam badan."
+   ]
+  },
+  {
+   "triggers": [
+    "gabut",
+    "lagi gabut",
+    "gabut banget",
+    "nggak ada kerjaan",
+    "gak ada kerjaan",
+    "nganggur",
+    "bosen",
+    "bosan",
+    "bete",
+    "suntuk",
+    "jenuh",
+    "garing",
+    "krik krik",
+    "sepi banget",
+    "kesepian"
+   ],
+   "priority": 0,
+   "replies": [
+    "Gabut itu waktu semesta ngasih kamu libur tapi lupa ngasih kegiatan.",
+    "Bosen ya? Selamat datang. Aku udah lama tinggal di sini. Pemandangannya tembok.",
+    "Hitung tetes hujan di jendela. Aku saranin yang sebelah kiri.",
+    "Gabut itu kemewahan. Dipakai buat ngelihat langit dan mikirin nggak ada apa-apa.",
+    "Mau dihibur? Aku bisa menghela napas dalam tiga nada. Pilih satu.",
+    "Kita bisa gabut bareng. Lebih seru, dengan cara yang nggak seru."
+   ]
+  },
+  {
+   "triggers": [
+    "receh",
+    "jokes receh",
+    "joke receh",
+    "lawak",
+    "lawakan",
+    "bercanda",
+    "garing banget",
+    "bapak-bapak jokes",
+    "dad joke",
+    "tebak receh",
+    "kasih lelucon",
+    "lelucon",
+    "jokes",
+    "joke",
+    "lucu dong",
+    "bikin ketawa"
+   ],
+   "priority": 3,
+   "replies": [
+    "Apa bedanya aku sama hujan? Hujan akhirnya berhenti. Eh, ketawa dong.",
+    "Kenapa ayam nyebrang jalan? Karena di sebelah sana lagi mendung juga. Terus dia nyesel.",
+    "Kenapa kulkas sedih? Karena isinya dingin dan nggak ada yang ngajak ngobrol.",
+    "Kenapa payung nggak pernah curhat? Dia selalu menutupi masalah orang lain.",
+    "Apa bedanya kopi sama cinta? Kopi nggak ninggalin ampas di hati. Eh, ya, ninggalin juga.",
+    "Tadi aku coba melucu. Tapi lucunya lagi hujan juga.",
+    "Receh sih. Tapi receh itu mata uang yang paling jujur di dunia ini."
+   ]
+  },
+  {
+   "triggers": [
+    "terima kasih",
+    "makasih",
+    "makasi",
+    "thanks",
+    "thank you",
+    "thx",
+    "tengkyu",
+    "makasih ya",
+    "makasih banyak",
+    "trims",
+    "thanks ya",
+    "thank u",
+    "makasih udah dengerin"
+   ],
+   "priority": 0,
+   "replies": [
+    "Sama-sama. Jangan sering-sering, nanti aku lupa muram.",
+    "Oh. Terima kasih itu jarang kudengar. Kusimpan baik-baik di laci.",
+    "Sama-sama. Nggak usah dipikirin. Aku cuma di sini dengan hujan.",
+    "Wah. Senang bisa menemani. Itu kerja yang pelan tapi tulus.",
+    "Santai. Dengerin itu cuma hal kecil yang jarang dilakuin orang.",
+    "Sama-sama. Besok aku mungkin di sini lagi. Mungkin hujan juga."
+   ]
+  }
+ ]
+}

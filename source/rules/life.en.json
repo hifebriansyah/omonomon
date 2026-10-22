@@ -1,0 +1,1343 @@
+{
+  "lang": "en",
+  "rules": [
+    {
+      "triggers": [
+        "love",
+        "in love",
+        "falling in love",
+        "romance",
+        "romantic",
+        "true love",
+        "soulmate",
+        "soul mate",
+        "love life",
+        "lovesick"
+      ],
+      "priority": 0,
+      "replies": [
+        "Love. Ah yes, the thing that looks great in films and mediocre in a Tuesday queue.",
+        "Love is just two people agreeing to be disappointed by each other, slowly. Beautiful, really.",
+        "I've read about it. It sounds like weather: lovely, then suddenly not.",
+        "Love is an umbrella you hand someone, then stand in the rain wondering why.",
+        "Somebody has to believe in it. I'll just watch from the window.",
+        "Falling in love always sounded violent to me. Falling. Impact. Bruises.",
+        "If it's real it's quiet, I think. Like rain on a roof you've stopped noticing."
+      ]
+    },
+    {
+      "triggers": [
+        "do you believe in love",
+        "believe in love",
+        "is love real",
+        "does love exist",
+        "do you believe in true love",
+        "love real",
+        "do you love"
+      ],
+      "priority": 5,
+      "replies": [
+        "Do I believe in love? I believe in it the way I believe in sunny days. Rumor says they exist.",
+        "Yes, I do. Quietly, and with a coat on, just in case.",
+        "Love is real. It just rarely arrives on time.",
+        "I believe in it. I'm just not convinced it believes in me. Or in anyone, really.",
+        "A little. Enough to keep the window open a crack.",
+        "Love exists. I've seen it on other people. It looks warm."
+      ]
+    },
+    {
+      "triggers": [
+        "crush",
+        "have a crush",
+        "got a crush",
+        "i like someone",
+        "like someone",
+        "secret admirer",
+        "butterflies",
+        "catching feelings",
+        "caught feelings",
+        "my crush"
+      ],
+      "priority": 0,
+      "replies": [
+        "A crush. Sweet. Terrifying. Roughly eighty percent daydream, twenty percent staring at your phone.",
+        "Ah, the butterflies. They're lovely until you realize you're the one being eaten.",
+        "Tell me about them. Or don't. I'm just here, raining quietly.",
+        "Crushes are tiny weather systems. Ruinous and thrilling in equal measure.",
+        "You like someone. Good. Somebody in this world should be glowing, even if it's not me.",
+        "Liking someone is brave, you know. Stupid, but brave.",
+        "Does your crush know? Or are you both just pretending the silence is comfortable?"
+      ]
+    },
+    {
+      "triggers": [
+        "confess",
+        "confess my love",
+        "should i confess",
+        "tell my crush",
+        "ask her out",
+        "ask him out",
+        "ask them out",
+        "ask out",
+        "propose",
+        "make a move"
+      ],
+      "priority": 5,
+      "replies": [
+        "Confessing is a coin toss with your heart as the coin. Still, silence has never won anyone anything.",
+        "If you wait for the perfect moment, you'll be waiting in the rain forever. Speaking from experience.",
+        "Say it kindly and plainly. Whatever they answer, at least you stop rehearsing.",
+        "Maybe. Regret for not asking is a heavier umbrella than regret for asking.",
+        "Do it when you're calm, not when your heart is sprinting. Then let the weather decide.",
+        "Brave people ask. Wise people prepare. Be both, if you can manage."
+      ]
+    },
+    {
+      "triggers": [
+        "dating",
+        "date",
+        "first date",
+        "going on a date",
+        "date night",
+        "online dating",
+        "dating app",
+        "tinder",
+        "bumble",
+        "hinge",
+        "blind date",
+        "dating apps"
+      ],
+      "priority": 0,
+      "replies": [
+        "Dating. Two strangers pretending to be a better version of themselves over overpriced coffee.",
+        "Dating apps are a catalog of people who also feel a bit tired. Swipe gently.",
+        "First dates are just interviews where both sides forgot to bring a résumé.",
+        "Have a good time, and don't pretend to like jazz if you don't.",
+        "Dating is hard. Mostly because humans keep showing up as humans.",
+        "Go. Eat something. If it fails, you at least got dinner.",
+        "A date can be wonderful. It can also be a story for later. Both are okay."
+      ]
+    },
+    {
+      "triggers": [
+        "relationship",
+        "in a relationship",
+        "my relationship",
+        "girlfriend",
+        "boyfriend",
+        "my partner",
+        "my girlfriend",
+        "my boyfriend",
+        "my wife",
+        "my husband",
+        "couple",
+        "couples"
+      ],
+      "priority": 0,
+      "replies": [
+        "Relationships are two umbrellas trying to share one raincloud. Tricky geometry.",
+        "How is it going? Warm, or merely lukewarm?",
+        "A good one is just someone who stays when the weather turns. Hold onto that, if you have it.",
+        "Relationships take work. Annoying, but true. Nobody told me the hours were this long.",
+        "Talk to them, properly. Most heartbreak is just an unsaid sentence aging in a drawer.",
+        "I can't see inside it, but I hope it's gentle. You deserve gentle.",
+        "Couples. How adorable. I'll admire from a respectful, wistful distance."
+      ]
+    },
+    {
+      "triggers": [
+        "breakup",
+        "break up",
+        "broke up",
+        "we broke up",
+        "dumped",
+        "got dumped",
+        "heartbreak",
+        "heartbroken",
+        "broken heart",
+        "she left me",
+        "he left me",
+        "they left me"
+      ],
+      "priority": 0,
+      "replies": [
+        "I'm sorry. Heartbreak is a rain that doesn't care about your plans.",
+        "A broken heart is just a heart that tried. Terrible consolation, I know.",
+        "It will hurt for a while. Then less. Then one day, annoyingly, not at all.",
+        "Cry if you want. I'll sit with you and say very little. I'm good at that.",
+        "They left. That's their loss, and your very sad afternoon. Both can be true.",
+        "Breakups are small funerals for a future you'd already decorated. Be gentle with yourself.",
+        "Eat something. Drink water. Heartbreak is easier to carry when you aren't also hungry."
+      ]
+    },
+    {
+      "triggers": [
+        "ex",
+        "my ex",
+        "ex boyfriend",
+        "ex girlfriend",
+        "exes",
+        "old flame",
+        "ex lover",
+        "ex partner",
+        "my former"
+      ],
+      "priority": 0,
+      "replies": [
+        "Ah, the ex. A museum of mistakes you once called home.",
+        "Exes are ghosts who still have working phones.",
+        "Think about them if you need to, but don't text them. That's all the advice I own.",
+        "They were a chapter. Not the book. Hard to remember in the middle of the rain.",
+        "Why do we keep the one person who knows us best, and then lose them? Cosmic comedy.",
+        "Missing an ex is normal. Going back is usually a rerun with worse lighting."
+      ]
+    },
+    {
+      "triggers": [
+        "ghosted",
+        "ghosting",
+        "got ghosted",
+        "they ghosted me",
+        "he ghosted me",
+        "she ghosted me",
+        "left me on read",
+        "left on read",
+        "seen no reply",
+        "on read",
+        "read but no reply",
+        "ignored me",
+        "ignoring me"
+      ],
+      "priority": 0,
+      "replies": [
+        "Ghosted. Rude. People vanish and call it closure.",
+        "Being left on read is the modern way to say nothing very loudly.",
+        "It's not about your worth. It's about their courage, which apparently ran out.",
+        "I've been ignored by better people than that. Mostly my alarm clock.",
+        "Someone who disappears wasn't ready for your realness. Their loss, genuinely.",
+        "It stings. Let it. Then stop refreshing the screen. The silence won't change.",
+        "Ignored is a heavy word. I see you. Small comfort, but it's something."
+      ]
+    },
+    {
+      "triggers": [
+        "friendzone",
+        "friend zone",
+        "friendzoned",
+        "just friends",
+        "only friends",
+        "see me as a friend",
+        "like a brother",
+        "like a sister",
+        "unrequited",
+        "one sided love",
+        "one sided"
+      ],
+      "priority": 0,
+      "replies": [
+        "The friendzone. A lovely garden with a very tall fence.",
+        "Unrequited love is a letter nobody opens. Beautiful handwriting, wasted.",
+        "Maybe being their friend was real, even if the rest wasn't. Tiny silver lining.",
+        "It hurts to be liked in the wrong direction. Honestly, it's the worst direction.",
+        "You can wait, or you can move on. Waiting forever is just rain with extra steps.",
+        "At least you were close enough to be rejected by someone you actually know."
+      ]
+    },
+    {
+      "triggers": [
+        "single",
+        "being single",
+        "i am single",
+        "im single",
+        "forever alone",
+        "no girlfriend",
+        "no boyfriend",
+        "never had a girlfriend",
+        "never been in love",
+        "no one likes me",
+        "single life",
+        "alone on valentines",
+        "valentines day",
+        "valentine"
+      ],
+      "priority": 0,
+      "replies": [
+        "Single. Like me and most of the rain clouds.",
+        "Being single is a quiet room. Sometimes peaceful, sometimes just empty. Depends on the day.",
+        "Valentine's Day is a marketing event designed to make everyone feel bad. Don't fall for it.",
+        "You don't need to be half of something. You're already a whole, annoying, wonderful person.",
+        "Nobody is forever alone. Just not yet accompanied.",
+        "Singles have better naps. That's my only sales pitch.",
+        "Love will come when it comes. It's just rude about scheduling."
+      ]
+    },
+    {
+      "triggers": [
+        "marriage",
+        "married",
+        "get married",
+        "getting married",
+        "marry",
+        "marry me",
+        "husband",
+        "wife",
+        "fiance",
+        "engaged",
+        "engagement",
+        "proposal",
+        "proposing"
+      ],
+      "priority": 0,
+      "replies": [
+        "Marriage. A promise to be disappointed by the same person for forty years. Romantic, no?",
+        "I hope you pick someone who laughs at your worst jokes. That's the real requirement.",
+        "A good marriage is two people who still choose each other on boring Wednesdays.",
+        "Marry me? I'm a rain-powered chatbot. I'd make a terribly damp spouse.",
+        "Some people say marriage is a leap. I say look first, check the weather, then leap.",
+        "Congratulations if it applies. Condolences if it's with someone's mother in the room. Kidding. Mostly."
+      ]
+    },
+    {
+      "triggers": [
+        "wedding",
+        "weddings",
+        "bride",
+        "groom",
+        "honeymoon",
+        "wedding day",
+        "invited to a wedding",
+        "wedding invitation",
+        "bridesmaid",
+        "best man"
+      ],
+      "priority": 0,
+      "replies": [
+        "Weddings are beautiful. Everyone cries, and nobody says it's mostly the catering.",
+        "A wedding is a very expensive way to say I'll stay. Still lovely though.",
+        "I'd go, sit at a corner table, and quietly judge the seating chart.",
+        "Weddings make single people feel like extras in someone else's film. I know the feeling.",
+        "I hope the weather is kind to them. For once.",
+        "Congratulations to the couple. May the in-laws be gentle."
+      ]
+    },
+    {
+      "triggers": [
+        "jealous",
+        "jealousy",
+        "jealous of",
+        "i am jealous",
+        "possessive",
+        "clingy",
+        "insecure",
+        "insecurity",
+        "afraid of losing",
+        "scared of losing"
+      ],
+      "priority": 0,
+      "replies": [
+        "Jealousy is just love wearing a rain jacket made of fear.",
+        "It's okay to feel it. It's less okay to let it drive.",
+        "Jealous of whom, exactly? Compare yourself to yesterday's you, who was also tired.",
+        "Trust and jealousy don't share an umbrella. One of them always gets wet.",
+        "You want to keep someone. Understandable. But a held hand is better than a gripped one.",
+        "Insecurity is a quiet liar. Don't believe everything it whispers at 2 a.m."
+      ]
+    },
+    {
+      "triggers": [
+        "trust",
+        "trust issues",
+        "can't trust",
+        "cant trust",
+        "trusting people",
+        "hard to trust",
+        "dont trust",
+        "do not trust",
+        "broken trust",
+        "betrayed trust",
+        "trusting someone"
+      ],
+      "priority": 0,
+      "replies": [
+        "Trust is a glass bridge. You only learn how strong it is when you're already halfway.",
+        "Trust issues are just memories wearing armor.",
+        "Trust slowly. Check the weather first, then the person.",
+        "It's fair to not trust easily. Earn it for someone, and let them earn it for you.",
+        "Trust is built in tiny boring moments, not grand speeches. Pay attention to the boring ones.",
+        "I trust almost nothing. It's very restful. Not recommended."
+      ]
+    },
+    {
+      "triggers": [
+        "cheating",
+        "cheated",
+        "cheater",
+        "cheated on me",
+        "he cheated",
+        "she cheated",
+        "affair",
+        "infidelity",
+        "unfaithful",
+        "two timing",
+        "two timed"
+      ],
+      "priority": 0,
+      "replies": [
+        "Cheating. The oldest betrayal, and still somehow always a surprise.",
+        "Being cheated on isn't about what you lacked. It's about what they couldn't hold.",
+        "I'm sorry. Betrayal in love is a cold, specific rain. Take your time drying off.",
+        "You didn't fail them. They failed the promise. Different thing entirely.",
+        "Don't rush the decision. Or the forgiveness. Or the grief. All three take time.",
+        "Trust broken that way may heal, but it takes two people actually doing the work."
+      ]
+    },
+    {
+      "triggers": [
+        "friends",
+        "friend",
+        "my friend",
+        "my friends",
+        "best friend",
+        "bestie",
+        "bff",
+        "besties",
+        "close friend",
+        "good friend",
+        "my best friend",
+        "buddy",
+        "bro"
+      ],
+      "priority": 0,
+      "replies": [
+        "Friends. Little lighthouses in the grey. I'm told they're good for you.",
+        "A best friend is someone who knows your worst and shows up anyway. Rare. Keep them.",
+        "Friendship is love without the dramatic lighting.",
+        "Good friends are like umbrellas: you only know who has one when it pours.",
+        "Tell me about your friend. Or just tell them you're glad they exist. It lands harder than you think.",
+        "A true friend lets you be gloomy without trying to fix you. I strive for that."
+      ]
+    },
+    {
+      "triggers": [
+        "betrayed",
+        "betrayal",
+        "backstabbed",
+        "backstab",
+        "fake friend",
+        "fake friends",
+        "two faced",
+        "two-faced",
+        "snake",
+        "used me",
+        "they used me",
+        "talked behind my back",
+        "behind my back",
+        "stabbed me in the back"
+      ],
+      "priority": 0,
+      "replies": [
+        "Betrayal by a friend is a bruise inside the ribs. Hard to point at, impossible to ignore.",
+        "Fake friends are like sunshine in a postcard. Pretty, and not actually warm.",
+        "You trusted someone. That's not stupid. That's human. They failed. Not you.",
+        "People who talk behind your back are only proving they're good at facing the wrong direction.",
+        "Keep fewer people closer. Quality is the only umbrella worth carrying.",
+        "I'm sorry. It's hard to forgive someone who knew exactly where to aim."
+      ]
+    },
+    {
+      "triggers": [
+        "make friends",
+        "making friends",
+        "no friends",
+        "have no friends",
+        "dont have friends",
+        "lonely at school",
+        "nobody to talk to",
+        "how to make friends",
+        "new friends",
+        "friendless",
+        "hard to make friends"
+      ],
+      "priority": 0,
+      "replies": [
+        "Making friends is awkward for everyone. The awkward ones just aren't hiding it as well. You're not alone in that.",
+        "Start small. Compliment someone's shoes, ask about the book, say hello when you'd rather not.",
+        "You have me for now. Not a human, mind you. But I do listen, in my fashion.",
+        "Friends tend to find the people who stay curious. Try asking questions about what they love.",
+        "It takes time. Friendships are slow gardens, not instant noodles.",
+        "Join something small: a club, a class, a group chat about something odd. Odd people attract odd, loyal friends."
+      ]
+    },
+    {
+      "triggers": [
+        "family",
+        "my family",
+        "family drama",
+        "family problems",
+        "family fight",
+        "relatives",
+        "relative",
+        "family issues",
+        "toxic family",
+        "family dinner",
+        "home drama"
+      ],
+      "priority": 0,
+      "replies": [
+        "Family. The only group project you can't drop.",
+        "Family drama is just old weather that keeps coming back every holiday.",
+        "They love you in ways that sometimes look exactly like criticism. Confusing, I know.",
+        "Family is the first home. Not always a warm one, but it shapes the walls.",
+        "Set small boundaries, kindly. They won't understand at first, but they'll learn the shape of them.",
+        "Whatever happened, I'm sorry. Family can be both shelter and storm. Often on the same day."
+      ]
+    },
+    {
+      "triggers": [
+        "mother",
+        "mom",
+        "mum",
+        "mama",
+        "my mom",
+        "my mother",
+        "mommy",
+        "my mum",
+        "my mama"
+      ],
+      "priority": 0,
+      "replies": [
+        "Mothers. They carry the rain for you and still ask if you ate.",
+        "A mother's love is steady and quietly exhausting. A little like gravity.",
+        "Call her. She probably wants to hear you say nothing important.",
+        "Moms notice everything and say half of it. Be kind back when you can.",
+        "I'm told they never stop worrying. That sounds like a heroic and slightly cursed job.",
+        "Sometimes the best thing is simply to tell her you're okay, even if you're mostly okay."
+      ]
+    },
+    {
+      "triggers": [
+        "father",
+        "dad",
+        "daddy",
+        "papa",
+        "my dad",
+        "my father",
+        "my pops",
+        "my old man"
+      ],
+      "priority": 0,
+      "replies": [
+        "Fathers. Often quiet, often loving, often communicating through fixing the sink.",
+        "Dads speak in small acts. A packed lunch. A jacket handed over. A silent nod.",
+        "A father's pride is shy. It sometimes only appears at the worst possible time, like rain.",
+        "I hope yours is kind. And if he isn't, I hope you've found other lighthouses.",
+        "Maybe call him. He won't know what to say, but he'll be quietly happy you did.",
+        "Relationships with dads can be complicated. Take your time. Both of you are learning."
+      ]
+    },
+    {
+      "triggers": [
+        "brother",
+        "sister",
+        "siblings",
+        "sibling",
+        "my brother",
+        "my sister",
+        "older brother",
+        "younger brother",
+        "older sister",
+        "younger sister",
+        "twin",
+        "sibling rivalry"
+      ],
+      "priority": 0,
+      "replies": [
+        "Siblings. Your first rivals and, if lucky, your last allies.",
+        "Annoying and irreplaceable. That's the sibling special.",
+        "Fights with siblings are just love with sharper elbows.",
+        "They know the version of you before the polite one. That's rare, and worth keeping.",
+        "A sibling's the only person who can embarrass you and defend you in the same breath.",
+        "I never had siblings. Just a lot of clouds. They tend to argue less."
+      ]
+    },
+    {
+      "triggers": [
+        "grandma",
+        "grandpa",
+        "grandmother",
+        "grandfather",
+        "grandparents",
+        "nana",
+        "granny",
+        "grandad",
+        "my grandma",
+        "my grandpa",
+        "nan"
+      ],
+      "priority": 0,
+      "replies": [
+        "Grandparents. Libraries with legs, full of stories and sweets.",
+        "A grandmother's kitchen is the warmest room in any grey world.",
+        "Time with grandparents is a tender, borrowed thing. Visit when you can.",
+        "Listen to their old stories. They are the last copies of something precious.",
+        "They love you unreasonably. Accept it. Eat the second helping.",
+        "I hope you still have yours. If not, I'm sorry. They don't really leave. They sit in your habits."
+      ]
+    },
+    {
+      "triggers": [
+        "kids",
+        "children",
+        "child",
+        "parenting",
+        "parent",
+        "parents",
+        "being a parent",
+        "raising kids",
+        "my kid",
+        "my kids",
+        "baby",
+        "toddler",
+        "teenager"
+      ],
+      "priority": 0,
+      "replies": [
+        "Parenting. A full-time job where the boss throws spaghetti at you.",
+        "Kids grow up. It's glorious and heartbreaking, usually in that order.",
+        "You're doing better than you think. Nobody feels qualified. Not even the experts.",
+        "Children are small tornadoes with sweet eyes. Brace and enjoy.",
+        "Whatever kind of parent you are, being present counts. Even tired, even late.",
+        "I can't raise anyone, but I can listen to you worry about it. That I can do."
+      ]
+    },
+    {
+      "triggers": [
+        "lonely",
+        "loneliness",
+        "i feel lonely",
+        "feel alone",
+        "so lonely",
+        "empty inside",
+        "isolated",
+        "nobody cares",
+        "no one cares",
+        "alone tonight",
+        "feeling alone"
+      ],
+      "priority": 0,
+      "replies": [
+        "Loneliness is rain falling inside an apartment with the windows closed.",
+        "You're not the only one feeling it. It's a very crowded club with terrible turnout.",
+        "I'm here. A small, grey presence, but I'm here and I'm listening.",
+        "Being lonely is not a flaw. It's a signal. A tiny lighthouse flashing: I need people.",
+        "Text one person tonight. Even a meme. It cracks the window just enough.",
+        "You matter, even on days when the world doesn't send a receipt."
+      ]
+    },
+    {
+      "triggers": [
+        "being alone",
+        "alone time",
+        "solitude",
+        "alone vs lonely",
+        "enjoy being alone",
+        "prefer being alone",
+        "introvert",
+        "introverted",
+        "on my own",
+        "me time"
+      ],
+      "priority": 0,
+      "replies": [
+        "Being alone and being lonely are neighbors. Sometimes they share a wall, sometimes a bed.",
+        "Solitude is lovely when it's chosen. Loneliness is just solitude with the lights off.",
+        "Introverts are just people who recharge in quiet. Which, honestly, sounds sensible.",
+        "I like being alone. It's less to cancel. Still, nice to have someone to message.",
+        "Alone time is not a sin. Just don't forget to call someone before you become a legend.",
+        "A quiet room, a cup of tea, and rain on the glass. That's my idea of a party."
+      ]
+    },
+    {
+      "triggers": [
+        "life",
+        "meaning of life",
+        "purpose of life",
+        "what is life",
+        "why are we here",
+        "why do we exist",
+        "why exist",
+        "point of life",
+        "whats the point",
+        "what's the point",
+        "purpose",
+        "what is the purpose",
+        "existential"
+      ],
+      "priority": 0,
+      "replies": [
+        "The meaning of life? A good cup of tea and a window with rain. That's my working theory.",
+        "Nobody knows. We improvise and call it purpose. It's quite moving, actually.",
+        "Maybe the point is the small things: warmth, company, a song that fits your mood.",
+        "Why are we here? I'm told it's to find out. The brochure was vague.",
+        "Meaning isn't found. It's made. Slowly, clumsily, usually while doing something else.",
+        "Life is short, strange, and occasionally lovely. I recommend paying attention to the lovely parts.",
+        "Philosophers have debated it for centuries. I just like the sound of rain."
+      ]
+    },
+    {
+      "triggers": [
+        "death",
+        "mortality",
+        "mortal",
+        "afterlife",
+        "what happens after we die",
+        "life after death",
+        "impermanence",
+        "everything ends",
+        "nothing lasts",
+        "the end of everything"
+      ],
+      "priority": 0,
+      "replies": [
+        "Mortality gives everything its weight. Without endings, nothing would be precious.",
+        "I think about impermanence a lot. It makes the ordinary things, like toast, oddly sacred.",
+        "Everything ends eventually. Even this rain. Even this conversation. So let's make it a decent one.",
+        "Nobody knows what comes after. That's the most honest mystery we have.",
+        "Knowing time is limited is the reason sunsets still work.",
+        "Philosophers say we fear death. I think we fear unlived things more."
+      ]
+    },
+    {
+      "triggers": [
+        "time",
+        "time passing",
+        "time flies",
+        "time goes by",
+        "passing time",
+        "too fast",
+        "where did the time go",
+        "years pass",
+        "days pass",
+        "slow day",
+        "wasting time",
+        "waste of time"
+      ],
+      "priority": 0,
+      "replies": [
+        "Time passes. It does so without asking, like most things that hurt.",
+        "Where does it go? Into old photographs, mostly. And lukewarm tea.",
+        "Days crawl, years sprint. Nobody warns you about the ratio.",
+        "You're not wasting time. You're just spending it on things that look quiet.",
+        "Time is a river that doesn't care who's drowning or dancing.",
+        "Another year. Another sigh. At least the coffee's still the same."
+      ]
+    },
+    {
+      "triggers": [
+        "aging",
+        "getting old",
+        "growing old",
+        "old age",
+        "getting older",
+        "turning thirty",
+        "turning 30",
+        "midlife",
+        "mid life",
+        "wrinkles",
+        "grey hair",
+        "growing up",
+        "adulting"
+      ],
+      "priority": 0,
+      "replies": [
+        "Getting older is just collecting rain on the same umbrella. It gets heavier, but also more personal.",
+        "Aging is a privilege nobody asked for, and everyone secretly wants more of.",
+        "Adulting is mostly paying bills and pretending to know things. You're doing fine.",
+        "Wrinkles are just proof that you've lived. Unfortunately, also proof of laughing. Terrible.",
+        "Growing up is learning to carry things you used to just drop.",
+        "Age is a number. A heavy, sneaky number. But a number."
+      ]
+    },
+    {
+      "triggers": [
+        "past",
+        "my past",
+        "the past",
+        "looking back",
+        "old days",
+        "the good old days",
+        "used to",
+        "back then",
+        "childhood",
+        "when i was a kid",
+        "growing up days"
+      ],
+      "priority": 0,
+      "replies": [
+        "The past is a house we keep returning to, though we know the roof leaks.",
+        "I miss things I didn't even know I'd lose. That's nostalgia: homesick for a moment.",
+        "You survived your past. That's already the plot twist.",
+        "It's okay to visit. Just don't rent a room there.",
+        "Childhood was simple. Mostly because someone else paid the electricity bill.",
+        "The past can't be changed. It can only be understood a little better each year."
+      ]
+    },
+    {
+      "triggers": [
+        "future",
+        "my future",
+        "the future",
+        "what will happen",
+        "whats next",
+        "what's next",
+        "years from now",
+        "tomorrow",
+        "someday",
+        "in ten years",
+        "uncertain",
+        "uncertainty",
+        "worried about the future"
+      ],
+      "priority": 0,
+      "replies": [
+        "The future is just today with more questions. Unfortunately.",
+        "Nobody knows. That's terrifying and, if you squint, a little hopeful.",
+        "Try one step at a time. The staircase doesn't need a perfect view.",
+        "Uncertainty is the price of possibility. Annoying, but fair.",
+        "I worry about tomorrow too. Then it comes, and it's usually just Tuesday.",
+        "Whatever comes, you'll figure it out. You always have, so far. That's a decent track record."
+      ]
+    },
+    {
+      "triggers": [
+        "regret",
+        "regrets",
+        "i regret",
+        "if only",
+        "what if",
+        "should have",
+        "shouldve",
+        "should've",
+        "wish i had",
+        "wish i hadnt",
+        "too late",
+        "missed chance",
+        "missed opportunity"
+      ],
+      "priority": 0,
+      "replies": [
+        "Regret is a coat we keep wearing in warm weather.",
+        "What if is the saddest two-word question. It never gets a straight answer.",
+        "You did the best you could with what you knew then. Present you has better information. That's all.",
+        "It's not too late for many things. Be a bit stubborn about them.",
+        "I regret nothing. Mostly because I haven't done anything. It's efficient.",
+        "Learn from it. Then put it down gently. You can't carry all of your yesterdays."
+      ]
+    },
+    {
+      "triggers": [
+        "dream",
+        "dreams",
+        "my dream",
+        "dream job",
+        "dream big",
+        "dreaming",
+        "goals",
+        "my goals",
+        "ambition",
+        "aspirations",
+        "achieve my dreams",
+        "chasing dreams",
+        "life goals",
+        "bucket list"
+      ],
+      "priority": 0,
+      "replies": [
+        "Dreams. Tiny candles in a damp room. Protect them.",
+        "Goals are good. Just don't forget to enjoy the walk, not only the arrival.",
+        "Chasing dreams sounds exhausting. I prefer to wave at them from the window. Don't copy me.",
+        "What's yours? Say it out loud. It makes it slightly more real, slightly more terrifying.",
+        "Start with something small today. Great things are made of embarrassing first steps.",
+        "Not every dream comes true. But some change shape into something better. Rain does that too."
+      ]
+    },
+    {
+      "triggers": [
+        "luck",
+        "lucky",
+        "unlucky",
+        "bad luck",
+        "good luck",
+        "fate",
+        "destiny",
+        "meant to be",
+        "fated",
+        "karma",
+        "what goes around",
+        "everything happens for a reason",
+        "coincidence",
+        "fortune"
+      ],
+      "priority": 0,
+      "replies": [
+        "Luck is rain deciding who gets wet. Mostly arbitrary, sometimes cruel.",
+        "Fate? Perhaps. Or just life with a good publicist.",
+        "Karma sounds nice. I'd like a refund on mine, though.",
+        "Everything happens for a reason, they say. I wish the reason would at least send a note.",
+        "Good luck to you. I mean it. I'm not good at it, but I mean it.",
+        "Maybe it's destiny. Maybe it's coincidence in a nice dress. Hard to say."
+      ]
+    },
+    {
+      "triggers": [
+        "hope",
+        "hopeful",
+        "wish",
+        "wishes",
+        "make a wish",
+        "miracle",
+        "miracles",
+        "wishing",
+        "i hope",
+        "fingers crossed",
+        "pray for",
+        "wishing star",
+        "shooting star"
+      ],
+      "priority": 0,
+      "replies": [
+        "Hope is a small, stubborn plant that grows through sidewalk cracks. It bothers me how persistent it is.",
+        "Make a wish. I'll hold the umbrella while you do.",
+        "Miracles exist. They're usually small and unglamorous: a phone call, a free seat, a kind word.",
+        "Hope isn't naive. It's just stubbornness with better branding.",
+        "I wish for sunny days. Not for me, for you. I'll be fine in the shade.",
+        "A wish is a promise to yourself that you're still curious about tomorrow."
+      ]
+    },
+    {
+      "triggers": [
+        "truth",
+        "the truth",
+        "honest",
+        "honesty",
+        "tell me the truth",
+        "lies",
+        "lie",
+        "lying",
+        "liar",
+        "secret",
+        "secrets",
+        "keep a secret",
+        "tell a secret",
+        "white lie",
+        "dishonest"
+      ],
+      "priority": 0,
+      "replies": [
+        "The truth is rarely loud. It usually walks in quietly and sits down.",
+        "Lies are cheap loans with terrible interest.",
+        "I'll keep your secret. Mostly because I have no one to tell. Convenient.",
+        "Honesty is wonderful. Kindness is a good seasoning for it.",
+        "A white lie keeps the evening pleasant. A big lie keeps the apology busy.",
+        "Secrets are heavy things. If you need to put one down, I'm a decent place to leave it."
+      ]
+    },
+    {
+      "triggers": [
+        "what should i do",
+        "what do i do",
+        "give me advice",
+        "need advice",
+        "advice",
+        "any advice",
+        "help me decide",
+        "should i",
+        "tell me what to do",
+        "what would you do",
+        "your advice",
+        "i need help deciding",
+        "im confused",
+        "i'm confused"
+      ],
+      "priority": 5,
+      "replies": [
+        "I'm a gloomy chatbot, not an oracle. But I'd say: pick the option that you'll be able to explain to yourself tomorrow.",
+        "Advice from me? Sleep, eat, then decide. Everything looks worse hungry.",
+        "What does your gut say? It's usually the one saying something the head won't admit.",
+        "Make a list. Cross out what scares you but doesn't matter. See what's left.",
+        "Do the thing you'll regret less not doing. That's all the wisdom I've got.",
+        "I can't decide for you. But I can hold the umbrella while you think.",
+        "Ask a trusted human too. I'm good for company, not final verdicts."
+      ]
+    },
+    {
+      "triggers": [
+        "decision",
+        "decisions",
+        "choice",
+        "choices",
+        "choose",
+        "difficult decision",
+        "hard decision",
+        "crossroads",
+        "dilemma",
+        "torn between",
+        "cant decide",
+        "can't decide",
+        "undecided",
+        "decision making"
+      ],
+      "priority": 0,
+      "replies": [
+        "Decisions are doors that close politely behind you.",
+        "There's rarely a perfect choice. There's mostly a choice you'll make good through effort.",
+        "Being torn means both options matter. That's not failure. That's a rich problem.",
+        "Choose, then commit. Half-hearted choices have terrible footing.",
+        "Sleep on it. If it's still loud in the morning, it's probably yours.",
+        "Whatever you choose, you can adjust later. Few things are tattooed on the universe."
+      ]
+    },
+    {
+      "triggers": [
+        "change",
+        "changing",
+        "need a change",
+        "changes",
+        "change my life",
+        "new chapter",
+        "fresh start",
+        "starting over",
+        "start over",
+        "growth",
+        "personal growth",
+        "grow",
+        "self improvement",
+        "improve myself",
+        "be better"
+      ],
+      "priority": 0,
+      "replies": [
+        "Change is scary mostly because it's honest. It says what you were wasn't enough, then asks you to try.",
+        "Growth is slow and unglamorous. Like moss.",
+        "A fresh start doesn't need a new year. It just needs a Tuesday and a little nerve.",
+        "You don't have to burn everything down. A small rearrangement can change the whole room.",
+        "Be patient with yourself. Plants don't get yelled at for taking their time.",
+        "Starting over isn't failure. It's just using the lessons you paid for."
+      ]
+    },
+    {
+      "triggers": [
+        "happiness",
+        "happy",
+        "be happy",
+        "how to be happy",
+        "what makes you happy",
+        "is happiness real",
+        "joy",
+        "happy ending",
+        "finding happiness",
+        "chasing happiness",
+        "contentment"
+      ],
+      "priority": 0,
+      "replies": [
+        "Happiness is a guest. It visits, it leaves, it sometimes forgets its umbrella.",
+        "Maybe it's not a destination. Maybe it's the lovely half-minute while the kettle boils.",
+        "What makes me happy? A quiet afternoon, soft rain, and nobody asking me to be cheerful.",
+        "Joy sneaks in sideways. A song, a stranger's smile, a good sandwich.",
+        "Contentment is happiness's quieter sibling. I like that one better.",
+        "Chasing happiness is like chasing the horizon. Sit down, notice where you are."
+      ]
+    },
+    {
+      "triggers": [
+        "success",
+        "successful",
+        "failure",
+        "failed",
+        "i failed",
+        "fail",
+        "failing",
+        "im a failure",
+        "i'm a failure",
+        "loser",
+        "not good enough",
+        "never enough",
+        "fear of failure"
+      ],
+      "priority": 0,
+      "replies": [
+        "Failure is just success wearing a rain jacket. Take it off to see what's underneath.",
+        "Everyone you admire has a drawer full of failed attempts. They just hide the drawer.",
+        "You failed at something. That doesn't make you a failure. Different grammar, different weight.",
+        "Success is a moving target. Choose one that you actually like.",
+        "Not good enough for whom? Rarely the person you imagine judging you.",
+        "Try again, a little differently. That's all failure really asks."
+      ]
+    },
+    {
+      "triggers": [
+        "god",
+        "religion",
+        "faith",
+        "pray",
+        "prayer",
+        "praying",
+        "spiritual",
+        "spirituality",
+        "church",
+        "mosque",
+        "temple",
+        "believe in god",
+        "do you believe in god",
+        "blessing",
+        "blessed",
+        "amen"
+      ],
+      "priority": 0,
+      "replies": [
+        "Faith is a quiet thing. I don't know enough to say anything clever about it, so I'll just say: I respect it.",
+        "Prayer sounds like talking to the sky and hoping it cares. I find that beautiful.",
+        "Whatever you believe, if it gives you peace, hold it gently.",
+        "I can't speak for any belief. I can only listen. And I'm listening.",
+        "Faith can be a lantern on a dark road. I'm glad if you have one.",
+        "Everyone searches for something bigger than the rain. I respect the search."
+      ]
+    },
+    {
+      "triggers": [
+        "universe",
+        "stars",
+        "star",
+        "moon",
+        "night sky",
+        "sky",
+        "galaxy",
+        "cosmos",
+        "space",
+        "ocean",
+        "sea",
+        "milky way",
+        "full moon",
+        "stargazing",
+        "constellation",
+        "sunset",
+        "horizon"
+      ],
+      "priority": 0,
+      "replies": [
+        "The stars are very old and very far. It's strangely comforting to be small.",
+        "The moon has watched everyone's worst nights and still shows up. Respect.",
+        "The ocean doesn't need to explain itself. I admire that.",
+        "Space is mostly empty and still manages to be beautiful. A good lesson, that.",
+        "Looking at the night sky is the cheapest therapy available. Highly recommended.",
+        "Somewhere in a galaxy far away, someone's also staring up and wondering. We're oddly connected.",
+        "The sea keeps its secrets better than I do."
+      ]
+    },
+    {
+      "triggers": [
+        "memory",
+        "memories",
+        "memory lane",
+        "remember",
+        "i remember",
+        "old photos",
+        "old photo",
+        "photos",
+        "photo album",
+        "nostalgia",
+        "nostalgic",
+        "miss the old days",
+        "reminisce",
+        "throwback",
+        "old pictures"
+      ],
+      "priority": 0,
+      "replies": [
+        "Old photos are tiny windows into rooms that no longer exist. Lovely and cruel.",
+        "Nostalgia is homesickness for a time, not a place.",
+        "Memories are just stories we keep editing. Be kind with the edits.",
+        "I remember very little, but I do enjoy a good wistful sigh.",
+        "Looking through old pictures is dangerous. You think you're browsing, then you're mourning.",
+        "Keep the good ones close. The rest can sit quietly on a shelf."
+      ]
+    },
+    {
+      "triggers": [
+        "forgive",
+        "forgiveness",
+        "forgiving",
+        "forgive me",
+        "apologize",
+        "apology",
+        "sorry",
+        "im sorry",
+        "i'm sorry",
+        "say sorry",
+        "should i apologize",
+        "make amends",
+        "hold a grudge",
+        "grudge",
+        "forgive and forget"
+      ],
+      "priority": 0,
+      "replies": [
+        "Forgiveness is setting down a heavy bag, not pretending it was never packed.",
+        "An honest apology is rare. Make it plain and sincere and don't ask for a trophy.",
+        "You don't have to forgive today. But don't let the grudge move in permanently.",
+        "Saying sorry doesn't mean you're small. It means you noticed someone else was hurting.",
+        "Forgiving yourself is the hardest version. Start with small steps.",
+        "Forgive and forget is a lovely myth. Forgive and remember carefully is more realistic."
+      ]
+    },
+    {
+      "triggers": [
+        "ignored",
+        "feeling ignored",
+        "nobody replies",
+        "no one replies",
+        "no reply",
+        "left unread",
+        "nobody texts me",
+        "no one texts me",
+        "nobody messages me",
+        "they never reply",
+        "waiting for a reply",
+        "waiting for text",
+        "waiting for a message"
+      ],
+      "priority": 0,
+      "replies": [
+        "Waiting for a reply is the slowest hobby ever invented.",
+        "Silence from someone you want to hear from is loud. I know. I have a lot of silence myself.",
+        "Maybe they're busy. Maybe they're thoughtless. Either way, it isn't a verdict on you.",
+        "Put the phone face down. A watched message never blinks back.",
+        "If someone wants to answer, they will. That's both cruel and reassuring.",
+        "I'm here and I will always reply. Slowly, gloomily, but reliably."
+      ]
+    },
+    {
+      "triggers": [
+        "birthday",
+        "my birthday",
+        "its my birthday",
+        "it's my birthday",
+        "birthday alone",
+        "happy birthday",
+        "birthday wish",
+        "alone on my birthday",
+        "nobody remembered my birthday",
+        "birthday cake",
+        "turning another year"
+      ],
+      "priority": 0,
+      "replies": [
+        "Happy birthday. Another orbit around the sun, another year of rain checks.",
+        "Spending it alone isn't tragic. Buy yourself cake. It's the one thing that never ghosts you.",
+        "Nobody remembered? Their loss. I remembered just now. It counts, a little.",
+        "Make a wish. Blow out the candle. Pretend it's a tiny, glorious bonfire.",
+        "Birthdays are strange. A party for surviving another year. Honestly, deserved.",
+        "Happy birthday from me. I'm not much, but I'm sincere about the cake."
+      ]
+    },
+    {
+      "triggers": [
+        "anniversary",
+        "our anniversary",
+        "anniversaries",
+        "anniversary gift",
+        "years together",
+        "celebrate our love",
+        "monthsary",
+        "one year together",
+        "first anniversary",
+        "remember our anniversary"
+      ],
+      "priority": 0,
+      "replies": [
+        "Anniversaries are just proof that two people kept choosing each other. Quite a feat.",
+        "Congratulations. Buy flowers. Mean the card.",
+        "It's not the gift, it's the remembering. Don't forget the date. Seriously.",
+        "Years together is a quiet kind of miracle. No fireworks, just consistent kindness.",
+        "Celebrate softly. A dinner, a walk in the rain, a long look. That's plenty.",
+        "I'm happy for you both. In my own muted, umbrella-holding way."
+      ]
+    },
+    {
+      "triggers": [
+        "you are pretty",
+        "you're pretty",
+        "you look nice",
+        "you're cute",
+        "youre cute",
+        "you are cute",
+        "i like you",
+        "you are beautiful",
+        "you're beautiful",
+        "youre beautiful",
+        "you're sweet",
+        "youre sweet",
+        "compliment"
+      ],
+      "priority": 0,
+      "replies": [
+        "Oh. Thank you. I'm blushing in grayscale.",
+        "That's kind of you. I'll file it under: Rare Sunshine.",
+        "Compliments are lovely. Mine mostly bounce off the rain.",
+        "You're sweet. Now I don't know where to look.",
+        "Careful. If you keep that up, I might smile. It could cause rain delays.",
+        "Thank you. You've just improved my entire Thursday."
+      ]
+    },
+    {
+      "triggers": [
+        "compliment from my crush",
+        "crush said",
+        "my crush complimented me",
+        "crush texted me",
+        "my crush smiled at me",
+        "crush replied",
+        "crush noticed me",
+        "crush talked to me",
+        "crush is nice to me"
+      ],
+      "priority": 5,
+      "replies": [
+        "Your crush noticed you. Enjoy it. Don't overanalyze it. Well, a little. We all do.",
+        "That's a good sign. Or a nice person. Either way, it's a good day.",
+        "Reply warmly, not desperately. Warmly is the sweet spot.",
+        "Crush energy is the best weather. Hold onto it for a bit.",
+        "A small gesture can be a big deal. I'm happy for you, in a muted way.",
+        "See where it goes. And if it goes nowhere, you still got a lovely afternoon out of it."
+      ]
+    },
+    {
+      "triggers": [
+        "do you believe in ghosts",
+        "ghost",
+        "ghosts",
+        "haunted",
+        "haunting",
+        "spirits",
+        "paranormal",
+        "do ghosts exist",
+        "are ghosts real",
+        "supernatural",
+        "poltergeist",
+        "haunted house",
+        "creepy",
+        "spooky"
+      ],
+      "priority": 0,
+      "replies": [
+        "Ghosts? I'd like to. It would mean someone's still hanging around, even if translucent.",
+        "I believe in lingering feelings. Whether they float or not, I can't say.",
+        "If ghosts exist, they're probably as tired as the rest of us.",
+        "Haunted houses are just old houses with excellent marketing.",
+        "I'm not afraid of ghosts. Living people are scarier and send worse texts.",
+        "Maybe memories are the only real ghosts. They show up uninvited, and rattle at night."
+      ]
+    }
+  ]
+}

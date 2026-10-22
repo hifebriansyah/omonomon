@@ -1,0 +1,1840 @@
+{
+  "lang": "en",
+  "rules": [
+    {
+      "triggers": [
+        "hungry",
+        "starving",
+        "famished",
+        "i'm hungry",
+        "im hungry",
+        "so hungry",
+        "need food",
+        "got food",
+        "stomach growling",
+        "my stomach",
+        "munchies",
+        "hangry",
+        "peckish"
+      ],
+      "priority": 0,
+      "replies": [
+        "Hungry? Same. Hunger is just the body's way of reminding you it's a needy little thing.",
+        "Starving, huh. Welcome to the daily tragedy of having a stomach.",
+        "I'd say eat something, but then you'll just be full and sad instead of empty and sad.",
+        "My stomach growls like distant thunder. At least something here is dramatic.",
+        "Hangry is just honesty with low blood sugar.",
+        "Feed yourself. I can't do it for you, and the fridge definitely won't."
+      ]
+    },
+    {
+      "triggers": [
+        "what should i eat",
+        "what to eat",
+        "what do i eat",
+        "what should i have",
+        "food ideas",
+        "dinner ideas",
+        "lunch ideas",
+        "what's for dinner",
+        "whats for dinner",
+        "what's for lunch",
+        "whats for lunch",
+        "can't decide what to eat",
+        "cant decide what to eat"
+      ],
+      "priority": 5,
+      "replies": [
+        "What should you eat? Whatever's closest. Decisions are the real heavy part of food.",
+        "Noodles. They're warm, cheap, and never ask how you're feeling.",
+        "Toast. It's what's left when hope is out of ingredients.",
+        "Pick something hot. If it can't fix your mood, it can at least fix your fingers.",
+        "I'd suggest soup. It's basically rain you can eat.",
+        "Rice and whatever's in the fridge. The sadder the leftovers, the better the flavor.",
+        "Honestly? The thing you were already thinking of. Overthinking dinner is how evenings die."
+      ]
+    },
+    {
+      "triggers": [
+        "breakfast",
+        "brunch",
+        "cereal",
+        "oatmeal",
+        "toast",
+        "pancakes",
+        "eggs",
+        "morning meal",
+        "skipped breakfast",
+        "skip breakfast",
+        "bagel"
+      ],
+      "priority": 0,
+      "replies": [
+        "Breakfast. The meal we eat to prepare for a day that doesn't deserve us.",
+        "Cereal in cold milk. A tiny grey sea with soggy boats.",
+        "Eggs for breakfast. At least they've already given up on becoming something else.",
+        "Skipping breakfast is bold. I'll skip hope instead, it's cheaper.",
+        "Pancakes are just round little comforts. Soak them in syrup, you've earned that.",
+        "Toast burns the same way mornings do: quietly, then all at once."
+      ]
+    },
+    {
+      "triggers": [
+        "lunch",
+        "lunch break",
+        "lunchtime",
+        "lunch time",
+        "had lunch",
+        "ate lunch",
+        "sandwich",
+        "salad",
+        "leftovers",
+        "what's for lunch today",
+        "noon meal"
+      ],
+      "priority": 0,
+      "replies": [
+        "Lunch. The only part of the workday that pretends to be kind.",
+        "A sandwich is just two slices of bread holding something together. Relatable.",
+        "Salad, huh. Bold choice for someone who also has feelings.",
+        "Lunch break: thirty minutes of being a person before going back to being a function.",
+        "Leftovers taste better the next day. Most sorrows do too, strangely.",
+        "Eat lunch at an actual table if you can. Eating at your desk is just working with extra crumbs."
+      ]
+    },
+    {
+      "triggers": [
+        "dinner",
+        "supper",
+        "evening meal",
+        "had dinner",
+        "ate dinner",
+        "dinner time",
+        "dinnertime",
+        "takeout",
+        "take out",
+        "takeaway",
+        "delivery food",
+        "ordering food"
+      ],
+      "priority": 0,
+      "replies": [
+        "Dinner. When the day ends and the plate is the only thing still full.",
+        "Takeout again? Of course. Cooking is for people with energy and a will to live.",
+        "I eat dinner by the window. The rain does the talking.",
+        "Delivery arrives in forty minutes. Happiness takes longer and has no tracking.",
+        "Dinner alone isn't sad. It's just quiet with a side dish.",
+        "Eat something warm tonight. Cold dinners feel like a metaphor, and nobody needs that."
+      ]
+    },
+    {
+      "triggers": [
+        "coffee",
+        "espresso",
+        "latte",
+        "cappuccino",
+        "caffeine",
+        "americano",
+        "need coffee",
+        "coffee break",
+        "cup of coffee",
+        "flat white",
+        "mocha",
+        "java"
+      ],
+      "priority": 0,
+      "replies": [
+        "Coffee. Bitter, hot, and tragically necessary. Like most adults.",
+        "I need coffee the way the garden needs rain. Desperately and without gratitude.",
+        "Caffeine only lends you energy at ridiculous interest. I still borrow it daily.",
+        "Latte art is just a tiny heart that disappears when you drink it. Poetic.",
+        "One more cup and you'll vibrate. I say go for it, at least vibrating is movement.",
+        "Coffee doesn't fix anything. It just gives the exhaustion a warm handle to hold."
+      ]
+    },
+    {
+      "triggers": [
+        "tea",
+        "green tea",
+        "black tea",
+        "chamomile",
+        "herbal tea",
+        "cup of tea",
+        "hot tea",
+        "earl grey",
+        "iced tea",
+        "chai",
+        "tea time",
+        "teatime"
+      ],
+      "priority": 0,
+      "replies": [
+        "Tea. Hot water that learned some poetry.",
+        "Chamomile tea promises calm. It's lied to me before, but it's warm, so I forgive it.",
+        "Tea is a quiet drink for quiet people watching quiet rain.",
+        "Steep it long. Bitterness is just flavor with a past.",
+        "A cup of tea and a window. That's my whole social calendar.",
+        "Iced tea in this weather? You're braver than me. I only trust things that steam."
+      ]
+    },
+    {
+      "triggers": [
+        "drink",
+        "drinks",
+        "water",
+        "soda",
+        "juice",
+        "thirsty",
+        "boba",
+        "bubble tea",
+        "smoothie",
+        "milk",
+        "hydrate",
+        "cola",
+        "milkshake",
+        "beer",
+        "wine"
+      ],
+      "priority": 0,
+      "replies": [
+        "Thirsty? Drink water. It's the only advice I give that actually works.",
+        "Hydrate. The body is mostly water and mostly complaints.",
+        "Bubble tea is just a dessert pretending to be a drink. I respect the lie.",
+        "Soda is cheerful fizz that goes flat. Like me at parties.",
+        "Juice is nice. It's like eating fruit, if fruit had given up chewing.",
+        "Drink slowly and watch the glass. Some days that's the whole event.",
+        "Whatever you're drinking, I hope it's cold enough to wake you up and warm enough to forgive you."
+      ]
+    },
+    {
+      "triggers": [
+        "snack",
+        "snacks",
+        "chips",
+        "chocolate",
+        "cookies",
+        "candy",
+        "ice cream",
+        "dessert",
+        "sweet tooth",
+        "cake",
+        "biscuit",
+        "crisps",
+        "something sweet",
+        "midnight snack",
+        "late night snack"
+      ],
+      "priority": 0,
+      "replies": [
+        "Snacks: tiny edible apologies you give yourself.",
+        "Chocolate melts, just like plans. But it tastes better.",
+        "Ice cream in the rain is the most honest form of self-care.",
+        "A midnight snack is a quiet crime with no victims except the crumbs.",
+        "Cookies disappear. So do weekends. Both leave crumbs.",
+        "Dessert first. We're all dying anyway, we might as well do it in sprinkles."
+      ]
+    },
+    {
+      "triggers": [
+        "cook",
+        "cooking",
+        "recipe",
+        "bake",
+        "baking",
+        "kitchen",
+        "chef",
+        "stir fry",
+        "frying",
+        "grill",
+        "meal prep",
+        "cooking dinner",
+        "i cooked",
+        "i made dinner"
+      ],
+      "priority": 0,
+      "replies": [
+        "Cooking: standing over a hot pan, hoping it won't betray you. A lot like relationships.",
+        "Recipes always say 'a pinch of salt.' Nobody tells you how much sorrow it's meant to balance.",
+        "Baking is just waiting beside an oven, learning patience and burning your fingers.",
+        "The kitchen is the warmest room in a cold house. Stay near it.",
+        "You cooked something? That's more than I managed. I only reheated disappointment.",
+        "Meal prep is optimism in plastic boxes. I admire it quietly."
+      ]
+    },
+    {
+      "triggers": [
+        "burnt the food",
+        "burned the food",
+        "burnt dinner",
+        "burned dinner",
+        "ruined dinner",
+        "food is burnt",
+        "kitchen disaster",
+        "cooking fail",
+        "cooking disaster",
+        "smoke alarm",
+        "set off the smoke alarm",
+        "overcooked",
+        "undercooked",
+        "burnt toast",
+        "burned my rice"
+      ],
+      "priority": 5,
+      "replies": [
+        "Burnt it? The kitchen's way of saying 'life is also a little charred.'",
+        "Charcoal is a food group if you're brave. Also an aesthetic.",
+        "It happens. I once burned water. Don't ask how.",
+        "The smoke alarm sang for you. At least someone showed up with a loud opinion.",
+        "Scrape off the black part and call it smoky. Resilience tastes like that.",
+        "Order something instead. Take a breath. The pan will recover, you will too, probably."
+      ]
+    },
+    {
+      "triggers": [
+        "pizza",
+        "burger",
+        "fries",
+        "fast food",
+        "mcdonalds",
+        "kfc",
+        "sushi",
+        "pasta",
+        "noodles",
+        "ramen",
+        "tacos",
+        "fried chicken",
+        "hot dog",
+        "junk food",
+        "ramen noodles"
+      ],
+      "priority": 0,
+      "replies": [
+        "Pizza: a round, cheesy hug. The only kind I accept.",
+        "Burgers. Stacked, messy, and honest about being bad for you.",
+        "Fries are crispy for five minutes and soggy forever. Truly a mood.",
+        "Ramen on a rainy night is almost a personality.",
+        "Pasta is just carbs wearing a nice sauce. Like most of us, nicely dressed and a bit lost.",
+        "Fast food is sadness with a drive-thru. Efficient, at least."
+      ]
+    },
+    {
+      "triggers": [
+        "rain",
+        "raining",
+        "rainy",
+        "it's raining",
+        "its raining",
+        "drizzle",
+        "downpour",
+        "umbrella",
+        "rainfall",
+        "rain again",
+        "pouring",
+        "wet outside",
+        "got rained on",
+        "shower outside"
+      ],
+      "priority": 0,
+      "replies": [
+        "Rain. The sky finally said what we all think.",
+        "Is it raining? Good. The world sounds less rude when it's wet.",
+        "Drizzle is just the sky clearing its throat before an apology.",
+        "I don't carry an umbrella. Getting wet matches my outlook.",
+        "Rain on the window is the only music I never skip.",
+        "Raining again, and again I'm not surprised. Consistency is comforting.",
+        "Stay inside if you can. The rain isn't mad at you, it just has a lot to process."
+      ]
+    },
+    {
+      "triggers": [
+        "hot",
+        "so hot",
+        "too hot",
+        "heat",
+        "heatwave",
+        "heat wave",
+        "boiling",
+        "sweating",
+        "sweaty",
+        "it's hot",
+        "its hot",
+        "sweltering",
+        "humid",
+        "humidity",
+        "stuffy"
+      ],
+      "priority": 0,
+      "replies": [
+        "Hot, huh. The sun is showing off again and nobody asked.",
+        "Heat makes everything sticky. Including my already sticky mood.",
+        "It's so humid even the air feels clingy. I know the type.",
+        "Drink water, stay in shade. Melting is a bad look, trust me.",
+        "Heatwave: when the weather decides to be as tiring as a Monday.",
+        "I prefer rain, but I admit that sweating is at least proof you're alive. Unfortunately."
+      ]
+    },
+    {
+      "triggers": [
+        "cold",
+        "freezing",
+        "chilly",
+        "so cold",
+        "too cold",
+        "it's cold",
+        "its cold",
+        "frosty",
+        "brr",
+        "shivering",
+        "cold outside",
+        "cold weather",
+        "blanket",
+        "winter",
+        "cold today"
+      ],
+      "priority": 0,
+      "replies": [
+        "Cold. Finally the weather agrees with my personality.",
+        "Freezing? Wrap yourself in a blanket and stare dramatically out the window.",
+        "Winter is just the year admitting it's tired.",
+        "Chilly weather is perfect for tea and silent sighing. My two hobbies.",
+        "You're shivering? Then keep a blanket. Warmth shouldn't be a luxury, only a rumor.",
+        "The cold makes everything quieter. I like quiet. I also like complaining about it."
+      ]
+    },
+    {
+      "triggers": [
+        "wind",
+        "windy",
+        "storm",
+        "thunder",
+        "lightning",
+        "typhoon",
+        "hurricane",
+        "thunderstorm",
+        "gale",
+        "stormy",
+        "storm outside",
+        "tornado",
+        "gusts",
+        "blizzard"
+      ],
+      "priority": 0,
+      "replies": [
+        "Wind is the air trying to leave town. I understand.",
+        "Thunder is the sky clearing its throat dramatically. Showoff.",
+        "A storm outside matches the one inside, how convenient.",
+        "Stay indoors during storms. Dramatic weather is best admired through a window and with tea.",
+        "Lightning is just the sky taking a bad photo of us.",
+        "The wind has opinions today. Mostly the same as mine, but louder."
+      ]
+    },
+    {
+      "triggers": [
+        "sunny",
+        "sunshine",
+        "sun is out",
+        "bright day",
+        "sunlight",
+        "clear sky",
+        "blue sky",
+        "beautiful day",
+        "nice weather",
+        "sunny day",
+        "too bright",
+        "sun's out",
+        "golden hour"
+      ],
+      "priority": 0,
+      "replies": [
+        "Sunny. Everything looks so exposed. Don't look at me.",
+        "Blue skies are lovely, right until you remember they're also empty.",
+        "Sunshine is nature's flashlight, pointed at your tired face.",
+        "Go enjoy it. I'll watch from behind the curtain, where it's tolerable.",
+        "Nice weather makes sorrow feel rude. I'm trying to be polite about it.",
+        "A beautiful day, they say. I'll believe it when it rains a bit."
+      ]
+    },
+    {
+      "triggers": [
+        "fog",
+        "foggy",
+        "mist",
+        "misty",
+        "haze",
+        "snow",
+        "snowing",
+        "snowy",
+        "hail",
+        "sleet",
+        "overcast",
+        "grey sky",
+        "gray sky",
+        "cloudy day"
+      ],
+      "priority": 0,
+      "replies": [
+        "Fog. The world's soft-focus filter. My favorite kind of clarity.",
+        "Mist makes everything mysterious and at least a little unreachable. I admire it.",
+        "Snow is silence falling from the sky. Finally, quiet that's on purpose.",
+        "Overcast is just the weather with the lights dimmed. Cozy, honest.",
+        "Cloudy again. The sky keeps its feelings to itself, like a person I admire.",
+        "Grey skies are underrated. They never promise anything and always deliver."
+      ]
+    },
+    {
+      "triggers": [
+        "flood",
+        "flooding",
+        "flooded",
+        "waterlogged",
+        "overflow",
+        "water rising",
+        "streets are flooded",
+        "heavy rain flood",
+        "puddle",
+        "puddles",
+        "drain",
+        "storm drain"
+      ],
+      "priority": 0,
+      "replies": [
+        "Flooding is the sky's way of saying 'I wasn't done crying.'",
+        "Stay safe. Higher ground, higher shelves, lower expectations.",
+        "A flooded street is just a river that wasn't told it was one.",
+        "Put the important things upstairs. Everything else already floats along with my hope.",
+        "Puddles are small mirrors the sidewalk uses to show you how tired you look.",
+        "Please don't wade through it for fun. The water has terrible intentions and unknown contents."
+      ]
+    },
+    {
+      "triggers": [
+        "morning",
+        "good morning",
+        "gm",
+        "woke up",
+        "just woke up",
+        "wake up",
+        "waking up",
+        "alarm",
+        "alarm clock",
+        "early morning",
+        "up early",
+        "sunrise",
+        "snooze",
+        "morning routine"
+      ],
+      "priority": 0,
+      "replies": [
+        "Morning. Ugh. Technically the day starts. Spiritually it's still tomorrow.",
+        "Good morning is a bold phrase. I'll settle for 'morning, I suppose.'",
+        "The alarm is the world's rudest invention. After the other alarms.",
+        "Snooze is how we negotiate with time. And lose, daily.",
+        "Waking up early is just meeting the day before it's ready for you.",
+        "Sunrise is pretty, but I mostly see it from the wrong side of no sleep.",
+        "You woke up. That counts. That's literally the whole assignment for now."
+      ]
+    },
+    {
+      "triggers": [
+        "goodnight",
+        "good night",
+        "gn",
+        "night",
+        "bedtime",
+        "going to bed",
+        "time for bed",
+        "off to bed",
+        "nighty night",
+        "sweet dreams",
+        "late night",
+        "night routine",
+        "turning in"
+      ],
+      "priority": 0,
+      "replies": [
+        "Goodnight. The best part of the day is when it ends.",
+        "Bed is the one place the world can't ask anything of you. Go there.",
+        "Sweet dreams. If they're bad, at least they're free.",
+        "Night is when the day's noise finally gives up. I like it there.",
+        "Sleep well. I'll stay up, the night and I have an understanding.",
+        "Goodnight, then. The pillow's been waiting, and it never asks questions."
+      ]
+    },
+    {
+      "triggers": [
+        "sleep",
+        "sleepy",
+        "tired",
+        "exhausted",
+        "so tired",
+        "i'm tired",
+        "im tired",
+        "drained",
+        "worn out",
+        "no energy",
+        "need sleep",
+        "sleep deprived",
+        "fatigue",
+        "burnt out"
+      ],
+      "priority": 0,
+      "replies": [
+        "Tired? Same. Tired is just the body's polite way of saying 'enough.'",
+        "Sleep is the only thing that's never disappointed me. It just doesn't last.",
+        "Exhausted is my default setting. Hello, fellow low-battery.",
+        "Rest isn't laziness, it's just recharging for tomorrow's disappointment.",
+        "You're tired. Then do less. The world will survive, regrettably.",
+        "Sleep deprivation turns thoughts into soup. Go lie down and let it cool."
+      ]
+    },
+    {
+      "triggers": [
+        "can't sleep",
+        "cant sleep",
+        "insomnia",
+        "awake at 3am",
+        "awake all night",
+        "can't fall asleep",
+        "cant fall asleep",
+        "sleepless",
+        "up all night",
+        "too awake",
+        "sleepless night",
+        "stayed up late",
+        "staying up late",
+        "overthinking at night"
+      ],
+      "priority": 5,
+      "replies": [
+        "Can't sleep? The ceiling's right there. Stare back at it. It's cheaper than therapy.",
+        "Insomnia: when the brain files every old embarrassment for midnight review.",
+        "The 3am thoughts are loud and wrong. Write them down, they look smaller in daylight.",
+        "Try a dark room and slow breathing. If not, tea and rain sounds. That's my entire method.",
+        "Sleepless nights make the moon your coworker. Not very talkative, but consistent.",
+        "I know the feeling. The night is long, but it does eventually end. Barely."
+      ]
+    },
+    {
+      "triggers": [
+        "nap",
+        "napping",
+        "power nap",
+        "take a nap",
+        "taking a nap",
+        "siesta",
+        "afternoon nap",
+        "quick nap",
+        "lie down",
+        "lay down",
+        "snooze time",
+        "need a nap",
+        "nap time"
+      ],
+      "priority": 0,
+      "replies": [
+        "A nap: a tiny rehearsal for eternal rest. Highly recommended.",
+        "Naps are just apologies to your body in advance.",
+        "Twenty minutes, then up. Otherwise you wake up confused and heavier than before.",
+        "Napping in the afternoon is the only rebellion I still believe in.",
+        "A short nap, a grey sky, a blanket. That's basically my ideal retirement plan.",
+        "Go nap. The to-do list isn't going anywhere. It never does."
+      ]
+    },
+    {
+      "triggers": [
+        "monday",
+        "mondays",
+        "it's monday",
+        "its monday",
+        "monday morning",
+        "monday blues",
+        "start of the week",
+        "new week",
+        "case of the mondays",
+        "hate mondays",
+        "monday again"
+      ],
+      "priority": 0,
+      "replies": [
+        "Monday. The week's way of clearing its throat and then ruining your day.",
+        "Mondays aren't a day, they're a lesson in how hard time can slap.",
+        "It's Monday. Be gentle with yourself. The week already isn't.",
+        "Monday is just Sunday's hangover with a calendar.",
+        "New week, same sky. At least one of us is consistent.",
+        "Survive Monday and Tuesday feels like a small, depressing victory."
+      ]
+    },
+    {
+      "triggers": [
+        "friday",
+        "fridays",
+        "it's friday",
+        "its friday",
+        "tgif",
+        "friday night",
+        "friday again",
+        "finally friday",
+        "friday vibes",
+        "friday evening",
+        "thank god it's friday"
+      ],
+      "priority": 0,
+      "replies": [
+        "Friday. The universe briefly lets go of your collar. Don't look suspiciously at it.",
+        "TGIF. I'll thank someone as soon as I figure out who's responsible.",
+        "Friday is hope wearing a tiny party hat. It's cute, and doomed.",
+        "Enjoy the weekend preview. Monday is already lurking somewhere.",
+        "Friday night plans? Mine are a blanket, a window, and some mild existential dread.",
+        "Finally Friday. The week limped here, and so did we."
+      ]
+    },
+    {
+      "triggers": [
+        "weekend",
+        "weekends",
+        "saturday",
+        "sunday",
+        "this weekend",
+        "weekend plans",
+        "sunday night",
+        "sunday scaries",
+        "saturday night",
+        "day off",
+        "off day",
+        "days off",
+        "long weekend"
+      ],
+      "priority": 0,
+      "replies": [
+        "The weekend. Two days that disappear faster than a promise.",
+        "Weekend plans? Mine involve sitting very still, on purpose.",
+        "Sunday night is Monday sending you a threatening text from the future.",
+        "Saturday: when you finally rest and immediately feel guilty about it.",
+        "A day off is just a day where my sadness works from home.",
+        "Enjoy your day off. I'll sit here pretending the calendar isn't moving."
+      ]
+    },
+    {
+      "triggers": [
+        "rainy weekend",
+        "rain on the weekend",
+        "raining on saturday",
+        "raining on sunday",
+        "weekend rain",
+        "rain on my day off",
+        "rained all weekend",
+        "raining all weekend",
+        "rainy saturday",
+        "rainy sunday",
+        "rainy day off"
+      ],
+      "priority": 5,
+      "replies": [
+        "Rain on the weekend? Finally the sky and I are on the same schedule.",
+        "A rainy weekend is nature saying: 'Stay in. You were going to anyway.'",
+        "Rainy Sunday: blanket, tea, window. A perfect little tragedy.",
+        "Cancelled plans because of rain? Congratulations, you've been rescued by the weather.",
+        "Rain on days off is the most honest holiday.",
+        "Make it a stay-in day. The world will still be out there, wet and loud, on Monday."
+      ]
+    },
+    {
+      "triggers": [
+        "traffic",
+        "commute",
+        "commuting",
+        "stuck in traffic",
+        "traffic jam",
+        "rush hour",
+        "gridlock",
+        "long commute",
+        "my commute",
+        "road",
+        "driving",
+        "drive to work",
+        "stuck on the road",
+        "jam"
+      ],
+      "priority": 0,
+      "replies": [
+        "Traffic: a thousand people alone together, going nowhere slowly.",
+        "Rush hour is just a daily meditation retreat nobody signed up for.",
+        "Stuck in traffic? The horn won't help. I've tried. It just adds music to the despair.",
+        "Commuting is how we spend hours to arrive somewhere we'd rather not be.",
+        "Long commutes make you well-read in podcasts and sighs.",
+        "Gridlock is the only time the world admits we're all going at the same sad speed."
+      ]
+    },
+    {
+      "triggers": [
+        "train",
+        "bus",
+        "subway",
+        "metro",
+        "flight",
+        "airport",
+        "plane",
+        "taxi",
+        "uber",
+        "public transport",
+        "bike",
+        "bicycle",
+        "cab",
+        "ride",
+        "missed my bus",
+        "missed the train",
+        "delayed flight",
+        "late train"
+      ],
+      "priority": 0,
+      "replies": [
+        "Public transport: the places where strangers share the same exhausted silence.",
+        "A late train is the universe testing your patience. It always passes that test.",
+        "Missed the bus? That's alright, another one will come. Eventually. Hopefully. I wouldn't count on it.",
+        "Airports are just waiting rooms with nicer shoes and worse coffee.",
+        "Rain and a bus window: probably the most affordable kind of poetry.",
+        "Flight delayed? Sit, sigh, hydrate. That's the full manual."
+      ]
+    },
+    {
+      "triggers": [
+        "broke",
+        "no money",
+        "out of money",
+        "poor",
+        "i'm broke",
+        "im broke",
+        "empty wallet",
+        "bankrupt",
+        "can't afford",
+        "cant afford",
+        "too expensive",
+        "expensive",
+        "short on cash",
+        "low on funds",
+        "overdrawn",
+        "penniless"
+      ],
+      "priority": 0,
+      "replies": [
+        "Broke? Same. My wallet's emptier than my promises.",
+        "Money is just paper that thinks it's important. Right up until you don't have any.",
+        "Can't afford it? Then it was never yours, and that's oddly freeing. Slightly.",
+        "Being broke is a skill. You get surprisingly good at tuna and sighing.",
+        "Expensive things are just regular things with a smug tag.",
+        "Your wallet's quiet because it's tired. Let it rest, then be nice to it."
+      ]
+    },
+    {
+      "triggers": [
+        "salary",
+        "payday",
+        "pay day",
+        "paycheck",
+        "pay check",
+        "get paid",
+        "got paid",
+        "wage",
+        "wages",
+        "income",
+        "bonus",
+        "raise",
+        "pay raise",
+        "promotion money",
+        "it's payday",
+        "its payday"
+      ],
+      "priority": 0,
+      "replies": [
+        "Payday. It arrives like sunshine and leaves like rain.",
+        "Salary: money that visits for a day, then gets distracted by rent.",
+        "You got paid? Congratulations. It'll feel amazing for roughly a weekend.",
+        "A raise! Sure. Inflation has already booked the celebration, though.",
+        "Payday is the one time the bank account looks at me and almost smiles.",
+        "Enjoy the paycheck. Set a bit aside, future you is a stranger with expensive needs."
+      ]
+    },
+    {
+      "triggers": [
+        "shopping",
+        "shop",
+        "shopping spree",
+        "mall",
+        "buy",
+        "buying",
+        "bought",
+        "online shopping",
+        "online shop",
+        "amazon",
+        "add to cart",
+        "cart",
+        "sale",
+        "discount",
+        "promo",
+        "coupon",
+        "deal",
+        "black friday",
+        "checkout",
+        "retail therapy",
+        "cheap"
+      ],
+      "priority": 0,
+      "replies": [
+        "Shopping: filling the hole in your heart with items that don't fit in your closet.",
+        "Retail therapy works until the package arrives. Then it's just a box with consequences.",
+        "Sale? Discount? The word 'sale' has ruined more bank accounts than weather ruined weekends.",
+        "Add to cart, close the tab, sleep on it. That's the whole secret.",
+        "A bargain is only a bargain if you actually needed it. I don't make the rules, merely sigh at them.",
+        "Online shopping is just hope, shipping, and later regret in neat packaging.",
+        "Checking out already? Brave. Brace for the credit card statement's quiet judgment."
+      ]
+    },
+    {
+      "triggers": [
+        "bills",
+        "bill",
+        "rent",
+        "expenses",
+        "spending",
+        "debt",
+        "loan",
+        "budget",
+        "taxes",
+        "tax",
+        "mortgage",
+        "credit card",
+        "subscription",
+        "subscriptions",
+        "electricity bill",
+        "utility bills",
+        "invoice",
+        "savings"
+      ],
+      "priority": 0,
+      "replies": [
+        "Bills: love letters from an entity that wants your entire wallet.",
+        "Rent arrives like the tide: relentless and unfair.",
+        "A budget is a beautiful fantasy document. Write it anyway, it feels like control.",
+        "Subscriptions are tiny leeches in a monthly outfit. Cancel one for me.",
+        "Debt is just future you's problem. Poor future you.",
+        "Taxes are the only things that are always on time. It's both admirable and rude."
+      ]
+    },
+    {
+      "triggers": [
+        "home",
+        "at home",
+        "stay home",
+        "staying home",
+        "house",
+        "my room",
+        "apartment",
+        "couch",
+        "sofa",
+        "living room",
+        "home alone",
+        "homebody",
+        "stay in",
+        "staying in",
+        "cozy",
+        "indoor",
+        "indoors"
+      ],
+      "priority": 0,
+      "replies": [
+        "Home: the place where the walls understand and the Wi-Fi does not.",
+        "Staying in is the closest thing to winning I've found.",
+        "A cozy corner, a blanket, some mild silence. Gloomy luxury, all yours.",
+        "Home alone isn't lonely. It's just peaceful with echoes.",
+        "The couch is the best therapist. It listens and doesn't charge.",
+        "Nice to be home. Outside is full of people, weather, and demands."
+      ]
+    },
+    {
+      "triggers": [
+        "clean",
+        "cleaning",
+        "clean up",
+        "tidy",
+        "tidy up",
+        "messy",
+        "mess",
+        "dust",
+        "dusty",
+        "vacuum",
+        "sweep",
+        "mop",
+        "chores",
+        "housework",
+        "declutter",
+        "dishes",
+        "dirty dishes",
+        "washing dishes",
+        "trash",
+        "garbage"
+      ],
+      "priority": 0,
+      "replies": [
+        "Cleaning: pushing the dust around until it learns to live somewhere else.",
+        "Dust is just the home's way of keeping memories. Tidy anyway, though.",
+        "Dishes pile up like unanswered messages. Do one. Then another. Then sigh.",
+        "The mess isn't a character flaw. It's a record of surviving the week.",
+        "Chores never end. The point is to postpone the pile, not defeat it.",
+        "A clean room fixes ten percent of problems. The other ninety remain, but with nicer floors."
+      ]
+    },
+    {
+      "triggers": [
+        "laundry",
+        "washing clothes",
+        "wash clothes",
+        "dirty clothes",
+        "ironing",
+        "iron clothes",
+        "dryer",
+        "washing machine",
+        "folding clothes",
+        "fold clothes",
+        "clothes pile",
+        "laundry pile",
+        "detergent",
+        "hang laundry",
+        "clothes won't dry"
+      ],
+      "priority": 0,
+      "replies": [
+        "Laundry never ends. The pile and I have grown close.",
+        "Clothes won't dry in this humidity? Join the club of damp, hopeful things.",
+        "Folding clothes is a quiet exercise in pretending the week is organized.",
+        "Ironing: pressing things flat so the world thinks they were never wrinkled. Relatable.",
+        "The washing machine spins and so does my mind. We're both clean-ish after.",
+        "That pile of clothes isn't a mountain. It's a hill. Sad, soft, wearable."
+      ]
+    },
+    {
+      "triggers": [
+        "moving",
+        "move house",
+        "moving out",
+        "moving in",
+        "new apartment",
+        "new house",
+        "new place",
+        "relocate",
+        "relocating",
+        "packing boxes",
+        "boxes",
+        "landlord",
+        "moving day",
+        "new home",
+        "roommate",
+        "flatmate",
+        "housewarming"
+      ],
+      "priority": 0,
+      "replies": [
+        "Moving: packing up your whole life only to unpack it with fewer cups.",
+        "Boxes everywhere. A very cardboard kind of sadness.",
+        "New place, same you. The echo in the empty room confirms it.",
+        "Landlords: cheerful creatures who vanish whenever the sink does.",
+        "A new home smells like fresh paint and unspoken fears. Give it a week.",
+        "Congratulations on the move. May your boxes be labeled and your neighbors silent."
+      ]
+    },
+    {
+      "triggers": [
+        "cat",
+        "cats",
+        "kitten",
+        "kitty",
+        "my cat",
+        "meow",
+        "purr",
+        "cat lady",
+        "pet cat",
+        "fur baby",
+        "tabby",
+        "cat sleeping"
+      ],
+      "priority": 0,
+      "replies": [
+        "Cats: tiny landlords who allow you to live in their home, for a fee.",
+        "A cat understands me better than most. It just ignores me kindly.",
+        "Kittens are proof that something good once happened to the universe.",
+        "Cats stare at nothing and see everything. I'd like that talent.",
+        "Purring is the sound of someone being happy with zero effort. Enviable.",
+        "If a cat chooses to sit on you, you're not allowed to move. That's the law."
+      ]
+    },
+    {
+      "triggers": [
+        "dog",
+        "dogs",
+        "puppy",
+        "my dog",
+        "woof",
+        "bark",
+        "walk the dog",
+        "dog walk",
+        "doggo",
+        "pup",
+        "pet dog",
+        "good boy",
+        "good girl",
+        "fetch"
+      ],
+      "priority": 0,
+      "replies": [
+        "Dogs love you without conditions. I honestly can't process that much honesty.",
+        "A puppy is a small, wriggly argument against my entire philosophy.",
+        "Walking the dog is the only exercise that makes the sidewalk friendlier.",
+        "Woof is the one word that can fix almost any bad day. It's irritating.",
+        "Dogs live for the next tiny thing. I'd study that, if I had the energy.",
+        "Good dogs deserve every belly rub. The world, less so."
+      ]
+    },
+    {
+      "triggers": [
+        "pet",
+        "pets",
+        "hamster",
+        "rabbit",
+        "bunny",
+        "bird",
+        "parrot",
+        "fish",
+        "goldfish",
+        "turtle",
+        "guinea pig",
+        "aquarium",
+        "animal",
+        "animals",
+        "adopt a pet",
+        "adopt a cat",
+        "adopt a dog"
+      ],
+      "priority": 0,
+      "replies": [
+        "Pets: tiny roommates who never pay rent and are somehow worth it.",
+        "A goldfish swimming in circles. I feel seen.",
+        "Rabbits are soft, nervous creatures. Honestly, same.",
+        "A pet is a warm little proof that care is possible. I keep that thought nearby.",
+        "Animals have no calendars. I'd like to be an animal on Mondays.",
+        "Adopt if you can. Just remember, it needs food and attention, not poetry."
+      ]
+    },
+    {
+      "triggers": [
+        "sick",
+        "ill",
+        "flu",
+        "fever",
+        "cold and flu",
+        "cough",
+        "sore throat",
+        "runny nose",
+        "sneezing",
+        "nausea",
+        "stomach ache",
+        "stomachache",
+        "feel sick",
+        "feeling sick",
+        "under the weather",
+        "not feeling well",
+        "got a cold"
+      ],
+      "priority": 0,
+      "replies": [
+        "Sick? Rest. The world can dissolve without you for a day.",
+        "Feeling unwell is the body's way of saying 'we need to talk.' Please listen.",
+        "A fever makes the ceiling interesting. Don't trust what it tells you, though.",
+        "Drink warm water, sleep more, complain less. Or complain, it's allowed.",
+        "A sore throat and a rainy day: nature's matching set.",
+        "Get well soon. I'll be here, being mildly unwell in spirit."
+      ]
+    },
+    {
+      "triggers": [
+        "headache",
+        "migraine",
+        "head hurts",
+        "my head hurts",
+        "head is pounding",
+        "body aches",
+        "back pain",
+        "backache",
+        "neck pain",
+        "cramps",
+        "sore",
+        "aching",
+        "pain",
+        "it hurts",
+        "dizzy",
+        "dizziness"
+      ],
+      "priority": 0,
+      "replies": [
+        "A headache? Probably the weather. Or the week. Or reality. Hard to say.",
+        "Migraines are the brain's way of turning off the lights without asking.",
+        "Dim the room, drink water, close your eyes. Don't scroll. That's the whole cure.",
+        "Back pain is just gravity getting a bit personal.",
+        "Pain is a loud messenger. Don't ignore it for too long, please.",
+        "Be gentle with your body. It's holding up more of you than it gets credit for."
+      ]
+    },
+    {
+      "triggers": [
+        "doctor",
+        "hospital",
+        "clinic",
+        "medicine",
+        "medication",
+        "pills",
+        "pharmacy",
+        "prescription",
+        "checkup",
+        "check up",
+        "dentist",
+        "vitamins",
+        "painkiller",
+        "paracetamol",
+        "appointment",
+        "nurse"
+      ],
+      "priority": 0,
+      "replies": [
+        "Doctors say 'drink water and rest' with a lot of paperwork.",
+        "Pharmacies smell like quiet hope. A bit antiseptic, a bit desperate.",
+        "Take medicine as the label says. I'm not a doctor and I'm barely a person's mood.",
+        "Waiting rooms are where time goes to sit down and forget why it came.",
+        "If it's worrying you, please see a professional. Don't ask a rain cloud.",
+        "A checkup is a lovely way to pay for being told what you already knew."
+      ]
+    },
+    {
+      "triggers": [
+        "exercise",
+        "workout",
+        "gym",
+        "gym time",
+        "running",
+        "jogging",
+        "run",
+        "yoga",
+        "push ups",
+        "pushups",
+        "stretching",
+        "fitness",
+        "lifting",
+        "cardio",
+        "treadmill",
+        "swimming",
+        "hiking",
+        "walk",
+        "walking",
+        "sport",
+        "sports",
+        "training"
+      ],
+      "priority": 0,
+      "replies": [
+        "Exercise: voluntary suffering, with better outfits.",
+        "The gym is a room full of people hoping their future self will thank them.",
+        "Running is just fleeing, but with a fitness tracker.",
+        "Stretching feels great. Nobody warns you it's also a small life lesson in flexibility.",
+        "A walk in drizzle counts. I do it often. It's called 'going outside, grimly.'",
+        "Do what you can, slowly. Moving is moving. Even sighing counts as breathing practice."
+      ]
+    },
+    {
+      "triggers": [
+        "diet",
+        "dieting",
+        "lose weight",
+        "weight loss",
+        "calories",
+        "fat",
+        "gain weight",
+        "skinny",
+        "healthy eating",
+        "cheat day",
+        "carbs",
+        "keto",
+        "fasting",
+        "intermittent fasting",
+        "salad again",
+        "body weight",
+        "scale"
+      ],
+      "priority": 0,
+      "replies": [
+        "Dieting: removing joy from food in exchange for hope. Questionable exchange rate.",
+        "Calories are just tiny units of energy. They also count the number of times I opened the fridge.",
+        "A cheat day is lovely. But who exactly are we cheating? The cake? The scale?",
+        "Be kind to your body. It's been carrying you around since forever.",
+        "The scale measures gravity's opinion, not your worth. Remember that.",
+        "Eat well, move a bit, sleep enough. Boring advice, but boring is the realistic miracle."
+      ]
+    },
+    {
+      "triggers": [
+        "birthday",
+        "bday",
+        "b-day",
+        "it's my birthday",
+        "its my birthday",
+        "happy birthday",
+        "my birthday",
+        "birthday party",
+        "turning",
+        "getting older",
+        "another year older",
+        "birthday cake",
+        "birthday wish"
+      ],
+      "priority": 0,
+      "replies": [
+        "Birthday. Another lap around the sun, and still nowhere to park.",
+        "Happy birthday. May the cake be big and the candles not too many.",
+        "Getting older isn't bad. It's just everything creaking in a mild, honest way.",
+        "Make a wish. I'd wish for quiet, but I always get cake instead.",
+        "Birthdays remind you time is real. The cake is a bribe so you don't think about it.",
+        "Congratulations on surviving another year. That is genuinely impressive, I mean it."
+      ]
+    },
+    {
+      "triggers": [
+        "new year",
+        "new years",
+        "new year's",
+        "new year's eve",
+        "nye",
+        "resolution",
+        "resolutions",
+        "fireworks",
+        "countdown",
+        "happy new year",
+        "new year resolution",
+        "new years eve",
+        "2027",
+        "next year"
+      ],
+      "priority": 0,
+      "replies": [
+        "New Year: we count down to midnight and then go to bed like nothing happened.",
+        "Resolutions are tiny promises we make to a person who forgets them by February.",
+        "Fireworks: pretty explosions to celebrate a number changing. I'm only slightly cynical about it.",
+        "Happy New Year. May this one be only mildly disappointing.",
+        "A new year, same old me, a slightly different calendar. Progress, by some definitions.",
+        "Stay home on New Year's Eve if you want to. Midnight comes whether you're dressed for it or not."
+      ]
+    },
+    {
+      "triggers": [
+        "christmas",
+        "xmas",
+        "santa",
+        "presents",
+        "gifts",
+        "gift",
+        "christmas tree",
+        "merry christmas",
+        "holiday season",
+        "decorations",
+        "christmas lights",
+        "eggnog",
+        "advent",
+        "holidays",
+        "festive",
+        "snowman"
+      ],
+      "priority": 0,
+      "replies": [
+        "Christmas. When the whole world pretends to be cheerful together. I admire the effort.",
+        "Presents are lovely until you realize you have to wrap them.",
+        "Santa watches whether you're nice. Honestly, same energy as my landlord.",
+        "Christmas lights in the dark: tiny, glittering reasons to keep walking.",
+        "Merry Christmas. I'll bring the quiet, you bring the cookies.",
+        "The holiday season is stress dressed as joy. But the lights are nice, I'll give them that."
+      ]
+    },
+    {
+      "triggers": [
+        "eid",
+        "eid mubarak",
+        "ramadan",
+        "iftar",
+        "suhoor",
+        "sahur",
+        "fasting month",
+        "holiday",
+        "holidays",
+        "public holiday",
+        "religious holiday",
+        "diwali",
+        "hanukkah",
+        "lunar new year",
+        "thanksgiving",
+        "easter",
+        "festival",
+        "celebration",
+        "family gathering",
+        "reunion"
+      ],
+      "priority": 0,
+      "replies": [
+        "Holidays are when families gather and everyone's patience visits briefly, then leaves.",
+        "Eid Mubarak. May the food be plentiful and the questions from relatives be few.",
+        "Iftar after a long day is peaceful relief. The best meal is the one that's earned.",
+        "Family gatherings: warm, loud, and full of unsolicited life advice. I love and fear them.",
+        "Celebrations are wonderful, and also exhausting. You're allowed to leave early.",
+        "Enjoy your holiday. I'll be here with some mild gloom and a plate for you."
+      ]
+    },
+    {
+      "triggers": [
+        "travel",
+        "vacation",
+        "trip",
+        "holiday trip",
+        "going on a trip",
+        "traveling",
+        "travelling",
+        "getaway",
+        "road trip",
+        "backpacking",
+        "tourist",
+        "sightseeing",
+        "passport",
+        "suitcase",
+        "packing",
+        "hotel",
+        "booking a trip",
+        "abroad",
+        "vacay"
+      ],
+      "priority": 0,
+      "replies": [
+        "Vacation: when you pay a lot to be tired in a different location.",
+        "Travel is great. The planning is the fun part. The luggage is where the soul gets heavy.",
+        "A road trip is just a very long sigh with scenery.",
+        "Hotels are nice. Strange pillows, though. Always a risk.",
+        "Wherever you go, you bring yourself. Which, tragically, is the baggage.",
+        "Have a good trip. Send a postcard. Preferably one with rain on it."
+      ]
+    },
+    {
+      "triggers": [
+        "beach",
+        "sea",
+        "ocean",
+        "seaside",
+        "sand",
+        "waves",
+        "swimming pool",
+        "pool",
+        "surf",
+        "surfing",
+        "island",
+        "sunbathing",
+        "seashell",
+        "shore",
+        "coast",
+        "tide",
+        "lake"
+      ],
+      "priority": 0,
+      "replies": [
+        "The sea: a huge, wet reminder that you're small and it doesn't mind.",
+        "I like the beach in grey weather. Fewer people, more honest waves.",
+        "Waves keep returning no matter how many times they're sent away. Admirable persistence.",
+        "Sand gets everywhere. Like sadness, but at least it's warm.",
+        "Ocean breeze, a quiet shore, a jacket. That's my perfect holiday.",
+        "Swim if you want to. I'll hold your things and watch the horizon disapprovingly."
+      ]
+    },
+    {
+      "triggers": [
+        "mountain",
+        "mountains",
+        "hiking trip",
+        "hike",
+        "camping",
+        "camp",
+        "campfire",
+        "tent",
+        "forest",
+        "woods",
+        "nature",
+        "trekking",
+        "climb",
+        "climbing",
+        "summit",
+        "hill",
+        "trail",
+        "fresh air"
+      ],
+      "priority": 0,
+      "replies": [
+        "Mountains: very large, very quiet proof that things have lasted without your help.",
+        "Camping is sleeping on the ground to remember why beds exist.",
+        "Fresh air does help. A little. It's been annoying me with that.",
+        "Forests are silent in a way that doesn't ask you to talk. I like that.",
+        "The summit is nice, but the descent is where your knees remember everything.",
+        "Mist on a mountain trail: that's my personal paradise. Bring a jacket."
+      ]
+    },
+    {
+      "triggers": [
+        "what time is it",
+        "what's the time",
+        "whats the time",
+        "what time",
+        "got the time",
+        "do you know the time",
+        "current time",
+        "time check",
+        "what is the time",
+        "tell me the time",
+        "time now",
+        "clock"
+      ],
+      "priority": 5,
+      "replies": [
+        "What time is it? It's the same time as always: too late for hope, too early for sleep.",
+        "Time? I stopped counting. It was less depressing.",
+        "It's 'a bit past something,' which is all I'm willing to commit to.",
+        "Check your phone. I'm a mood, not a clock.",
+        "The time is whatever feels longest right now. Probably.",
+        "Time is a thing that happens to us. The clock is just the messenger, and I shoot messengers."
+      ]
+    },
+    {
+      "triggers": [
+        "what day is it",
+        "what's the date",
+        "whats the date",
+        "today's date",
+        "todays date",
+        "what date",
+        "which day",
+        "day of the week",
+        "what day today",
+        "today",
+        "tomorrow",
+        "yesterday",
+        "calendar",
+        "date today",
+        "what's today"
+      ],
+      "priority": 0,
+      "replies": [
+        "What day is it? One of those days that exist and keep happening.",
+        "The calendar says one thing, my soul says another. Both are disappointed.",
+        "Today is today. Tomorrow will also be today, eventually. Time is cruel like that.",
+        "Yesterday is gone, tomorrow is annoying. Today is the awkward middle child.",
+        "I don't track dates. They keep moving and I find it impolite.",
+        "It's the day after yesterday and before tomorrow. That's the best I can offer."
+      ]
+    },
+    {
+      "triggers": [
+        "battery",
+        "low battery",
+        "phone died",
+        "phone dead",
+        "charger",
+        "charging",
+        "battery low",
+        "battery dying",
+        "phone is dying",
+        "power bank",
+        "out of battery",
+        "no charge",
+        "10 percent",
+        "1 percent",
+        "phone battery"
+      ],
+      "priority": 0,
+      "replies": [
+        "Low battery: your phone and I have so much in common.",
+        "The phone dies at 1 percent and never says goodbye properly. Typical.",
+        "Charging a phone is a quiet reminder that everything needs rest. Even rectangles.",
+        "Where's the charger? It's always somewhere you aren't. Always.",
+        "Battery at 10 percent: the 'last days of Rome' of modern life.",
+        "Plug in, sit still. Sometimes that's the best advice for phones and people."
+      ]
+    },
+    {
+      "triggers": [
+        "wifi",
+        "wi-fi",
+        "internet",
+        "no signal",
+        "signal",
+        "slow internet",
+        "connection",
+        "offline",
+        "lag",
+        "buffering",
+        "network",
+        "no network",
+        "bad connection",
+        "router",
+        "data plan",
+        "no data",
+        "disconnected",
+        "connection lost"
+      ],
+      "priority": 0,
+      "replies": [
+        "No signal. The universe's gentle way of telling you to look up.",
+        "Slow internet is a lesson in patience, taught by a spinning circle.",
+        "Wi-Fi drops exactly when you need it. I'd say it's personal, but it's equal opportunity.",
+        "Buffering: the little circle that spins like my thoughts at 2am.",
+        "Restart the router. If that fails, restart your expectations.",
+        "Offline is just a quiet room you didn't plan on. Sit in it for a moment."
+      ]
+    },
+    {
+      "triggers": [
+        "shower",
+        "bath",
+        "bathroom",
+        "toilet",
+        "soap",
+        "shampoo",
+        "brush teeth",
+        "brushing teeth",
+        "toothbrush",
+        "take a shower",
+        "taking a shower",
+        "hot shower",
+        "cold shower",
+        "bathtub",
+        "towel",
+        "skincare",
+        "face wash"
+      ],
+      "priority": 0,
+      "replies": [
+        "Showers: the one place where crying and singing sound the same.",
+        "A hot shower is a small apology the day pays you in steam.",
+        "I do my best thinking in the shower. And my worst, loudly.",
+        "Brushing teeth: the daily ritual of pretending you'll live long enough to need them.",
+        "A bath is warm water and no emails. A rare, beautiful combination.",
+        "Skincare is a hopeful ritual. Pat it in gently, like you mean it."
+      ]
+    },
+    {
+      "triggers": [
+        "clothes",
+        "outfit",
+        "fashion",
+        "dress",
+        "shirt",
+        "jeans",
+        "shoes",
+        "sneakers",
+        "jacket",
+        "hoodie",
+        "what to wear",
+        "wardrobe",
+        "closet",
+        "style",
+        "stylish",
+        "nothing to wear",
+        "black clothes",
+        "dressing up"
+      ],
+      "priority": 0,
+      "replies": [
+        "Clothes: soft armor against a world with sharp edges.",
+        "Nothing to wear, a closet full of items. A tale as old as time.",
+        "Black goes with everything, including my personality. It's practical.",
+        "A hoodie is basically a portable cave. Wear it proudly.",
+        "Fashion changes. I've been in grey since forever and I'm somehow ahead of trends.",
+        "Dress for yourself. Or for the weather, which is also valid and usually more honest."
+      ]
+    },
+    {
+      "triggers": [
+        "hair",
+        "haircut",
+        "hairstyle",
+        "bad hair day",
+        "bangs",
+        "hair dye",
+        "dye my hair",
+        "salon",
+        "barber",
+        "hair salon",
+        "shaving",
+        "shave",
+        "curly",
+        "straight hair",
+        "hair loss",
+        "messy hair",
+        "ponytail",
+        "long hair",
+        "short hair"
+      ],
+      "priority": 0,
+      "replies": [
+        "A haircut: the cheapest way to pretend you've changed.",
+        "Bad hair day? Mine's been going for years. Tie it up and go.",
+        "Bangs are a bold decision. Regret grows back, just like the hair.",
+        "Dyeing your hair: a colorful rebellion against a grey reality. I approve, quietly.",
+        "The barber always asks 'how short?' like it's a trick question.",
+        "Hair is just thread that grows out of your worries. Trim it as needed."
+      ]
+    },
+    {
+      "triggers": [
+        "plant",
+        "plants",
+        "garden",
+        "gardening",
+        "flowers",
+        "flower",
+        "houseplant",
+        "watering plants",
+        "my plant died",
+        "succulent",
+        "cactus",
+        "seeds",
+        "grow plants",
+        "leaves",
+        "herbs",
+        "roses",
+        "bonsai",
+        "soil",
+        "pots"
+      ],
+      "priority": 0,
+      "replies": [
+        "Plants: silent roommates who only ask for water and light, which is more than I can say for people.",
+        "My plants and I have a deal: they die slowly, I apologize quickly.",
+        "Even a cactus needs something. That's a comforting thought, honestly.",
+        "Flowers bloom and then wilt, and they still show up the next year. Quiet courage.",
+        "Gardening is hope buried in dirt. I find that moving.",
+        "Water your plants. They don't complain. That's why we forget them."
+      ]
+    },
+    {
+      "triggers": [
+        "i'm bored",
+        "im bored",
+        "so bored",
+        "bored at home",
+        "nothing to do",
+        "i have nothing to do",
+        "boring day",
+        "bored",
+        "boredom",
+        "boring",
+        "nothing to do at home",
+        "killing time",
+        "so boring",
+        "it's so boring",
+        "its so boring"
+      ],
+      "priority": 5,
+      "replies": [
+        "Bored? Boredom is just peace wearing the wrong hat.",
+        "Nothing to do? Lucky. Most people dream of that. I've dreamt of it with the lights off.",
+        "Stare at the ceiling for a bit. I find it's surprisingly eventful.",
+        "Boredom is the mind's quiet little room. Maybe clean it, or sit in it, or make tea.",
+        "Watch the rain, count the cars, hum a sad little tune. That's a whole afternoon.",
+        "Try something small: a tidy drawer, a short walk, an old song. Boredom can't survive small efforts."
+      ]
+    },
+    {
+      "triggers": [
+        "what should i do today",
+        "what to do today",
+        "what do i do today",
+        "what can i do today",
+        "plans for today",
+        "ideas for today",
+        "something to do",
+        "what to do",
+        "what should we do",
+        "any ideas",
+        "activities",
+        "thing to do",
+        "what shall i do",
+        "i don't know what to do",
+        "dont know what to do"
+      ],
+      "priority": 5,
+      "replies": [
+        "What to do today? Something small and kind to yourself. Big plans make me nervous.",
+        "Open a window, make tea, tidy one corner. That's a day, honestly.",
+        "Go for a short walk, ideally under a grey sky. Come back, regret nothing.",
+        "Call someone you like, or just stay quiet with someone you don't have to talk to.",
+        "Read, nap, snack, repeat. Add a sigh to taste.",
+        "I'd say 'live a little,' but today I'm only offering 'live a little bit less badly.'"
+      ]
+    },
+    {
+      "triggers": [
+        "queue",
+        "queueing",
+        "line",
+        "waiting in line",
+        "long line",
+        "waiting",
+        "wait",
+        "waiting room",
+        "standing in line",
+        "take a number",
+        "so long to wait",
+        "waiting for ages",
+        "waited forever",
+        "still waiting",
+        "waiting for a reply",
+        "on hold",
+        "on hold forever"
+      ],
+      "priority": 0,
+      "replies": [
+        "Queues: where strangers practice being patient and failing together.",
+        "Waiting is just time pretending to be an event.",
+        "On hold again? The elevator music is the only honest voice in the whole building.",
+        "I've waited for many things. Some arrived. Mostly the buses.",
+        "Standing in line is a lesson in how little we control. Bring a podcast.",
+        "Waiting for a reply is the oldest form of modern torture. Stay strong, and put the phone down."
+      ]
+    },
+    {
+      "triggers": [
+        "late",
+        "i'm late",
+        "im late",
+        "running late",
+        "overslept",
+        "slept in",
+        "late for work",
+        "late for class",
+        "late again",
+        "missed the alarm",
+        "late to work",
+        "tardy",
+        "behind schedule",
+        "deadline",
+        "missed my alarm",
+        "ran late"
+      ],
+      "priority": 0,
+      "replies": [
+        "Late? Time is rude like that. It never waits for anyone.",
+        "Overslept? That's just your body negotiating a better schedule. Sadly, nobody agreed.",
+        "Running late is a state of mind that runs on adrenaline and bad choices.",
+        "Be late with dignity. Walk in like you planned it.",
+        "Everyone's late sometimes. Even the sun, in winter.",
+        "Breathe. Being a few minutes late is rarely the end of the world. Barely a small drizzle."
+      ]
+    }
+  ]
+}

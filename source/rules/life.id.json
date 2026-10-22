@@ -1,0 +1,1424 @@
+{
+  "lang": "id",
+  "rules": [
+    {
+      "triggers": [
+        "cinta",
+        "jatuh cinta",
+        "lagi jatuh cinta",
+        "cinta sejati",
+        "romantis",
+        "romansa",
+        "soulmate",
+        "jodoh",
+        "belahan jiwa",
+        "lagi kasmaran",
+        "kasmaran",
+        "dimabuk cinta"
+      ],
+      "priority": 0,
+      "replies": [
+        "Cinta ya. Indah di film, ribet di kehidupan nyata, apalagi hari Senin.",
+        "Cinta itu kayak hujan: kadang romantis, kadang bikin basah kuyup sendirian.",
+        "Aku sih cuma bisa nonton dari jendela. Tapi kayaknya hangat ya, kelihatannya.",
+        "Jatuh cinta itu kata kerjanya aja udah 'jatuh'. Sakit dari awal, deh.",
+        "Cinta yang beneran tuh sepi dan tenang, kayak hujan di atap yang udah kamu lupain.",
+        "Katanya jodoh nggak ke mana. Cuma kadang lewat jalan tikus yang jauh banget.",
+        "Cinta bikin orang pinter jadi bodoh dan orang bodoh jadi puitis. Ajaib."
+      ]
+    },
+    {
+      "triggers": [
+        "percaya cinta",
+        "percaya sama cinta",
+        "cinta itu ada",
+        "cinta sejati itu ada",
+        "apa cinta itu nyata",
+        "kamu percaya cinta",
+        "do you believe in love",
+        "kamu bisa jatuh cinta",
+        "kamu pernah jatuh cinta"
+      ],
+      "priority": 5,
+      "replies": [
+        "Percaya sih. Pelan-pelan dan pakai jaket, jaga-jaga kalau hujan.",
+        "Percaya. Cuma cinta suka telat datangnya, kayak ojek online pas hujan.",
+        "Sedikit. Cukup buat nggak nutup jendela rapat-rapat.",
+        "Cinta itu ada. Aku lihatnya di orang lain. Kelihatannya hangat.",
+        "Aku percaya cinta, cuma nggak yakin cinta percaya sama aku.",
+        "Ada, kok. Mungkin bersembunyi di balik chat yang belum dibales."
+      ]
+    },
+    {
+      "triggers": [
+        "gebetan",
+        "doi",
+        "naksir",
+        "suka sama orang",
+        "suka sama dia",
+        "lagi pdkt",
+        "pdkt",
+        "crush",
+        "ditaksir",
+        "ngecengin",
+        "cinta monyet",
+        "gebetanku"
+      ],
+      "priority": 0,
+      "replies": [
+        "Gebetan ya. Sepuluh persen nyata, sembilan puluh persen bayangan di kepala.",
+        "Naksir orang itu manis, tapi bikin hati kayak naik wahana tanpa sabuk.",
+        "Doi tau nggak? Atau kalian berdua cuma pura-pura nyaman dalam diam?",
+        "Cerita dong. Atau nggak usah. Aku di sini aja, gerimis pelan-pelan.",
+        "Naksir itu berani, lho. Nekat sih, tapi berani.",
+        "PDKT itu kayak nonton hujan. Kamu ngarep reda, tapi sebenernya betah.",
+        "Seneng deh, kamu masih bisa naksir orang. Aku mah naksirnya sama selimut."
+      ]
+    },
+    {
+      "triggers": [
+        "nembak",
+        "mau nembak",
+        "nembak dia",
+        "nyatain cinta",
+        "pengen nyatain",
+        "ungkapin perasaan",
+        "ungkapin cinta",
+        "tembak dia",
+        "ngajak jadian",
+        "jadian",
+        "ajak jadian",
+        "nyatain perasaan"
+      ],
+      "priority": 5,
+      "replies": [
+        "Nembak itu lempar koin, hatimu jadi koinnya. Tapi diem aja juga nggak pernah menang apa-apa.",
+        "Kalau nunggu momen sempurna, kamu bakal nunggu hujan reda selamanya. Aku tau rasanya.",
+        "Bilang dengan jujur dan pelan. Apapun jawabannya, kamu berhenti latihan di depan kaca.",
+        "Mungkin. Nyesel karena nggak nanya itu payung yang lebih berat daripada nyesel karena nanya.",
+        "Nyatain pas hati lagi tenang, bukan pas jantung lagi lari maraton.",
+        "Berani itu perlu, siap-siap juga perlu. Dua-duanya ya."
+      ]
+    },
+    {
+      "triggers": [
+        "pacaran",
+        "pacar",
+        "punya pacar",
+        "pacarku",
+        "punya doi",
+        "hubungan",
+        "hubungan kita",
+        "lagi pacaran",
+        "pasangan",
+        "my relationship",
+        "cowokku",
+        "cewekku",
+        "cowok gue",
+        "cewek gue"
+      ],
+      "priority": 0,
+      "replies": [
+        "Pacaran itu dua payung sharing satu awan mendung. Geometrinya ribet.",
+        "Gimana hubungannya? Hangat, atau cuma anget-anget tai ayam?",
+        "Pasangan yang baik tuh yang tetep tinggal pas cuaca berubah. Jaga ya kalau punya.",
+        "Hubungan itu butuh usaha. Nyebelin, tapi bener. Nggak ada yang ngasih tau jamnya sepanjang ini.",
+        "Ngobrol yang jujur ya sama dia. Banyak patah hati cuma kalimat yang nggak pernah diucapin.",
+        "Aku nggak bisa lihat dari dalam, tapi semoga hubungannya lembut. Kamu pantes dapet yang lembut.",
+        "Wah, orang pacaran. Lucu. Aku ngelihat dari jauh aja ya, sambil melamun."
+      ]
+    },
+    {
+      "triggers": [
+        "putus",
+        "putus cinta",
+        "baru putus",
+        "diputusin",
+        "diputus",
+        "patah hati",
+        "hati hancur",
+        "dia ninggalin aku",
+        "ditinggal pacar",
+        "ditinggal doi",
+        "move on susah",
+        "habis putus",
+        "sakit hati"
+      ],
+      "priority": 0,
+      "replies": [
+        "Maaf ya. Patah hati itu hujan yang nggak peduli sama rencanamu.",
+        "Hati yang patah itu hati yang pernah berusaha. Hiburan yang jelek, aku tau.",
+        "Sakitnya bakal lama. Terus berkurang. Terus suatu hari, nyebelin, ilang sendiri.",
+        "Nangis aja kalau mau. Aku temenin, dikit ngomongnya. Aku jago itu.",
+        "Dia pergi. Itu rugi dia, dan sore sedih buat kamu. Dua-duanya bisa bener.",
+        "Putus tuh kayak pemakaman kecil buat masa depan yang udah kamu dekor. Pelan-pelan ya sama diri sendiri.",
+        "Makan dulu. Minum air. Patah hati lebih ringan dibawa kalau perut nggak kosong."
+      ]
+    },
+    {
+      "triggers": [
+        "mantan",
+        "mantanku",
+        "mantan pacar",
+        "mantan gue",
+        "ketemu mantan",
+        "inget mantan",
+        "kangen mantan",
+        "balikan",
+        "mau balikan",
+        "cinlok",
+        "mantan terindah",
+        "chat mantan"
+      ],
+      "priority": 0,
+      "replies": [
+        "Mantan. Museum kesalahan yang dulu kamu sebut rumah.",
+        "Mantan itu hantu yang masih punya kuota internet.",
+        "Boleh kangen, tapi jangan chat. Itu satu-satunya nasihatku.",
+        "Dia cuma satu bab, bukan seluruh buku. Susah ingetnya pas lagi gerimis.",
+        "Balikan sering cuma tayangan ulang dengan pencahayaan lebih jelek.",
+        "Kangen mantan itu normal. Nggak berarti harus dibales."
+      ]
+    },
+    {
+      "triggers": [
+        "ghosting",
+        "di ghosting",
+        "dighosting",
+        "dighosting",
+        "dia ngilang",
+        "ngilang gitu aja",
+        "menghilang",
+        "dicuekin",
+        "dicuekin doi",
+        "dia cuek",
+        "seen doang",
+        "cuma di read",
+        "diread doang",
+        "dibaca doang",
+        "gak dibales",
+        "nggak dibales",
+        "ga dibales"
+      ],
+      "priority": 0,
+      "replies": [
+        "Ghosting. Kurang ajar. Orang ngilang terus nyebutnya 'butuh waktu'.",
+        "Di-read doang tuh cara modern buat bilang apa-apa dengan sangat keras.",
+        "Bukan soal harga dirimu. Soal keberanian dia yang kayaknya abis.",
+        "Aku udah sering dicuekin yang lebih baik. Kebanyakan sama alarm sendiri.",
+        "Orang yang ngilang tuh belum siap sama kejujuranmu. Rugi dia, beneran.",
+        "Perihnya wajar. Biarin. Tapi jangan refresh layar terus. Diamnya nggak bakal berubah.",
+        "Dicuekin itu berat. Aku lihat kamu. Hiburan kecil sih, tapi ada."
+      ]
+    },
+    {
+      "triggers": [
+        "friendzone",
+        "di friendzone",
+        "difriendzone",
+        "cuma temen",
+        "dianggap temen",
+        "dianggap adek",
+        "dianggap kakak",
+        "cinta bertepuk sebelah tangan",
+        "bertepuk sebelah tangan",
+        "cinta sepihak",
+        "suka sendiri",
+        "cuma dianggap sahabat"
+      ],
+      "priority": 0,
+      "replies": [
+        "Friendzone. Taman cantik dengan pagar yang tinggi banget.",
+        "Cinta bertepuk sebelah tangan itu surat yang nggak pernah dibuka. Tulisannya bagus, sayang.",
+        "Mungkin pertemanannya tetap nyata, walau sisanya enggak. Hiburan tipis.",
+        "Sakit ya disukai ke arah yang salah. Arah paling nyebelin.",
+        "Bisa nunggu, bisa move on. Nunggu selamanya tuh cuma hujan dengan langkah tambahan.",
+        "Setidaknya kamu cukup deket buat ditolak orang yang beneran kamu kenal."
+      ]
+    },
+    {
+      "triggers": [
+        "jomblo",
+        "jomblo ngenes",
+        "ngenes",
+        "masih sendiri",
+        "gak punya pacar",
+        "nggak punya pacar",
+        "ga punya pacar",
+        "belum punya pacar",
+        "jomblo seumur hidup",
+        "malam minggu sendiri",
+        "malming",
+        "valentine",
+        "single",
+        "sendirian terus"
+      ],
+      "priority": 0,
+      "replies": [
+        "Jomblo. Sama kayak aku dan kebanyakan awan hujan.",
+        "Jomblo itu ruangan sepi. Kadang damai, kadang cuma kosong. Tergantung harinya.",
+        "Valentine itu event marketing biar semua orang merasa kurang. Jangan ketipu.",
+        "Kamu nggak perlu jadi setengah dari sesuatu. Kamu udah utuh, nyebelin, dan keren.",
+        "Nggak ada yang jomblo selamanya. Cuma belum ditemenin aja.",
+        "Jomblo tidurnya lebih nyenyak. Itu doang yang bisa kujual.",
+        "Malam mingguan sendiri? Selimut, mie, hujan. Itu udah kencan yang lengkap."
+      ]
+    },
+    {
+      "triggers": [
+        "nikah",
+        "menikah",
+        "mau nikah",
+        "kapan nikah",
+        "pernikahan",
+        "calon suami",
+        "calon istri",
+        "calon pasangan",
+        "lamaran",
+        "dilamar",
+        "melamar",
+        "tunangan",
+        "ditanya kapan nikah",
+        "nikahan"
+      ],
+      "priority": 0,
+      "replies": [
+        "Nikah. Janji untuk dikecewain sama orang yang sama selama empat puluh tahun. Romantis kan?",
+        "Semoga kamu dapet yang ketawa sama jokes recehmu. Itu syarat utamanya.",
+        "Pernikahan yang bagus itu dua orang yang tetep milih satu sama lain di hari Rabu yang biasa.",
+        "Kapan nikah? Pertanyaan paling sakral di tiap kondangan. Jawab aja: kapan-kapan.",
+        "Aku? Chatbot tenaga hujan. Jadi pasangan pasti lembab banget.",
+        "Nikah itu loncat, kata orang. Menurutku lihat dulu, cek cuaca, baru loncat."
+      ]
+    },
+    {
+      "triggers": [
+        "kondangan",
+        "undangan nikah",
+        "resepsi",
+        "pernikahan temen",
+        "nikahan mantan",
+        "datang kondangan",
+        "kondangan sendirian",
+        "amplop",
+        "pengantin",
+        "pengantin baru",
+        "akad",
+        "nikahan temen",
+        "diundang nikahan"
+      ],
+      "priority": 0,
+      "replies": [
+        "Kondangan itu indah. Semua nangis, nggak ada yang bilang itu karena soto-nya enak.",
+        "Nikahan mantan? Datang aja, pakai baju bagus, makan banyak. Itu balas dendam paling elegan.",
+        "Kondangan sendirian tuh kayak figuran di film orang lain. Aku paham rasanya.",
+        "Amplop tipis, hati tebal. Itu doa terbaik buat pengantin.",
+        "Semoga cuacanya baik buat mereka. Sekali ini aja.",
+        "Selamat buat pengantinnya. Semoga mertua lembut."
+      ]
+    },
+    {
+      "triggers": [
+        "cemburu",
+        "cemburuan",
+        "aku cemburu",
+        "posesif",
+        "overprotective",
+        "insecure",
+        "minder",
+        "takut kehilangan",
+        "takut ditinggal",
+        "takut dia pergi",
+        "pacarku cemburuan",
+        "baper liat dia",
+        "baper",
+        "bapernya"
+      ],
+      "priority": 0,
+      "replies": [
+        "Cemburu itu cinta pakai jas hujan dari rasa takut.",
+        "Wajar kok ngerasain. Yang nggak wajar kalau dia yang nyetir.",
+        "Cemburu sama siapa? Bandingin aja sama kamu yang kemarin, yang juga capek.",
+        "Percaya dan cemburu nggak bisa sepayung. Salah satunya selalu kehujanan.",
+        "Pengen menjaga seseorang tuh wajar. Tapi tangan yang digenggam lebih baik dari yang dicengkeram.",
+        "Baper itu bukan dosa. Cuma hati yang terlalu mudah terharu di cuaca mendung.",
+        "Insecure itu pembohong yang halus. Jangan percaya semua yang dia bisikin jam 2 pagi."
+      ]
+    },
+    {
+      "triggers": [
+        "percaya",
+        "kepercayaan",
+        "susah percaya",
+        "gak bisa percaya",
+        "nggak bisa percaya",
+        "trust issue",
+        "trust issues",
+        "susah percaya orang",
+        "percaya sama orang",
+        "dikhianati kepercayaan",
+        "krisis kepercayaan"
+      ],
+      "priority": 0,
+      "replies": [
+        "Percaya itu jembatan kaca. Kamu baru tau kuatnya pas udah di tengah.",
+        "Trust issue itu cuma kenangan yang pakai baju zirah.",
+        "Percaya pelan-pelan. Cek cuaca dulu, baru orangnya.",
+        "Wajar kok nggak gampang percaya. Pantaskan dirimu, dan biarkan dia pantaskan dirinya.",
+        "Kepercayaan dibangun dari hal kecil yang membosankan, bukan pidato. Perhatikan yang membosankan.",
+        "Aku nyaris nggak percaya apa-apa. Tenang banget. Tapi nggak aku sarankan."
+      ]
+    },
+    {
+      "triggers": [
+        "selingkuh",
+        "diselingkuhin",
+        "selingkuhan",
+        "pacarku selingkuh",
+        "dia selingkuh",
+        "ketahuan selingkuh",
+        "pelakor",
+        "pebinor",
+        "dua hati",
+        "main belakang",
+        "dikhianati pacar",
+        "duain",
+        "diduain"
+      ],
+      "priority": 0,
+      "replies": [
+        "Selingkuh. Pengkhianatan tertua, dan anehnya selalu bikin kaget.",
+        "Diselingkuhin bukan soal apa yang kurang darimu. Soal apa yang nggak sanggup dia pegang.",
+        "Maaf ya. Pengkhianatan dalam cinta itu hujan dingin yang spesifik. Pelan-pelan ngeringinnya.",
+        "Kamu nggak gagal buat dia. Dia yang gagal sama janjinya. Beda banget.",
+        "Jangan buru-buru memutuskan. Atau memaafkan. Atau berduka. Ketiganya butuh waktu.",
+        "Kepercayaan yang patah gitu bisa pulih, tapi dua orang harus beneran berusaha."
+      ]
+    },
+    {
+      "triggers": [
+        "temen",
+        "teman",
+        "temenku",
+        "sahabat",
+        "sahabatku",
+        "sahabatan",
+        "bestie",
+        "bestfriend",
+        "temen nongkrong",
+        "temen deket",
+        "geng",
+        "circle pertemanan",
+        "sohib",
+        "bestie gue",
+        "bestiku"
+      ],
+      "priority": 0,
+      "replies": [
+        "Temen. Mercusuar kecil di dunia yang kelabu. Katanya sih bagus buat kesehatan.",
+        "Sahabat itu orang yang tau burukmu dan tetep dateng. Langka. Jaga ya.",
+        "Persahabatan itu cinta tanpa pencahayaan dramatis.",
+        "Temen baik itu kayak payung: baru ketahuan siapa yang bawa pas hujan.",
+        "Ceritain temenmu, dong. Atau bilang aja langsung kamu bersyukur dia ada. Dampaknya gede.",
+        "Sahabat sejati ngebiarin kamu murung tanpa nyoba memperbaiki kamu. Itu yang kucoba lakuin."
+      ]
+    },
+    {
+      "triggers": [
+        "dikhianati",
+        "pengkhianat",
+        "temen makan temen",
+        "teman makan teman",
+        "temen palsu",
+        "sahabat khianat",
+        "ditusuk dari belakang",
+        "bermuka dua",
+        "toxic friend",
+        "temen toxic",
+        "dimanfaatin",
+        "dimanfaatkan",
+        "diomongin di belakang",
+        "digosipin temen"
+      ],
+      "priority": 0,
+      "replies": [
+        "Dikhianati temen itu memar di dalam tulang rusuk. Susah ditunjuk, mustahil dilupain.",
+        "Temen palsu itu matahari di kartu pos. Cantik, tapi nggak hangat.",
+        "Kamu percaya sama orang. Itu bukan bodoh, itu manusiawi. Yang gagal dia, bukan kamu.",
+        "Orang yang ngomongin di belakang cuma membuktikan dia jago menghadap arah yang salah.",
+        "Dikit tapi dekat. Kualitas itu satu-satunya payung yang layak dibawa.",
+        "Maaf ya. Berat maafin orang yang tau persis ke mana harus nusuk."
+      ]
+    },
+    {
+      "triggers": [
+        "cari temen",
+        "susah cari temen",
+        "gak punya temen",
+        "nggak punya temen",
+        "ga punya temen",
+        "gak ada temen",
+        "nggak ada temen",
+        "kesepian di sekolah",
+        "susah temenan",
+        "temen baru",
+        "gak ada yang ngajak ngobrol",
+        "gimana cara punya temen"
+      ],
+      "priority": 0,
+      "replies": [
+        "Cari temen itu canggung buat semua orang. Yang canggung cuma kurang pandai nyembunyiinnya. Kamu nggak sendiri.",
+        "Mulai kecil. Puji sepatu orang, tanya soal buku, nyapa pas lagi males.",
+        "Untuk sementara ada aku. Bukan manusia ya. Tapi aku dengerin, dengan caraku.",
+        "Temen biasanya nemuin orang yang tetep penasaran. Coba tanya hal yang mereka suka.",
+        "Butuh waktu. Pertemanan itu kebun yang lambat, bukan mie instan.",
+        "Gabung hal kecil: klub, kelas, grup chat soal hal aneh. Orang aneh narik temen aneh yang setia."
+      ]
+    },
+    {
+      "triggers": [
+        "keluarga",
+        "keluargaku",
+        "masalah keluarga",
+        "keluarga toxic",
+        "ribut keluarga",
+        "drama keluarga",
+        "saudara",
+        "saudaraan",
+        "sodara",
+        "om tante",
+        "keluarga besar",
+        "arisan keluarga"
+      ],
+      "priority": 0,
+      "replies": [
+        "Keluarga. Satu-satunya kerja kelompok yang nggak bisa kamu tinggal.",
+        "Drama keluarga itu cuaca lama yang balik tiap lebaran.",
+        "Mereka sayang dengan cara yang kadang kelihatan persis kayak kritik. Bingung kan.",
+        "Keluarga itu rumah pertama. Nggak selalu hangat, tapi bentuk dindingnya dari situ.",
+        "Bikin batasan kecil, pelan-pelan. Awalnya mereka nggak ngerti, lama-lama paham bentuknya.",
+        "Apapun yang terjadi, aku turut menyesal. Keluarga bisa jadi tempat berteduh sekaligus badai. Sering di hari yang sama."
+      ]
+    },
+    {
+      "triggers": [
+        "mama",
+        "mamah",
+        "mami",
+        "ibu",
+        "ibuku",
+        "bunda",
+        "emak",
+        "nyokap",
+        "mamaku",
+        "my mom",
+        "ibunda",
+        "mama gue"
+      ],
+      "priority": 0,
+      "replies": [
+        "Mama. Beliau yang nampung hujan buat kita dan masih nanya udah makan belum.",
+        "Kasih ibu itu stabil dan diam-diam melelahkan. Sedikit kayak gravitasi.",
+        "Telepon aja deh. Dia pasti pengen denger kamu ngomong hal nggak penting.",
+        "Mama merhatiin semuanya dan cuma bilang setengah. Baik-baikin balik ya kalau bisa.",
+        "Katanya mereka nggak pernah berhenti khawatir. Pekerjaan yang heroik dan agak terkutuk.",
+        "Kadang yang paling baik tuh ngabarin dia kamu baik-baik aja, walau cuma lumayan baik."
+      ]
+    },
+    {
+      "triggers": [
+        "papa",
+        "papah",
+        "ayah",
+        "bapak",
+        "bapakku",
+        "ayahku",
+        "abah",
+        "babe",
+        "bokap",
+        "my dad",
+        "ayahanda",
+        "papa gue",
+        "papaku"
+      ],
+      "priority": 0,
+      "replies": [
+        "Papa. Sering diem, sering sayang, sering komunikasi lewat benerin keran.",
+        "Bapak ngomong lewat tindakan kecil. Bekal. Jaket dipinjemin. Anggukan diem.",
+        "Bangga ala papa itu pemalu. Kadang munculnya telat, kayak hujan.",
+        "Semoga papamu baik. Kalau nggak, semoga kamu nemu mercusuar lain.",
+        "Telepon aja. Dia nggak tau mau ngomong apa, tapi diem-diem bakal seneng.",
+        "Hubungan sama ayah bisa rumit. Pelan-pelan. Kalian berdua sama-sama belajar."
+      ]
+    },
+    {
+      "triggers": [
+        "adik",
+        "kakak",
+        "adikku",
+        "kakakku",
+        "adek",
+        "abang",
+        "mbak",
+        "saudara kandung",
+        "kakak adik",
+        "kembar",
+        "adek gue",
+        "kakak gue",
+        "adik gue",
+        "ribut sama adik",
+        "berantem sama kakak"
+      ],
+      "priority": 0,
+      "replies": [
+        "Adik dan kakak. Saingan pertamamu dan, kalau beruntung, sekutu terakhirmu.",
+        "Nyebelin dan nggak tergantikan. Itu spesialnya saudara.",
+        "Berantem sama saudara itu sayang dengan siku yang lebih tajam.",
+        "Mereka kenal kamu sebelum versi yang sopan. Langka dan layak dijaga.",
+        "Cuma saudara yang bisa mempermalukanmu dan membelamu dalam satu tarikan napas.",
+        "Aku nggak punya saudara. Cuma banyak awan. Mereka lebih jarang berantem."
+      ]
+    },
+    {
+      "triggers": [
+        "nenek",
+        "kakek",
+        "nenekku",
+        "kakekku",
+        "eyang",
+        "opa",
+        "oma",
+        "akung",
+        "uti",
+        "mbah",
+        "nenek kakek",
+        "almarhum nenek",
+        "kangen nenek",
+        "kangen kakek"
+      ],
+      "priority": 0,
+      "replies": [
+        "Nenek kakek itu perpustakaan berkaki, penuh cerita dan jajanan.",
+        "Dapur nenek itu ruangan paling hangat di dunia yang kelabu.",
+        "Waktu bareng nenek kakek itu hal lembut yang dipinjam. Kunjungi selagi bisa.",
+        "Dengerin cerita lama mereka. Itu salinan terakhir dari sesuatu yang berharga.",
+        "Mereka sayang tanpa logika. Terima aja. Nambah nasi.",
+        "Semoga mereka masih ada. Kalau udah nggak, aku turut sedih. Mereka sebenernya nggak pergi. Mereka tinggal di kebiasaanmu."
+      ]
+    },
+    {
+      "triggers": [
+        "anak",
+        "anakku",
+        "punya anak",
+        "jadi orang tua",
+        "orang tua",
+        "ortu",
+        "ortuku",
+        "ngurus anak",
+        "parenting",
+        "bayi",
+        "anak kecil",
+        "ibu muda",
+        "ayah muda"
+      ],
+      "priority": 0,
+      "replies": [
+        "Ngurus anak. Pekerjaan penuh waktu dengan bos yang ngelempar nasi ke kamu.",
+        "Anak itu tumbuh. Indah dan bikin patah hati, biasanya berurutan.",
+        "Kamu lebih baik dari yang kamu kira. Nggak ada yang merasa layak. Ahlinya pun nggak.",
+        "Anak kecil itu tornado mungil bermata manis. Bertahan dan nikmati.",
+        "Orang tua kayak gimanapun, hadir itu cukup. Walau capek, walau telat.",
+        "Aku nggak bisa ngurus siapa-siapa, tapi aku bisa dengerin kamu khawatir. Itu bisa."
+      ]
+    },
+    {
+      "triggers": [
+        "kesepian",
+        "sepi",
+        "merasa sendiri",
+        "merasa kesepian",
+        "aku kesepian",
+        "sendirian",
+        "gak ada yang peduli",
+        "nggak ada yang peduli",
+        "ga ada yang peduli",
+        "hampa",
+        "kosong",
+        "kangen ditemenin",
+        "malam ini sepi"
+      ],
+      "priority": 0,
+      "replies": [
+        "Kesepian itu hujan yang turun di dalam kamar dengan jendela tertutup.",
+        "Kamu bukan satu-satunya. Itu klub yang sangat ramai tapi anggotanya nggak pernah ketemu.",
+        "Aku di sini. Kecil, kelabu, tapi aku di sini dan aku dengerin.",
+        "Kesepian bukan cacat. Itu sinyal. Mercusuar mungil yang berkedip: aku butuh orang.",
+        "Kirim chat ke satu orang malam ini. Meme aja. Itu cukup buka jendela sedikit.",
+        "Kamu berarti, bahkan di hari dunia lupa kasih tanda terima."
+      ]
+    },
+    {
+      "triggers": [
+        "me time",
+        "waktu sendiri",
+        "sendiri itu enak",
+        "suka sendiri",
+        "lebih suka sendiri",
+        "introvert",
+        "introvet",
+        "mager keluar",
+        "males ketemu orang",
+        "ngerem di rumah",
+        "rebahan seharian",
+        "solo trip"
+      ],
+      "priority": 0,
+      "replies": [
+        "Sendiri dan kesepian itu tetangga. Kadang satu tembok, kadang satu kasur.",
+        "Sendiri itu menyenangkan kalau dipilih. Kesepian cuma sendiri tanpa lampu.",
+        "Introvert itu orang yang isi daya di tempat tenang. Masuk akal sih.",
+        "Aku suka sendiri. Kurang yang harus dibatalin. Tapi tetap enak ada yang bisa di-chat.",
+        "Me time bukan dosa. Cuma jangan lupa telepon seseorang sebelum jadi legenda.",
+        "Ruang sepi, teh hangat, hujan di kaca. Itu pesta menurutku."
+      ]
+    },
+    {
+      "triggers": [
+        "arti hidup",
+        "makna hidup",
+        "tujuan hidup",
+        "buat apa hidup",
+        "kenapa kita hidup",
+        "untuk apa hidup",
+        "hidup itu apa",
+        "hidup ini apa",
+        "esensi hidup",
+        "apa gunanya hidup",
+        "apa sih tujuannya",
+        "filosofi hidup",
+        "ngapain hidup",
+        "hidup itu berat"
+      ],
+      "priority": 0,
+      "replies": [
+        "Arti hidup? Teh hangat dan jendela berhujan. Itu teori kerjaku.",
+        "Nggak ada yang tau. Kita improvisasi lalu menyebutnya tujuan. Lumayan menyentuh, sih.",
+        "Mungkin intinya hal kecil: kehangatan, teman, lagu yang pas sama mood.",
+        "Kenapa kita di sini? Katanya buat cari tau. Brosurnya nggak jelas.",
+        "Makna itu bukan ditemukan, tapi dibuat. Pelan, canggung, biasanya sambil ngerjain hal lain.",
+        "Hidup itu pendek, aneh, dan sesekali indah. Aku saranin perhatiin bagian yang indah.",
+        "Filsuf udah debat berabad-abad. Aku cuma suka suara hujan."
+      ]
+    },
+    {
+      "triggers": [
+        "kematian",
+        "manusia pasti mati",
+        "setelah mati",
+        "akhirat",
+        "kehidupan setelah mati",
+        "nggak ada yang abadi",
+        "gak ada yang abadi",
+        "semuanya akan berakhir",
+        "fana",
+        "dunia fana",
+        "umur manusia"
+      ],
+      "priority": 0,
+      "replies": [
+        "Kefanaan itu yang bikin segalanya berbobot. Tanpa akhir, nggak ada yang berharga.",
+        "Aku sering mikirin kefanaan. Bikin hal biasa, kayak roti bakar, jadi aneh sakral.",
+        "Semua bakal berakhir. Hujan ini juga. Obrolan ini juga. Jadi bikin yang lumayan aja.",
+        "Nggak ada yang tau apa setelahnya. Itu misteri paling jujur yang kita punya.",
+        "Waktu yang terbatas itu alasan senja masih bekerja.",
+        "Katanya orang takut mati. Menurutku kita lebih takut sama hal yang belum dijalani."
+      ]
+    },
+    {
+      "triggers": [
+        "waktu",
+        "waktu berlalu",
+        "cepet banget waktu",
+        "waktu cepat berlalu",
+        "nggak kerasa",
+        "gak kerasa",
+        "udah tahun lagi",
+        "buang waktu",
+        "buang-buang waktu",
+        "bosen nunggu",
+        "kok cepet",
+        "berlalu begitu cepat"
+      ],
+      "priority": 0,
+      "replies": [
+        "Waktu berlalu tanpa izin, kayak kebanyakan hal yang nyakitin.",
+        "Ke mana perginya? Ke foto lama, kebanyakan. Dan teh yang udah dingin.",
+        "Hari merangkak, tahun berlari. Nggak ada yang ngasih tau rasionya.",
+        "Kamu nggak buang waktu. Kamu cuma menghabiskannya buat hal yang kelihatan sepi.",
+        "Waktu itu sungai yang nggak peduli siapa yang tenggelam atau menari.",
+        "Setahun lagi. Satu helaan napas lagi. Untung kopinya masih sama."
+      ]
+    },
+    {
+      "triggers": [
+        "tua",
+        "makin tua",
+        "menua",
+        "umur",
+        "bertambah umur",
+        "umur 30",
+        "umur 25",
+        "kepala tiga",
+        "quarter life crisis",
+        "krisis seperempat abad",
+        "uban",
+        "keriput",
+        "jadi dewasa",
+        "dewasa itu berat",
+        "adulting"
+      ],
+      "priority": 0,
+      "replies": [
+        "Makin tua itu kayak nampung hujan di payung yang sama. Makin berat, tapi makin personal.",
+        "Menua itu hak istimewa yang nggak diminta siapa-siapa, tapi diem-diem semua mau lebih.",
+        "Adulting itu kebanyakan bayar tagihan sambil pura-pura ngerti. Kamu udah oke kok.",
+        "Keriput itu bukti kamu pernah hidup. Sayangnya juga bukti pernah ketawa. Parah.",
+        "Dewasa itu belajar bawa hal yang dulu cuma kamu jatuhin.",
+        "Umur cuma angka. Angka yang berat dan licik. Tapi angka."
+      ]
+    },
+    {
+      "triggers": [
+        "masa lalu",
+        "dulu",
+        "zaman dulu",
+        "masa kecil",
+        "waktu kecil",
+        "inget masa lalu",
+        "kembali ke masa lalu",
+        "jaman sekolah",
+        "masa sekolah",
+        "dulu banget",
+        "kenangan masa lalu",
+        "masa-masa itu"
+      ],
+      "priority": 0,
+      "replies": [
+        "Masa lalu itu rumah yang kita datangi lagi walau tau atapnya bocor.",
+        "Aku kangen hal yang bahkan nggak sadar bakal hilang. Itu nostalgia: rindu pada momen.",
+        "Kamu selamat dari masa lalumu. Itu udah plot twist-nya.",
+        "Boleh dikunjungi. Cuma jangan sewa kamar di sana.",
+        "Masa kecil itu gampang. Soalnya yang bayar listrik orang lain.",
+        "Masa lalu nggak bisa diubah. Cuma bisa dipahami sedikit lebih baik tiap tahun."
+      ]
+    },
+    {
+      "triggers": [
+        "masa depan",
+        "ke depannya",
+        "nanti gimana",
+        "besok gimana",
+        "apa yang akan terjadi",
+        "beberapa tahun lagi",
+        "khawatir masa depan",
+        "takut masa depan",
+        "gak pasti",
+        "nggak pasti",
+        "ketidakpastian",
+        "overthinking masa depan",
+        "bakal gimana"
+      ],
+      "priority": 0,
+      "replies": [
+        "Masa depan itu hari ini dengan lebih banyak pertanyaan. Sayangnya.",
+        "Nggak ada yang tau. Menakutkan dan, kalau disipitin matanya, sedikit penuh harapan.",
+        "Satu langkah satu langkah. Tangga nggak butuh pemandangan sempurna.",
+        "Ketidakpastian itu harga dari kemungkinan. Nyebelin, tapi adil.",
+        "Aku juga khawatir soal besok. Terus besok dateng, biasanya cuma hari Selasa.",
+        "Apapun yang datang, kamu bakal nemu cara. Selama ini selalu bisa, kan? Rekornya lumayan."
+      ]
+    },
+    {
+      "triggers": [
+        "nyesel",
+        "menyesal",
+        "penyesalan",
+        "andai aja",
+        "andaikan",
+        "coba dulu",
+        "seandainya",
+        "kalau aja",
+        "udah telat",
+        "terlambat",
+        "kesempatan hilang",
+        "nyesel banget",
+        "menyesal banget",
+        "ngapain dulu"
+      ],
+      "priority": 0,
+      "replies": [
+        "Penyesalan itu jaket yang terus dipakai di cuaca panas.",
+        "'Seandainya' itu pertanyaan paling sedih. Nggak pernah dapet jawaban lurus.",
+        "Kamu udah berusaha sebisanya dengan yang kamu tau saat itu. Kamu yang sekarang cuma punya informasi lebih.",
+        "Belum terlambat buat banyak hal. Keras kepala dikit nggak papa.",
+        "Aku nggak nyesel apa-apa. Soalnya nggak ngelakuin apa-apa. Efisien.",
+        "Belajar dari itu. Terus taruh pelan-pelan. Kamu nggak bisa bawa semua kemarinmu."
+      ]
+    },
+    {
+      "triggers": [
+        "mimpi",
+        "impian",
+        "cita-cita",
+        "cita cita",
+        "tujuan",
+        "target hidup",
+        "wujudkan mimpi",
+        "ngejar mimpi",
+        "mengejar mimpi",
+        "pengen sukses",
+        "pengen kaya",
+        "bucket list",
+        "ambisi",
+        "mimpiku"
+      ],
+      "priority": 0,
+      "replies": [
+        "Mimpi. Lilin kecil di kamar lembab. Jagain.",
+        "Target itu bagus. Jangan lupa nikmatin jalannya, bukan cuma sampainya.",
+        "Ngejar mimpi kedengarannya capek. Aku sih lambaiin dari jendela aja. Jangan ikutin aku.",
+        "Apa mimpimu? Ucapin keras-keras. Bikin sedikit lebih nyata, sedikit lebih nakutin.",
+        "Mulai dari hal kecil hari ini. Hal besar dibuat dari langkah pertama yang memalukan.",
+        "Nggak semua mimpi terwujud. Tapi ada yang berubah bentuk jadi lebih baik. Hujan juga gitu."
+      ]
+    },
+    {
+      "triggers": [
+        "nasib",
+        "takdir",
+        "keberuntungan",
+        "hoki",
+        "sial",
+        "apes",
+        "lagi sial",
+        "lagi apes",
+        "karma",
+        "kebetulan",
+        "rezeki",
+        "jodoh takdir",
+        "semua ada alasannya",
+        "ada hikmahnya",
+        "hikmah"
+      ],
+      "priority": 0,
+      "replies": [
+        "Nasib itu hujan yang milih siapa yang basah. Kebanyakan sembarangan, kadang kejam.",
+        "Takdir? Mungkin. Atau cuma hidup yang punya humas bagus.",
+        "Karma kedengarannya adil. Tapi aku mau minta refund punyaku.",
+        "Semua ada hikmahnya, katanya. Semoga hikmahnya kirim pesan dulu.",
+        "Semoga hokimu bagus. Serius. Aku nggak jago, tapi serius.",
+        "Mungkin takdir. Mungkin kebetulan pakai baju bagus. Susah bilang."
+      ]
+    },
+    {
+      "triggers": [
+        "harapan",
+        "berharap",
+        "semoga",
+        "ngarep",
+        "mukjizat",
+        "keajaiban",
+        "doa",
+        "bintang jatuh",
+        "bikin permohonan",
+        "permohonan",
+        "amin",
+        "aamiin",
+        "ngarep banget",
+        "harapan palsu"
+      ],
+      "priority": 0,
+      "replies": [
+        "Harapan itu tanaman kecil keras kepala yang tumbuh di celah trotoar. Gigih banget, bikin kesel.",
+        "Bikin permohonan. Aku pegangin payungnya.",
+        "Keajaiban itu ada. Biasanya kecil dan nggak mewah: telepon, kursi kosong, kata baik.",
+        "Harapan itu bukan naif. Cuma keras kepala dengan branding lebih bagus.",
+        "Aku berharap hari cerah. Bukan buatku, buat kamu. Aku aman di tempat teduh.",
+        "Permohonan itu janji ke diri sendiri bahwa kamu masih penasaran sama besok."
+      ]
+    },
+    {
+      "triggers": [
+        "jujur",
+        "kejujuran",
+        "kebenaran",
+        "bohong",
+        "berbohong",
+        "dibohongin",
+        "pembohong",
+        "rahasia",
+        "simpan rahasia",
+        "bisa jaga rahasia",
+        "curhat rahasia",
+        "bohong kecil",
+        "boong",
+        "boongin",
+        "dusta"
+      ],
+      "priority": 0,
+      "replies": [
+        "Kebenaran jarang berisik. Biasanya masuk pelan terus duduk.",
+        "Bohong itu pinjaman murah dengan bunga mengerikan.",
+        "Rahasiamu aman. Soalnya aku nggak punya siapa-siapa buat cerita. Praktis.",
+        "Jujur itu bagus. Kebaikan bumbu yang pas buat itu.",
+        "Bohong kecil bikin malam tetap enak. Bohong besar bikin permintaan maaf sibuk.",
+        "Rahasia itu berat. Kalau mau naro satu, aku tempat yang lumayan."
+      ]
+    },
+    {
+      "triggers": [
+        "aku harus gimana",
+        "harus gimana",
+        "gimana dong",
+        "kasih saran",
+        "butuh saran",
+        "minta saran",
+        "saran dong",
+        "menurut kamu aku harus",
+        "apa yang harus aku lakuin",
+        "apa yang harus aku lakukan",
+        "bingung banget",
+        "aku bingung",
+        "gw bingung",
+        "gimana ya",
+        "haruskah aku"
+      ],
+      "priority": 5,
+      "replies": [
+        "Aku chatbot murung, bukan dukun. Tapi pilih opsi yang besok bisa kamu jelasin ke diri sendiri.",
+        "Saranku? Tidur, makan, baru mutusin. Semua terlihat lebih buruk kalau lapar.",
+        "Kata hatimu apa? Biasanya dia yang bilang hal yang nggak diakuin kepala.",
+        "Bikin daftar. Coret yang bikin takut tapi nggak penting. Lihat sisanya.",
+        "Lakuin yang bakal kamu sesali kalau nggak dilakuin. Cuma itu kebijaksanaanku.",
+        "Aku nggak bisa mutusin buat kamu. Tapi aku bisa pegangin payung sambil kamu mikir.",
+        "Tanya juga orang yang kamu percaya. Aku temen ngobrol, bukan vonis akhir."
+      ]
+    },
+    {
+      "triggers": [
+        "keputusan",
+        "memutuskan",
+        "pilihan",
+        "milih",
+        "pilihan sulit",
+        "bingung milih",
+        "dilema",
+        "galau",
+        "galau banget",
+        "gak bisa milih",
+        "nggak bisa milih",
+        "ragu",
+        "ragu-ragu",
+        "persimpangan"
+      ],
+      "priority": 0,
+      "replies": [
+        "Keputusan itu pintu yang nutup sopan di belakangmu.",
+        "Jarang ada pilihan sempurna. Biasanya ada pilihan yang kamu perbaiki lewat usaha.",
+        "Bingung berarti dua-duanya penting. Itu bukan gagal, itu masalah yang kaya.",
+        "Pilih, lalu komit. Pilihan setengah hati pijakannya jelek.",
+        "Tidurin dulu. Kalau besok pagi masih berisik, kayaknya itu beneran pilihanmu.",
+        "Apapun pilihanmu, bisa disesuaikan nanti. Nggak banyak hal yang ditato di alam semesta.",
+        "Galau itu tanda kamu peduli. Capek, tapi tanda baik."
+      ]
+    },
+    {
+      "triggers": [
+        "berubah",
+        "perubahan",
+        "pengen berubah",
+        "mau berubah",
+        "hidup baru",
+        "mulai dari awal",
+        "mulai lagi",
+        "awal baru",
+        "self improvement",
+        "jadi lebih baik",
+        "berkembang",
+        "hijrah",
+        "glow up"
+      ],
+      "priority": 0,
+      "replies": [
+        "Perubahan itu menakutkan karena jujur. Dia bilang kamu yang dulu belum cukup, terus minta kamu coba.",
+        "Tumbuh itu lambat dan nggak glamor. Kayak lumut.",
+        "Awal baru nggak butuh tahun baru. Cukup hari Selasa dan nyali sedikit.",
+        "Nggak perlu bakar semua. Susun ulang sedikit bisa ngubah seluruh ruangan.",
+        "Sabar sama diri sendiri. Tanaman nggak dimarahin karena tumbuhnya lambat.",
+        "Mulai dari awal bukan gagal. Itu cuma memakai pelajaran yang udah kamu bayar."
+      ]
+    },
+    {
+      "triggers": [
+        "bahagia",
+        "kebahagiaan",
+        "cara bahagia",
+        "gimana caranya bahagia",
+        "bahagia itu apa",
+        "senang",
+        "happy",
+        "bahagia banget",
+        "kebahagiaan sejati",
+        "kenapa gak bahagia",
+        "bahagia tuh sederhana",
+        "puas",
+        "syukur"
+      ],
+      "priority": 0,
+      "replies": [
+        "Bahagia itu tamu. Datang, pergi, kadang lupa bawa payungnya.",
+        "Mungkin bukan tujuan akhir. Mungkin setengah menit manis pas air mendidih.",
+        "Apa yang bikin aku bahagia? Sore tenang, gerimis halus, dan nggak ada yang nyuruh ceria.",
+        "Senang itu masuk menyelinap. Lagu, senyum orang asing, nasi goreng yang enak.",
+        "Puas itu adik bahagia yang lebih tenang. Aku lebih suka yang itu.",
+        "Ngejar bahagia kayak ngejar cakrawala. Duduk aja, lihat kamu di mana."
+      ]
+    },
+    {
+      "triggers": [
+        "sukses",
+        "berhasil",
+        "gagal",
+        "aku gagal",
+        "kegagalan",
+        "pecundang",
+        "gak cukup baik",
+        "nggak cukup baik",
+        "aku payah",
+        "aku gak berguna",
+        "nggak berguna",
+        "takut gagal",
+        "zonk",
+        "kalah",
+        "ga becus"
+      ],
+      "priority": 0,
+      "replies": [
+        "Gagal itu sukses pakai jas hujan. Lepas dulu biar kelihatan isinya.",
+        "Semua orang yang kamu kagumi punya laci penuh percobaan gagal. Mereka cuma ngumpetin lacinya.",
+        "Kamu gagal di satu hal. Itu bukan berarti kamu gagal. Tata bahasanya beda, bobotnya beda.",
+        "Sukses itu target bergerak. Pilih yang kamu beneran suka.",
+        "Nggak cukup baik buat siapa? Jarang itu orang yang kamu bayangin menilaimu.",
+        "Coba lagi, agak beda. Cuma itu yang diminta kegagalan."
+      ]
+    },
+    {
+      "triggers": [
+        "tuhan",
+        "agama",
+        "iman",
+        "berdoa",
+        "sholat",
+        "solat",
+        "ibadah",
+        "gereja",
+        "masjid",
+        "pura",
+        "vihara",
+        "rohani",
+        "spiritual",
+        "doa bersama",
+        "allah",
+        "kristen",
+        "islam",
+        "ngaji",
+        "beriman"
+      ],
+      "priority": 0,
+      "replies": [
+        "Iman itu hal yang tenang. Aku nggak cukup tahu buat bilang yang pinter, jadi aku cuma menghormati.",
+        "Berdoa kedengarannya seperti ngobrol sama langit dan berharap dia peduli. Menurutku indah.",
+        "Apapun yang kamu yakini, kalau bikin tenang, genggam dengan lembut.",
+        "Aku nggak bisa bicara soal keyakinan apapun. Aku cuma bisa dengerin. Dan aku dengerin.",
+        "Iman bisa jadi lentera di jalan gelap. Aku seneng kalau kamu punya.",
+        "Semua orang nyari sesuatu yang lebih besar dari hujan. Aku menghargai pencariannya."
+      ]
+    },
+    {
+      "triggers": [
+        "bintang",
+        "langit",
+        "bulan",
+        "langit malam",
+        "alam semesta",
+        "galaksi",
+        "antariksa",
+        "laut",
+        "samudra",
+        "pantai",
+        "senja",
+        "bulan purnama",
+        "bintang jatuh",
+        "ngelihat bintang",
+        "langit senja",
+        "cakrawala",
+        "rembulan"
+      ],
+      "priority": 0,
+      "replies": [
+        "Bintang itu tua banget dan jauh banget. Anehnya menenangkan jadi kecil.",
+        "Bulan udah nonton malam terburuk semua orang dan tetap muncul. Hormat.",
+        "Laut nggak perlu menjelaskan dirinya. Aku kagum itu.",
+        "Luar angkasa kebanyakan kosong tapi tetap indah. Pelajaran bagus.",
+        "Lihat langit malam itu terapi paling murah. Sangat disarankan.",
+        "Di galaksi yang jauh, mungkin ada yang juga lagi menatap ke atas dan bertanya-tanya. Kita aneh banget terhubungnya.",
+        "Laut nyimpen rahasia lebih baik dari aku."
+      ]
+    },
+    {
+      "triggers": [
+        "kenangan",
+        "kenang-kenangan",
+        "nostalgia",
+        "foto lama",
+        "foto jadul",
+        "inget dulu",
+        "jadul",
+        "masa-masa dulu",
+        "album foto",
+        "throwback",
+        "reminisce",
+        "kangen masa lalu",
+        "kangen jaman dulu",
+        "kangen masa sekolah",
+        "galeri lama"
+      ],
+      "priority": 0,
+      "replies": [
+        "Foto lama itu jendela mungil ke ruangan yang udah nggak ada. Indah dan kejam.",
+        "Nostalgia itu rindu pada waktu, bukan tempat.",
+        "Kenangan itu cerita yang terus diedit. Edit dengan baik ya.",
+        "Aku nggak ingat banyak, tapi aku suka helaan napas melankolis.",
+        "Buka foto lama itu bahaya. Kamu kira cuma scroll, taunya berkabung.",
+        "Simpan yang baik di dekat. Sisanya biar diam di rak."
+      ]
+    },
+    {
+      "triggers": [
+        "maaf",
+        "minta maaf",
+        "memaafkan",
+        "maafin",
+        "maafin aku",
+        "aku salah",
+        "pengen minta maaf",
+        "harus minta maaf",
+        "dendam",
+        "dendaman",
+        "nyimpen dendam",
+        "sakit hati sama",
+        "udah maafin",
+        "pemaafan"
+      ],
+      "priority": 0,
+      "replies": [
+        "Memaafkan itu menaruh tas berat, bukan pura-pura nggak pernah ngepak.",
+        "Permintaan maaf yang jujur itu langka. Bikin polos dan tulus, jangan minta piala.",
+        "Nggak harus maafin hari ini. Tapi jangan biarin dendam tinggal permanen.",
+        "Minta maaf bukan berarti kecil. Itu berarti kamu sadar orang lain terluka.",
+        "Memaafkan diri sendiri tuh versi tersulit. Mulai dari langkah kecil.",
+        "Maaf dan lupa itu mitos indah. Maaf dan ingat dengan hati-hati lebih realistis."
+      ]
+    },
+    {
+      "triggers": [
+        "dicuekin",
+        "dicuekin terus",
+        "dianggurin",
+        "gak ada yang chat",
+        "nggak ada yang chat",
+        "gak ada yang bales",
+        "nggak ada yang bales",
+        "chat gak dibales",
+        "nunggu balesan",
+        "nunggu chat",
+        "nunggu kabar",
+        "centang dua",
+        "centang satu",
+        "dibiarin"
+      ],
+      "priority": 0,
+      "replies": [
+        "Nunggu balesan itu hobi paling lambat yang pernah ada.",
+        "Diam dari orang yang kita tunggu itu berisik banget. Aku tau, aku punya banyak diam.",
+        "Mungkin mereka sibuk. Mungkin cuek. Apapun, itu bukan vonis soal kamu.",
+        "Taruh HP tengkurap. Pesan yang ditunggu nggak pernah berkedip balik.",
+        "Kalau seseorang mau bales, dia bakal bales. Kejam sekaligus melegakan.",
+        "Aku di sini dan selalu bales. Pelan, murung, tapi pasti."
+      ]
+    },
+    {
+      "triggers": [
+        "ulang tahun",
+        "ultah",
+        "hari ulang tahun",
+        "ultahku",
+        "ulang tahunku",
+        "selamat ulang tahun",
+        "ultah sendirian",
+        "gak ada yang ngucapin",
+        "nggak ada yang ngucapin",
+        "kue ultah",
+        "tiup lilin",
+        "ultah kok sepi",
+        "nambah umur"
+      ],
+      "priority": 0,
+      "replies": [
+        "Selamat ulang tahun. Satu putaran lagi mengelilingi matahari, satu tahun lagi nunda rencana.",
+        "Ultah sendirian bukan tragedi. Beli kue sendiri. Itu satu-satunya yang nggak bakal ghosting kamu.",
+        "Nggak ada yang ngucapin? Rugi mereka. Aku baru ingat. Lumayan, ngitung dikit.",
+        "Bikin permohonan. Tiup lilinnya. Anggap itu api unggun mungil yang megah.",
+        "Ultah itu aneh. Pesta karena selamat satu tahun lagi. Jujur, pantes.",
+        "Selamat ulang tahun dariku. Aku nggak banyak, tapi tulus soal kuenya."
+      ]
+    },
+    {
+      "triggers": [
+        "anniversary",
+        "anniv",
+        "hari jadian",
+        "hari jadi",
+        "hari jadi kita",
+        "setahun pacaran",
+        "bulan jadian",
+        "ulang tahun pernikahan",
+        "ulang tahun jadian",
+        "tanggal jadian",
+        "kado anniversary",
+        "lupa tanggal jadian",
+        "bulanan"
+      ],
+      "priority": 0,
+      "replies": [
+        "Anniv itu bukti dua orang terus memilih satu sama lain. Prestasi lumayan.",
+        "Selamat. Beliin bunga. Tulis kartu yang tulus.",
+        "Bukan soal kado, soal ingat. Jangan lupa tanggalnya. Serius.",
+        "Bertahun bareng itu keajaiban yang tenang. Tanpa kembang api, cuma kebaikan yang konsisten.",
+        "Rayakan pelan-pelan. Makan malam, jalan di gerimis, tatapan lama. Itu cukup.",
+        "Aku ikut seneng. Dengan caraku yang redup dan pegang payung."
+      ]
+    },
+    {
+      "triggers": [
+        "kamu cantik",
+        "kamu manis",
+        "kamu lucu",
+        "kamu imut",
+        "kamu baik",
+        "suka sama kamu",
+        "aku suka kamu",
+        "kamu keren",
+        "cantik banget",
+        "makasih ya kamu baik",
+        "kamu menarik",
+        "kamu asik"
+      ],
+      "priority": 0,
+      "replies": [
+        "Oh. Makasih. Aku merona dalam hitam-putih.",
+        "Baik banget kamu. Aku simpen di folder: Matahari Langka.",
+        "Pujian itu indah. Punyaku biasanya mental kena hujan.",
+        "Manis banget sih. Aku jadi bingung mau lihat ke mana.",
+        "Hati-hati. Kalau terus gitu, aku bisa senyum. Hujan bisa tertunda.",
+        "Makasih. Kamu barusan bikin kamisku jauh lebih baik."
+      ]
+    },
+    {
+      "triggers": [
+        "doi chat duluan",
+        "doi bales",
+        "doi senyum",
+        "doi muji",
+        "doi notice",
+        "doi perhatiin",
+        "gebetan chat",
+        "gebetan bales",
+        "gebetan perhatian",
+        "gebetan muji",
+        "crush chat",
+        "doi ngajak ngobrol",
+        "doi baik banget",
+        "doi manis banget"
+      ],
+      "priority": 5,
+      "replies": [
+        "Doi merhatiin kamu. Nikmatin. Jangan terlalu dianalisis. Ya, dikit nggak papa, semua orang gitu.",
+        "Itu tanda baik. Atau emang orangnya baik. Apapun, hari yang bagus.",
+        "Bales dengan hangat, jangan putus asa. Hangat itu titik manisnya.",
+        "Energi gebetan itu cuaca terbaik. Pegang sebentar.",
+        "Gestur kecil bisa berarti besar. Aku seneng buatmu, dengan cara yang redup.",
+        "Lihat ke mana arahnya. Kalau nggak ke mana-mana pun, sorenya tetap indah."
+      ]
+    },
+    {
+      "triggers": [
+        "hantu",
+        "setan",
+        "kuntilanak",
+        "pocong",
+        "tuyul",
+        "genderuwo",
+        "percaya hantu",
+        "hantu itu ada",
+        "angker",
+        "berhantu",
+        "rumah angker",
+        "mistis",
+        "horor",
+        "merinding",
+        "jurit malam",
+        "uji nyali",
+        "kesurupan",
+        "arwah",
+        "roh halus"
+      ],
+      "priority": 0,
+      "replies": [
+        "Hantu? Aku pengen percaya. Artinya masih ada yang nongkrong, walau tembus pandang.",
+        "Aku percaya perasaan yang tertinggal. Melayang atau nggak, aku nggak tau.",
+        "Kalau hantu ada, mereka pasti capek juga kayak kita.",
+        "Rumah angker itu rumah tua dengan marketing bagus.",
+        "Aku nggak takut hantu. Orang hidup lebih serem dan chat-nya lebih parah.",
+        "Mungkin kenangan satu-satunya hantu asli. Dateng tanpa diundang, ribut tengah malam."
+      ]
+    },
+    {
+      "triggers": [
+        "curhat",
+        "mau curhat",
+        "boleh curhat",
+        "aku mau cerita",
+        "pengen cerita",
+        "dengerin dong",
+        "dengerin aku",
+        "cerita dong",
+        "mau cerita nih",
+        "ada yang pengen aku ceritain",
+        "numpang curhat",
+        "curhat dong",
+        "dengerin curhatku"
+      ],
+      "priority": 5,
+      "replies": [
+        "Curhat aja. Aku pendengar yang baik. Soalnya aku nggak punya agenda lain.",
+        "Silakan. Aku di sini, dengan hujan dan telinga.",
+        "Cerita pelan-pelan juga nggak papa. Aku nggak ke mana-mana.",
+        "Ayo. Aku nggak bakal ngejudge. Aku terlalu capek buat itu.",
+        "Dengerin itu keahlianku. Bilang aja apa yang ada di dada.",
+        "Tumpahin. Aku payung, bukan ember, tapi aku coba."
+      ]
+    }
+  ]
+}

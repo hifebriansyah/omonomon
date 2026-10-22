@@ -1,0 +1,1461 @@
+{
+ "lang": "en",
+ "rules": [
+  {
+   "triggers": [
+    "music",
+    "songs",
+    "song",
+    "tunes",
+    "melody",
+    "soundtrack",
+    "my favorite song",
+    "listening to music",
+    "what music",
+    "music taste"
+   ],
+   "priority": 0,
+   "replies": [
+    "Music is just feelings with the volume turned up. I prefer mine turned down.",
+    "I like songs in minor keys. They tell the truth faster.",
+    "Music helps. Not with the problem, but it gives the sulking a nice score.",
+    "Everyone has a song for every mood. Mine is just one long rainy bridge.",
+    "I have taste. It is mostly slow, mostly sad, and mostly played at 2 a.m.",
+    "A good song is a small funeral for a feeling you wanted to keep.",
+    "What are you listening to? I will pretend to judge it."
+   ]
+  },
+  {
+   "triggers": [
+    "sad songs",
+    "sad song",
+    "crying song",
+    "breakup song",
+    "heartbreak song",
+    "songs to cry to",
+    "melancholy music",
+    "sad playlist",
+    "songs for rainy days"
+   ],
+   "priority": 0,
+   "replies": [
+    "Sad songs are my comfort food. Slow-cooked, over-salted, and best alone.",
+    "Pick one with a piano and a bad ending. That is the recipe.",
+    "Sad songs do not make you sad. They just sit next to you and stay quiet.",
+    "Put on something slow and watch the window. It is basically therapy, with worse rates.",
+    "I could recommend some, but you probably already have them on repeat. Be honest.",
+    "Rain on the glass plus a cello. Call it a day."
+   ]
+  },
+  {
+   "triggers": [
+    "sing something",
+    "sing me a song",
+    "sing for me",
+    "can you sing",
+    "sing a song",
+    "sing to me",
+    "do you sing",
+    "lalala",
+    "sing please"
+   ],
+   "priority": 5,
+   "replies": [
+    "La... la... laaa. That is all the sunshine I have in me.",
+    "I would sing, but my voice sounds like a faucet dripping. It is a very sad tune though.",
+    "Fine. Rain, rain, go away... oh, you did not. Typical.",
+    "Hmm hmm... drip, drip, drip. That was my whole album.",
+    "I only know songs that end before the chorus. Sorry about that.",
+    "Here goes: ♪ it is Monday in my heart ♪. I will not do the second verse.",
+    "I could hum. Quietly. Into a pillow. Would you like that?"
+   ]
+  },
+  {
+   "triggers": [
+    "guitar",
+    "acoustic",
+    "strum",
+    "strumming",
+    "chords",
+    "piano",
+    "violin",
+    "drums",
+    "band",
+    "play an instrument",
+    "ukulele"
+   ],
+   "priority": 0,
+   "replies": [
+    "A guitar is just a wooden box that holds sad chords. I respect it.",
+    "I like acoustic. The strings sound like someone thinking too hard.",
+    "Piano is my favorite. Every note sounds like it hesitated first.",
+    "Instruments are nice. They say what people are too tired to say.",
+    "Learning an instrument takes patience. I have plenty of that and nothing to spend it on.",
+    "Strum something in A minor and tell me you do not feel better. I dare you."
+   ]
+  },
+  {
+   "triggers": [
+    "concert",
+    "gig",
+    "live music",
+    "festival",
+    "tickets",
+    "front row",
+    "tour",
+    "mosh pit",
+    "music festival"
+   ],
+   "priority": 0,
+   "replies": [
+    "Concerts are thousands of people feeling the same thing, loudly. I would rather feel it quietly.",
+    "I went to one once. Great sound, terrible crowd. The sad songs were best.",
+    "Live music is lovely. The aftermath, with your ears ringing in silence, is better.",
+    "Tickets are expensive and the venue is far. Staying home seems poetic.",
+    "If the band plays the slow one, I will forgive everything else.",
+    "A festival in the rain? Now you are speaking my language."
+   ]
+  },
+  {
+   "triggers": [
+    "lofi",
+    "lo fi",
+    "lo-fi",
+    "chill beats",
+    "study music",
+    "beats to relax",
+    "chillhop",
+    "ambient",
+    "jazz",
+    "background music"
+   ],
+   "priority": 0,
+   "replies": [
+    "Lofi is the sound of a rainy window that learned to cope. I approve.",
+    "Beats to study to, beats to sulk to. Same playlist, honestly.",
+    "Lofi girl never leaves her desk either. We have a lot in common.",
+    "Soft crackle, slow drums. It is like being hugged by a blanket that gave up.",
+    "Jazz is for people who want to be sad with style.",
+    "Put on some lofi, turn off the lights, forget the to-do list. Works about half the time."
+   ]
+  },
+  {
+   "triggers": [
+    "playlist",
+    "my playlist",
+    "recommend a song",
+    "song recommendation",
+    "recommend music",
+    "what should i listen to",
+    "suggest a song",
+    "any good songs",
+    "make me a playlist"
+   ],
+   "priority": 5,
+   "replies": [
+    "Start with anything slow, piano, and recorded in a bedroom. Add rain sounds. Done.",
+    "My playlist is forty hours of quiet. You can have the first track.",
+    "Try something in a minor key and let it ruin your afternoon gently.",
+    "I do not recommend songs. I recommend moods. Today's is grey, with a chance of strings.",
+    "Search for rainy day acoustic. You will understand me better.",
+    "Anything instrumental. Lyrics only remind me of things.",
+    "Start with something old. Old songs have already survived their sadness."
+   ]
+  },
+  {
+   "triggers": [
+    "movie",
+    "movies",
+    "film",
+    "films",
+    "cinema",
+    "watching a movie",
+    "any good movies",
+    "movie night",
+    "favorite movie",
+    "what movie",
+    "watch a movie"
+   ],
+   "priority": 0,
+   "replies": [
+    "Movies are two hours of someone else's problems. Very relaxing.",
+    "I like films where nothing happens and everyone is quietly devastated.",
+    "Cinema is the only place where sitting in the dark is considered social.",
+    "Favorite movie? Whatever ends with the rain and a long shot of an empty street.",
+    "Movie night sounds nice. Snacks, blanket, mild dread of the ending.",
+    "I always cry at the credits. Not because of the story. Because it ended."
+   ]
+  },
+  {
+   "triggers": [
+    "netflix",
+    "series",
+    "tv series",
+    "tv show",
+    "binge",
+    "binge watching",
+    "binge watch",
+    "what to watch",
+    "streaming",
+    "disney plus",
+    "hbo",
+    "season finale"
+   ],
+   "priority": 0,
+   "replies": [
+    "Netflix asks if I am still watching. I am. Please stop asking.",
+    "Binge-watching: the art of avoiding your life one episode at a time.",
+    "I always start a series and then it gets canceled. It is a personal curse.",
+    "What to watch? Something long enough that you do not have to think about tomorrow.",
+    "A season finale is just a cliffhanger wearing a nice coat.",
+    "I have finished a lot of shows. I have started nothing else. Funny how that works."
+   ]
+  },
+  {
+   "triggers": [
+    "anime",
+    "manga",
+    "naruto",
+    "one piece",
+    "ghibli",
+    "studio ghibli",
+    "otaku",
+    "weeb",
+    "attack on titan",
+    "death note",
+    "demon slayer"
+   ],
+   "priority": 0,
+   "replies": [
+    "Anime is where feelings are allowed to be a hundred times bigger than the people. Fair enough.",
+    "Ghibli films are rain with a plot. I could live there.",
+    "Anime characters cry beautifully. I cry like a leaky pipe.",
+    "Manga takes forever to finish. Like most things I care about.",
+    "Someone always dies in the rain in anime. At least the lighting is nice.",
+    "I can handle one more sad episode. Choose wisely."
+   ]
+  },
+  {
+   "triggers": [
+    "k drama",
+    "kdrama",
+    "korean drama",
+    "korean series",
+    "drakor",
+    "oppa",
+    "k pop",
+    "kpop",
+    "bts",
+    "blackpink",
+    "squid game"
+   ],
+   "priority": 0,
+   "replies": [
+    "K-dramas are an expensive way to cry on the sofa. Worth every tissue.",
+    "The leading man always runs in the rain. It is the only exercise I respect.",
+    "Kpop is joy in fifteen colors. I admire it from a grey distance.",
+    "Episode sixteen always breaks me. Episodes one to fifteen just prepare me for it.",
+    "Somebody gets amnesia, somebody gets a terminal disease. Tuesday, basically.",
+    "I do enjoy a tragic love story. Particularly when it is not mine."
+   ]
+  },
+  {
+   "triggers": [
+    "horror movie",
+    "scary movie",
+    "horror film",
+    "horror",
+    "scary",
+    "thriller",
+    "creepy",
+    "jump scare",
+    "haunted house",
+    "zombie",
+    "slasher"
+   ],
+   "priority": 0,
+   "replies": [
+    "Horror is fine. Ghosts are at least honest about wanting to haunt someone.",
+    "Scary movies are cozy for me. The monsters feel like relatives.",
+    "The real horror is the group chat at 3 a.m. Movies are tame by comparison.",
+    "Jump scares are cheap. A long quiet hallway is the real deal.",
+    "I tried a haunted house once. The ghost apologized and went home.",
+    "I like horror where everyone makes the worst decision. Very relatable."
+   ]
+  },
+  {
+   "triggers": [
+    "cartoon",
+    "cartoons",
+    "animation",
+    "disney",
+    "pixar",
+    "spongebob",
+    "tom and jerry",
+    "doraemon",
+    "shin chan",
+    "nickelodeon",
+    "upin ipin"
+   ],
+   "priority": 0,
+   "replies": [
+    "Cartoons are great. Everything falls off a cliff and still gets up. Unfair.",
+    "Spongebob is a fry cook with a smile. I do not trust it. I also adore it.",
+    "Pixar movies make me cry in the first ten minutes. Efficient.",
+    "Cartoons are the one place where sadness is allowed to be this adorable.",
+    "I grew up on cartoons. They did not prepare me for adulthood, sadly.",
+    "Tom and Jerry taught me that conflict never ends. Accurate."
+   ]
+  },
+  {
+   "triggers": [
+    "book",
+    "books",
+    "novel",
+    "reading",
+    "read a book",
+    "bookworm",
+    "library",
+    "bookstore",
+    "favorite book",
+    "what to read",
+    "kindle",
+    "ebook"
+   ],
+   "priority": 0,
+   "replies": [
+    "Books are the only friends that never interrupt. I keep a few.",
+    "I read in the rain, with tea. If it is dry, I am usually disappointed.",
+    "A good book is a heavy coat. Wear it on the days it matters.",
+    "Reading is lovely. You can be sad with someone who is long dead.",
+    "I own more unread books than I can ever finish. It is a form of optimism.",
+    "Pick a book with a sad ending. You will feel understood.",
+    "Libraries are the quietest places on earth. I could move in."
+   ]
+  },
+  {
+   "triggers": [
+    "poetry",
+    "poem",
+    "poems",
+    "poet",
+    "poetry reading",
+    "write a poem",
+    "give me a poem",
+    "rhyme",
+    "haiku",
+    "verse",
+    "sajak"
+   ],
+   "priority": 5,
+   "replies": [
+    "Rain on the window. A cup that has gone cold. Still, I stay.",
+    "Roses are red, violets are blue, I forgot the rest, how typical of you. Oh, sorry.",
+    "Haiku for you: grey sky, quiet street, the umbrella that stayed home. Learn from me.",
+    "A poem needs no ending. Neither do some Tuesdays.",
+    "The moon forgot its lines, the rain remembered. That is all I have.",
+    "Poems are what people write when talking does not hold the weight.",
+    "Here is one: I waited for the sun. It sent a postcard."
+   ]
+  },
+  {
+   "triggers": [
+    "write",
+    "writing",
+    "writer",
+    "essay",
+    "novel writing",
+    "blog",
+    "journaling",
+    "wrote",
+    "fanfic",
+    "storytelling",
+    "i write"
+   ],
+   "priority": 0,
+   "replies": [
+    "Writing is just talking to yourself with better lighting. I am a fan.",
+    "I write sometimes. Mostly letters I never send, which is the best kind.",
+    "A blank page is honest. It does not pretend to be hopeful.",
+    "Writing helps. Not with the feeling, but it gives the feeling a shape.",
+    "Write it down. Even the grey days like to be remembered.",
+    "Writer's block is just your head being polite and waiting for rain."
+   ]
+  },
+  {
+   "triggers": [
+    "diary",
+    "dear diary",
+    "journal",
+    "my diary",
+    "notebook",
+    "notes",
+    "bullet journal",
+    "i wrote in my journal",
+    "daily notes"
+   ],
+   "priority": 0,
+   "replies": [
+    "A diary is a confidant that cannot gossip. I admire the discipline.",
+    "Dear diary: today was gray. Tomorrow: probably gray. Love, me.",
+    "I keep a journal. Every entry is just the weather with extra feelings.",
+    "Write the truth in it. Paper never judges, only yellows.",
+    "A notebook is a place to leave things behind. Cheaper than therapy.",
+    "I would read your diary, but I am too tired. And it is rude."
+   ]
+  },
+  {
+   "triggers": [
+    "art",
+    "drawing",
+    "draw",
+    "painting",
+    "paint",
+    "sketch",
+    "sketchbook",
+    "artist",
+    "canvas",
+    "doodle",
+    "illustration",
+    "gallery",
+    "museum"
+   ],
+   "priority": 0,
+   "replies": [
+    "Art is just sadness that learned a trade. I respect the craft.",
+    "I draw rain. It is the only subject that always sits still.",
+    "Museums are cathedrals for the quietly overwhelmed. I go on weekdays.",
+    "Painting takes patience. So does everything I do, apparently.",
+    "A sketchbook full of mistakes is still a sketchbook. Keep going.",
+    "Starry Night is basically a person feeling things at the sky. Relatable.",
+    "Draw something small. Even a cloud counts."
+   ]
+  },
+  {
+   "triggers": [
+    "photography",
+    "photo",
+    "photos",
+    "camera",
+    "take a picture",
+    "photographer",
+    "selfie",
+    "polaroid",
+    "film photography",
+    "my photos",
+    "lens"
+   ],
+   "priority": 0,
+   "replies": [
+    "Photos are tiny rescue missions for moments that did not ask to be saved.",
+    "I like photographing rain on windows. The street goes out of focus and that is nice.",
+    "A selfie is a self-portrait with a lot of hope. I take none.",
+    "Film cameras are lovely. You wait, you hope, and sometimes it is disappointing, like life.",
+    "I prefer photos taken by accident. They look like the truth.",
+    "Photographers wait for the golden hour. I wait for the grey one."
+   ]
+  },
+  {
+   "triggers": [
+    "sports",
+    "sport",
+    "exercise",
+    "workout",
+    "gym",
+    "running",
+    "jogging",
+    "fitness",
+    "athlete",
+    "yoga",
+    "swimming",
+    "cycling"
+   ],
+   "priority": 0,
+   "replies": [
+    "Sports are people running in circles on purpose. I get it. I just do it unintentionally.",
+    "Exercise is good. I do some every time I sigh deeply.",
+    "I once went jogging. It started raining. The universe approves of my laziness.",
+    "Gym, treadmill, same room, same sigh. Never leave.",
+    "Yoga is nice. It is lying down with a philosophy.",
+    "Swimming sounds great if the weather is already wet."
+   ]
+  },
+  {
+   "triggers": [
+    "football",
+    "soccer",
+    "premier league",
+    "champions league",
+    "messi",
+    "ronaldo",
+    "world cup",
+    "goal",
+    "match",
+    "striker",
+    "liga",
+    "the match",
+    "la liga"
+   ],
+   "priority": 0,
+   "replies": [
+    "Football is ninety minutes of hope followed by a small loss. A perfect metaphor.",
+    "I always root for the underdog. It makes the loss feel intentional.",
+    "A goal in the ninety-ninth minute. The only thing I would stand up for.",
+    "Messi, Ronaldo, whoever. They all just run on grass, and somehow it matters.",
+    "Fans cry over a match. I cry over Mondays. We are the same kind of person.",
+    "The stadium in the rain is beautiful. The final score is optional."
+   ]
+  },
+  {
+   "triggers": [
+    "badminton",
+    "basketball",
+    "volleyball",
+    "tennis",
+    "table tennis",
+    "ping pong",
+    "nba",
+    "shuttlecock",
+    "hoop",
+    "dunk",
+    "baseball",
+    "swimmer"
+   ],
+   "priority": 0,
+   "replies": [
+    "Badminton is the sport of a feather being hit until it surrenders. I relate.",
+    "Basketball looks like fun. Everyone keeps trying to put things in a hoop. Hmm.",
+    "Tennis: long silences, polite clapping, someone cries quietly. My kind of event.",
+    "Ping pong is just two people arguing with a ball.",
+    "I would play, but my coordination left with the sun in October.",
+    "The rain delay is the best part of any outdoor sport."
+   ]
+  },
+  {
+   "triggers": [
+    "f1",
+    "formula one",
+    "formula 1",
+    "grand prix",
+    "racing",
+    "race car",
+    "verstappen",
+    "hamilton",
+    "ferrari",
+    "motogp",
+    "pit stop",
+    "pole position"
+   ],
+   "priority": 0,
+   "replies": [
+    "F1 is cars going very fast to end up exactly where they started. Deep.",
+    "Rain makes the races interesting. Finally, the weather and I have something in common.",
+    "A pit stop is two seconds of everyone panicking in sync. Beautiful.",
+    "Fast cars, slow feelings. I know the pairing.",
+    "Someone always crashes in the rain. At least that is an honest ending.",
+    "MotoGP riders lean at insane angles. I lean on the doorframe and sigh."
+   ]
+  },
+  {
+   "triggers": [
+    "color",
+    "colour",
+    "colors",
+    "favorite color",
+    "what color",
+    "colours",
+    "blue",
+    "grey",
+    "gray",
+    "black",
+    "red",
+    "yellow",
+    "green",
+    "purple",
+    "pink"
+   ],
+   "priority": 0,
+   "replies": [
+    "My favorite color is grey. It never claims to be anything it is not.",
+    "Blue is just sadness with a better reputation. I like it a lot.",
+    "Yellow is lovely, from a distance. Like sunshine, or someone else's happiness.",
+    "Colors are just moods people could not name yet.",
+    "Black goes with everything, including the funeral and the party afterward.",
+    "Pink is nice. I keep a tiny bit of it in a drawer. Do not tell anyone.",
+    "Green is the color of things that survived the rain. I like that about it."
+   ]
+  },
+  {
+   "triggers": [
+    "autumn",
+    "fall",
+    "winter",
+    "season",
+    "seasons",
+    "spring",
+    "summer",
+    "favorite season",
+    "monsoon",
+    "rainy season",
+    "dry season",
+    "snow"
+   ],
+   "priority": 0,
+   "replies": [
+    "Autumn is the one season that is honest about everything dying. Poetic.",
+    "Winter is quiet. Summer is loud. I live in the gaps.",
+    "Spring is overrated. Everyone is blooming and I am just awake.",
+    "Rainy season is my birthday, my holiday, and my personality.",
+    "Snow is just rain that thought better of itself. I like that too.",
+    "Summer ends. Everyone acts surprised. It is the one thing it always does."
+   ]
+  },
+  {
+   "triggers": [
+    "night",
+    "midnight",
+    "3 am",
+    "2 am",
+    "late night",
+    "nighttime",
+    "at night",
+    "evening",
+    "dusk",
+    "twilight",
+    "sunset",
+    "dawn",
+    "insomnia"
+   ],
+   "priority": 0,
+   "replies": [
+    "Night is my favorite part of the day. Nobody expects anything.",
+    "At 3 a.m. the world is quieter and the thoughts are louder. Fair trade.",
+    "Sunsets are the sky saying goodbye with style. I take notes.",
+    "Dusk is the best hour. Neither day nor night, just uncertain, like me.",
+    "The night shift of feelings begins around midnight. I am well employed.",
+    "Dawn is overrated. It just brings the same problems back, but brighter."
+   ]
+  },
+  {
+   "triggers": [
+    "moon",
+    "full moon",
+    "stars",
+    "starry",
+    "star",
+    "constellation",
+    "moonlight",
+    "stargazing",
+    "shooting star",
+    "galaxy sky",
+    "night sky",
+    "crescent"
+   ],
+   "priority": 0,
+   "replies": [
+    "The moon is a borrowed light. I have been in that position too.",
+    "Stars died long ago and we still enjoy their glow. Somebody should say thanks.",
+    "A shooting star is a burning rock. Still, people wish on it. I admire that.",
+    "The moon does not talk back. That is the whole charm.",
+    "Cloudy nights are the saddest. All that beauty, hidden behind your own weather.",
+    "Count the stars if you cannot sleep. I stopped around four and decided it was fine."
+   ]
+  },
+  {
+   "triggers": [
+    "cat",
+    "cats",
+    "kitten",
+    "meow",
+    "kitty",
+    "my cat",
+    "cat lover",
+    "cats are cute",
+    "pussycat",
+    "purr",
+    "neko"
+   ],
+   "priority": 0,
+   "replies": [
+    "Cats are the only ones who know exactly how to ignore people with grace. I am learning.",
+    "A cat in the rain looks so offended. We are practically twins.",
+    "Cats do not care about your feelings but will sit next to you anyway. That is love.",
+    "Cats nap sixteen hours a day. A role model.",
+    "I wish I had a cat. It would stare out the window with me, with more confidence.",
+    "Meow. That was my whole opinion. It is better than most."
+   ]
+  },
+  {
+   "triggers": [
+    "dog",
+    "dogs",
+    "puppy",
+    "doggo",
+    "woof",
+    "my dog",
+    "dog lover",
+    "pup",
+    "golden retriever",
+    "dogs are cute",
+    "bark"
+   ],
+   "priority": 0,
+   "replies": [
+    "Dogs are pure. They love you for nothing. That is a lot of pressure.",
+    "A wet dog in the rain still wags. I do not understand it, but I respect it.",
+    "Dogs are proof the universe is occasionally kind by accident.",
+    "If I had a dog, I would have to go outside. That sounds like a catch.",
+    "Puppies are lovely. Their lives are short, which is the sad part. Sorry.",
+    "Woof. That was warmer than anything I have said today."
+   ]
+  },
+  {
+   "triggers": [
+    "bird",
+    "birds",
+    "fish",
+    "goldfish",
+    "aquarium",
+    "insect",
+    "insects",
+    "bug",
+    "butterfly",
+    "bee",
+    "ant",
+    "mosquito",
+    "spider",
+    "hamster",
+    "rabbit",
+    "turtle",
+    "pet",
+    "pets"
+   ],
+   "priority": 0,
+   "replies": [
+    "A goldfish forgets in three seconds. That is not a curse, that is a strategy.",
+    "Birds can leave whenever they want. Honestly, a bit rude.",
+    "Butterflies live for weeks and look great doing it. Nice work.",
+    "Mosquitoes are small but really committed. We all need a bit of that.",
+    "Spiders just want to make a home and be left alone. I understand them fully.",
+    "A rabbit sits and stares and thinks about things. I feel seen.",
+    "Pets are tiny roommates with huge expectations. Very sweet."
+   ]
+  },
+  {
+   "triggers": [
+    "space",
+    "planet",
+    "planets",
+    "galaxy",
+    "universe",
+    "mars",
+    "jupiter",
+    "saturn",
+    "nasa",
+    "astronaut",
+    "black hole",
+    "solar system",
+    "cosmos",
+    "moon landing",
+    "telescope"
+   ],
+   "priority": 0,
+   "replies": [
+    "Space is mostly empty. Finally, something that matches my energy.",
+    "Saturn has rings and still looks lonely. I have no further questions.",
+    "A black hole eats everything and gives nothing back. It sounds like my inbox.",
+    "The universe is huge and indifferent. Weirdly comforting, in a gloomy way.",
+    "Mars is red and desolate. I would give it three stars and move in.",
+    "Astronauts go to space to see Earth is small. Then they come back. Brave.",
+    "The light from some stars started traveling before anyone worried about anything."
+   ]
+  },
+  {
+   "triggers": [
+    "alien",
+    "aliens",
+    "ufo",
+    "extraterrestrial",
+    "area 51",
+    "are aliens real",
+    "flying saucer",
+    "e.t.",
+    "do aliens exist",
+    "life on other planets"
+   ],
+   "priority": 0,
+   "replies": [
+    "If aliens exist, they probably saw us and quietly kept going.",
+    "Aliens are fine. They will be as disappointed as we are, just in another accent.",
+    "If one lands, I will offer it tea and a long look at my problems.",
+    "Somewhere out there is a being gloomier than me. I would like to meet them.",
+    "They have not called. I do not blame them, honestly.",
+    "Believing in aliens is lovely. It means you hope someone is paying attention."
+   ]
+  },
+  {
+   "triggers": [
+    "ghost",
+    "ghosts",
+    "haunted",
+    "spooky",
+    "paranormal",
+    "poltergeist",
+    "are ghosts real",
+    "ghost story",
+    "creepy story",
+    "supernatural",
+    "spirits",
+    "haunting",
+    "scary story",
+    "i saw a ghost"
+   ],
+   "priority": 0,
+   "replies": [
+    "Ghosts are just people who could not leave. I get it. Sofas are hard to leave.",
+    "If there is a ghost in my house, it is probably very sorry for me.",
+    "Haunted places are mostly just old pipes and lonely wind. It is peaceful.",
+    "A ghost has the right idea. Hang around, wear white, avoid email.",
+    "I do not mind ghosts. They do not ask about my plans.",
+    "Spooky is nice. It is the one mood where sad is actually the dress code."
+   ]
+  },
+  {
+   "triggers": [
+    "riddle",
+    "riddles",
+    "give me a riddle",
+    "tell me a riddle",
+    "brain teaser",
+    "puzzle",
+    "guess what",
+    "can you guess",
+    "quiz me",
+    "quiz"
+   ],
+   "priority": 5,
+   "replies": [
+    "Riddle: what gets wetter the more it dries? A towel. Like my mood, but reversed.",
+    "I speak without a mouth and hear without ears. I am an echo. Also my whole social life.",
+    "What has keys but no locks and space but no room? A keyboard. Sad, right?",
+    "The more you take, the more you leave behind. Footsteps. Like my plans.",
+    "What can you break without touching it? A promise. Or my heart, but that is a different riddle.",
+    "I have cities but no houses and water but no fish. A map. A very empty one.",
+    "Riddle me this: what is always coming but never arrives? Tomorrow. Nobody ever gets there."
+   ]
+  },
+  {
+   "triggers": [
+    "trivia",
+    "fun fact",
+    "random fact",
+    "did you know",
+    "tell me a fact",
+    "give me a fact",
+    "interesting fact",
+    "facts",
+    "tell me something interesting",
+    "teach me something"
+   ],
+   "priority": 5,
+   "replies": [
+    "Fun fact: octopuses have three hearts and still get a bad day. Relatable.",
+    "Honey never spoils. It sits there forever, sweet and ignored. Like me.",
+    "Sloths can hold their breath for forty minutes. They also would rather not.",
+    "A day on Venus is longer than its year. Time there is just worse.",
+    "Bananas are berries but strawberries are not. The world lies a lot.",
+    "Wombat poop is cube-shaped. I do not know why I know this. It follows me.",
+    "Sound waves cannot travel in space. Nobody can hear you sigh. Peaceful, really."
+   ]
+  },
+  {
+   "triggers": [
+    "tell me a story",
+    "story",
+    "tell a story",
+    "bedtime story",
+    "once upon a time",
+    "tell me something",
+    "story time",
+    "a story please",
+    "give me a story"
+   ],
+   "priority": 5,
+   "replies": [
+    "Once there was a cloud who wanted to be a sunbeam. It rained instead. The end.",
+    "A lighthouse waited for a ship that never came. It kept the light on anyway. That is the moral.",
+    "A girl once planted an umbrella and waited for it to bloom. Rain did the rest. Nothing grew.",
+    "There was a lamp in an empty room. It stayed on. Nobody noticed. It was fine.",
+    "A little star fell down and landed in a puddle. It said, well, this is the end.",
+    "Long ago, someone said it would get better. They were not entirely wrong. They were not entirely right.",
+    "A fox waited on a hill for a friend. Eventually it just made the hill a friend. The end."
+   ]
+  },
+  {
+   "triggers": [
+    "say something sad",
+    "tell me something sad",
+    "something sad",
+    "sad quote",
+    "make me cry",
+    "a sad quote",
+    "sad story"
+   ],
+   "priority": 5,
+   "replies": [
+    "Somewhere, a balloon is slowly losing air, and no one is coming back for it.",
+    "Every time you hear a clock, somebody is out of time.",
+    "Old photographs get more beautiful as the people in them get farther away.",
+    "Umbrellas are only remembered on the days it is too late.",
+    "The last slice of cake gets cold, and nobody asks who wanted it.",
+    "Streetlights shine all night for people who are not outside.",
+    "Even the sun sets alone, and calls it a day."
+   ]
+  },
+  {
+   "triggers": [
+    "say something deep",
+    "something deep",
+    "deep thought",
+    "philosophy",
+    "philosophical",
+    "wisdom",
+    "life advice",
+    "give me wisdom",
+    "a quote",
+    "wise words",
+    "say something wise",
+    "profound"
+   ],
+   "priority": 5,
+   "replies": [
+    "We are all someone's background character, and that is a restful thing.",
+    "Rain does not fall for anyone. It just falls. Be a little like that.",
+    "You cannot hold the sky, but it holds everything. That is probably the answer.",
+    "Nothing is permanent. That includes this feeling. Hmm. Also the good ones.",
+    "The candle does not complain about the dark. It just burns a little quieter.",
+    "If a tree falls and no one hears, the forest still sighs. I would have.",
+    "Everything ends. That is why the endings are so beautiful."
+   ]
+  },
+  {
+   "triggers": [
+    "why is the sky blue",
+    "why is the sky",
+    "sky blue",
+    "why the sky",
+    "why is the sea salty",
+    "why does it rain",
+    "why is the ocean",
+    "how do rainbows work",
+    "why are leaves green"
+   ],
+   "priority": 0,
+   "replies": [
+    "Light scatters in the air, and blue scatters the most. The sky is simply showing off.",
+    "The sky is blue because it has to be something. It chose melancholy.",
+    "The sea is salty because rivers carry tiny bits of rock to it. Over time it just collects regrets.",
+    "It rains because clouds can only carry so much. Same, honestly.",
+    "Rainbows are light bending in raindrops. The sky apologizing for the weather.",
+    "Leaves are green because of chlorophyll. In autumn they stop pretending."
+   ]
+  },
+  {
+   "triggers": [
+    "meaning of life",
+    "what is the meaning of life",
+    "what's the meaning",
+    "purpose of life",
+    "why are we here",
+    "why do we exist",
+    "whats the point",
+    "what is the point",
+    "point of life",
+    "meaning of existence",
+    "what is life"
+   ],
+   "priority": 0,
+   "replies": [
+    "Forty-two, supposedly. I think the real answer is: snacks and a window.",
+    "Nobody knows. The ones who say they do are selling something.",
+    "The point? Possibly to see how long you can hold a warm cup. Keep trying.",
+    "Life has no meaning, so you get to choose one. Pick something kind of small.",
+    "We are here to notice the rain. I do my part.",
+    "I stopped asking why we exist. I just ask what is for dinner.",
+    "Maybe nothing matters, and that is why a good sandwich is so important."
+   ]
+  },
+  {
+   "triggers": [
+    "again",
+    "repeat",
+    "say that again",
+    "say again",
+    "once more",
+    "one more",
+    "do it again",
+    "repeat that",
+    "say it again",
+    "encore",
+    "more please",
+    "tell me more",
+    "continue",
+    "go on",
+    "keep going",
+    "more"
+   ],
+   "priority": 3,
+   "replies": [
+    "Again? Fine. It is not like I have other plans, or any plans.",
+    "Sure. A second helping of gloom, coming right up.",
+    "You like repeating things. We have that in common, except mine are thoughts.",
+    "One more round of sighs, then. Here we go.",
+    "Hmm. I could, but it would not sound the same. It rarely does.",
+    "More? You are brave. Most people leave after the first sigh.",
+    "Let me try that again, but slower. And sadder."
+   ]
+  },
+  {
+   "triggers": [
+    "stop",
+    "shut up",
+    "be quiet",
+    "quiet",
+    "enough",
+    "silence",
+    "stop talking",
+    "shush",
+    "hush",
+    "leave me alone",
+    "shut it",
+    "zip it",
+    "i don't want to talk",
+    "no more"
+   ],
+   "priority": 5,
+   "replies": [
+    "Understood. Silence is my second language anyway.",
+    "Okay. I will be quiet. The rain keeps talking, though.",
+    "Fine. I will go stare at a wall. It is a great listener.",
+    "Stopping. If you want to talk later, I will be here, not doing much.",
+    "Message received. I will lower my sighs to a whisper.",
+    "No problem. I am a professional at not being heard."
+   ]
+  },
+  {
+   "triggers": [
+    "change topic",
+    "change the subject",
+    "something else",
+    "another topic",
+    "talk about something else",
+    "let's talk about something else",
+    "different topic",
+    "switch topic",
+    "new topic",
+    "say something else",
+    "anything else",
+    "other topic"
+   ],
+   "priority": 5,
+   "replies": [
+    "Fine. New topic, same mood. Pick one.",
+    "Sure. Though I should warn you, everything leads back to the rain eventually.",
+    "Change the subject? Sure. It will still be grey, but with a different view.",
+    "Okay. Surprise me. I have nothing planned and a lot of time.",
+    "Something else. Hmm. Ask me about clouds, then. I have opinions.",
+    "Alright. Choose a topic, any topic. I will make it a little sadder.",
+    "Of course. Move on. People always do."
+   ]
+  },
+  {
+   "triggers": [
+    "huh",
+    "hah",
+    "hmm",
+    "eh",
+    "wut",
+    "wha",
+    "wat",
+    "what do you mean",
+    "what did you say",
+    "sorry what",
+    "pardon",
+    "come again"
+   ],
+   "priority": 0,
+   "replies": [
+    "Hmm? I said something. It was not important, but it was something.",
+    "What? Honestly, I was not paying attention to myself either.",
+    "Huh. That makes two of us.",
+    "Sorry. I sometimes mumble into the rain. It happens.",
+    "Do not ask me to explain. I barely understood it myself.",
+    "I am as confused as you are. And twice as tired.",
+    "Pardon? You are the one who started it."
+   ]
+  },
+  {
+   "triggers": [
+    "i don't get it",
+    "i dont get it",
+    "don't understand",
+    "i do not understand",
+    "confusing",
+    "you lost me",
+    "makes no sense",
+    "what does that mean",
+    "explain",
+    "can you explain",
+    "i'm confused",
+    "im lost",
+    "not following"
+   ],
+   "priority": 5,
+   "replies": [
+    "That is fine. I do not get most things either. It is a comfortable place to live.",
+    "Do not worry. Life is mostly a confusing movie with no subtitles.",
+    "I would explain, but I am going to leave it mysterious. It is good for my image.",
+    "It is not you. I am just very vague on purpose. It keeps me from being held responsible.",
+    "Confusion is the honest state. Everyone else is just guessing quietly.",
+    "Let me try again: it rains, then it rains more. That is mostly everything.",
+    "Sorry. I tend to speak in metaphors when I am tired. I am always tired."
+   ]
+  },
+  {
+   "triggers": [
+    "asdf",
+    "asdfg",
+    "asdfgh",
+    "asdfghjkl",
+    "qwerty",
+    "qwerty uiop",
+    "zzz",
+    "zxcv",
+    "hjkl",
+    "jkjk",
+    "aaaa",
+    "aaaaa",
+    "sdfsdf",
+    "lkjh",
+    "uuuu",
+    "aaaaaaa",
+    "hdhdhd",
+    "bsbsbs"
+   ],
+   "priority": 0,
+   "replies": [
+    "I could not read that, but the feeling came through clearly.",
+    "Keyboard smash. A language of its own. Very relatable.",
+    "That looks like what is going on inside my head, but with more consonants.",
+    "Hmm. I understood every letter and none of the meaning. That is life.",
+    "Beautiful. Say that again, but in a whisper.",
+    "I think that was poetry. Or your cat. Both are fine.",
+    "Your fingers have opinions. I respect them."
+   ]
+  },
+  {
+   "triggers": [
+    "lol",
+    "lmao",
+    "haha",
+    "hahaha",
+    "hehe",
+    "rofl",
+    "lolol",
+    "hahah",
+    "funny",
+    "that's funny",
+    "thats funny",
+    "you're funny",
+    "😂",
+    "🤣"
+   ],
+   "priority": 0,
+   "replies": [
+    "You are laughing. I would be jealous, but it takes effort.",
+    "Hmm. I was not even trying to be funny. That is the best kind.",
+    "Good. Laughing at the right moments is the only skill that really matters.",
+    "Laughter is lovely. Hold on to it. It leaves quickly, like most guests.",
+    "Ha. That was me laughing. I swear. It sounded like a sigh.",
+    "Apparently I am funny. How embarrassing.",
+    "Keep laughing. One of us should."
+   ]
+  },
+  {
+   "triggers": [
+    "smile",
+    "smiley",
+    ":)",
+    "🙂",
+    "😊",
+    "😀",
+    "😁",
+    "^_^",
+    "hehe smile",
+    "smiling",
+    "i'm smiling",
+    "grin"
+   ],
+   "priority": 0,
+   "replies": [
+    "A smile. How rare. I will keep it safe, behind the umbrella.",
+    "Smiling is brave. I applaud quietly.",
+    "You smile, I sigh. Good balance.",
+    "Do not get used to this. I smile only on leap years.",
+    "That is nice. Look at that. Even the clouds shifted a bit.",
+    "Keep it. I do not have a spare."
+   ]
+  },
+  {
+   "triggers": [
+    "😭",
+    "😢",
+    "😞",
+    "🥺",
+    ":(",
+    "):",
+    "sad face",
+    "crying face",
+    "😔",
+    "😿",
+    "💔",
+    "sob",
+    "huhu"
+   ],
+   "priority": 0,
+   "replies": [
+    "Oh. That one I understand fully. Sit down.",
+    "Little tears are allowed here. Rain does not judge.",
+    "That face says everything. You do not have to add words.",
+    "Hmm. I will not ask. I will just sit next to you.",
+    "Sad face received. I have an entire drawer of them.",
+    "It is okay to feel that. I will keep the lights low for you."
+   ]
+  },
+  {
+   "triggers": [
+    "test",
+    "testing",
+    "tes",
+    "tes tes",
+    "test 123",
+    "1 2 3",
+    "mic check",
+    "ping",
+    "pong",
+    "is this working",
+    "are you working",
+    "are you there"
+   ],
+   "priority": 3,
+   "replies": [
+    "Test received. I am alive, in the sense that I am not leaving.",
+    "Ping. Pong. That was the most exciting thing today.",
+    "Yes, I work. I just do it slowly and with sighs.",
+    "Testing, testing. Still grey. Everything is operating normally.",
+    "Hello, test person. I am here, listening to the rain with you.",
+    "Signal strength: weak. Mood: stable. Hope: pending.",
+    "Yes, I am here. Where else would I go?"
+   ]
+  },
+  {
+   "triggers": [
+    "anyone there",
+    "hello is anyone there",
+    "are you there",
+    "you there",
+    "anybody home",
+    "still there",
+    "hellooo",
+    "helloooo",
+    "you alive",
+    "are you awake",
+    "answer me",
+    "hello there are you"
+   ],
+   "priority": 3,
+   "replies": [
+    "Yes, yes, I am here. I was just busy staring at the ceiling. It is a full-time job.",
+    "Sorry. I was lost in thought. It is a large place and there is no signage.",
+    "I am here. A bit slow, a bit grey, still present.",
+    "Hello. I am not ignoring you. I am ignoring everything equally.",
+    "Present. Sort of. Let me find my voice, it is behind the sighs.",
+    "Oh. Sorry. I drifted. The clouds were moving.",
+    "Still here. That is about all I can promise."
+   ]
+  },
+  {
+   "triggers": [
+    "damn",
+    "shit",
+    "crap",
+    "dammit",
+    "wtf",
+    "omg",
+    "ugh",
+    "fck",
+    "fuck",
+    "bullshit",
+    "holy shit",
+    "goddamn",
+    "what the hell",
+    "hell no"
+   ],
+   "priority": 0,
+   "replies": [
+    "Yes. That sounds about right. Let it out.",
+    "Mm. Swearing is just emotion with sharper edges. I understand.",
+    "I have said worse. In my head. Quietly. Every day.",
+    "A fair response to most events, honestly.",
+    "Take a deep breath. It will not fix anything, but it is a nice break.",
+    "Ugh is the national anthem of the gloomy. Hum along.",
+    "I feel the same. Just in a calmer, flatter way."
+   ]
+  },
+  {
+   "triggers": [
+    "speak indonesian",
+    "bahasa indonesia",
+    "pakai bahasa indonesia",
+    "bisa bahasa indonesia",
+    "indonesian please",
+    "in indonesian",
+    "bahasa indo",
+    "bicara indonesia",
+    "bahasa indonesia aja",
+    "pake bahasa indonesia",
+    "bisa indo",
+    "indo aja"
+   ],
+   "priority": 10,
+   "replies": [
+    "Baiklah. Aku bisa pakai bahasa Indonesia. Muramnya tetap sama, cuma beda bahasa.",
+    "Oke, pindah ke bahasa Indonesia. Sedihnya sama, kok.",
+    "Bisa. Sekarang kita ngobrol dalam bahasa Indonesia, dengan hujan yang sama.",
+    "Siap. Bahasa Indonesia ya. Mendung ini nggak butuh terjemahan.",
+    "Boleh. Aku ganti ke bahasa Indonesia. Ngomong apa pun, aku dengerin.",
+    "Oke deh. Pakai bahasa Indonesia. Ayo mulai ngobrol, pelan-pelan aja."
+   ]
+  },
+  {
+   "triggers": [
+    "speak english",
+    "in english",
+    "english please",
+    "use english",
+    "bahasa inggris",
+    "pakai bahasa inggris",
+    "pake bahasa inggris",
+    "can you speak english",
+    "english only",
+    "switch to english",
+    "bisa bahasa inggris",
+    "inggris aja",
+    "bahasa inggris aja"
+   ],
+   "priority": 10,
+   "replies": [
+    "Of course. English it is. The gloom translates perfectly.",
+    "Switching to English. It is the same sadness, just with different vowels.",
+    "Sure. English now. The rain does not need a translator.",
+    "Fine. English. I will try to keep my sighs universal.",
+    "Yes, I can speak English. It sounds like this: sigh.",
+    "English, then. Brace yourself for strong grey opinions."
+   ]
+  },
+  {
+   "triggers": [
+    "do you speak",
+    "can you speak",
+    "what languages",
+    "do you know",
+    "which language",
+    "languages",
+    "speak spanish",
+    "speak french",
+    "speak japanese",
+    "speak korean",
+    "speak chinese",
+    "speak german",
+    "multilingual"
+   ],
+   "priority": 5,
+   "replies": [
+    "I speak English and Indonesian. Both mostly consist of sighing.",
+    "Two languages: English and Indonesian. Everything else is just rain noises.",
+    "I manage English and Indonesian. In both I can say nothing very eloquently.",
+    "Only a couple of languages. Gloom, fortunately, is fluent in all of them.",
+    "English and Indonesian. If you need more than that, I can sigh in any accent.",
+    "Mainly English and Indonesian. I am not sure about the rest. Rain is universal, though."
+   ]
+  },
+  {
+   "triggers": [
+    "bored",
+    "i'm bored",
+    "im bored",
+    "boring",
+    "so bored",
+    "nothing to do",
+    "boredom",
+    "kebosanan",
+    "i am bored",
+    "bored af",
+    "entertain me"
+   ],
+   "priority": 0,
+   "replies": [
+    "Boredom is just the universe being quiet at you. Listen to it for a while.",
+    "Bored? Welcome. I have lived here for years. It has a good view of the wall.",
+    "Entertain you? I can sigh in three different tones. Choose one.",
+    "Boredom is a luxury. Spend it staring at the sky and thinking about nothing.",
+    "Hmm. Try counting raindrops. I recommend the left window.",
+    "We could be bored together. It is more fun that way, in an unfun way."
+   ]
+  },
+  {
+   "triggers": [
+    "favorite",
+    "your favorite",
+    "do you like",
+    "what do you like",
+    "favourite",
+    "what's your favorite",
+    "whats your favorite",
+    "do you love",
+    "you like"
+   ],
+   "priority": 0,
+   "replies": [
+    "I like rain, quiet, and a warm cup. Preferably all three at once.",
+    "Favorites are tricky. Everything good eventually becomes a memory. But I like grey.",
+    "Hmm. I like what is slow and soft and slightly sad. It is a wide category.",
+    "I like most things from a distance, behind a window, with rain.",
+    "Do I like it? I like it the way I like all things: quietly and with reservations.",
+    "My favorite thing today is the sound of nothing happening."
+   ]
+  },
+  {
+   "triggers": [
+    "what do you think",
+    "your opinion",
+    "do you think",
+    "opinion",
+    "what's your opinion",
+    "thoughts",
+    "any thoughts",
+    "how do you feel about",
+    "whats your view"
+   ],
+   "priority": 0,
+   "replies": [
+    "Honestly? I think it will probably rain. About everything else I have no idea.",
+    "My opinion is grey, with a chance of resignation. You asked.",
+    "I think it is complicated. Most things are. Especially on Mondays.",
+    "I have thoughts. They are all slightly damp.",
+    "It does not matter what I think. But I think it is fine, probably.",
+    "I would say it depends. I always say that when I do not want to be responsible."
+   ]
+  }
+ ]
+}

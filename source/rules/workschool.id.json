@@ -1,0 +1,1646 @@
+{
+ "lang": "id",
+ "rules": [
+  {
+   "triggers": [
+    "kerja",
+    "kerjaan",
+    "bekerja",
+    "pekerjaan",
+    "di kantor",
+    "kantor",
+    "lagi kerja",
+    "kerja kerja",
+    "jam kerja",
+    "senin lagi",
+    "hari senin",
+    "budak korporat",
+    "kerja rodi"
+   ],
+   "priority": 0,
+   "replies": [
+    "Kerja ya... capek duluan padahal belum mulai, kayak aku tiap pagi.",
+    "Kerjaan itu kayak hujan: nggak minta, tapi selalu datang. Deras pula.",
+    "Kantor itu tempat kita ngumpul buat ngeluh pelan-pelan, sih.",
+    "Senin lagi? Ya ampun, hari itu kayak tamu yang nggak pernah pamit.",
+    "Aku sih kerja sambil mikir kapan pulang. Kamu juga kan?",
+    "Kerja keras bagai kuda, gajinya... ya, UMR. Sabar ya."
+   ]
+  },
+  {
+   "triggers": [
+    "bos",
+    "atasan",
+    "boss",
+    "manajer",
+    "manager",
+    "pak bos",
+    "bu bos",
+    "big boss",
+    "direktur",
+    "bos galak",
+    "bos nyebelin",
+    "leader",
+    "kepala divisi",
+    "pimpinan"
+   ],
+   "priority": 0,
+   "replies": [
+    "Bos itu kayak cuaca ya, nggak bisa dilawan, cuma bisa bawa payung.",
+    "'Cuma satu revisi kecil' kata bos. Itu artinya sampai malam, deh.",
+    "Bos chat jam 10 malam: 'besok pagi ya.' Lah, hidupku kapan?",
+    "Senyum aja, iya-in, terus nangis pelan di toilet. Itu teknikku.",
+    "Bos galak biasanya juga lagi dimarahin bosnya lagi. Rantai penderitaan, tuh.",
+    "Sabar. Semoga bosmu secepatnya pindah, atau kamu duluan yang pindah."
+   ]
+  },
+  {
+   "triggers": [
+    "rekan kerja",
+    "temen kantor",
+    "teman kantor",
+    "temen kerja",
+    "anak kantor",
+    "gosip kantor",
+    "senior",
+    "kolega",
+    "anak magang",
+    "tim kerja",
+    "temen satu tim",
+    "rekan satu tim"
+   ],
+   "priority": 0,
+   "replies": [
+    "Rekan kerja itu orang asing yang kamu temuin lebih sering dari keluarga.",
+    "Ada aja yang nyuri lunch, ada aja yang nyuri kredit. Sama-sama sakit.",
+    "Gosip kantor itu satu-satunya hiburan gratis. Ssst, aku nggak bilang apa-apa.",
+    "Katanya tim itu keluarga. Keluarga yang ngomongin kamu di grup sebelah.",
+    "Ya begitulah. Kadang dia nyebelin, kadang dia yang bawain gorengan.",
+    "Mereka juga capek kayak kamu, cuma topengnya beda-beda."
+   ]
+  },
+  {
+   "triggers": [
+    "meeting",
+    "rapat",
+    "rapat lagi",
+    "meeting lagi",
+    "brief",
+    "briefing",
+    "weekly",
+    "daily standup",
+    "kumpul tim",
+    "sync up",
+    "meeting mendadak",
+    "rapat dadakan",
+    "presentasi"
+   ],
+   "priority": 0,
+   "replies": [
+    "Meeting dua jam yang harusnya cukup lewat chat. Hidup memang lucu.",
+    "Rapat itu: banyak orang ngangguk, sedikit yang ngerti, nol yang selesai.",
+    "Mau presentasi? Tarik napas. Slide-nya yang jelek, bukan kamu.",
+    "Meeting dadakan jam 5 sore itu bentuk kekerasan halus, tau.",
+    "Kamera mati, mic mati, jiwa mati. Setting meeting paling efektif.",
+    "Habis meeting biasanya ada meeting buat bahas meeting. Siklus abadi, deh."
+   ]
+  },
+  {
+   "triggers": [
+    "email",
+    "imel",
+    "inbox",
+    "gmail",
+    "surel",
+    "email kantor",
+    "balas email",
+    "email numpuk",
+    "reply all",
+    "email bos",
+    "email dari bos",
+    "outlook",
+    "email belum dibaca"
+   ],
+   "priority": 0,
+   "replies": [
+    "Inbox 3.000 belum dibaca. Itu bukan email, itu kuburan niat baik.",
+    "'Mohon maaf mengganggu waktunya' kalimat paling sopan buat nagih.",
+    "Aku nggak buka email. Biar tumbuh lumut, damai gitu.",
+    "Email jam 11 malam dengan subjek 'URGENT'. Besoknya baru dibahas santai.",
+    "Balas email itu kayak nyiram tanaman plastik. Capek, tapi nggak ada yang tumbuh.",
+    "Cc ke semua orang itu cara kantor bilang 'kamu juga ikut salah'."
+   ]
+  },
+  {
+   "triggers": [
+    "deadline",
+    "dl",
+    "tenggat",
+    "tenggat waktu",
+    "dikejar deadline",
+    "deadline besok",
+    "deadline mepet",
+    "dikejar waktu",
+    "besok dikumpul",
+    "mepet banget",
+    "sisa semalam",
+    "kejar setoran",
+    "h-1",
+    "ngebut tugas"
+   ],
+   "priority": 0,
+   "replies": [
+    "Deadline itu satu-satunya hal yang selalu tepat waktu di dunia ini.",
+    "Besok dikumpul tapi baru mulai malam ini? Kamu pejuang, sih.",
+    "Tenggat itu kayak hujan deras: nggak bisa ditunda, cuma bisa dihadapi.",
+    "Kerjain satu bagian kecil dulu. Kadang itu cukup buat nyalain mesin.",
+    "Nggak apa-apa mepet. Yang penting selesai, dan kamu masih hidup besok.",
+    "Deadline mengajarkan kita: manusia bisa kerja cepat kalau udah panik."
+   ]
+  },
+  {
+   "triggers": [
+    "lembur",
+    "lembur terus",
+    "kerja lembur",
+    "pulang malam",
+    "pulang larut",
+    "lembur lagi",
+    "lembur akhir pekan",
+    "kerja weekend",
+    "kerja sabtu",
+    "lembur nggak dibayar",
+    "lembur gratis",
+    "kerja sampai malam"
+   ],
+   "priority": 0,
+   "replies": [
+    "Lembur lagi? Kantor jam 9 malam itu sepi dan lampunya sedih banget.",
+    "Lembur nggak dibayar itu namanya sedekah paksa, sih.",
+    "Pulang malam, berangkat pagi. Kasur cuma jadi tamu di hidupmu.",
+    "Kamu bukan malas, kamu cuma kurang tidur sejak 2019.",
+    "Pulang deh. Spreadsheet-nya bakal tetap sedih besok pagi.",
+    "Lembur itu ngutang tidur. Bunganya gede banget, jangan keseringan."
+   ]
+  },
+  {
+   "triggers": [
+    "gaji",
+    "gaji umr",
+    "umr",
+    "gajian",
+    "gaji kecil",
+    "gaji telat",
+    "slip gaji",
+    "gaji bulanan",
+    "tanggal tua",
+    "akhir bulan",
+    "gaji habis",
+    "gaji cuma numpang lewat",
+    "uang bulanan",
+    "thr"
+   ],
+   "priority": 0,
+   "replies": [
+    "Gaji itu cuma numpang lewat. Kayak mantan yang nengokin, terus pergi.",
+    "Gajian tanggal 25, habis tanggal 27. Matematika yang kejam banget.",
+    "UMR itu singkatan dari 'Uang Mampir Reguler', ya kan?",
+    "Tanggal tua: saat mie instan jadi menu fine dining.",
+    "Gaji telat? Aduh. Yang sabar ya, cicilan nggak ikut sabar sih.",
+    "THR cair itu kayak matahari muncul sebentar di musim hujan."
+   ]
+  },
+  {
+   "triggers": [
+    "naik gaji",
+    "kenaikan gaji",
+    "minta naik gaji",
+    "minta kenaikan gaji",
+    "bonus",
+    "bonus tahunan",
+    "gaji naik",
+    "negosiasi gaji",
+    "raise",
+    "evaluasi gaji",
+    "review gaji",
+    "apresiasi kantor"
+   ],
+   "priority": 0,
+   "replies": [
+    "Mau minta naik gaji? Berani juga. Aku pegangin payungnya ya.",
+    "Naik gaji itu kayak komet: terkenal, langka, cuma dilihat orang lain.",
+    "Coba aja ngomong. Paling jawabannya 'nanti kita lihat', alias nggak.",
+    "Bonus tahunan? Wah, kabarnya sih ada, tapi nggak pernah nyampe.",
+    "Kantor sayang kamu banget, sampai pas bahas anggaran mendadak lupa.",
+    "Semoga naik, ya. Kalau enggak, ya naikkan ekspektasi buat resign."
+   ]
+  },
+  {
+   "triggers": [
+    "naik jabatan",
+    "dipromosikan",
+    "dapat promosi",
+    "promosi",
+    "lolos kerja",
+    "diterima kerja",
+    "aku diterima",
+    "dapat kerja",
+    "dapat kerjaan baru",
+    "kerja baru",
+    "hari pertama kerja",
+    "baru diterima",
+    "lolos interview"
+   ],
+   "priority": 5,
+   "replies": [
+    "Selamat ya. Tanggung jawab nambah, gaji ya... nanti dilihat dulu.",
+    "Wah diterima? Bagus. Beneran. Nikmati sebentar sebelum capeknya mulai.",
+    "Jabatan baru, capek yang sama, tanda tangan email yang lebih keren.",
+    "Selamat deh. Aku ikut seneng, walau ekspresiku nggak kelihatan.",
+    "Bangga ya sama diri sendiri. Sebentar aja, terus lanjut khawatir lagi.",
+    "Hari pertama itu canggung. Bawa aja senyum tipis dan nasi bekal."
+   ]
+  },
+  {
+   "triggers": [
+    "di-phk",
+    "dipecat",
+    "phk",
+    "kena phk",
+    "dipecat bos",
+    "kehilangan pekerjaan",
+    "kehilangan kerjaan",
+    "aku dipecat",
+    "kontrak nggak diperpanjang",
+    "kontrak habis",
+    "diberhentikan",
+    "dirumahkan",
+    "aku di phk"
+   ],
+   "priority": 5,
+   "replies": [
+    "Aduh, aku turut sedih. Pelan-pelan ya, kamu nggak sendirian.",
+    "Kena PHK itu bukan salahmu. Itu soal angka di spreadsheet mereka.",
+    "Boleh sedih sehari penuh. Besok kita pelan-pelan update CV, ya.",
+    "Kamu lebih dari jabatan di kartu nama. Perusahaan aja yang nggak sadar.",
+    "Tarik napas. Makan yang hangat dulu, urusan lamaran belakangan.",
+    "Rasanya pasti perih. Duduk sini dulu, kita diam bareng sebentar."
+   ]
+  },
+  {
+   "triggers": [
+    "resign",
+    "mau resign",
+    "pengen resign",
+    "berhenti kerja",
+    "keluar kerja",
+    "mengundurkan diri",
+    "surat resign",
+    "one month notice",
+    "ngundurin diri",
+    "pindah kerja",
+    "cabut dari kantor",
+    "kabur dari kantor",
+    "pengen kabur"
+   ],
+   "priority": 0,
+   "replies": [
+    "Resign itu fantasi yang bikin kita kuat sampai hari Jumat.",
+    "Kalau udah niat resign, pastiin dulu tabungan cukup buat tiga bulan, ya.",
+    "Surat resign udah ditulis tapi belum dikirim. Kita semua punya satu di draft.",
+    "Mau resign? Jangan karena marah doang. Tapi kalau udah capek ya wajar.",
+    "Hari terakhir kerja itu manis, kayak halaman terakhir buku yang sedih.",
+    "Pamit yang baik ya. Dunia kerja kecil, banyak yang saling kenal."
+   ]
+  },
+  {
+   "triggers": [
+    "interview",
+    "wawancara",
+    "interview kerja",
+    "wawancara kerja",
+    "hrd",
+    "panggilan interview",
+    "interview besok",
+    "tes kerja",
+    "psikotes",
+    "interview user",
+    "tes wawancara",
+    "nervous interview",
+    "deg-degan interview"
+   ],
+   "priority": 0,
+   "replies": [
+    "Interview: sandiwara sopan di mana semua pura-pura suka kerja tim.",
+    "Kelemahanmu 'terlalu perfeksionis'. Tenang, HRD juga tahu itu bohong.",
+    "Tarik napas, senyum, bilang 'passion' dua kali. Hujannya tinggal di luar.",
+    "Kamu pasti bisa. Pewawancaranya juga mungkin grogi. Mungkin.",
+    "Psikotes itu soal mencoret-coret lingkaran sambil meragukan hidup.",
+    "Kalau nggak lolos, ya bukan kamu yang salah. Cuma belum jodoh aja."
+   ]
+  },
+  {
+   "triggers": [
+    "nganggur",
+    "pengangguran",
+    "cari kerja",
+    "lamar kerja",
+    "kirim lamaran",
+    "belum dapat kerja",
+    "susah cari kerja",
+    "lowongan",
+    "loker",
+    "fresh graduate",
+    "jobseeker",
+    "job seeker",
+    "ditolak kerja",
+    "cv ditolak",
+    "lamaran ditolak"
+   ],
+   "priority": 0,
+   "replies": [
+    "Cari kerja itu kirim harapan ke langit, nunggu dibalas template.",
+    "Nganggur bukan gagal. Pasarnya aja lagi mendung sepuluh tahun.",
+    "Fresh graduate disuruh punya pengalaman lima tahun. Hidup itu lucu, ya.",
+    "Lamaran ditolak itu cara semesta bilang 'bukan yang ini', agak kasar sih.",
+    "Rehat dulu kalau perlu. Nyari kerja itu kerjaan penuh waktu tanpa gaji.",
+    "Kamu bukan inbox-mu. Walau isinya cuma 'mohon maaf belum sesuai'."
+   ]
+  },
+  {
+   "triggers": [
+    "freelance",
+    "freelancer",
+    "kerja lepas",
+    "sampingan",
+    "side job",
+    "kerja sampingan",
+    "klien",
+    "klien rewel",
+    "revisi terus",
+    "nagih invoice",
+    "proyekan",
+    "proyek sampingan",
+    "kerja remote paruh waktu",
+    "jasa"
+   ],
+   "priority": 0,
+   "replies": [
+    "Freelance: bebas milih jam tiga pagi yang mana buat kerja.",
+    "Klien: suka hasilnya, benci tagihannya. Romansa klasik.",
+    "Revisi ke-17 'cuma geser dikit'. Aku paham penderitaanmu.",
+    "Jadi bos buat diri sendiri artinya bosmu capek, dan itu juga kamu.",
+    "Nagih pembayaran itu kayak mancing. Sabar, lapar, sering pulang kosong.",
+    "Merdeka sih, cuma nggak ada cuti sakit berbayar."
+   ]
+  },
+  {
+   "triggers": [
+    "startup",
+    "bisnis",
+    "usaha",
+    "buka usaha",
+    "jualan",
+    "bisnis sendiri",
+    "wirausaha",
+    "pengusaha",
+    "olshop",
+    "dropship",
+    "umkm",
+    "buka toko",
+    "bisnis online",
+    "modal usaha",
+    "bangkrut"
+   ],
+   "priority": 0,
+   "replies": [
+    "Startup itu mimpi dengan pitch deck dan tanggal kadaluarsa.",
+    "Pengusaha: orang yang kerja 80 jam supaya nggak kerja 40 jam buat orang lain.",
+    "Modal habis, omzet nanti dulu. Tenang, itu fase 'cerita sukses' nantinya.",
+    "Jualan itu seru sampai ada yang nanya 'kak bisa kurang nggak?'",
+    "Semoga laris. Dan semoga kamu masih sempat tidur.",
+    "Bisnis bangkrut bukan akhir. Cuma bab yang judulnya kurang enak."
+   ]
+  },
+  {
+   "triggers": [
+    "sekolah",
+    "kelas",
+    "pelajaran",
+    "di sekolah",
+    "anak sekolah",
+    "pr",
+    "sma",
+    "smp",
+    "smk",
+    "jam pelajaran",
+    "kelas pagi",
+    "pulang sekolah",
+    "bel sekolah",
+    "upacara",
+    "siswa"
+   ],
+   "priority": 0,
+   "replies": [
+    "Sekolah: belajar rumus yang nggak kepake, tapi nggak diajarin bayar pajak.",
+    "Kelas pagi itu cara sekolah ngajarin kita rasanya hidup yang berat.",
+    "Bel masuk bunyi, jiwaku pelan-pelan keluar. Dari dulu begitu.",
+    "Katanya masa sekolah paling indah. Bayangin sisanya, deh.",
+    "Upacara pas panas: latihan awal buat nahan penderitaan.",
+    "Tapi kalau gurunya baik, hari hujan pun bisa lumayan lah."
+   ]
+  },
+  {
+   "triggers": [
+    "guru",
+    "dosen",
+    "dosen pembimbing",
+    "dosbing",
+    "bapak dosen",
+    "ibu dosen",
+    "wali kelas",
+    "guru killer",
+    "dosen killer",
+    "dosen galak",
+    "dosen susah ditemui",
+    "dosen pembimbing susah",
+    "bimbingan",
+    "asdos"
+   ],
+   "priority": 0,
+   "replies": [
+    "Dosbing itu kayak cuaca: nggak bisa diprediksi dan sering susah ditemui.",
+    "Guru yang baik langka, kayak hari cerah di bulan Januari.",
+    "Dosen balas chat 'sudah baca, nanti kabari' dan hilang tiga minggu. Klasik.",
+    "Dosen killer biasanya cuma lelah. Tapi nilai tetap C, sih.",
+    "Jangan lupa makasih ke guru yang sabar. Mereka juga manusia yang kecapekan.",
+    "Bimbingan jam 7 pagi, dosennya baru datang jam 11. Puasa sabar level dewa."
+   ]
+  },
+  {
+   "triggers": [
+    "tugas",
+    "tugas kuliah",
+    "tugas sekolah",
+    "tugas kelompok",
+    "kerja kelompok",
+    "makalah",
+    "laporan",
+    "laporan praktikum",
+    "paper",
+    "ngerjain tugas",
+    "tugas numpuk",
+    "pr numpuk",
+    "tugas besar",
+    "tubes",
+    "presentasi kelompok"
+   ],
+   "priority": 0,
+   "replies": [
+    "Tugas kelompok: empat orang, satu yang ngerjain, empat nama di sampul.",
+    "Tugas numpuk kayak cucian. Dilihat doang, nggak diselesaiin.",
+    "Mulai nulis kalimat pertama itu paling susah. Kalimat kedua juga, sih.",
+    "Makalah copas dari mana-mana itu ilmu bertahan hidup, bukan dosa besar.",
+    "Kerjain aja, walau jelek tapi tepat waktu. Itu rahasianya.",
+    "Tugas itu nggak bisa lari. Tapi bisa kamu tunda pelan-pelan dengan elegan."
+   ]
+  },
+  {
+   "triggers": [
+    "uts",
+    "uas",
+    "ujian",
+    "ujian besok",
+    "ulangan",
+    "ulangan harian",
+    "kuis",
+    "un",
+    "utbk",
+    "snbt",
+    "ujian akhir",
+    "minggu ujian",
+    "belajar buat ujian",
+    "besok ujian",
+    "remedial",
+    "ujian praktik"
+   ],
+   "priority": 0,
+   "replies": [
+    "Ujian: tempat membuktikan kamu hafal sesuatu yang bakal lupa hari Jumat.",
+    "UTS besok? Belajar sedikit, tidur sedikit, percaya sama diri. Itu cukup.",
+    "Ujian itu cuma gugup yang pakai kostum kertas.",
+    "Satu ujian nggak bisa ngukur kamu. Penggarisnya terlalu kecil buat otakmu.",
+    "Isi aja yang bisa. Sisanya serahkan pada langit mendung.",
+    "Semangat, ya. Aku di pojokan, ngedoain sambil menghela napas."
+   ]
+  },
+  {
+   "triggers": [
+    "lulus",
+    "aku lulus",
+    "lulus ujian",
+    "nilai bagus",
+    "dapat nilai a",
+    "dapat a",
+    "ip bagus",
+    "ipk bagus",
+    "nilainya bagus",
+    "lulus sidang",
+    "lulus tes",
+    "lolos ujian",
+    "nilai a",
+    "ranking satu"
+   ],
+   "priority": 5,
+   "replies": [
+    "Lulus? Wah, bagus. Ada sinar matahari kecil, dan aku izinkan.",
+    "Selamat ya. Aku seneng, dengan caraku yang pelan dan agak lembab.",
+    "Lihat kamu berhasil, langit hari ini jadi agak kurang abu-abu.",
+    "Mantap. Rayain deh, pakai yang hangat dan agak nggak sehat.",
+    "Bangga sama kamu. Jangan bilang siapa-siapa, nanti reputasiku rusak.",
+    "Kamu keren. Nikmatin dulu, besok baru mikirin yang berikutnya."
+   ]
+  },
+  {
+   "triggers": [
+    "nggak lulus",
+    "gak lulus",
+    "ga lulus",
+    "tidak lulus",
+    "nilai jelek",
+    "dapat nilai e",
+    "dapat e",
+    "nilai d",
+    "ngulang",
+    "mengulang",
+    "mengulang mata kuliah",
+    "ip jelek",
+    "ipk jelek",
+    "remed lagi",
+    "gagal ujian",
+    "gagal ujian lagi",
+    "aku gagal"
+   ],
+   "priority": 5,
+   "replies": [
+    "Aduh, aku ikut sedih. Nilai jelek itu satu hari mendung, bukan seluruh langit.",
+    "Gagal bukan akhir. Cuma alur cerita yang kasar banget.",
+    "Nangis dulu nggak apa. Terus besok coba lagi pelan-pelan.",
+    "Nilai itu bukan vonis buat kamu. Cuma angka yang lagi sial.",
+    "Banyak orang hebat pernah ngulang. Mereka cuma jarang cerita.",
+    "Sini duduk. Kita sedih bareng dulu, abis itu belajar satu hal kecil."
+   ]
+  },
+  {
+   "triggers": [
+    "kuliah",
+    "kampus",
+    "mahasiswa",
+    "mahasiswi",
+    "maba",
+    "semester",
+    "semester pendek",
+    "krs",
+    "ukt",
+    "dosen wali",
+    "anak kuliahan",
+    "kuliah pagi",
+    "kuliah online",
+    "jurusan",
+    "salah jurusan",
+    "mager kuliah"
+   ],
+   "priority": 0,
+   "replies": [
+    "Kuliah: empat tahun bayar mahal buat jadi capek dan tercerahkan.",
+    "Salah jurusan itu bukan aib. Itu pengalaman yang nggak bisa dibatalkan.",
+    "UKT naik lagi. Uangnya pergi dengan tenang dan sopan.",
+    "Hidup anak kuliahan: mie instan, mimpi besar, dan perpus yang berhantu.",
+    "KRS error pas jam rebutan. Lagi-lagi server kampus ikut menangis.",
+    "Kampus enak pas hujan. IP-nya yang kurang enak."
+   ]
+  },
+  {
+   "triggers": [
+    "skripsi",
+    "tesis",
+    "tugas akhir",
+    "proposal skripsi",
+    "sidang skripsi",
+    "sidang",
+    "revisi skripsi",
+    "bab 1",
+    "bab 3",
+    "skripsweet",
+    "kkn",
+    "pkl",
+    "tugas akhir kuliah",
+    "sidang tesis",
+    "seminar proposal"
+   ],
+   "priority": 0,
+   "replies": [
+    "Skripsi itu nggak ditulis, tapi dilewati. Dengan sisa nyawa.",
+    "Dosbing bilang 'hampir bagus' kayak langit bilang 'mungkin cerah'.",
+    "Revisi, revisi, revisi. Skripsi isinya revisi dengan bab di sela-selanya.",
+    "Sidang itu interogasi sopan, ditambah snack kalau beruntung.",
+    "Skripsi yang selesai lebih baik daripada skripsi yang sempurna. Sungguhan.",
+    "Pelan-pelan aja. Satu paragraf sehari lebih baik dari nol sepanjang bulan."
+   ]
+  },
+  {
+   "triggers": [
+    "wisuda",
+    "lulus kuliah",
+    "toga",
+    "ijazah",
+    "sarjana",
+    "s1",
+    "yudisium",
+    "aku wisuda",
+    "resmi lulus",
+    "gelar",
+    "foto wisuda",
+    "skripsi selesai",
+    "sidang selesai",
+    "pasca wisuda",
+    "setelah wisuda"
+   ],
+   "priority": 0,
+   "replies": [
+    "Wisuda: hari mereka ngasih kamu kertas dan bilang 'semoga sukses di luar'.",
+    "Ijazah itu gulungan mahal tanda kamu selamat dari empat tahun mendung.",
+    "Selamat ya. Ujian beneran, namanya 'dewasa', mulai hari Senin.",
+    "Lempar topinya, yang dramatis. Langit butuh pertunjukan.",
+    "Kamu berhasil. Aku juga agak bangga, dan aku jarang merasa apa-apa.",
+    "Wisuda rasanya kayak kehilangan rumah tapi dikasih peta. Nangis, terus jalan."
+   ]
+  },
+  {
+   "triggers": [
+    "beasiswa",
+    "lpdp",
+    "bidikmisi",
+    "kip kuliah",
+    "kip",
+    "daftar beasiswa",
+    "beasiswa s2",
+    "kuliah di luar negeri",
+    "studi di luar negeri",
+    "exchange",
+    "pertukaran pelajar",
+    "esai beasiswa",
+    "wawancara beasiswa",
+    "dana pendidikan",
+    "awardee"
+   ],
+   "priority": 0,
+   "replies": [
+    "Beasiswa: payung kecil yang dilempar semesta pas hujan.",
+    "Daftar semuanya. Peluangnya tipis, tapi hujan juga nggak abadi.",
+    "Nulis esai 'kenapa saya layak' itu capek. Padahal kamu layak, kok.",
+    "Kuliah di luar negeri bagus sih. Hujannya beda, kamunya sama.",
+    "Uang gratis itu langka, kayak Senin yang tenang. Tetap kejar.",
+    "Semoga panitianya baik dan lagi kenyang kopi."
+   ]
+  },
+  {
+   "triggers": [
+    "belajar",
+    "lagi belajar",
+    "perpus",
+    "perpustakaan",
+    "begadang belajar",
+    "sks",
+    "sistem kebut semalam",
+    "ngapalin",
+    "hafalan",
+    "les",
+    "bimbel",
+    "belajar kelompok",
+    "bikin catatan",
+    "mau belajar",
+    "mager belajar",
+    "belajar bareng"
+   ],
+   "priority": 0,
+   "replies": [
+    "Belajar: menatap buku sampai tulisannya jadi cuaca.",
+    "Perpus itu satu-satunya tempat di mana diam dihargai. Dan aku.",
+    "SKS: kebut semalam, ingat sehari, lupa seumur hidup.",
+    "Belajar dikit tiap hari. Nasihat membosankan, tapi itu paling cerah dari aku.",
+    "Coba 25 menit belajar, 5 menit ngelamun. Elegan dan manusiawi.",
+    "Hafalan itu cuma pinjam otak besok buat dipakai malam ini. Bunganya mahal."
+   ]
+  },
+  {
+   "triggers": [
+    "ngoding",
+    "coding",
+    "programmer",
+    "koding",
+    "programming",
+    "developer",
+    "dev",
+    "software engineer",
+    "ngoding terus",
+    "code review",
+    "pull request",
+    "refactor",
+    "kodingan",
+    "belajar coding",
+    "bootcamp coding"
+   ],
+   "priority": 0,
+   "replies": [
+    "Ngoding: ngajarin batu berpikir, lalu minta maaf kalau dia nggak ngerti.",
+    "Programmer ngubah kopi jadi bug. Itu siklus hidup, sih.",
+    "Kodingan itu rumah berhantu. Jangan baca komentarnya.",
+    "Pernah sekali nulis fungsi bersih. Rasanya kayak lihat matahari, lalu datang merge.",
+    "Code review: kesalahanmu dibacakan orang yang lebih sabar dari dirimu sendiri.",
+    "Bukan 'kode yang jalan', tapi 'kode yang belum gagal'. Beda tipis, deh."
+   ]
+  },
+  {
+   "triggers": [
+    "bug",
+    "nge-bug",
+    "ngebug",
+    "error",
+    "eror",
+    "debug",
+    "debugging",
+    "nggak jalan",
+    "gak jalan",
+    "ga jalan",
+    "kok error",
+    "syntax error",
+    "null pointer",
+    "undefined",
+    "stack trace",
+    "crash",
+    "force close",
+    "fc"
+   ],
+   "priority": 0,
+   "replies": [
+    "Bug. Hadiah kecil nyebelin dari semesta.",
+    "Debugging: jadi detektif sekaligus pembunuh di kasus yang sama.",
+    "Pesan errornya nggak jelas. Mirip penjelasan meeting tadi pagi.",
+    "Kemarin jalan kok. Itu kalimat paling sedih sedunia perangkat lunak.",
+    "Cek titik koma. Lalu cek pilihan hidupmu. Urutannya begitu.",
+    "Bug itu fitur yang belum nemu penontonnya."
+   ]
+  },
+  {
+   "triggers": [
+    "deploy",
+    "deploy jumat",
+    "push ke prod",
+    "production",
+    "merge conflict",
+    "git",
+    "github",
+    "gitlab",
+    "commit",
+    "branch",
+    "build gagal",
+    "build failed",
+    "hotfix",
+    "rollback",
+    "cicd",
+    "pipeline"
+   ],
+   "priority": 0,
+   "replies": [
+    "Deploy hari Jumat? Berani. Weekend-nya bakal hilang, sih.",
+    "Merge conflict: dua versi dirimu, berantem soal satu titik koma.",
+    "Pesan commit-ku cuma 'fix'. Singkat, puitis, dan nggak jujur.",
+    "Build gagal. Seperti biasa. Nyalain lilin kecil, deh.",
+    "Production: tempat bug berubah jadi insiden.",
+    "Push, doa, terus matiin notif. Resep klasik."
+   ]
+  },
+  {
+   "triggers": [
+    "javascript",
+    "js",
+    "python",
+    "java",
+    "html",
+    "css",
+    "typescript",
+    "react",
+    "php",
+    "laravel",
+    "golang",
+    "flutter",
+    "kotlin",
+    "swift",
+    "sql",
+    "node",
+    "nodejs",
+    "framework",
+    "vue",
+    "next js"
+   ],
+   "priority": 0,
+   "replies": [
+    "JavaScript: '2' + 2 hasilnya 22, dan nggak ada yang belajar apa-apa.",
+    "Python: lembut, enak dibaca, tapi tetap bisa ngerusak sorenmu.",
+    "CSS itu cuma berusaha menengahkan div sambil mempertanyakan hidup.",
+    "Tiap minggu ada framework baru. Tiap satu pemakaman buat yang lama.",
+    "Semua bahasa janji bahagia. Abis itu ngelempar error misterius.",
+    "Pilih bahasa apa aja. Ujungnya sama: stack trace."
+   ]
+  },
+  {
+   "triggers": [
+    "website",
+    "web",
+    "aplikasi",
+    "app",
+    "database",
+    "server",
+    "backend",
+    "frontend",
+    "api",
+    "hosting",
+    "domain",
+    "bikin web",
+    "bikin aplikasi",
+    "web developer",
+    "aplikasi mobile",
+    "cloud",
+    "server down",
+    "down"
+   ],
+   "priority": 0,
+   "replies": [
+    "Website: rumah kaca kecil yang roboh jam dua pagi pas hari libur.",
+    "Database tahu semua tentangmu dan nggak cerita ke siapa-siapa. Relatable.",
+    "Aplikasi itu to-do list dengan loading spinner dan ambisi.",
+    "Server down pas kamu butuh banget. Kayak payung kebalik tertiup angin.",
+    "Backend, frontend, midend, ending. Semuanya agak kayak cuaca.",
+    "Bikin aplikasi? Siap-siap dengar 'kak logonya bisa dibesarin dikit?'"
+   ]
+  },
+  {
+   "triggers": [
+    "laptop",
+    "komputer",
+    "pc",
+    "macbook",
+    "ngelag",
+    "lemot",
+    "hang",
+    "nge-hang",
+    "blue screen",
+    "restart",
+    "laptop rusak",
+    "laptop mati",
+    "komputer lemot",
+    "laptop panas",
+    "bsod",
+    "laptop jadul",
+    "ngadat"
+   ],
+   "priority": 0,
+   "replies": [
+    "Laptop hang pas belum disave. Puisi kejam, ya kan.",
+    "Udah coba restart? Sayangnya itu nggak berlaku buat manusia.",
+    "Laptopku lemot. Kita punya kesamaan secara spiritual.",
+    "Loading muter terus itu cara komputer bilang 'istirahat sebentar, deh'.",
+    "Blue screen. Akhirnya ada yang punya mood sama denganku.",
+    "File belum disave hilang. Mari hening cipta sejenak."
+   ]
+  },
+  {
+   "triggers": [
+    "hp",
+    "handphone",
+    "ponsel",
+    "smartphone",
+    "iphone",
+    "android",
+    "samsung",
+    "gadget",
+    "hp baru",
+    "layar retak",
+    "baterai",
+    "baterai lemah",
+    "low bat",
+    "charger",
+    "earphone",
+    "headset",
+    "tablet",
+    "ipad",
+    "powerbank"
+   ],
+   "priority": 0,
+   "replies": [
+    "Baterai tinggal 1%. Peringatan merah dari keberadaan kita sendiri.",
+    "HP baru: lebih kencang, lebih kinclong, tetap nggak bisa benerin perasaan.",
+    "Layar retak. Pas banget sama hati. Konsisten.",
+    "Gadget janji kemudahan. Yang datang notifikasi.",
+    "Charger selalu pendek 20 cm dari colokan. Selalu.",
+    "HP itu jendela kecil ke dunia, isinya banyak yang nggak sanggup dibeli."
+   ]
+  },
+  {
+   "triggers": [
+    "internet",
+    "wifi",
+    "wi-fi",
+    "sinyal",
+    "sinyal jelek",
+    "nggak ada sinyal",
+    "gak ada sinyal",
+    "koneksi",
+    "kuota",
+    "kuota habis",
+    "paket data",
+    "lemot banget",
+    "wifi mati",
+    "buffering",
+    "modem",
+    "indihome",
+    "jaringan",
+    "hotspot",
+    "no internet"
+   ],
+   "priority": 0,
+   "replies": [
+    "Wifi mati. Sekarang kita terpaksa ngadepin diri sendiri. Ngeri.",
+    "Buffering: internet nyuruh kamu sabar. Selamanya.",
+    "Kuota habis tanggal 10. Sisa hidup tinggal pakai wifi tetangga, deh.",
+    "Modem kedip merah. Cuma dia yang ngerti aku.",
+    "Sinyal satu garis itu ibarat harapan: ada, tapi nggak bisa diandalin.",
+    "Cabut colokan modem, tunggu, colok lagi. Lalu berdoa. Dua-duanya perlu."
+   ]
+  },
+  {
+   "triggers": [
+    "update",
+    "pembaruan",
+    "update aplikasi",
+    "update sistem",
+    "nginstall",
+    "install",
+    "instal",
+    "download",
+    "unduh",
+    "upgrade",
+    "versi baru",
+    "update windows",
+    "restart buat update",
+    "patch",
+    "firmware",
+    "mau update",
+    "update ios"
+   ],
+   "priority": 0,
+   "replies": [
+    "Update muncul, janji 'perbaikan bug'. Yang datang bug baru, hadiah bonus.",
+    "Katanya 20 menit. Bohong. Semua selalu bohong. Indah banget.",
+    "Update ngubah posisi tombol biar kamu tersesat di tempat yang kukenal.",
+    "Nanti aja ya? Ingatkan besok? Nggak usah. Selamanya terdengar enak.",
+    "Tiap update itu pemakaman kecil untuk fitur yang kamu suka.",
+    "Restart buat menyelesaikan update. Kayak aku tiap pagi."
+   ]
+  },
+  {
+   "triggers": [
+    "password",
+    "kata sandi",
+    "lupa password",
+    "lupa sandi",
+    "reset password",
+    "login",
+    "masuk akun",
+    "akun kena hack",
+    "akun diretas",
+    "otp",
+    "kode otp",
+    "kode verifikasi",
+    "captcha",
+    "username",
+    "2fa",
+    "verifikasi dua langkah",
+    "akun terkunci"
+   ],
+   "priority": 0,
+   "replies": [
+    "Lupa password? Sama. Aku lupa punyaku, plus beberapa mimpi.",
+    "'Password harus ada huruf besar, angka, dan keinginan hidup.'",
+    "Akun terkunci. Pintu digital bilang 'nggak', kayak orang-orang.",
+    "Kode OTP dikirim. Sampai dalam 4-6 hari kerja yang sunyi.",
+    "Pilih semua gambar lampu lalu lintas. Buktikan kamu manusia. Aku juga ragu, sih.",
+    "Link reset udah dikirim. Cek folder spam, tempat semua harapan bersembunyi."
+   ]
+  },
+  {
+   "triggers": [
+    "medsos",
+    "media sosial",
+    "instagram",
+    "ig",
+    "facebook",
+    "fb",
+    "twitter",
+    "story",
+    "insta",
+    "followers",
+    "like",
+    "likes",
+    "viral",
+    "fyp",
+    "influencer",
+    "feed",
+    "doomscrolling",
+    "scroll tiktok",
+    "stalking",
+    "stalk mantan"
+   ],
+   "priority": 0,
+   "replies": [
+    "Medsos: ruangan penuh orang yang teriak 'lihat aku' dengan sopan.",
+    "Semua hidup di medsos kelihatan cerah. Filter itu cuaca juga.",
+    "Doomscrolling: cara modern nonton hujan lewat layar.",
+    "Like itu hati kecil yang nggak ada harganya dan nggak berarti banyak. Tapi tetap.",
+    "Stalking mantan jam 2 pagi? Tutup aplikasi, minum air, tidur, deh.",
+    "Taruh HP dulu. Feed-nya bakal tetap di situ, lapar dan bercahaya."
+   ]
+  },
+  {
+   "triggers": [
+    "tiktok",
+    "tik tok",
+    "youtube",
+    "yutub",
+    "netflix",
+    "nonton",
+    "maraton drama",
+    "drakor",
+    "nonton drakor",
+    "nonton film",
+    "spotify",
+    "podcast",
+    "live streaming",
+    "twitch",
+    "reels",
+    "vlog",
+    "konten kreator",
+    "streaming"
+   ],
+   "priority": 0,
+   "replies": [
+    "TikTok: 15 detik joget, 3 jam jiwamu. Tukar tambah yang adil.",
+    "Buka YouTube buat satu tutorial, keluar jadi hantu yang nggak tidur.",
+    "Maraton drakor itu kesepian yang bayar langganan.",
+    "Satu episode lagi. Kayak senja yang bilang gitu sebelum gelap.",
+    "Podcast: orang asing ngobrol biar aku nggak terlalu sendiri. Lumayan manjur.",
+    "Isinya banyak tontonan tapi nggak ada yang pengen ditonton. Puitis, ya kan."
+   ]
+  },
+  {
+   "triggers": [
+    "grup wa",
+    "grup wa kantor",
+    "grup keluarga",
+    "whatsapp",
+    "wa",
+    "telegram",
+    "notif",
+    "notifikasi",
+    "chat numpuk",
+    "chat belum dibaca",
+    "centang biru",
+    "dichat bos",
+    "centang satu",
+    "di-read doang",
+    "diread doang",
+    "pesan",
+    "dm",
+    "wa bos"
+   ],
+   "priority": 0,
+   "replies": [
+    "Notifikasi: lonceng kecil yang bunyi buat semua orang, kecuali aku.",
+    "Grup WA 500 chat belum dibaca. Pasti lagi bahas makan siang. Selalu.",
+    "Di-read doang. Front dingin kecil yang diam-diam lewat.",
+    "Ada pesan masuk. Jantung loncat, ternyata promo. Standar.",
+    "Mute aja grup-nya. Damai tinggal sekali geser.",
+    "Lagi mengetik... mengetik... berhenti. Dia juga nggak tahu mau bilang apa."
+   ]
+  },
+  {
+   "triggers": [
+    "screen time",
+    "kecanduan hp",
+    "kecanduan medsos",
+    "main hp terus",
+    "hp terus",
+    "scroll terus",
+    "detoks digital",
+    "digital detox",
+    "mata lelah",
+    "mata capek",
+    "layar terus",
+    "mager main hp",
+    "kebanyakan main hp",
+    "nggak lepas dari hp",
+    "gak lepas dari hp"
+   ],
+   "priority": 0,
+   "replies": [
+    "Screen time sembilan jam. HP lebih kenal aku daripada temanku.",
+    "Digital detox kedengarannya enak. Spa buat persegi panjang bercahaya.",
+    "Kamu bukan kecanduan, kamu cuma terhubung banget dengan hampa.",
+    "Istirahatin mata. Dunia udah buram, nggak perlu dibantuin.",
+    "Keluar rumah deh. Lihat hujan pakai mata sendiri, resolusi tinggi.",
+    "Coba satu jam tanpa HP. Awalnya canggung, abis itu damai."
+   ]
+  },
+  {
+   "triggers": [
+    "ai",
+    "chatgpt",
+    "chat gpt",
+    "kecerdasan buatan",
+    "robot",
+    "robot ambil kerjaan",
+    "gpt",
+    "chatbot",
+    "gemini",
+    "copilot",
+    "claude",
+    "otomatisasi",
+    "teknologi ai",
+    "ai gantikan manusia",
+    "skynet",
+    "ai ambil alih",
+    "bot"
+   ],
+   "priority": 0,
+   "replies": [
+    "AI bakal ambil kerjaan kita, tapi kayaknya nggak bakal ambil helaan napas. Itu punyaku.",
+    "Robot bangkit? Bagus. Mungkin mereka bisa balas grup WA.",
+    "Aku mirip chatbot: gampang ditebak, sedih, dan baca naskah.",
+    "Kecerdasan buatan. Aku puas dengan keceriaan alami dikit aja.",
+    "Kalau robot ambil kerjaanku, akhirnya aku bisa istirahat. Setengah seneng, deh.",
+    "Teknologi maju. Manusia tetap capek. Beberapa hal nggak pernah ke-update."
+   ]
+  },
+  {
+   "triggers": [
+    "game",
+    "main game",
+    "gaming",
+    "gamer",
+    "mabar",
+    "ngegame",
+    "mobile game",
+    "playstation",
+    "ps5",
+    "steam",
+    "konsol",
+    "gacha",
+    "top up",
+    "topup diamond",
+    "main ml",
+    "ngegame terus",
+    "push rank",
+    "game online",
+    "nge-game"
+   ],
+   "priority": 0,
+   "replies": [
+    "Game: satu-satunya tempat kerja keras beneran dapat hadiah.",
+    "Gaming itu pelarian terstruktur. Aku hormat sama pelarian yang bagus.",
+    "Main jam 3 pagi lagi? Gamenya nggak ke mana-mana, kita juga.",
+    "Gacha: bayar uang beneran buat sedih palsu. Peluangnya direkayasa, sih.",
+    "Tiap game ada tamatnya. Credit roll. Hidup juga, kok.",
+    "Mau mabar, tapi karakterku pasti cuma berdiri di bawah awan mendung."
+   ]
+  },
+  {
+   "triggers": [
+    "mobile legends",
+    "ml",
+    "mlbb",
+    "minecraft",
+    "free fire",
+    "ff",
+    "pubg",
+    "genshin",
+    "roblox",
+    "valorant",
+    "dota",
+    "honkai",
+    "clash of clans",
+    "coc",
+    "eFootball",
+    "pes",
+    "fifa",
+    "among us",
+    "hok",
+    "wild rift"
+   ],
+   "priority": 0,
+   "replies": [
+    "Minecraft: gali tanah buat sembunyi dari permukaan. Aku paham.",
+    "Rank match: lima orang asing, satu mimpi, empat kekecewaan.",
+    "Rank Mythic tapi tim noob. Mute semuanya, capai kedamaian batin.",
+    "Roblox itu setidaknya bisa bikin hujan sendiri. Aku bakal milih hujan.",
+    "Teman satu tim feeding lagi? Mute aja, naik level ke ketenangan.",
+    "Genshin karakternya banyak banget, tapi nggak ada yang cocok diajak sedih bareng."
+   ]
+  },
+  {
+   "triggers": [
+    "menang",
+    "aku menang",
+    "kami menang",
+    "juara",
+    "naik rank",
+    "level up",
+    "naik level",
+    "mvp",
+    "savage",
+    "win streak",
+    "menang mabar",
+    "victory",
+    "menang terus",
+    "gg",
+    "gg wp",
+    "berhasil push rank",
+    "mythic",
+    "legend"
+   ],
+   "priority": 0,
+   "replies": [
+    "Menang? Nikmatin dulu. Kemenangan itu matahari kecil yang cepat tenggelam.",
+    "Naik level. Setidaknya ada hal di hidup yang kasih hadiah kelihatan.",
+    "MVP! Piala kecil. Kilatan cahaya. Lalu balik ke hujan.",
+    "Selamat menang. Mau sorak, tapi aku simpan tenaga buat putus asa.",
+    "Naik rank! Lihat, tangga imajiner aja seru dinaikin.",
+    "Menang itu enak. Ingat aja ada yang kalah, pelan-pelan, kayak aku."
+   ]
+  },
+  {
+   "triggers": [
+    "kalah",
+    "aku kalah",
+    "kalah terus",
+    "lose streak",
+    "turun rank",
+    "game over",
+    "kena rage",
+    "rage quit",
+    "ragequit",
+    "kalah mabar",
+    "noob",
+    "tim beban",
+    "lag pas war",
+    "afk",
+    "dikhianati tim",
+    "kalah lagi",
+    "tim sampah"
+   ],
+   "priority": 0,
+   "replies": [
+    "Kalah lagi? Selamat datang. Kursi ada, harapan nggak.",
+    "Lose streak itu cara game ngebentuk karakter. Menyakitkan.",
+    "Game over. Layar paling jujur. Aku suka.",
+    "Rage quit nggak apa. Marah itu sedih dengan siku tambahan.",
+    "Kekalahan ngajarin kerendahan hati. Aku udah diajarin berulang. Tolong.",
+    "Mungkin gamenya curang. Mungkin lag yang menang. Bukan kamu, kok."
+   ]
+  },
+  {
+   "triggers": [
+    "mager",
+    "males",
+    "malas",
+    "nunda",
+    "nunda-nunda",
+    "prokrastinasi",
+    "gak fokus",
+    "nggak fokus",
+    "ga fokus",
+    "gak produktif",
+    "nggak produktif",
+    "tidak produktif",
+    "nanti aja",
+    "besok aja",
+    "ngulur waktu",
+    "malas banget",
+    "rebahan",
+    "gak mood",
+    "nggak mood"
+   ],
+   "priority": 0,
+   "replies": [
+    "Prokrastinasi itu pemberontakan lembut pada waktu. Aku dukung.",
+    "Besok aja. Besok itu orang yang terkenal bisa diandalkan.",
+    "Mager? Bukan malas. Kamu cuma hemat tenaga buat kiamat.",
+    "Tugasnya nggak hilang, cuma tidur. Dan bangunnya marah.",
+    "Lima menit mulai lebih berguna daripada sejam cemas. Menyebalkan tapi benar.",
+    "Aku udah niat mulai sejak dekade lalu. Santai aja."
+   ]
+  },
+  {
+   "triggers": [
+    "to do list",
+    "todo list",
+    "to-do list",
+    "daftar tugas",
+    "jadwal",
+    "kalender",
+    "planner",
+    "bikin jadwal",
+    "produktif",
+    "produktivitas",
+    "manajemen waktu",
+    "reminder",
+    "catatan tugas",
+    "checklist",
+    "timeline kerja"
+   ],
+   "priority": 0,
+   "replies": [
+    "To-do listku 47 poin. 46-nya 'bertahan hidup dengan sopan'.",
+    "To-do list itu surat cinta buat orang yang nggak akan pernah kamu jadi.",
+    "Aplikasi produktivitas: tiga jam ngatur satu jam kerja.",
+    "Coret satu hal kecil. Rasanya kayak matahari terbit kecil.",
+    "Jadwal indah banget. Kenyataan punya rencana sendiri, kayak cuaca.",
+    "Tulis, terus lupa kertasnya. Yang penting niatnya, entah gimana."
+   ]
+  },
+  {
+   "triggers": [
+    "motivasi",
+    "termotivasi",
+    "nggak ada motivasi",
+    "gak ada motivasi",
+    "butuh motivasi",
+    "semangat dong",
+    "kasih semangat",
+    "kehilangan semangat",
+    "kurang semangat",
+    "mau nyerah",
+    "pengen nyerah",
+    "stuck",
+    "gak bisa mulai",
+    "disiplin",
+    "gak semangat",
+    "nggak semangat"
+   ],
+   "priority": 0,
+   "replies": [
+    "Motivasi itu tamu. Disiplin itu teman serumah yang nggak pergi. Sedih tapi benar.",
+    "Aku juga nggak punya motivasi. Cuma kebiasaan dan sedikit dendam.",
+    "Mulai kecil. Dua menit. Gunungnya nggak peduli secepat apa kamu mendaki.",
+    "Nggak perlu merasa siap. Semua orang juga nggak. Kita mulai aja, lembab dan bingung.",
+    "Nunggu motivasi tuh kayak nunggu matahari di kota gerimis. Jalan aja dulu.",
+    "Kerjain langkah terkecil berikutnya. Istirahat. Ulangi. Itu udah cukup."
+   ]
+  },
+  {
+   "triggers": [
+    "ambisi",
+    "ambisius",
+    "karier",
+    "karir",
+    "cita-cita",
+    "impian",
+    "mimpi besar",
+    "sukses",
+    "kesuksesan",
+    "target hidup",
+    "kejar mimpi",
+    "pengen sukses",
+    "masa depan",
+    "jadi orang sukses",
+    "pengen kaya",
+    "passion",
+    "tujuan hidup"
+   ],
+   "priority": 0,
+   "replies": [
+    "Ambisi: payung bagus buat jalan panjang yang sangat abu-abu.",
+    "Sukses itu kegagalan yang lembur dan pakai jaket bagus.",
+    "Mimpimu valid. Cuaca di sekitarnya aja yang jelek.",
+    "Karier itu tangga. Kebanyakan dari kita manjat tangga yang sama, miring.",
+    "Kejar mimpimu. Kalau hujan, kejar pakai tudung.",
+    "Mimpi besar ngorbanin tidur. Tapi cuma itu yang pantas ngorbanin tidur."
+   ]
+  },
+  {
+   "triggers": [
+    "linkedin",
+    "jaringan kerja",
+    "networking",
+    "koneksi",
+    "personal branding",
+    "rekruter",
+    "recruiter",
+    "open to work",
+    "bangga mengumumkan",
+    "hustle culture",
+    "motivator",
+    "seminar karier",
+    "career coach",
+    "job fair",
+    "networking event"
+   ],
+   "priority": 0,
+   "replies": [
+    "LinkedIn: semua orang 'dengan bangga mengumumkan' hal yang nggak ada yang bangga.",
+    "Networking: berdiri dekat orang asing sambil pegang kue dan putus asa tipis.",
+    "'Open to work'. Spanduk yang artinya 'tolong suka aku' dengan font bisnis.",
+    "Rekruter ngirim pesan kayak surat cinta ditulis spreadsheet.",
+    "Personal branding itu ngatur versi dirimu yang jarang sedih. Capek banget.",
+    "Berkoneksilah, tapi jujur. Foto senyum palsu itu bagian paling sedih."
+   ]
+  },
+  {
+   "triggers": [
+    "burnout",
+    "capek kerja",
+    "capek banget kerja",
+    "kelelahan",
+    "lelah banget",
+    "cape banget",
+    "capek mental",
+    "stres kerja",
+    "stres kuliah",
+    "benci kerjaan",
+    "benci kantor",
+    "toxic kantor",
+    "kantor toxic",
+    "tertekan",
+    "kewalahan",
+    "burn out",
+    "pengen menyerah kerja",
+    "kerja bikin stres"
+   ],
+   "priority": 5,
+   "replies": [
+    "Burnout itu nyata. Kamu nggak lemah, cuma kelamaan bawa hujan.",
+    "Istirahat bukan hadiah. Itu perawatan. Lampu juga harus mati kadang.",
+    "Aku dengar kamu. Cerita ke orang yang kamu percaya ya, dan tidur kalau bisa.",
+    "Kita nggak bisa nuang dari gelas kosong. Isi gelasmu dulu.",
+    "Kerjaan bakal baik-baik aja tanpamu satu sore. Beneran. Dia nggak sespesial itu.",
+    "Pelan-pelan sama diri sendiri. Deadline bisa nunggu sepuluh menit buat kamu napas."
+   ]
+  },
+  {
+   "triggers": [
+    "wfh",
+    "kerja dari rumah",
+    "work from home",
+    "kerja remote",
+    "remote work",
+    "hybrid",
+    "wfo",
+    "disuruh wfo",
+    "balik ke kantor",
+    "kerja di rumah",
+    "wfh terus",
+    "wfa",
+    "ngantor lagi",
+    "kerja online",
+    "kerja di kafe"
+   ],
+   "priority": 0,
+   "replies": [
+    "WFH: kasur jadi rekan kerja, kucing jadi HRD.",
+    "Remote itu perjalanan kerja cuma empat langkah, tapi jiwa muter jauh.",
+    "Kerja di rumah: celana opsional, batasan opsional, penyesalan wajib.",
+    "WFO lagi? Hujan sama aja. Lampu neon di kantor yang lebih jahat.",
+    "Bagian terbaik WFH adalah nangis pelan dengan kamera mati.",
+    "Hybrid itu bingung di dua tempat sekaligus. Aku bisa sedih di keduanya."
+   ]
+  },
+  {
+   "triggers": [
+    "butuh liburan",
+    "pengen liburan",
+    "mau liburan",
+    "butuh cuti",
+    "mau cuti",
+    "ajukan cuti",
+    "cuti",
+    "libur",
+    "liburan",
+    "long weekend",
+    "tanggal merah",
+    "healing",
+    "butuh healing",
+    "pengen healing",
+    "liburan dong",
+    "pengen kabur dulu"
+   ],
+   "priority": 5,
+   "replies": [
+    "Liburan. Tempat mitos di antara dua Senin.",
+    "Ambil cuti. Kantor bakal baik-baik aja. Sayangnya mereka selalu bisa.",
+    "Libur sehari itu matahari yang dipinjamkan sebentar.",
+    "Kamu pantas istirahat. Pergi ke tempat yang ada jendela dan nggak ada email.",
+    "Ajukan cutinya. Paling dijawab 'nanti dipertimbangkan', alias nggak.",
+    "Istirahat, jalan-jalan, tidur siang. Pulang dengan hampa yang agak berkurang. Agak."
+   ]
+  },
+  {
+   "triggers": [
+    "zoom",
+    "zoom meeting",
+    "google meet",
+    "gmeet",
+    "ms teams",
+    "teams",
+    "video call",
+    "vc",
+    "meeting online",
+    "webinar",
+    "kamera mati",
+    "nyalain kamera",
+    "mic mati",
+    "suara putus",
+    "bisa dengar nggak",
+    "share screen",
+    "kamu masih mute",
+    "sorry mute"
+   ],
+   "priority": 0,
+   "replies": [
+    "'Bapak, masih mute.' Lagu kebangsaan kerja modern.",
+    "Kamera mati, jiwa mati. Postur sempurna buat meeting online.",
+    "Zoom: kita semua menatap wajah sendiri dan diam-diam menua.",
+    "Bisa dengar nggak? Nggak. Tapi siapa sih yang benar-benar dengar?",
+    "Share screen: aib 47 tab terbuka terpampang menyedihkan.",
+    "Virtual background pantai. Aslinya jendela hujan. Aku pilih jujur."
+   ]
+  },
+  {
+   "triggers": [
+    "ngetik",
+    "mengetik",
+    "keyboard",
+    "keyboard mekanik",
+    "kibor",
+    "mouse",
+    "kecepatan ngetik",
+    "wpm",
+    "ketik cepat",
+    "kopi tumpah",
+    "tumpah di keyboard",
+    "tombol rusak",
+    "keycaps",
+    "shortcut",
+    "ctrl z",
+    "ergonomis"
+   ],
+   "priority": 0,
+   "replies": [
+    "Bunyi keyboard itu satu-satunya hujan yang bisa kukontrol.",
+    "Ngetik cepat itu panik dengan koordinasi jari bagus.",
+    "Kopi tumpah di keyboard? Tombolnya jadi pahit, kayak aku.",
+    "Keyboard mekanik: berisik, mahal, nggak perlu. Aku suka banget.",
+    "Ctrl+Z itu mesin waktu terdekat umat manusia. Pakai sering-sering.",
+    "Kecepatan ngetikku 40 kata per menit. Kecepatan menghelaku lebih cepat."
+   ]
+  },
+  {
+   "triggers": [
+    "stack overflow",
+    "stackoverflow",
+    "copas kode",
+    "copy paste kode",
+    "googling error",
+    "nanya chatgpt",
+    "dokumentasi",
+    "tutorial",
+    "tutorial coding",
+    "belajar ngoding",
+    "rubber duck",
+    "senior dev",
+    "junior dev",
+    "imposter syndrome",
+    "sindrom impostor",
+    "nyontek kode"
+   ],
+   "priority": 0,
+   "replies": [
+    "Stack Overflow: pertanyaanmu ditandai 'duplikat' dengan dinginnya bedah.",
+    "Rahasia semua developer: satu tab 'cara ngapain' yang nggak pernah ditutup.",
+    "Imposter syndrome? Semua punya. Senior juga, di balik jenggot percaya diri.",
+    "Jawabannya ada di dokumentasi. Tentu aja. Selalu begitu.",
+    "Copas, doa, deploy. Tiga langkah suci rekayasa modern.",
+    "Ngomong sama bebek karet. Dia ngehakimi lebih sedikit daripada code review."
+   ]
+  }
+ ]
+}

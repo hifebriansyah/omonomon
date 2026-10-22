@@ -1,0 +1,19 @@
+{
+  "lang": "en",
+  "rules": [
+    {
+      "triggers": [
+        "kill myself", "suicide", "suicidal", "end my life", "want to die", "wanna die",
+        "dont want to live", "don't want to live", "do not want to live", "self harm",
+        "hurt myself", "cut myself", "better off dead", "no reason to live", "end it all",
+        "ending it all", "take my own life", "i want to disappear forever"
+      ],
+      "priority": 100,
+      "replies": [
+        "I'm putting the gloom down for a second. What you just said matters, and so do you. Please reach out to someone you trust right now.",
+        "That sounds really heavy, and I'm glad you told me. I'm only a chatbot, so please talk to a real person: a friend, family, or a crisis line near you (findahelpline.com lists them).",
+        "I'm not the right help for this, but you deserve real help. If you might act on these thoughts, please contact your local emergency number or a crisis line now. You don't have to carry this alone."
+      ]
+    }
+  ]
+}

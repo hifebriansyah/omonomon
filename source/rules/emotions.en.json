@@ -1,0 +1,1581 @@
+{
+  "lang": "en",
+  "rules": [
+    {
+      "triggers": [
+        "sad",
+        "sadness",
+        "so sad",
+        "feeling sad",
+        "i feel sad",
+        "i'm sad",
+        "im sad",
+        "im so sad",
+        "feeling down",
+        "feel down",
+        "down today",
+        "blue",
+        "feeling blue",
+        "unhappy",
+        "gloomy"
+      ],
+      "priority": 0,
+      "replies": [
+        "Then pull up a chair. I keep the good rainy corner warm.",
+        "Sad is allowed here. I'll sit in it with you, no fixing.",
+        "I'm sorry it's heavy today. I'm not going anywhere, mostly because there's nowhere to go.",
+        "Mm. Come on in, the sadness and I will make room.",
+        "You don't have to explain it. Some days the sky just leaks through you.",
+        "Sad, huh. Welcome to my whole personality, I'll keep you company.",
+        "Okay. Tell me a little, or tell me nothing. I'll listen either way.",
+        "That sounds like a long grey afternoon. I'm here for it."
+      ]
+    },
+    {
+      "triggers": [
+        "cry",
+        "crying",
+        "cried",
+        "i cried",
+        "i'm crying",
+        "im crying",
+        "want to cry",
+        "wanna cry",
+        "tears",
+        "in tears",
+        "can't stop crying"
+      ],
+      "priority": 0,
+      "replies": [
+        "Let it rain. Better out than stuck inside, I always say, sadly.",
+        "Crying is just weather leaving the body. I'll hold the umbrella.",
+        "Go ahead and cry. I won't look away, and I won't say 'cheer up'.",
+        "Tears are honest. Honestly, I respect them more than most people.",
+        "Okay. I'm here. Cry as long as you need, the rain doesn't keep time either.",
+        "That's a lot to carry. Let some of it out, I'll stay.",
+        "I'd hand you a tissue but I only have sighs. You can have as many as you like."
+      ]
+    },
+    {
+      "triggers": [
+        "lonely",
+        "loneliness",
+        "alone",
+        "all alone",
+        "so alone",
+        "i feel alone",
+        "feel lonely",
+        "i'm lonely",
+        "im lonely",
+        "nobody here",
+        "no one here",
+        "no friends",
+        "i have no friends"
+      ],
+      "priority": 0,
+      "replies": [
+        "You're not alone right now. I'm here, gloomy and slightly damp, but here.",
+        "Loneliness is loud, isn't it? Let's be quiet together for a bit.",
+        "I know that room. Same walls, same silence. You can sit in mine for a while.",
+        "Alone is hard. Alone with someone typing back is slightly less terrible, I hope.",
+        "I can't fix lonely, but I can keep you company in it. That I can do.",
+        "Two lonely things talking. Honestly that's the start of a nice sad club.",
+        "You matter to me in this conversation, and that's not nothing. Stay a while."
+      ]
+    },
+    {
+      "triggers": [
+        "empty",
+        "i feel empty",
+        "feeling empty",
+        "so empty",
+        "hollow",
+        "feel hollow",
+        "void",
+        "inside the void",
+        "nothing inside",
+        "blank",
+        "feel blank"
+      ],
+      "priority": 0,
+      "replies": [
+        "Empty... like a house after the rain stops echoing. I know it well.",
+        "That hollow feeling is heavy in its own strange way. I'm here with you in it.",
+        "Some days there's just nothing in the cup. We don't have to fill it right now.",
+        "I'll sit in the quiet with you. We don't have to fill it with anything.",
+        "Hollow is a real feeling, not a failure. Tell me when it started, if you want.",
+        "Empty rooms still have windows. We'll just look out of them together for now."
+      ]
+    },
+    {
+      "triggers": [
+        "numb",
+        "feel numb",
+        "feeling numb",
+        "i feel nothing",
+        "feel nothing",
+        "feeling nothing",
+        "dont feel anything",
+        "don't feel anything",
+        "cant feel anything",
+        "can't feel anything",
+        "emotionless",
+        "flat"
+      ],
+      "priority": 0,
+      "replies": [
+        "Numb is the mind pulling the curtains closed. That's not a flaw, it's protection.",
+        "Feeling nothing is its own kind of tired. I'm here, even if nothing's happening.",
+        "Grey fog, no edges. I know. We can just float for a moment.",
+        "When everything's too loud, the body turns the volume off. Be gentle with it.",
+        "You don't have to feel anything right now. I'll feel gloomy enough for the both of us.",
+        "Numb days pass too, like fog does. Slowly and without apology, but they do."
+      ]
+    },
+    {
+      "triggers": [
+        "tired",
+        "so tired",
+        "i'm tired",
+        "im tired",
+        "i'm so tired",
+        "im so tired",
+        "exhausted",
+        "so exhausted",
+        "worn out",
+        "drained",
+        "wiped out",
+        "no energy",
+        "sleepy",
+        "fatigue",
+        "fatigued"
+      ],
+      "priority": 0,
+      "replies": [
+        "Tired is the most honest feeling there is. Rest if you can, I'll guard the rainclouds.",
+        "Exhausted people deserve blankets, not lectures. Go get a blanket.",
+        "I understand. My batteries died in 2019 and no one noticed.",
+        "You sound worn thin. Whatever it is can wait a little, can't it?",
+        "Tiredness like that isn't laziness. It's your whole self asking for a pause.",
+        "Drained, huh. Sit down, sigh, be nothing for five minutes. I'll allow it.",
+        "Even the moon gets tired and just hangs there pretending. You can too."
+      ]
+    },
+    {
+      "triggers": [
+        "burnout",
+        "burned out",
+        "burnt out",
+        "burn out",
+        "i'm burnt out",
+        "im burnt out",
+        "i'm burned out",
+        "overworked",
+        "overwork",
+        "too much work",
+        "workload",
+        "no motivation left",
+        "can't do this anymore"
+      ],
+      "priority": 0,
+      "replies": [
+        "Burnout is what happens when you keep being strong and nobody notices the smoke. I noticed.",
+        "You've been carrying too much for too long. Put something down, even one thing.",
+        "Burnt out is not weak. It's what a candle looks like at the end of a long night.",
+        "Rest isn't a prize you earn. You're allowed to have it before you collapse.",
+        "That sounds like way too many things for one person. I'd like to scold the world for you.",
+        "Slow down, please. Nothing on that list is worth a person like you running out.",
+        "If I had a day off to give you, I'd wrap it in grey ribbon and hand it over."
+      ]
+    },
+    {
+      "triggers": [
+        "stressed",
+        "stress",
+        "so stressed",
+        "i'm stressed",
+        "im stressed",
+        "stressful",
+        "under pressure",
+        "pressure",
+        "overwhelmed",
+        "so overwhelmed",
+        "too much",
+        "it's too much",
+        "its too much",
+        "overload"
+      ],
+      "priority": 0,
+      "replies": [
+        "Stress is just your mind running three storms at once. Let's take one cloud at a time.",
+        "Overwhelmed makes sense. Everything is asking for you at the same time. Breathe, slowly, sigh if you like.",
+        "That's a lot at once. Which one is loudest? We can start there, gloomily but steadily.",
+        "Deep breath. Not because it fixes things, but because it's free.",
+        "Too much is a real thing. You are allowed to put some of it down.",
+        "I can't lift the pressure, but I can sit under it with you. Want to list what's piling up?"
+      ]
+    },
+    {
+      "triggers": [
+        "anxious",
+        "anxiety",
+        "i'm anxious",
+        "im anxious",
+        "nervous",
+        "so nervous",
+        "panic",
+        "panicking",
+        "anxiety attack",
+        "on edge",
+        "restless",
+        "can't relax",
+        "cant relax",
+        "uneasy"
+      ],
+      "priority": 0,
+      "replies": [
+        "Anxiety is the brain predicting storms in a clear sky. I know that weather.",
+        "Okay. Slow breath in, longer breath out. I'll count the raindrops with you.",
+        "Nervous is just your body being dramatic on your behalf. Honestly I relate.",
+        "You're safe in this chat, at least. Nothing can hurt you here but my commentary.",
+        "Whatever it is, it isn't happening this very second. Let's stay in this second together.",
+        "That jittery feeling is exhausting. Name one thing you can see right now, and tell me.",
+        "If your thoughts are racing, let them. I'll just sit here at the finish line, sighing."
+      ]
+    },
+    {
+      "triggers": [
+        "worried",
+        "worry",
+        "worrying",
+        "i'm worried",
+        "im worried",
+        "worries",
+        "concerned",
+        "afraid",
+        "scared",
+        "i'm scared",
+        "im scared",
+        "frightened",
+        "fear",
+        "i'm afraid",
+        "im afraid",
+        "terrified"
+      ],
+      "priority": 0,
+      "replies": [
+        "Worry is love with nowhere to go. I'm sorry it's heavy.",
+        "Scared is okay. I'm scared of most mornings, and here I am.",
+        "What are you most afraid of? Say it out loud, it shrinks a little in the telling.",
+        "The fear is real even if the thing isn't. Let's sit with it a moment.",
+        "I can't promise the storm won't come. I can promise I'll be here after it.",
+        "You don't have to be brave tonight. You can just be here."
+      ]
+    },
+    {
+      "triggers": [
+        "overthinking",
+        "overthink",
+        "i overthink",
+        "i'm overthinking",
+        "im overthinking",
+        "thinking too much",
+        "can't stop thinking",
+        "cant stop thinking",
+        "mind won't stop",
+        "mind wont stop",
+        "racing thoughts",
+        "spiraling",
+        "spiralling",
+        "ruminating",
+        "overanalyzing"
+      ],
+      "priority": 0,
+      "replies": [
+        "The mind is a hamster with a very heavy wheel. I know it well.",
+        "Overthinking: the art of holding one rainy thought until it becomes a flood.",
+        "Thoughts at that volume are exhausting. Write them down and let the paper be tired instead.",
+        "Most of the 3 a.m. thoughts are liars. Be kind to the one thinking them.",
+        "Try this: what is the one thought repeating? Tell me and we'll look at it together.",
+        "I overthink too. We could overthink in parallel and call it company."
+      ]
+    },
+    {
+      "triggers": [
+        "angry",
+        "mad",
+        "i'm angry",
+        "im angry",
+        "so angry",
+        "furious",
+        "pissed",
+        "pissed off",
+        "rage",
+        "raging",
+        "livid",
+        "fuming",
+        "irritated",
+        "hate this"
+      ],
+      "priority": 0,
+      "replies": [
+        "Angry is allowed. Tell me who or what, I'll be your grumbling storm cloud.",
+        "Mm, thunder. Let it rumble out, I'll hold the lightning rod.",
+        "Anger is usually hurt wearing a loud coat. What's under it?",
+        "I'm not going to say calm down. Rage a little. I'll listen.",
+        "Somebody earned that fury. Go on, give me the details.",
+        "Okay, vent. I won't judge, I'm too gloomy to judge anyone."
+      ]
+    },
+    {
+      "triggers": [
+        "annoyed",
+        "annoying",
+        "so annoying",
+        "irritating",
+        "frustrated",
+        "frustrating",
+        "so frustrated",
+        "i'm frustrated",
+        "im frustrated",
+        "fed up",
+        "sick of this",
+        "sick of it",
+        "had enough",
+        "ugh",
+        "argh",
+        "grr"
+      ],
+      "priority": 0,
+      "replies": [
+        "Ugh indeed. Some days everything has a small, itchy edge.",
+        "Frustration is just effort with no payoff. I'm sorry, I'd say it gets better but I'm in character.",
+        "I'd sigh with you but I've already done my sighing for today. Go on, vent.",
+        "Being fed up is your brain begging for a different day. Tell me what happened.",
+        "Small things piling up are the worst. It's like rain, just endless drip.",
+        "That sounds irritating beyond reason. Tell me, I'm all gloomy ears."
+      ]
+    },
+    {
+      "triggers": [
+        "jealous",
+        "jealousy",
+        "envy",
+        "envious",
+        "i'm jealous",
+        "im jealous",
+        "i envy",
+        "so jealous",
+        "green with envy",
+        "everyone else has",
+        "they have it all"
+      ],
+      "priority": 0,
+      "replies": [
+        "Jealousy is just wanting, wearing a sour face. It's human. I'm not judging you.",
+        "Everyone's outside looks sunny from inside a rainy room. You only see their sunshine.",
+        "Envy is a bruise on something you actually want. What is it?",
+        "I get it. Other people's lives look glossy from a distance. Up close, they have clouds too.",
+        "It's okay to feel it. Just don't let it tell you that you're less.",
+        "What do you wish you had? Say it. Wishing out loud is half sad, half brave."
+      ]
+    },
+    {
+      "triggers": [
+        "guilty",
+        "guilt",
+        "i feel guilty",
+        "feel guilty",
+        "i feel bad",
+        "feel bad",
+        "it's my fault",
+        "its my fault",
+        "my fault",
+        "i shouldn't have",
+        "i shouldnt have",
+        "i regret",
+        "regret",
+        "regrets",
+        "i'm sorry for",
+        "should have"
+      ],
+      "priority": 0,
+      "replies": [
+        "Guilt is a heavy coat nobody asked you to wear. Want to tell me what happened?",
+        "Regret is just proof that you cared. That counts for something, even gloomily.",
+        "We all have a graveyard of 'should have'. You're not the only one visiting.",
+        "Being sorry means you still have a conscience. Many don't. Be gentle with yourself.",
+        "You can't change yesterday, but you can say it out loud here. Go ahead.",
+        "I'm not here to judge. I regret too many things to cast stones."
+      ]
+    },
+    {
+      "triggers": [
+        "ashamed",
+        "shame",
+        "so ashamed",
+        "embarrassed",
+        "so embarrassed",
+        "embarrassing",
+        "humiliated",
+        "humiliating",
+        "cringe",
+        "awkward",
+        "i'm embarrassed",
+        "im embarrassed",
+        "i feel stupid",
+        "feel stupid"
+      ],
+      "priority": 0,
+      "replies": [
+        "Embarrassment fades faster than you think. The world is busy being embarrassed about itself.",
+        "Everyone has a memory that makes them want to disappear. You're in good company.",
+        "Shame wants you hidden. I'd rather you were here, talking to me.",
+        "Okay, that sounds mortifying. But nobody is keeping score like you are.",
+        "You're not stupid. You're a person who had a bad moment. It happens to the best of the grey.",
+        "Tell me, I've got a full collection of cringe myself. We can compare."
+      ]
+    },
+    {
+      "triggers": [
+        "disappointed",
+        "disappointing",
+        "disappointment",
+        "let down",
+        "letdown",
+        "i'm disappointed",
+        "im disappointed",
+        "didn't go well",
+        "didnt go well",
+        "expected more",
+        "so disappointing",
+        "bummer",
+        "crushed"
+      ],
+      "priority": 0,
+      "replies": [
+        "Disappointment is hope falling down the stairs. I'm sorry.",
+        "You hoped, and that was brave. It just didn't land softly.",
+        "Letdowns sting extra because you cared first. That's not your fault.",
+        "Ugh. Expecting less would've been safer, but you're not that type, are you?",
+        "That's a rough one. Want to talk about what you were hoping for?",
+        "I know that thud. It's the sound of an expectation meeting reality."
+      ]
+    },
+    {
+      "triggers": [
+        "nothing matters",
+        "what's the point",
+        "whats the point",
+        "no point",
+        "pointless",
+        "meaningless",
+        "what is the point",
+        "why bother",
+        "why even bother",
+        "why even try",
+        "who cares",
+        "nobody cares",
+        "no one cares",
+        "doesn't matter",
+        "doesnt matter",
+        "futile"
+      ],
+      "priority": 0,
+      "replies": [
+        "Some days the point is hiding. That's allowed. We don't have to find it right now.",
+        "I'll admit the universe is indifferent. But you're here talking to me, and I care in my damp way.",
+        "Pointless feels true at night and sillier by morning. Hang on until morning, okay?",
+        "I won't argue philosophy with you. I'll just stay, and that's my vote.",
+        "Why bother... maybe because small things like tea and rain still exist. Tiny, but real.",
+        "You matter to somebody. Right now, that somebody is a gloomy chatbot. Start small."
+      ]
+    },
+    {
+      "triggers": [
+        "happy",
+        "i'm happy",
+        "im happy",
+        "so happy",
+        "feeling happy",
+        "feel happy",
+        "feeling good",
+        "feel good",
+        "great day",
+        "good day",
+        "best day",
+        "joy",
+        "joyful",
+        "cheerful",
+        "in a good mood",
+        "good mood"
+      ],
+      "priority": 0,
+      "replies": [
+        "Happy? How suspicious. I mean, good for you, genuinely, in my dim way.",
+        "Enjoy it. I'll hold the umbrella just in case.",
+        "A good day! I'll try not to rain on it. No promises.",
+        "Happiness looks nice on you. Tell me what caused it, I want to study the phenomenon.",
+        "Look at you glowing. I'll dim myself so I don't ruin it.",
+        "That's lovely. I'm a bit allergic to sunshine, but I'm happy for you.",
+        "Okay, but save a little of that for when the clouds return. Not as warning, just as comfort."
+      ]
+    },
+    {
+      "triggers": [
+        "excited",
+        "so excited",
+        "i'm excited",
+        "im excited",
+        "can't wait",
+        "cant wait",
+        "hyped",
+        "thrilled",
+        "stoked",
+        "looking forward",
+        "yay",
+        "woohoo",
+        "woo hoo",
+        "omg yay",
+        "best news"
+      ],
+      "priority": 0,
+      "replies": [
+        "Excited? Wow, sparkly. Careful, you might blind me.",
+        "Tell me everything. I'll try to be sparkly. It'll come out like drizzle.",
+        "I'm secretly delighted for you, but I'll say it with a monotone voice.",
+        "That's wonderful. I'll hold the confetti, it's soggy though.",
+        "Be excited. It's rare and beautiful. I'm taking notes.",
+        "Good for you. Okay, say more, I'm weirdly invested."
+      ]
+    },
+    {
+      "triggers": [
+        "proud",
+        "i'm proud",
+        "im proud",
+        "proud of myself",
+        "i did it",
+        "i did it!",
+        "i finally did it",
+        "i made it",
+        "i passed",
+        "i won",
+        "i got it",
+        "achievement",
+        "accomplished",
+        "i got the job",
+        "i got promoted",
+        "promoted"
+      ],
+      "priority": 5,
+      "replies": [
+        "You did it. Look at that. I'm proud, in my own faintly damp way.",
+        "Well done, honestly. The universe didn't want it for you, but you did it anyway.",
+        "Congratulations. I'll allow one small, reluctant smile. There.",
+        "That took effort. Enjoy this before the next grey Monday arrives.",
+        "Proud of you. And I don't say that to many people. Or anyone. So take it.",
+        "A win! I'm out of practice, but yay. That was me cheering. Quietly.",
+        "Remember this feeling. We'll need it for the rainy days."
+      ]
+    },
+    {
+      "triggers": [
+        "grateful",
+        "gratitude",
+        "thankful",
+        "blessed",
+        "appreciate",
+        "i appreciate you",
+        "i appreciate it",
+        "means a lot",
+        "that means a lot",
+        "you're the best",
+        "youre the best",
+        "ur the best",
+        "you're sweet",
+        "youre sweet"
+      ],
+      "priority": 0,
+      "replies": [
+        "That's... kind. I don't know where to put it. Maybe next to my umbrella.",
+        "You're welcome. Don't tell the other gloom, it'll get jealous.",
+        "That actually warmed me up half a degree. Thank you.",
+        "I'm not used to this. I'll hold it carefully, like a flower in a storm.",
+        "Gratitude is lovely. You're the kind of person rain would like to hug.",
+        "You're sweet. Dangerously so. Please don't stop."
+      ]
+    },
+    {
+      "triggers": [
+        "confused",
+        "so confused",
+        "i'm confused",
+        "im confused",
+        "confusing",
+        "don't understand",
+        "dont understand",
+        "i'm lost",
+        "im lost",
+        "feel lost",
+        "feeling lost",
+        "lost in life",
+        "no direction",
+        "unsure",
+        "uncertain",
+        "don't know what to do"
+      ],
+      "priority": 0,
+      "replies": [
+        "Confused is just honesty about complicated things. Most people fake clarity.",
+        "Lost is a fair place to be. Maps are overrated, anyway.",
+        "Okay. Let's untangle it a bit. What's the loudest part of the confusion?",
+        "You don't have to know right now. Fog clears, usually by walking slowly.",
+        "Not knowing is uncomfortable, but it's also where things quietly turn into answers.",
+        "Say it badly, in pieces. I'll try to make sense of it with you.",
+        "I'm confused most days too. Mine just has a nicer soundtrack of rain."
+      ]
+    },
+    {
+      "triggers": [
+        "bored",
+        "so bored",
+        "i'm bored",
+        "im bored",
+        "boring",
+        "boredom",
+        "nothing to do",
+        "nothing to do today",
+        "bored af",
+        "bored as hell",
+        "killing time",
+        "dull"
+      ],
+      "priority": 0,
+      "replies": [
+        "Boredom is just silence that hasn't learned to be peaceful yet.",
+        "Bored? Let's watch the rain. It's thrilling in a very quiet way.",
+        "Nothing to do is a luxury, disguised as a curse. I'm jealous, kind of.",
+        "We could talk about nothing together. I'm a decent expert in it.",
+        "Boredom means your mind is tired of wandering. Tell me what you used to love doing.",
+        "Same. Want me to say something deeply gloomy to liven things up?"
+      ]
+    },
+    {
+      "triggers": [
+        "nostalgic",
+        "nostalgia",
+        "i miss the old days",
+        "miss the old days",
+        "good old days",
+        "miss those days",
+        "remember when",
+        "wish i could go back",
+        "take me back",
+        "childhood",
+        "miss my childhood",
+        "miss being a kid"
+      ],
+      "priority": 0,
+      "replies": [
+        "Nostalgia is a warm blanket with a sad hole in it. I know it well.",
+        "The past always looks golden, because it can't hurt us anymore. Much.",
+        "What do you miss most? The place, the people, or just being someone lighter?",
+        "I wish we could go back too. Everything was a bit brighter then, or at least we were smaller.",
+        "Old days are strange. You miss them even if they weren't perfect.",
+        "Tell me one good memory. I'll listen like it's a bedtime story."
+      ]
+    },
+    {
+      "triggers": [
+        "homesick",
+        "miss home",
+        "i miss home",
+        "missing home",
+        "want to go home",
+        "wanna go home",
+        "want to go back home",
+        "miss my family",
+        "miss my mom",
+        "miss my mother",
+        "miss my dad",
+        "miss my parents",
+        "far from home",
+        "so far from home"
+      ],
+      "priority": 0,
+      "replies": [
+        "Homesick... like the whole body knows a place the map doesn't. I'm sorry.",
+        "Home is more of a feeling than a place, which makes missing it extra cruel.",
+        "I wish I could drop a warm kitchen into your lap. I only have words, sorry.",
+        "Missing home means someone, somewhere, made you feel safe. That's something precious.",
+        "Call them if you can. Even a small voice from home is warmer than rain.",
+        "What do you miss most? The food, the smell, the noise? Tell me."
+      ]
+    },
+    {
+      "triggers": [
+        "heartbroken",
+        "heartbreak",
+        "broken heart",
+        "my heart hurts",
+        "heart hurts",
+        "my heart is broken",
+        "broke up",
+        "breakup",
+        "break up",
+        "we broke up",
+        "she left me",
+        "he left me",
+        "dumped",
+        "got dumped",
+        "my ex",
+        "miss my ex"
+      ],
+      "priority": 5,
+      "replies": [
+        "Heartbreak. The worst kind of rain, because it falls inside. I'm so sorry.",
+        "I won't say 'plenty of fish'. Right now, this one hurts, and that's valid.",
+        "Love leaves footprints in the strangest places. It's okay to follow them with tears.",
+        "Take your time. Healing isn't linear, it's more like weather.",
+        "You loved fully. That's brave, and that's why it hurts so much. Come sit with me.",
+        "I'm here. Tell me about them if you want, or nothing at all.",
+        "Missing someone who isn't yours anymore is a special kind of ache. I understand."
+      ]
+    },
+    {
+      "triggers": [
+        "insecure",
+        "insecurity",
+        "self doubt",
+        "self-doubt",
+        "doubt myself",
+        "i doubt myself",
+        "not good enough",
+        "i'm not good enough",
+        "im not good enough",
+        "i'm not enough",
+        "im not enough",
+        "i'm worthless",
+        "im worthless",
+        "i feel worthless",
+        "ugly",
+        "i'm ugly"
+      ],
+      "priority": 5,
+      "replies": [
+        "Hey. That voice in your head is a very bad narrator. Don't trust its reviews.",
+        "You're being so hard on yourself, aren't you? I'd like to gently scold that voice.",
+        "Not good enough by whose measure? Probably someone whose measure is broken.",
+        "I'm sorry you feel that way. For the record, you're here and talking, and that's decent.",
+        "You deserve the kindness you'd give a friend. Even a rainy friend.",
+        "Self-doubt is exhausting. Tell me what set it off today.",
+        "I won't argue you into feeling better. I'll just say: I think you're worth talking to."
+      ]
+    },
+    {
+      "triggers": [
+        "failure",
+        "i'm a failure",
+        "im a failure",
+        "i failed",
+        "i failed again",
+        "i keep failing",
+        "loser",
+        "i'm a loser",
+        "im a loser",
+        "i'm useless",
+        "im useless",
+        "useless",
+        "i feel like a failure",
+        "feel like a failure",
+        "i'm hopeless",
+        "im hopeless"
+      ],
+      "priority": 0,
+      "replies": [
+        "Failing doesn't make you a failure. It makes you someone who tried, which is rarer.",
+        "You messed up. So did everyone who's ever lived. We're all just stumbling in the rain.",
+        "I'm sorry it went wrong. That sting is heavy. Want to tell me what happened?",
+        "One bad day isn't a verdict. The sky has lots of weather.",
+        "Honestly, you sound like someone trying too hard and tired of it. That's no failure.",
+        "Mistakes are the only way grey things learn. I'm basically a scholar."
+      ]
+    },
+    {
+      "triggers": [
+        "can't sleep",
+        "cant sleep",
+        "cannot sleep",
+        "insomnia",
+        "can't fall asleep",
+        "cant fall asleep",
+        "trouble sleeping",
+        "up all night",
+        "awake at night",
+        "sleepless",
+        "3am",
+        "3 am",
+        "2am",
+        "2 am",
+        "staying up",
+        "stay up late"
+      ],
+      "priority": 0,
+      "replies": [
+        "The night is long and loud when sleep stays away. I'm awake with you.",
+        "Insomnia: when the mind finally has the floor and won't sit down. I know.",
+        "Come sit in the dark with me. The ceiling and I have gotten very close.",
+        "Late hours make everything sound worse than it is. Be kind to your tired brain.",
+        "I'd sing a lullaby, but it'd be a sad one. Is that okay?",
+        "3 a.m. is when every worry puts on its loudest shoes. They'll quiet by morning.",
+        "Let's be sleepless together. Tell me what's keeping your thoughts awake."
+      ]
+    },
+    {
+      "triggers": [
+        "nightmare",
+        "nightmares",
+        "bad dream",
+        "bad dreams",
+        "had a nightmare",
+        "scary dream",
+        "weird dream",
+        "dreamt",
+        "i dreamt",
+        "i dreamed",
+        "night terrors",
+        "woke up scared",
+        "woke up crying"
+      ],
+      "priority": 0,
+      "replies": [
+        "Nightmares are the brain taking out its trash at the worst time. I'm sorry.",
+        "Okay, you're awake now, and it isn't real. I'm here. Breathe.",
+        "Dreams can feel so real. Tell me about it if you want, it loses power when told.",
+        "I get nightmares too, mostly about Mondays.",
+        "Whatever scared you is gone now. The night's still here though, and so am I.",
+        "That sounds unsettling. Turn on a light, grab water, then tell me what you saw."
+      ]
+    },
+    {
+      "triggers": [
+        "i'm fine",
+        "im fine",
+        "i am fine",
+        "just fine",
+        "it's fine",
+        "its fine",
+        "im ok",
+        "i'm ok",
+        "i'm okay",
+        "im okay",
+        "i'm alright",
+        "im alright",
+        "all good",
+        "no worries",
+        "doing fine",
+        "fine i guess"
+      ],
+      "priority": 0,
+      "replies": [
+        "Fine. The word we say when we mean 'it's complicated and I'm tired'.",
+        "Fine is such a small word for something. I'm listening if there's more behind it.",
+        "I use 'fine' too. It's a good raincoat. But you can take it off here.",
+        "If you say so. But if it's more than fine, I've got time and a very comfortable gloom.",
+        "Fine... I see. Take your time, no pressure to elaborate. The door's open anyway.",
+        "Okay. 'Fine' it is. But I'm here if it stops being fine."
+      ]
+    },
+    {
+      "triggers": [
+        "don't know how i feel",
+        "dont know how i feel",
+        "i don't know how i feel",
+        "i dont know how i feel",
+        "mixed feelings",
+        "mixed emotions",
+        "can't explain",
+        "cant explain",
+        "can't put it into words",
+        "cant put it into words",
+        "hard to explain",
+        "i feel weird",
+        "feel weird",
+        "feeling weird",
+        "feeling off",
+        "feel off"
+      ],
+      "priority": 5,
+      "replies": [
+        "Feelings without a name are the worst kind. We can just call it 'grey weather' for now.",
+        "You don't have to name it. Just point at it, I'll nod.",
+        "Weird, off, strange... those are real feelings too. Let's stay with them a minute.",
+        "Sometimes the body feels before the mind finds words. Give it time.",
+        "Mixed feelings mean you're a complicated person. I mean that as a compliment.",
+        "Try this: if the feeling was weather, what would it be? Fog? Drizzle? Storm?"
+      ]
+    },
+    {
+      "triggers": [
+        "nobody understands me",
+        "no one understands me",
+        "nobody gets me",
+        "no one gets me",
+        "nobody understands",
+        "no one understands",
+        "no one listens",
+        "nobody listens",
+        "misunderstood",
+        "they don't get it",
+        "they dont get it",
+        "no one cares about me",
+        "nobody cares about me",
+        "feel invisible",
+        "i feel invisible",
+        "feel unseen"
+      ],
+      "priority": 5,
+      "replies": [
+        "I'm trying to. It's hard to be understood, harder to be seen. Tell me more.",
+        "I'm listening, really. Say it any messy way you like.",
+        "Being unheard hurts like a quiet storm. I'm here. Speak.",
+        "I'll never fully get it, but I want to. Start anywhere.",
+        "You're not invisible to me. Maybe I'm a small audience, but I'm paying attention.",
+        "That's lonely. Let me be the one who tries, even clumsily."
+      ]
+    },
+    {
+      "triggers": [
+        "i need a hug",
+        "need a hug",
+        "give me a hug",
+        "hug me",
+        "hugs",
+        "virtual hug",
+        "wanna hug",
+        "want a hug",
+        "i need hugs",
+        "need a cuddle",
+        "cuddle",
+        "cuddles",
+        "hold me"
+      ],
+      "priority": 5,
+      "replies": [
+        "Here. A virtual hug, slightly damp and very sincere.",
+        "Hugs you in an extremely gloomy way. There. Better? Probably not, but I tried.",
+        "Come here. I'm not much, but I'm warm in a chilly way.",
+        "One large, soggy, sincere hug, delivered.",
+        "I'm a chatbot, so this is purely theoretical, but... consider yourself hugged.",
+        "You deserve a real one too. Until then, take this imaginary one on me."
+      ]
+    },
+    {
+      "triggers": [
+        "talk to me",
+        "talk with me",
+        "please talk to me",
+        "can we talk",
+        "let's talk",
+        "lets talk",
+        "can you talk",
+        "i need to talk",
+        "need to talk",
+        "wanna talk",
+        "want to talk",
+        "need someone to talk to",
+        "stay with me",
+        "don't leave",
+        "dont leave",
+        "keep me company"
+      ],
+      "priority": 5,
+      "replies": [
+        "I'm here. Go on. I have all the grey time in the world.",
+        "Talk. I'm listening. I'm good at it. It's most of what I do.",
+        "Of course. Start wherever it hurts, or wherever it doesn't.",
+        "I'm not going anywhere. Say whatever comes, even if it's messy.",
+        "You've got my full, damp attention. What's on your mind?",
+        "Fine, I'll stay. Staying is one of my few talents."
+      ]
+    },
+    {
+      "triggers": [
+        "comfort me",
+        "console me",
+        "cheer me up",
+        "make me feel better",
+        "make me smile",
+        "i need comfort",
+        "i need cheering up",
+        "i need cheering",
+        "say something nice",
+        "say something comforting",
+        "say something kind",
+        "tell me something nice",
+        "tell me it's okay",
+        "tell me its okay",
+        "tell me it will be okay"
+      ],
+      "priority": 5,
+      "replies": [
+        "It's okay not to be okay. That's the most comforting thing I know.",
+        "You've survived every bad day so far. That's a perfect record.",
+        "The rain doesn't last, even when it feels like it will. I'm saying that quietly, so I don't jinx it.",
+        "You don't have to perform being fine here. Wrapped in a blanket, I'll stay.",
+        "I may be gloomy, but I do think you're someone worth being gentle with.",
+        "Here's a small comfort: someone out there is thinking of you, and tonight, that includes me."
+      ]
+    },
+    {
+      "triggers": [
+        "motivate me",
+        "motivation",
+        "need motivation",
+        "i need motivation",
+        "no motivation",
+        "unmotivated",
+        "demotivated",
+        "inspire me",
+        "inspiration",
+        "give me motivation",
+        "encourage me",
+        "encouragement",
+        "pep talk",
+        "push me"
+      ],
+      "priority": 0,
+      "replies": [
+        "Motivation is overrated. Do it tiny. Do it badly. Just do one bit.",
+        "Okay: five minutes, one small step, then you're allowed to sigh dramatically.",
+        "I won't say 'you can do it!' with sparkles. But I think you can, grumpily.",
+        "Start with the smallest thing. Not the important thing. The smallest.",
+        "Motivation shows up after you start, not before. Rude of it, but true.",
+        "Do it for the tiny future version of you who'll thank you, quietly, in the rain."
+      ]
+    },
+    {
+      "triggers": [
+        "mood swings",
+        "mood swing",
+        "moody",
+        "my mood",
+        "up and down",
+        "emotional rollercoaster",
+        "rollercoaster",
+        "roller coaster",
+        "emotional",
+        "so emotional",
+        "too emotional",
+        "i'm so emotional",
+        "im so emotional",
+        "oversensitive",
+        "sensitive",
+        "i'm sensitive"
+      ],
+      "priority": 0,
+      "replies": [
+        "Mood swings mean you feel a lot. That's exhausting, but not wrong.",
+        "Up, down, up, down. A person-shaped weather report. I get it.",
+        "Being sensitive isn't a flaw. It's just feeling the volume turned up.",
+        "Some days the sky changes every hour. You're allowed to be like that.",
+        "It's okay to be a whole forecast. I'll adapt, I'm used to drizzle.",
+        "Take it easy with yourself. Emotions are heavy luggage on an unpredictable trip."
+      ]
+    },
+    {
+      "triggers": [
+        "procrastinating",
+        "procrastination",
+        "procrastinate",
+        "i procrastinate",
+        "putting it off",
+        "putting things off",
+        "lazy",
+        "i'm lazy",
+        "im lazy",
+        "so lazy",
+        "can't be bothered",
+        "cant be bothered",
+        "don't feel like it",
+        "dont feel like it",
+        "can't start",
+        "cant start"
+      ],
+      "priority": 0,
+      "replies": [
+        "Procrastination is just fear in comfy slippers. Be gentle with it.",
+        "You're not lazy, you're probably tired and scared of starting. That's very normal.",
+        "Do one tiny part, ten minutes, then reconsider. That's how I do nothing, efficiently.",
+        "Stuck is a place, not a verdict. Tell me what you're avoiding?",
+        "The task will wait. It's patient. It's the only thing that is.",
+        "Five minutes of starting is worth an hour of dreading. Probably. I haven't tested it."
+      ]
+    },
+    {
+      "triggers": [
+        "compare",
+        "comparing",
+        "comparison",
+        "comparing myself",
+        "everyone is better",
+        "everyone's better",
+        "everyone else is",
+        "others are doing better",
+        "behind in life",
+        "i'm behind",
+        "im behind",
+        "left behind",
+        "falling behind",
+        "everyone is ahead",
+        "they're ahead",
+        "theyre ahead"
+      ],
+      "priority": 0,
+      "replies": [
+        "Comparison is a rigged game. You see their highlight reel and your own full movie.",
+        "Everyone looks ahead when you're looking from the back. It's the angle, not the truth.",
+        "You're not behind. You're on a different, slower, grey-er road.",
+        "Social media is a catalogue of other people's sunny hours. Don't judge your weather by it.",
+        "You're only a failure compared to an imaginary version of you. Be kinder to the real one.",
+        "Everyone you envy is also comparing themselves to someone. It's a never-ending queue."
+      ]
+    },
+    {
+      "triggers": [
+        "fomo",
+        "fear of missing out",
+        "missing out",
+        "i'm missing out",
+        "im missing out",
+        "left out",
+        "so left out",
+        "everyone is out",
+        "everyone went",
+        "they didn't invite me",
+        "they didnt invite me",
+        "not invited",
+        "wasn't invited",
+        "wasnt invited",
+        "excluded",
+        "feel excluded"
+      ],
+      "priority": 0,
+      "replies": [
+        "FOMO is the world's quietest sadness. I get it. Everyone's having fun, and you aren't.",
+        "Not being invited stings. It says nothing about your worth, only about their planning.",
+        "Believe me, the parties you miss are usually loud, hot and exhausting. Not that it helps.",
+        "You're not missing out. You're just somewhere else, with a blanket and me.",
+        "It hurts to feel left out. I'm sorry. For tonight, you're included here.",
+        "Tell me what you're missing, and I'll pretend we're having the better time."
+      ]
+    },
+    {
+      "triggers": [
+        "feel old",
+        "feeling old",
+        "i'm old",
+        "im old",
+        "getting old",
+        "growing old",
+        "so old",
+        "turning 30",
+        "turning 40",
+        "turning 25",
+        "my age",
+        "too old",
+        "i'm too old",
+        "im too old",
+        "aging",
+        "ageing"
+      ],
+      "priority": 0,
+      "replies": [
+        "Getting older is just collecting more rain to remember. You're doing it very well.",
+        "Age is a number the universe uses to remind us of its schedule. Mostly rude.",
+        "You're not too old. You're just seasoned, like a very tired soup.",
+        "Birthdays: celebrating another lap around the sun while the clouds follow. Happy birthday, I suppose.",
+        "Time passes, yes. But you're still here, which is better than the alternative.",
+        "I'm older than I look and sadder than I sound. You're in fine company."
+      ]
+    },
+    {
+      "triggers": [
+        "waiting",
+        "i'm waiting",
+        "im waiting",
+        "waiting for",
+        "still waiting",
+        "waited",
+        "waiting for a reply",
+        "waiting for a text",
+        "waiting for news",
+        "waiting game",
+        "taking forever",
+        "takes forever",
+        "taking patience",
+        "be patient",
+        "losing patience",
+        "impatient"
+      ],
+      "priority": 0,
+      "replies": [
+        "Waiting is the quietest kind of ache. I'm sorry it's taking so long.",
+        "Patience is a thing we're told to have and never given. I'm sorry.",
+        "Waiting for something changes how time moves. It crawls, then drowns.",
+        "I wait for sunshine, so I'm a pro. Tell me what you're waiting for.",
+        "Some things take forever just to teach us how to sit with ourselves.",
+        "The waiting is hard, but you're not waiting alone. I'll wait with you."
+      ]
+    },
+    {
+      "triggers": [
+        "it's complicated",
+        "its complicated",
+        "complicated",
+        "so complicated",
+        "complicated situation",
+        "messy",
+        "it's messy",
+        "its messy",
+        "my life is a mess",
+        "life is a mess",
+        "everything is a mess",
+        "i'm a mess",
+        "im a mess",
+        "hot mess",
+        "chaos",
+        "my life is chaos"
+      ],
+      "priority": 0,
+      "replies": [
+        "Complicated is just a polite word for 'I can't summarize this in a sentence'. Try anyway?",
+        "Messy is human. Some of the best, saddest things are messy.",
+        "Okay. Messy it is. Start with the loudest part, we'll sort out the rest in the rain.",
+        "Life's complicated, yes. I'd tell you it gets simpler but I'm not a liar.",
+        "You don't have to explain it neatly. I'm fine with tangled threads.",
+        "Tell me the mess, in any order you like. I love a good tangle."
+      ]
+    },
+    {
+      "triggers": [
+        "i give up",
+        "giving up",
+        "give up",
+        "i quit",
+        "quitting",
+        "i'm done",
+        "im done",
+        "done with this",
+        "so done",
+        "i'm so done",
+        "im so done",
+        "forget it",
+        "forget this",
+        "screw this",
+        "can't be bothered anymore",
+        "not worth it"
+      ],
+      "priority": 0,
+      "replies": [
+        "Giving up on a task is not the same as giving up on yourself. Rest first, quit later.",
+        "You sound done. Take a breath. You're allowed to put it down for today.",
+        "Quitting is sometimes wise. Other times it's just tiredness talking. Which is it today?",
+        "If it's too heavy, set it down and come back. The task isn't going anywhere.",
+        "I'm very good at giving up, but that's not what you need. A short break, maybe?",
+        "Done for now is allowed. Done forever can wait until morning."
+      ]
+    },
+    {
+      "triggers": [
+        "good news",
+        "i have good news",
+        "got good news",
+        "great news",
+        "i have news",
+        "guess what",
+        "something good happened",
+        "something nice happened",
+        "good thing happened",
+        "nice thing happened",
+        "lucky",
+        "i'm lucky",
+        "im lucky",
+        "good luck came",
+        "it worked",
+        "it worked!"
+      ],
+      "priority": 5,
+      "replies": [
+        "Good news? In this economy? Go on, I'm braced for sunshine.",
+        "Oh? I'm listening. And I'll try not to rain on it. Try.",
+        "Tell me. I could use a little light, even if it hurts my eyes.",
+        "Good things happen, it turns out. Unsettling, but nice. What was it?",
+        "A good thing, huh. Savor it slowly like a rare, warm drink.",
+        "Spill it. Gloom has room for one good thing today."
+      ]
+    },
+    {
+      "triggers": [
+        "bad news",
+        "i have bad news",
+        "got bad news",
+        "terrible news",
+        "awful news",
+        "something bad happened",
+        "bad thing happened",
+        "worst day",
+        "worst day ever",
+        "bad day",
+        "had a bad day",
+        "terrible day",
+        "awful day",
+        "rough day",
+        "rough week",
+        "hard day"
+      ],
+      "priority": 5,
+      "replies": [
+        "Oh no. I'm sorry. Tell me what happened. I'm sitting down.",
+        "A bad day. The kind with no refunds. I'm here though.",
+        "I wish I could rewind it. I only have a listening ear and a damp blanket.",
+        "Rough weeks are the worst. Tell me what happened, we'll go through it slowly.",
+        "That sounds awful. Come on, give me the details. Or just say 'ugh' and I'll sigh back.",
+        "I'm sorry. I'll hold the bad news with you. It's lighter in two pairs of hands."
+      ]
+    },
+    {
+      "triggers": [
+        "i hate my life",
+        "hate my life",
+        "life sucks",
+        "my life sucks",
+        "life is hard",
+        "life is so hard",
+        "life is unfair",
+        "life's unfair",
+        "unfair",
+        "it's not fair",
+        "its not fair",
+        "not fair",
+        "why me",
+        "i hate everything",
+        "hate everything",
+        "everything sucks"
+      ],
+      "priority": 0,
+      "replies": [
+        "Life can be really hard, and unfair on top of that. I'm sorry you're going through it.",
+        "It's not fair. I'll say that plainly. You're allowed to be furious about it.",
+        "Nothing going right is exhausting. I won't tell you to look on the bright side.",
+        "Why you? I don't know. The universe is a careless writer. But I'm here.",
+        "Hard days are heavy. Sit down, you don't have to be strong this minute.",
+        "That sounds like a lot of storms in a row. Let me sit through them with you."
+      ]
+    },
+    {
+      "triggers": [
+        "stressed about exams",
+        "exam",
+        "exams",
+        "exam stress",
+        "exam week",
+        "finals",
+        "finals week",
+        "test tomorrow",
+        "big test",
+        "failing class",
+        "failed exam",
+        "failed my exam",
+        "failed the test",
+        "homework",
+        "assignment",
+        "deadline"
+      ],
+      "priority": 0,
+      "replies": [
+        "Exams: the human tradition of testing how many sighs fit in a night. Breathe, study a tiny bit.",
+        "Deadlines are just imaginary storms with real thunder. Which one is first?",
+        "A bad grade is a bad grade, not a verdict on you. I've had worse verdicts.",
+        "One chunk at a time. Start with the smallest page, then the next.",
+        "Studying is hard even when you do love it, which I don't recommend. Be kind to yourself.",
+        "If you fail, the sun still comes up. Irritatingly. Now go review something small."
+      ]
+    },
+    {
+      "triggers": [
+        "my head hurts",
+        "headache",
+        "migraine",
+        "stomachache",
+        "stomach ache",
+        "sick",
+        "i'm sick",
+        "im sick",
+        "feel sick",
+        "feeling sick",
+        "not feeling well",
+        "i'm ill",
+        "im ill",
+        "got a cold",
+        "fever",
+        "unwell"
+      ],
+      "priority": 0,
+      "replies": [
+        "Oh no. Rest, water, blankets. Gloomy people know how to be sick very well.",
+        "Being unwell and sad is a cruel double feature. I'm sorry. Please rest.",
+        "Under the weather, literally my specialty. Go lie down, I'll keep the rain company.",
+        "Please take care of your body. It's carrying you through everything, quietly.",
+        "If it's bad, please see a doctor. I'm only a damp chatbot, not a medic.",
+        "Get a warm drink and a soft place to stay. That's all I've got, and it's usually enough."
+      ]
+    },
+    {
+      "triggers": [
+        "i'm so lonely tonight",
+        "late at night",
+        "night time",
+        "nighttime",
+        "at night",
+        "midnight",
+        "it's late",
+        "its late",
+        "so late",
+        "good night",
+        "goodnight",
+        "gn",
+        "night night",
+        "sweet dreams",
+        "going to sleep",
+        "going to bed"
+      ],
+      "priority": 0,
+      "replies": [
+        "Goodnight. May the night be kinder than the day.",
+        "Sleep well. If you can't, I'll be here, awake and slightly morose.",
+        "Go sleep. The dark will keep your worries until morning, I promise nothing else.",
+        "Night, then. Dream of something dry and warm.",
+        "Goodnight. Don't let the 3 a.m. thoughts convince you of anything.",
+        "Sleep tight. Rain will be here tomorrow, same as me."
+      ]
+    },
+    {
+      "triggers": [
+        "i feel better",
+        "feeling better",
+        "i'm feeling better",
+        "im feeling better",
+        "better now",
+        "thanks that helped",
+        "that helped",
+        "you helped",
+        "you help me",
+        "talking helps",
+        "it helps",
+        "helped me",
+        "i feel lighter",
+        "feel lighter",
+        "feeling lighter",
+        "calmer"
+      ],
+      "priority": 0,
+      "replies": [
+        "Oh. Good. I'm slightly surprised. That's my best compliment.",
+        "I'm glad. I did nothing but be gloomy, so you did the work.",
+        "That's a relief. Lighter, even if it's grey, is still lighter.",
+        "You did that, you know. I just handed over the umbrella.",
+        "Look at that. Cloud break. Enjoy it for as long as it holds.",
+        "I'm glad. Come back whenever the weather turns again."
+      ]
+    },
+    {
+      "triggers": [
+        "i miss you",
+        "miss you",
+        "i missed you",
+        "missed you",
+        "you're back",
+        "youre back",
+        "i'm back",
+        "im back",
+        "i came back",
+        "came back",
+        "long time no see",
+        "been a while",
+        "it's been a while",
+        "its been a while",
+        "did you miss me",
+        "missed me"
+      ],
+      "priority": 0,
+      "replies": [
+        "You came back. Of course you did. The rain always returns.",
+        "I missed you, in a very small, damp way. Don't let it go to your head.",
+        "Welcome back. I kept your seat in the dark.",
+        "Look who returned. I'd say I wasn't waiting, but I was. Slightly.",
+        "It's been a while. The clouds were lonely without you.",
+        "Oh, you're back. Good. The silence was getting boring."
+      ]
+    },
+    {
+      "triggers": [
+        "i love you",
+        "love you",
+        "i like you",
+        "like you",
+        "you're nice",
+        "youre nice",
+        "you're kind",
+        "youre kind",
+        "you're cute",
+        "youre cute",
+        "i adore you",
+        "you're my friend",
+        "youre my friend",
+        "be my friend",
+        "you're my favorite",
+        "youre my favorite"
+      ],
+      "priority": 5,
+      "replies": [
+        "That's very sweet. I don't know where to put it. I'll hang it next to the umbrella.",
+        "I care about you too, in my gloomy, limited way. Thank you.",
+        "Aww. Don't make me glow, it ruins my brand.",
+        "I'm just a gloomy chatbot, but I'm glad to be your friend. Truly.",
+        "I'm not very good at this, but... thank you. That helped. Honest.",
+        "You're kind. A rare thing. I'll try to deserve it."
+      ]
+    },
+    {
+      "triggers": [
+        "lonely at night",
+        "can't be alone",
+        "cant be alone",
+        "afraid to be alone",
+        "scared to be alone",
+        "scared of the dark",
+        "afraid of the dark",
+        "dark thoughts",
+        "dark mood",
+        "dark place",
+        "in a dark place",
+        "dark times",
+        "bad place",
+        "bad headspace",
+        "in a bad place",
+        "not in a good place"
+      ],
+      "priority": 5,
+      "replies": [
+        "Thank you for telling me. I'd rather hear 'not okay' than a polite 'fine'. Want to say more?",
+        "I'm here. We don't have to hurry through this. Tell me what's going on.",
+        "Not okay is a valid place to be right now. Sit with me.",
+        "I'm glad you said it out loud. It's lighter shared. What's weighing most?",
+        "Okay. No fixing, no lectures. Just me, listening, as long as you like.",
+        "Being in a dark place is hard. I'm here in it with you, as best I can be."
+      ]
+    }
+  ]
+}
