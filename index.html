@@ -7,21 +7,42 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="chat">
-    <header class="chat__header">
-      <img id="avatar" class="avatar" alt="" width="44" height="44">
-      <div>
-        <h1 id="name">&nbsp;</h1>
-        <p id="status" class="status">&nbsp;</p>
-      </div>
+  <main class="comic">
+    <header class="top">
+      <nav id="picker" class="picker" aria-label="Choose who to chat with"></nav>
+      <button id="historyBtn" class="hist-btn" type="button" aria-expanded="false" aria-controls="history">History</button>
     </header>
 
-    <nav id="picker" class="picker" aria-label="Choose who to chat with"></nav>
+    <section id="stage" class="stage">
+      <div class="tag">
+        <h1 id="name">&nbsp;</h1>
+        <p id="status">&nbsp;</p>
+      </div>
 
-    <div id="messages" class="messages" aria-live="polite"></div>
+      <!-- Screen readers get the full reply at once; the animated bubble is hidden from them. -->
+      <div id="sr" class="sr-only" aria-live="polite"></div>
+      <div id="bubble" class="bubble" aria-hidden="true">
+        <p id="bubbleText"></p>
+      </div>
+
+      <img id="hero" class="hero" alt="">
+
+      <div class="you-slot">
+        <div id="youBubble" class="bubble you" hidden>
+          <p id="youText"></p>
+        </div>
+      </div>
+
+      <aside id="history" class="history" hidden>
+        <div id="messages" class="messages"></div>
+      </aside>
+    </section>
 
     <form id="form" class="composer" autocomplete="off">
-      <input id="input" type="text" placeholder="Say something..." autofocus>
+      <div class="field">
+        <input id="input" type="text" placeholder="Say something..." autofocus>
+        <span id="count" class="count" hidden></span>
+      </div>
       <button type="submit">Send</button>
     </form>
   </main>

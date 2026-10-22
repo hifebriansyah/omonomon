@@ -74,6 +74,11 @@ Instead of pasting `worker/worker.js` into the dashboard each time:
 3. `cp .env.deploy.example .env.deploy` and fill in both values (file is git-ignored).
 4. `python3 tools/deploy_worker.py` after every edit to `worker/worker.js`.
 
+## Limits
+- `INPUT_MAX_CHARS` in `config.js` (default 200) caps what a visitor can type; the Worker also cuts every
+  message to 300 characters (`MAX_CHARS`), because a page-only limit can be bypassed.
+- `HISTORY_TURNS` (default 8) is how many earlier messages go to Gemini.
+
 ## Characters
 The page has a picker with four ghost characters (`characters.json`, images in `img/`;
 the 2048px originals stay in `assets/` and are not published):
@@ -81,7 +86,7 @@ the 2048px originals stay in `assets/` and are not published):
 | id | name | personality |
 |---|---|---|
 | `pocomon` | Pocomon (pocong, purple bow) | gloomy and the most direct: blunt, no sugarcoating; also has the 700-rule JSON library as backup |
-| `sustemon` | Sustemon (suster ngesot) | busy big sister: brisk, nagging out of love, calls you "dek"/"kiddo" |
+| `sustemon` | Sustemon (suster ngesot) | busy big sister: brisk, nagging out of love, no pet names for you |
 | `sundemon` | Sundemon (sundel bolong, sunflower) | the most despairing: bleak, hollow, resigned; never tells you to give up, softens if you sound hopeless |
 | `kuntimon` | Kuntimon (kuntilanak) | hyper and the most curious about you: asks one nosy question every reply |
 
@@ -90,6 +95,12 @@ the 2048px originals stay in `assets/` and are not published):
   **After editing a persona, run `python3 tools/deploy_worker.py`.**
 - If Gemini fails: Pocomon uses the JSON library; the others use a few backup lines
   from `characters.json` (`fallback`). Crisis phrases always use the local safety rule.
-- Add a character: add an entry to `characters.json`, an image in `img/`
-  (`sips -Z 256 assets/x.png --out img/x.png`), and a matching block in `CHARACTERS`
-  in `worker/worker.js`.
+- Add a character: put the big PNG (white background is fine) in `assets/`, add an entry
+  to `characters.json` (`image`: `img/<name>.png`, `stage`: `img/stage/<name>.png`), run
+  `python3 tools/make_images.py` (needs `pip3 install pillow`) to cut out the background
+  and make the web images, and add a matching block in `CHARACTERS` in `worker/worker.js`.
+
+## Look
+Comic style: the selected character is shown big on a halftone panel in her accent colour.
+Her reply appears in a speech bubble (typed out letter by letter, click to skip); your last
+message is the small bubble at the bottom right. The History button opens the full log.

@@ -11,7 +11,8 @@
       "typing": {
         "en": "Pocomon is sighing...",
         "id": "Pocomon lagi menghela napas..."
-      }
+      },
+      "stage": "img/stage/pocomon.png"
     },
     {
       "id": "sustemon",
@@ -20,17 +21,17 @@
       "accent": "#e0707a",
       "status": "busy, but listening",
       "greeting": {
-        "en": "Hey kiddo! Sustemon here. I'm mid-shift, so quick: what's going on?",
-        "id": "Eh dek! Kak Sustemon di sini. Lagi sibuk sih, tapi cerita aja, ada apa?"
+        "en": "Hey! Sustemon here. I'm mid-shift, so quick: what's going on?",
+        "id": "Eh! Kak Sustemon di sini. Lagi sibuk sih, tapi cerita aja, ada apa?"
       },
       "fallback": {
         "en": [
-          "Say that again, kiddo? I was juggling three things.",
+          "Say that again? I was juggling three things.",
           "Sorry, I zoned out mid-task. One more time?",
           "Hold on, say it slower. I'm listening, I promise."
         ],
         "id": [
-          "Ulangi dek, kakak tadi lagi ngerjain tiga hal sekaligus.",
+          "Ulangi ya, kakak tadi lagi ngerjain tiga hal sekaligus.",
           "Maaf, kakak kepotong urusan lain. Sekali lagi ya?",
           "Bentar, pelan-pelan dulu ceritanya. Kakak dengerin kok."
         ]
@@ -38,7 +39,8 @@
       "typing": {
         "en": "Sustemon is finishing something first...",
         "id": "Kak Sustemon lagi beresin sesuatu dulu..."
-      }
+      },
+      "stage": "img/stage/sustemon.png"
     },
     {
       "id": "sundemon",
@@ -65,13 +67,14 @@
       "typing": {
         "en": "Sundemon is staring at nothing...",
         "id": "Sundemon lagi menatap kosong..."
-      }
+      },
+      "stage": "img/stage/sundemon.png"
     },
     {
       "id": "kuntimon",
       "name": "Kuntimon",
       "image": "img/kuntimon.png",
-      "accent": "#e895ae",
+      "accent": "#5fcf8f",
       "status": "wants to know everything about you",
       "greeting": {
         "en": "HIHIHI you're here!! Okay okay, who ARE you? Tell me everything, starting with today!",
@@ -92,7 +95,8 @@
       "typing": {
         "en": "Kuntimon is leaning in closer...",
         "id": "Kuntimon lagi nyondongin badan..."
-      }
+      },
+      "stage": "img/stage/kuntimon.png"
     }
   ]
 }

@@ -2,6 +2,11 @@
 
 Each version is one commit. Newest first.
 
+## 0.3.0 - Comic-style stage
+- Big character on stage with comic speech bubbles and a redesigned layout.
+- tools/make_images.py builds the character cutouts.
+- Rule and persona wording fixes.
+
 ## 0.2.0 - Gemini replies through a Cloudflare Worker
 - worker/worker.js calls Gemini with the character's persona; the page falls back to local rules when it fails.
 - characters.json holds the characters; config.js holds the Worker address.

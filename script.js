@@ -9,9 +9,30 @@ const messagesEl = document.getElementById("messages");
 const form = document.getElementById("form");
 const input = document.getElementById("input");
 const pickerEl = document.getElementById("picker");
-const avatarEl = document.getElementById("avatar");
 const nameEl = document.getElementById("name");
 const statusEl = document.getElementById("status");
+const heroEl = document.getElementById("hero");
+const bubbleEl = document.getElementById("bubble");
+const bubbleText = document.getElementById("bubbleText");
+const youBubble = document.getElementById("youBubble");
+const youText = document.getElementById("youText");
+const srEl = document.getElementById("sr");
+const historyBtn = document.getElementById("historyBtn");
+const historyEl = document.getElementById("history");
+const countEl = document.getElementById("count");
+
+// Limit message length to save tokens. The Worker enforces its own cap too.
+const MAX_INPUT = window.POCO_CONFIG.INPUT_MAX_CHARS || 200;
+input.maxLength = MAX_INPUT;
+function updateCount() {
+  const n = input.value.length;
+  const show = n >= MAX_INPUT * 0.75;
+  countEl.hidden = !show;
+  countEl.textContent = `${n}/${MAX_INPUT}`;
+  countEl.classList.toggle("full", n >= MAX_INPUT);
+  input.parentElement.classList.toggle("counting", show);
+}
+input.addEventListener("input", updateCount);
 
 let manifest;
 const cache = new Map(); // path -> Promise of parsed JSON
@@ -119,7 +140,81 @@ const histories = {};        // id -> [{role: "user" | "model", text}] sent to G
 const byId = (id) => characters.find((c) => c.id === id);
 const inLang = (obj) => obj?.[lastLang] || obj?.en || "";
 
-function appendRow(c, who, text, typing = false) {
+// ---- Stage: big character, comic bubbles, optional history ----
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let typeTimer = null;
+let shown = "";                 // full text of the bubble being typed
+const pending = {};             // character id -> replies still on the way
+
+function stopTyping() {
+  clearInterval(typeTimer);
+  typeTimer = null;
+}
+
+// The bubble gets a fixed share of the stage, so the character never shrinks.
+// Long text shrinks to fit that space (down to a minimum, then it scrolls).
+const stageEl = document.getElementById("stage");
+const FONT_STEPS = [1.15, 1.05, 0.96, 0.88, 0.8, 0.74]; // rem
+
+function layoutBubble() {
+  document.documentElement.style.setProperty("--bubble-max", `${Math.round(stageEl.clientHeight * 0.23)}px`);
+  if (shown && !bubbleEl.classList.contains("thinking")) fitBubble(shown, true);
+}
+
+function fitBubble(text, keepText = false) {
+  const current = bubbleText.textContent;
+  bubbleText.textContent = text; // measure with the full text, even while it is being typed
+  for (const size of FONT_STEPS) {
+    bubbleText.style.fontSize = `${size}rem`;
+    if (bubbleText.scrollHeight <= bubbleText.clientHeight + 1) break;
+  }
+  if (keepText) bubbleText.textContent = current;
+}
+window.addEventListener("resize", layoutBubble);
+
+// Reveal text in the bubble letter by letter. Click the bubble to skip ahead.
+function showBubble(text, { instant = false } = {}) {
+  stopTyping();
+  bubbleEl.classList.remove("thinking");
+  shown = text;
+  fitBubble(text);
+  if (instant || reduceMotion) {
+    bubbleText.textContent = text;
+    return;
+  }
+  bubbleText.textContent = "";
+  let i = 0;
+  typeTimer = setInterval(() => {
+    i = Math.min(text.length, i + 2);
+    bubbleText.textContent = text.slice(0, i);
+    if (i >= text.length) stopTyping();
+  }, 22);
+}
+bubbleEl.addEventListener("click", () => {
+  if (typeTimer) { stopTyping(); bubbleText.textContent = shown; }
+});
+
+function showThinking() {
+  stopTyping();
+  bubbleText.style.fontSize = "";
+  bubbleEl.classList.add("thinking");
+  bubbleText.innerHTML = '<span class="dots"><i></i><i></i><i></i></span>';
+}
+
+function showYou(text) {
+  youText.textContent = text;
+  youBubble.title = text; // full text on hover; the bubble shows one line
+  youBubble.hidden = false;
+}
+
+function animateHero(cls) {
+  heroEl.classList.remove("talk", "swap");
+  void heroEl.offsetWidth; // restart the animation
+  heroEl.classList.add(cls);
+}
+
+// History overlay: the full log for the open character.
+function appendRow(c, who, text) {
   const row = document.createElement("div");
   row.className = `row ${who}`;
   if (who === "bot") {
@@ -130,18 +225,41 @@ function appendRow(c, who, text, typing = false) {
     row.append(img);
   }
   const msg = document.createElement("div");
-  msg.className = `msg ${who}${typing ? " typing" : ""}`;
+  msg.className = `msg ${who}`;
   msg.textContent = text;
   row.append(msg);
   messagesEl.append(row);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-  return row;
 }
 
-// Record a message for character `id` and show it if that chat is open.
+function renderHistory() {
+  messagesEl.replaceChildren();
+  for (const m of logs[current.id] || []) appendRow(current, m.who, m.text);
+  historyEl.scrollTop = historyEl.scrollHeight;
+}
+
+historyBtn.addEventListener("click", () => {
+  const open = historyEl.hidden;
+  historyEl.hidden = !open;
+  historyBtn.setAttribute("aria-expanded", String(open));
+  historyBtn.textContent = open ? "Close" : "History";
+  if (open) renderHistory();
+});
+
+// Record a message for character `id` and show it if that character is on stage.
 function say(id, who, text) {
   (logs[id] ||= []).push({ who, text });
-  if (current.id === id) appendRow(current, who, text);
+  if (current.id !== id) return;
+  if (who === "bot") {
+    showBubble(text);
+    srEl.textContent = text;
+    animateHero("talk");
+  } else {
+    showYou(text);
+  }
+  if (!historyEl.hidden) {
+    appendRow(current, who, text);
+    historyEl.scrollTop = historyEl.scrollHeight;
+  }
 }
 
 function greeting(c) {
@@ -150,8 +268,10 @@ function greeting(c) {
 
 function selectCharacter(id) {
   current = byId(id);
+  layoutBubble();
   document.documentElement.style.setProperty("--accent", current.accent);
-  avatarEl.src = current.image;
+  heroEl.src = current.stage;
+  heroEl.alt = current.name;
   nameEl.textContent = current.name;
   statusEl.textContent = current.status;
   input.placeholder = `Say something to ${current.name}...`;
@@ -160,9 +280,19 @@ function selectCharacter(id) {
   );
   try { localStorage.setItem("character", id); } catch {}
 
-  if (!logs[id]) logs[id] = [{ who: "bot", text: greeting(current) }];
-  messagesEl.replaceChildren();
-  for (const m of logs[id]) appendRow(current, m.who, m.text);
+  const fresh = !logs[id];
+  if (fresh) logs[id] = [{ who: "bot", text: greeting(current) }];
+  const log = logs[id];
+  const lastBot = [...log].reverse().find((m) => m.who === "bot");
+  const lastUser = [...log].reverse().find((m) => m.who === "user");
+
+  if (lastUser) showYou(lastUser.text);
+  else youBubble.hidden = true;
+  if (pending[id] > 0) showThinking();
+  else showBubble(lastBot.text, { instant: !fresh });
+  srEl.textContent = lastBot.text;
+  animateHero("swap");
+  if (!historyEl.hidden) renderHistory();
   input.focus();
 }
 
@@ -238,7 +368,8 @@ async function getReply(c, text) {
 }
 
 async function botReply(c, text) {
-  const typing = appendRow(c, "bot", inLang(c.typing) || "...", true);
+  pending[c.id] = (pending[c.id] || 0) + 1;
+  if (current.id === c.id) showThinking();
   const delay = new Promise((r) => setTimeout(r, 600 + Math.random() * 700));
   let reply;
   try {
@@ -247,16 +378,17 @@ async function botReply(c, text) {
     reply = `Something went wrong (${err.message}).`;
   }
   await delay;
-  typing.remove();
+  pending[c.id]--;
   say(c.id, "bot", reply);
 }
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  const text = input.value.trim();
+  const text = input.value.trim().slice(0, MAX_INPUT);
   if (!text || !manifest || !current) return;
   say(current.id, "user", text);
   input.value = "";
+  updateCount();
   botReply(current, text);
 });
 
@@ -277,7 +409,7 @@ async function init() {
     buildPicker();
     selectCharacter(byId(start) ? start : c.default);
   } catch (err) {
-    messagesEl.textContent =
+    bubbleText.textContent =
       `Could not start (${err.message}). Run "python3 build.py", then serve this folder over http, e.g. "python3 -m http.server".`;
   }
 }
