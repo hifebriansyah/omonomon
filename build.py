@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the sharded response library for Pocowomon.
+"""Build the sharded response library for Pocomon.
 
 Reads   source/persona.json (per-language greeting, fallback, stopwords)
         source/rules/*.json     ("lang" per file or per rule; default = defaultLang)

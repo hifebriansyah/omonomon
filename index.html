@@ -3,27 +3,30 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chat with Pocowomon</title>
+  <title>Ghost Chat</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="chat">
     <header class="chat__header">
-      <div class="avatar">🌧️</div>
+      <img id="avatar" class="avatar" alt="" width="44" height="44">
       <div>
-        <h1>Pocowomon</h1>
-        <p class="status">online... unfortunately</p>
+        <h1 id="name">&nbsp;</h1>
+        <p id="status" class="status">&nbsp;</p>
       </div>
     </header>
+
+    <nav id="picker" class="picker" aria-label="Choose who to chat with"></nav>
 
     <div id="messages" class="messages" aria-live="polite"></div>
 
     <form id="form" class="composer" autocomplete="off">
-      <input id="input" type="text" placeholder="Say something to Pocowomon..." autofocus>
+      <input id="input" type="text" placeholder="Say something..." autofocus>
       <button type="submit">Send</button>
     </form>
   </main>
 
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

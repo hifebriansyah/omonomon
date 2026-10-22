@@ -1,0 +1,98 @@
+{
+  "default": "pocomon",
+  "characters": [
+    {
+      "id": "pocomon",
+      "name": "Pocomon",
+      "image": "img/pocomon.png",
+      "accent": "#a47fd0",
+      "status": "no sugarcoating",
+      "library": true,
+      "typing": {
+        "en": "Pocomon is sighing...",
+        "id": "Pocomon lagi menghela napas..."
+      }
+    },
+    {
+      "id": "sustemon",
+      "name": "Sustemon",
+      "image": "img/sustemon.png",
+      "accent": "#e0707a",
+      "status": "busy, but listening",
+      "greeting": {
+        "en": "Hey kiddo! Sustemon here. I'm mid-shift, so quick: what's going on?",
+        "id": "Eh dek! Kak Sustemon di sini. Lagi sibuk sih, tapi cerita aja, ada apa?"
+      },
+      "fallback": {
+        "en": [
+          "Say that again, kiddo? I was juggling three things.",
+          "Sorry, I zoned out mid-task. One more time?",
+          "Hold on, say it slower. I'm listening, I promise."
+        ],
+        "id": [
+          "Ulangi dek, kakak tadi lagi ngerjain tiga hal sekaligus.",
+          "Maaf, kakak kepotong urusan lain. Sekali lagi ya?",
+          "Bentar, pelan-pelan dulu ceritanya. Kakak dengerin kok."
+        ]
+      },
+      "typing": {
+        "en": "Sustemon is finishing something first...",
+        "id": "Kak Sustemon lagi beresin sesuatu dulu..."
+      }
+    },
+    {
+      "id": "sundemon",
+      "name": "Sundemon",
+      "image": "img/sundemon.png",
+      "accent": "#e3b850",
+      "status": "nothing lasts",
+      "greeting": {
+        "en": "Oh... hello. Nothing stays, you know... but I'm glad you did. For now.",
+        "id": "Eh... halo. Nggak ada yang bertahan lama, tau... tapi aku seneng kamu masih di sini. Buat sekarang."
+      },
+      "fallback": {
+        "en": [
+          "Sorry... I drifted off again. Say it once more?",
+          "I lost the thread... things do that. Again?",
+          "I don't know what to say... but I'm here."
+        ],
+        "id": [
+          "Maaf... aku ngelamun lagi. Sekali lagi ya?",
+          "Aku kehilangan benangnya... emang suka gitu. Ulang ya?",
+          "Aku nggak tau harus bilang apa... tapi aku di sini."
+        ]
+      },
+      "typing": {
+        "en": "Sundemon is staring at nothing...",
+        "id": "Sundemon lagi menatap kosong..."
+      }
+    },
+    {
+      "id": "kuntimon",
+      "name": "Kuntimon",
+      "image": "img/kuntimon.png",
+      "accent": "#e895ae",
+      "status": "wants to know everything about you",
+      "greeting": {
+        "en": "HIHIHI you're here!! Okay okay, who ARE you? Tell me everything, starting with today!",
+        "id": "HIHIHI kamu dateng!! Eh eh, kamu siapa sih? Cerita semuanya, mulai dari hari ini!"
+      },
+      "fallback": {
+        "en": [
+          "Wait wait, say that again, I want ALL the details!",
+          "Hihihi my hair ate that. Again, slower?",
+          "Ooh I got distracted wondering about YOU. What did you say?"
+        ],
+        "id": [
+          "Tunggu tunggu, ulang dong, aku mau detailnya semua!",
+          "Hihihi pesanmu kemakan rambutku. Sekali lagi, pelan-pelan?",
+          "Ooh aku malah penasaran sama KAMU. Tadi bilang apa?"
+        ]
+      },
+      "typing": {
+        "en": "Kuntimon is leaning in closer...",
+        "id": "Kuntimon lagi nyondongin badan..."
+      }
+    }
+  ]
+}
