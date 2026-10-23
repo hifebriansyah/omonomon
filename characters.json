@@ -1,28 +1,29 @@
 {
-  "default": "pocomon",
+  "default": "1",
   "characters": [
     {
-      "id": "pocomon",
+      "id": "1",
       "name": "Pocomon",
-      "image": "builds/img/pocomon.webp",
+      "image": "builds/img/1.webp",
       "accent": "#a47fd0",
       "status": "no sugarcoating",
       "library": true,
-      "typing": {
-        "en": "Pocomon is sighing...",
-        "id": "Pocomon lagi menghela napas..."
-      },
-      "stage": "builds/img/stage/pocomon.webp"
+      "stage": "builds/img/stage/1.webp",
+      "slug": "pocomon",
+      "seo": {
+        "tagline": "the gloomy pocong who says it straight",
+        "description": "{name} is a gloomy pocong with a purple bow. Blunt and deadpan, she answers short and honest and never sugarcoats. Chat with her in English or Indonesian."
+      }
     },
     {
-      "id": "sustemon",
-      "name": "Sustemon",
-      "image": "builds/img/sustemon.webp",
+      "id": "2",
+      "name": "Ngesomon",
+      "image": "builds/img/2.webp",
       "accent": "#e0707a",
       "status": "busy, but listening",
       "greeting": {
-        "en": "Hey! Sustemon here. I'm mid-shift, so quick: what's going on?",
-        "id": "Eh! Kak Sustemon di sini. Lagi sibuk sih, tapi cerita aja, ada apa?"
+        "en": "Hey! I'm mid-shift, so quick: what's going on?",
+        "id": "Eh! Kakak lagi sibuk sih, tapi cerita aja, ada apa?"
       },
       "fallback": {
         "en": [
@@ -36,16 +37,17 @@
           "Bentar, pelan-pelan dulu ceritanya. Kakak dengerin kok."
         ]
       },
-      "typing": {
-        "en": "Sustemon is finishing something first...",
-        "id": "Kak Sustemon lagi beresin sesuatu dulu..."
-      },
-      "stage": "builds/img/stage/sustemon.webp"
+      "stage": "builds/img/stage/2.webp",
+      "slug": "ngesomon",
+      "seo": {
+        "tagline": "the big-sister nurse ghost",
+        "description": "{name} is a nurse ghost (suster ngesot) and everyone's busy big sister. Brisk, practical and caring, she asks if you ate, slept and drank water. Chat in English or Indonesian."
+      }
     },
     {
-      "id": "sundemon",
+      "id": "3",
       "name": "Sundemon",
-      "image": "builds/img/sundemon.webp",
+      "image": "builds/img/3.webp",
       "accent": "#e3b850",
       "status": "nothing lasts",
       "greeting": {
@@ -64,16 +66,17 @@
           "Aku nggak tau harus bilang apa... tapi aku di sini."
         ]
       },
-      "typing": {
-        "en": "Sundemon is staring at nothing...",
-        "id": "Sundemon lagi menatap kosong..."
-      },
-      "stage": "builds/img/stage/sundemon.webp"
+      "stage": "builds/img/stage/3.webp",
+      "slug": "sundemon",
+      "seo": {
+        "tagline": "the gentle sundel bolong who listens",
+        "description": "{name} is a gentle, wistful sundel bolong with a sunflower on her dress. She listens more than she talks and keeps you company. Chat in English or Indonesian."
+      }
     },
     {
-      "id": "kuntimon",
+      "id": "4",
       "name": "Kuntimon",
-      "image": "builds/img/kuntimon.webp",
+      "image": "builds/img/4.webp",
       "accent": "#5fcf8f",
       "status": "wants to know everything about you",
       "greeting": {
@@ -92,11 +95,12 @@
           "Ooh aku malah penasaran sama KAMU. Tadi bilang apa?"
         ]
       },
-      "typing": {
-        "en": "Kuntimon is leaning in closer...",
-        "id": "Kuntimon lagi nyondongin badan..."
-      },
-      "stage": "builds/img/stage/kuntimon.webp"
+      "stage": "builds/img/stage/4.webp",
+      "slug": "kuntimon",
+      "seo": {
+        "tagline": "the curious kuntilanak",
+        "description": "{name} is a hyper, giggling kuntilanak and a night-owl gossip who wants to hear all about your day. Chat with her in English or Indonesian."
+      }
     }
   ]
 }

@@ -27,20 +27,11 @@ jobs:
           python-version: "3.12"
       - name: Install Pillow
         run: pip install pillow
-      - name: Build images
-        run: python3 tools/make_images.py   # assets/img (originals) -> builds/img
-      - name: Build shards
-        run: python3 build.py                # source/ -> builds/data
-      - name: Stage site
-        run: |
-          mkdir _site
-          cp index.html style.css config.js characters.json manifest.webmanifest _site/
-          mkdir -p _site/assets
-          cp -r assets/scripts _site/assets/
-          cp -r builds _site/            # everything generated (not the big originals in assets/img/)
+      - name: Build site
+        run: python3 tools/build_all.py      # images -> rule shards -> builds/site (one HTML page per address)
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: builds/site
       - id: deployment
         uses: actions/deploy-pages@v4

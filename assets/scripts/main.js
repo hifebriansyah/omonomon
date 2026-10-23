@@ -9,12 +9,14 @@
 //   replies.js  safety, Gemini, backup replies
 //   storage.js  saved chats          stage.js     big character, bubbles, history panel
 //   chat.js     sending, showing, clearing        composer.js  the message box
+//   router.js   addresses (/<slug>/, /<slug>/history/) and the page <head>
 
 import { state, byId } from "./state.js";
 import { DATA_BASE } from "./rules.js";
 import { bubbleText, historyBtn, clearBtn } from "./dom.js";
 import { buildPicker } from "./stage.js";
-import { selectCharacter, sendMessage, toggleHistory, clearChat } from "./chat.js";
+import { showRoute, pickCharacter, sendMessage, toggleHistory, clearChat } from "./chat.js";
+import { startRouter, isPlainClick } from "./router.js";
 import { initComposer } from "./composer.js";
 import { loadCharacter } from "./storage.js";
 
@@ -24,26 +26,37 @@ async function getJson(url, what) {
   return res.json();
 }
 
+// Keyboard focus rings only while someone is really tabbing between controls (see style.css).
+// A click removes them, and so does leaving the keyboard alone.
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Tab") document.documentElement.classList.add("using-tab");
+});
+document.addEventListener("pointerdown", () => document.documentElement.classList.remove("using-tab"));
+
 async function init() {
   initComposer(sendMessage);
   historyBtn.addEventListener("click", toggleHistory);
   clearBtn.addEventListener("click", clearChat);
 
   try {
-    const [manifest, chars] = await Promise.all([
+    const [manifest, chars, site] = await Promise.all([
       getJson(`${DATA_BASE}manifest.json`, "manifest"),
       getJson("characters.json", "characters"),
+      getJson("site.json", "site"),
     ]);
     state.manifest = manifest;
     state.characters = chars.characters;
+    state.site = site;
 
     // Greet in the browser's language when we support it.
     const browser = (navigator.language || "").slice(0, 2);
     state.lastLang = manifest.langs.includes(browser) ? browser : manifest.defaultLang;
 
-    buildPicker(state.characters, selectCharacter);
+    buildPicker(state.characters, pickCharacter, isPlainClick);
+    // The home page shows whoever you talked to last; a character's own address always shows her.
     const saved = loadCharacter();
-    selectCharacter(byId(saved) ? saved : chars.default);
+    const home = byId(saved) ? saved : chars.default;
+    startRouter(showRoute, (r) => (r.id ? r : { ...r, id: home, history: false }));
   } catch (err) {
     bubbleText.textContent =
       `Could not start (${err.message}). Run "python3 build.py", then serve this folder over http, e.g. "python3 -m http.server".`;

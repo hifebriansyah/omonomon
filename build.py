@@ -16,6 +16,7 @@ Usage: python3 build.py [--src source] [--out builds/data]
 import argparse
 import hashlib
 import json
+import re
 import math
 import shutil
 import sys
@@ -57,6 +58,69 @@ def load_rules(rules_dir, default_lang):
             raw = {"rules": raw}
         for rule in raw["rules"]:
             yield rule.get("lang") or raw.get("lang") or default_lang, rule
+
+
+# Folders and files a character page must not shadow (each character's page lives at /<slug>/).
+RESERVED_SLUGS = {"assets", "builds", "history", "worker", "source", "tools", "404"}
+
+
+def check_characters():
+    """A character's id ties together characters.json, the image file names, the original art
+    and the Worker's persona. The id never changes (the "name" is only a label); warn if they drift."""
+    chars_file, worker_file = Path("characters.json"), Path("worker/worker.js")
+    if not (chars_file.exists() and worker_file.exists()):
+        return
+    data = json.loads(chars_file.read_text(encoding="utf-8"))
+    worker = worker_file.read_text(encoding="utf-8")
+    block = worker[worker.index("const CHARACTERS = {"):worker.index("const DEFAULT_CHARACTER")]
+    worker_ids = set(re.findall(r'^  "([0-9]+)": \{$', block, re.M))
+    ids = [c["id"] for c in data["characters"]]
+    problems = []
+    if len(set(ids)) != len(ids):
+        problems.append("characters.json has duplicate ids")
+    if data["default"] not in ids:
+        problems.append(f'default character "{data["default"]}" is not in the list')
+    for c in data["characters"]:
+        i = c["id"]
+        if not re.fullmatch(r"[0-9]+", i):
+            problems.append(f'id "{i}" should be a number (digits only, never taken from a name)')
+        if i not in worker_ids:
+            problems.append(f'"{i}" has no persona in worker/worker.js (CHARACTERS)')
+        for key, want in (("image", f"builds/img/{i}.webp"), ("stage", f"builds/img/stage/{i}.webp")):
+            if c.get(key) != want:
+                problems.append(f'{i}: "{key}" should be {want}')
+        if not Path(f"assets/img/{i}.png").exists():
+            problems.append(f"{i}: original art assets/img/{i}.png not found")
+        slug = c.get("slug", "")
+        if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug) or slug in RESERVED_SLUGS:
+            problems.append(f'{i}: slug "{slug}" must be lowercase letters/digits/hyphens and not one of {sorted(RESERVED_SLUGS)}')
+        seo = c.get("seo", {})
+        if not seo.get("tagline") or "{name}" not in seo.get("description", ""):
+            problems.append(f'{i}: "seo" needs a tagline and a description that uses {{name}} (not the literal name)')
+    slugs = [c.get("slug") for c in data["characters"]]
+    if len(set(slugs)) != len(slugs):
+        problems.append("characters.json has duplicate slugs")
+    # Names live only in "name". Text that repeats one would have to be edited on every rename.
+    labels = [c["name"] for c in data["characters"]]
+    def strings(o):
+        if isinstance(o, str):
+            yield o
+        elif isinstance(o, list):
+            for x in o:
+                yield from strings(x)
+        elif isinstance(o, dict):
+            for x in o.values():
+                yield from strings(x)
+    for c in data["characters"]:
+        for field in ("greeting", "fallback", "status"):
+            for text in strings(c.get(field, "")):
+                for label in labels:
+                    if label.lower() in text.lower():
+                        problems.append(f'{c["id"]}: {field} mentions "{label}"; keep names only in "name"')
+    for extra in sorted(worker_ids - set(ids)):
+        problems.append(f'worker/worker.js has a persona "{extra}" that is not in characters.json')
+    for p in problems:
+        print(f"WARNING: {p}")
 
 
 def main():
@@ -113,7 +177,6 @@ def main():
 
     manifest = {
         "version": digest.hexdigest()[:10],
-        "persona": persona_file["persona"],
         "langs": langs,
         "defaultLang": default_lang,
         "languages": languages,
@@ -125,6 +188,8 @@ def main():
 
     if not Path("builds/img/stage").exists():
         print("NOTE: no images yet. Run: python3 tools/make_images.py (needs: pip3 install pillow)")
+
+    check_characters()
 
     # Every script module should be preloaded in index.html (otherwise the page loads
     # them in slow one-import-at-a-time waves). A missing entry is only slower, not broken.

@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """Turn your original character art into web images (needs Pillow: pip3 install pillow).
 
-For every character in characters.json it reads the original assets/img/<name>.png (<name>
-is the file name of its "image" field), removes the white background connected to the
+For every character in characters.json it reads the original assets/img/<id>.png, removes the white background connected to the
 image edge (white dresses and faces stay), crops to the character, and writes:
-  builds/img/stage/<name>.webp  the big cutout shown on stage
-  builds/img/<name>.webp        a 256px square thumbnail for the picker
+  builds/img/stage/<id>.webp  the big cutout shown on stage
+  builds/img/<id>.webp        a 256px square thumbnail for the picker
 (WebP at quality 90: about 6x smaller than PNG and visually the same. Change WEBP_QUALITY
 below to trade size for quality; 100 with lossless=True would be a perfect copy.)
 
@@ -19,6 +18,8 @@ It also builds two separate sets of site icons:
 Each set is skipped, with a note, if its source file is missing.
 Everything in builds/ is generated and git-ignored: never edit it by hand. GitHub Actions
 runs this script on every deploy; run it yourself to see the images locally.
+
+It also makes the 1200x630 link-preview pictures in builds/img/share/.
 
 Usage: python3 tools/make_images.py
 """
@@ -65,6 +66,23 @@ def cutout(path, size=720):
                      min(size, box[2] + pad), min(size, box[3] + pad)))
 
 
+SHARE_SIZE = (1200, 630)  # the picture link previews (WhatsApp, X, Facebook...) show
+SHARE_BG = (27, 29, 35)   # same dark as the site theme colour
+
+
+def share_card(heroes, accent=(255, 255, 255)):
+    """A link-preview picture: the character(s) on the site background with a thin accent frame."""
+    card = Image.new("RGB", SHARE_SIZE, SHARE_BG)
+    ImageDraw.Draw(card).rectangle((14, 14, SHARE_SIZE[0] - 15, SHARE_SIZE[1] - 15), outline=accent, width=6)
+    slot = (SHARE_SIZE[0] - 80) // len(heroes)
+    for i, hero in enumerate(heroes):
+        h = hero.copy()
+        h.thumbnail((slot - 20, SHARE_SIZE[1] - 120), Image.LANCZOS)
+        x = 40 + i * slot + (slot - h.width) // 2
+        card.paste(h, (x, (SHARE_SIZE[1] - h.height) // 2), h)
+    return card
+
+
 def make_app_icons(out):
     """Phone and app icons: the whole artwork, opaque (iOS fills transparency with black)."""
     if not APPICON.exists():
@@ -96,15 +114,23 @@ def make_favicon(out):
 def main():
     out = ROOT / "builds" / "img"
     (out / "stage").mkdir(parents=True, exist_ok=True)
-    for old in list(out.glob("*.png")) + list((out / "stage").glob("*.png")):
-        old.unlink()  # leftovers from before the switch to WebP
+    (out / "share").mkdir(exist_ok=True)
+    for pattern in ("*.png", "*.webp", "*.ico"):
+        for old in list(out.glob(pattern)) + list((out / "stage").glob(pattern)):
+            old.unlink()  # leftovers, e.g. a renamed character's old files
+    for old in (out / "share").glob("*.jpg"):
+        old.unlink()
+    heroes = []
     for c in json.loads((ROOT / "characters.json").read_text(encoding="utf-8"))["characters"]:
-        name = Path(c["image"]).stem  # "builds/img/pocomon.webp" -> "pocomon"
+        name = c["id"]  # files are named by id, never by the label
         src = ROOT / "assets" / "img" / f"{name}.png"
         if not src.exists():
             print(f"skip {name}: {src} not found")
             continue
         big = cutout(src)
+        heroes.append(big)
+        accent = tuple(int(c["accent"][i:i + 2], 16) for i in (1, 3, 5))
+        share_card([big], accent).save(out / "share" / f"{name}.jpg", quality=85, optimize=True)
         save_webp(big, out / "stage" / f"{name}.webp")
         thumb = big.copy()
         thumb.thumbnail((240, 240), Image.LANCZOS)
@@ -112,6 +138,8 @@ def main():
         sq.paste(thumb, ((256 - thumb.width) // 2, (256 - thumb.height) // 2), thumb)
         save_webp(sq, out / f"{name}.webp")
         print(f"ok {name}")
+    if heroes:
+        share_card(heroes).save(out / "share" / "home.jpg", quality=85, optimize=True)
     make_app_icons(out)
     make_favicon(out)
 

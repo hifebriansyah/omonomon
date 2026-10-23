@@ -25,13 +25,41 @@ answers crisis phrases with a caring, non-gloomy reply; keep it intact.
 Needs Python 3 and Pillow (`pip3 install pillow`). Run both builds once, and again after you change
 the source rules or the original art in `assets/img/`:
 
-    python3 tools/make_images.py   # assets/img -> builds/img
-    python3 build.py               # source/    -> builds/data
-    python3 -m http.server 8000    # open http://localhost:8000
+    python3 tools/build_all.py          # images, rule shards, then the site pages in builds/site/
+    python3 -m http.server -d builds/site     # open http://localhost:8000
+
+(`build_all.py` runs `tools/make_images.py`, `build.py` and `tools/make_site.py` in that order. Serve `builds/site/`,
+not the repo root: the repo's `index.html` is only the template, and `/pocomon/` exists only in `builds/site/`.)
+
+If your local server serves the repo folder itself (e.g. Apache at `/for-fun/chat-learning/`), run
+`python3 tools/make_site.py --dev`: it writes only the `/<slug>/` and `/<slug>/history/` pages next to
+`index.html` (git-ignored), so refreshing on those addresses works there too. Rerun it after editing
+`index.html` or `characters.json`.
 
 ## Deploy
-Repo Settings > Pages > Source: **GitHub Actions**. Every push to `main` runs
-`tools/make_images.py` and `build.py` and publishes. Everything in `builds/` is generated and git-ignored.
+Repo Settings > Pages > Source: **GitHub Actions**. Every push to `main` runs `tools/build_all.py` and
+publishes `builds/site/`. `builds/` (which holds `builds/site/`) is generated and git-ignored.
+
+## Addresses and SEO
+GitHub Pages cannot route, so `tools/make_site.py` writes one real HTML file per address, from `index.html`:
+
+| address | page | indexed |
+|---|---|---|
+| `/` | home: shows whoever you talked to last | yes |
+| `/<slug>/` e.g. `/pocomon/` | that character on stage | yes |
+| `/<slug>/history/` | her chat history panel open | no (`noindex`) |
+
+Each page has its own `<title>`, description, canonical link, Open Graph and Twitter tags, a 1200x630 share
+picture (`builds/img/share/`), JSON-LD, and the character links already in the HTML. Also generated: `404.html`
+(a real 404), `sitemap.xml` and `robots.txt`. In the browser, `router.js` makes the picker, the History button
+and Back/Forward move between these addresses without reloading, and keeps the title and meta tags current.
+
+- The **slug** is the address and is its own field in `characters.json` (next to the numeric id), so renaming a
+  label does not have to change the URL. Changing a slug changes a public link: do it rarely.
+- Page text lives in `characters.json` (`seo.tagline`, `seo.description` with `{name}`) and `site.json`
+  (site address, name, home title and description). `site.json` > `url` must match your custom domain.
+- The head text is built twice, in `tools/make_site.py` and `headFor()` in `router.js`: change both together.
+- `<base href>` is `./`, `../` or `../../` per page, so the site also works from a sub-folder.
 
 ## Benchmark
     python3 tools/gen_synthetic.py /tmp/syn
@@ -55,6 +83,13 @@ Setup (no Node needed):
    - `ALLOWED_ORIGINS` = `https://YOURNAME.github.io,http://localhost:8000`
    - optional: `GEMINI_MODEL` (default `gemini-3.8-flash`), `THINKING_BUDGET` = `0`
 4. Put the worker URL in `config.js` as `WORKER_URL`, commit and push.
+
+Instruction privacy: Gemini occasionally echoes part of its instructions (for example after a vague
+message like "kenapa?"). Before a reply is returned, the Worker drops any sentence that repeats 7 or more
+words in a row from the private instructions (not the examples), and asks Gemini again if nothing real is
+left; if it still fails, the page shows its backup reply. Replies that leak nothing pass through unchanged.
+The Worker's log says "stripped leaked instructions" when it happens. It catches word-for-word repeats only,
+not paraphrases.
 
 Cost safety: the origin check only stops other websites, not scripts that fake the
 Origin header. Prefer a free-tier key (hard rate limits), or set a quota/budget cap on
@@ -84,11 +119,12 @@ Instead of pasting `worker/worker.js` into the dashboard each time:
 - `HISTORY_TURNS` (default 8) is how many earlier messages go to Gemini.
 
 - Chats are saved per character in the visitor's own browser (`localStorage`, last 60 messages each) and
-  restored on reload. Nothing is sent to a server for this. History > Clear chat deletes one character's chat.
+  restored on reload. Nothing is sent to a server for this. History > Clear deletes one character's chat.
 
 ## Code layout
 ```
-index.html, style.css, config.js, characters.json   the page, its look, settings, characters
+index.html, style.css, config.js, characters.json   the page template, its look, settings, characters
+site.json          site address, name and home page text (SEO)
 assets/scripts/    the page logic, split into small ES modules (see main.js for the map)
   main.js          start-up: loads data, builds the picker, wires the buttons
   state.js         shared data (current character, saved chats, ...)
@@ -100,7 +136,9 @@ assets/scripts/    the page logic, split into small ES modules (see main.js for 
   stage.js         the big character, comic bubbles, picker, history panel (view only)
   chat.js          sending, showing and clearing messages; switching characters
   composer.js      the message box: length limit, counter, sending
+  router.js        addresses (/<slug>/, /<slug>/history/) and the page <head>
 assets/img/        your big original art, 2048px (not published)
+assets/icons/      notes and license for the Lucide icons pasted inline in index.html (not published)
 builds/            everything Python generates (never edit by hand):
   img/             web images (WebP, about 6x smaller than PNG) made from assets/img by
                    tools/make_images.py: thumbnails for the picker, stage/ holds the big cutouts
@@ -109,33 +147,43 @@ builds/            everything Python generates (never edit by hand):
                    (all of builds/ is git-ignored and rebuilt on every deploy)
 source/, build.py  the rule library source and the script that builds builds/data/
 worker/            the Cloudflare Worker (Gemini proxy and character prompts)
-tools/             make_images.py, deploy_worker.py, gen_synthetic.py
+tools/             build_all.py, make_images.py, make_site.py, deploy_worker.py, gen_synthetic.py
 ```
 New module? Add a `<link rel="modulepreload">` line for it in `index.html` (the page then downloads all
 modules at once instead of one import at a time; `build.py` warns if one is missing).
 The scripts use ES modules, so open the site through a web server (`python3 -m http.server`),
-not by double-clicking `index.html`.
+not by double-clicking `index.html`. Serve `builds/site/` (see Run locally).
 
 ## Characters
 The page has a picker with four ghost characters (`characters.json`, web images in `builds/img/`;
 the 2048px originals are in `assets/img/` and are not published):
 
-| id | name | personality |
+| id | name (a label) | personality |
 |---|---|---|
-| `pocomon` | Pocomon (pocong, purple bow) | gloomy and the most direct: blunt, no sugarcoating; also has the 700-rule JSON library as backup |
-| `sustemon` | Sustemon (suster ngesot) | busy big sister: brisk, nagging out of love, no pet names for you |
-| `sundemon` | Sundemon (sundel bolong, sunflower) | the most despairing: bleak, hollow, resigned; never tells you to give up, softens if you sound hopeless |
-| `kuntimon` | Kuntimon (kuntilanak) | hyper and the most curious about you: asks one nosy question every reply |
+| `1` | Pocomon (pocong, purple bow) | gloomy and the most direct: blunt, no sugarcoating; also has the 700-rule JSON library as backup |
+| `2` | Ngesomon (suster ngesot) | busy big sister: brisk, nagging out of love, no pet names for you |
+| `3` | Sundemon (sundel bolong, sunflower) | the most despairing: bleak, hollow, resigned; never tells you to give up, softens if you sound hopeless |
+| `4` | Kuntimon (kuntilanak) | hyper and the most curious about you: asks one nosy question every reply |
 
-- Each character has its own chat and memory; switching keeps the other chats.
+**The id is a number and never changes; the name is only a label.** Everything that must stay put is keyed by
+the number: saved chats in people's browsers (`ghostchat:v1:2`), the Worker's persona (`CHARACTERS["2"]`),
+the original art (`assets/img/2.png`) and the generated images (`builds/img/2.webp`). So you can rename a
+character by editing only `name` (and the greeting/typing text that mentions it) in `characters.json`: her
+saved history, images and persona are untouched. Saved chats don't store the greeting, so even that
+text follows the new name. New character: use the next number (highest + 1) and never reuse a retired one.
+Keep names out of the `greeting`, `fallback` and `status` text (say "Hey!", not "Hey! Ngesomon here"), so a rename is
+one edit. `python3 build.py` warns if `characters.json`, the image names, the original art and the Worker drift apart,
+or if a name appears in that text.
+
+- Each character has her own chat and memory; switching keeps the other chats.
 - Personas live in `worker/worker.js` (`CHARACTERS`), so visitors can't swap prompts.
   **After editing a persona, run `python3 tools/deploy_worker.py`.**
 - If Gemini fails: Pocomon uses the JSON library; the others use a few backup lines
   from `characters.json` (`fallback`). Crisis phrases always use the local safety rule.
-- Add a character: put the big PNG (white background is fine) in `assets/img/<name>.png`, add an entry
-  to `characters.json` (`image`: `builds/img/<name>.webp`, `stage`: `builds/img/stage/<name>.webp`), run
-  `python3 tools/make_images.py` (needs `pip3 install pillow`) to cut out the background
-  and make the web images (GitHub Actions does the same on deploy), and add a matching block in `CHARACTERS` in `worker/worker.js`.
+- Add a character: pick the next id (say `5`), put the big PNG (white background is fine) in `assets/img/5.png`,
+  add an entry to `characters.json` (`id`: `"5"`, `image`: `builds/img/5.webp`, `stage`: `builds/img/stage/5.webp`),
+  add `"5": {...}` to `CHARACTERS` in `worker/worker.js`, and run `python3 tools/make_images.py`
+  (needs `pip3 install pillow`; GitHub Actions does the same on deploy) to cut out the background and make the web images.
 
 ## Site icons (two separate sets)
 | Source (you edit) | Becomes | Used for |

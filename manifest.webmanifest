@@ -1,7 +1,7 @@
 {
   "name": "Omon Omon",
   "short_name": "Omon Omon",
-  "description": "Chat with four ghost characters: Pocomon, Sustemon, Sundemon and Kuntimon.",
+  "description": "Chat with four ghost characters, each with a personality of her own.",
   "id": "/",
   "start_url": "./",
   "scope": "./",

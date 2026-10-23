@@ -46,10 +46,11 @@ body {
 }
 
 /* ---- Top bar ---- */
-.top { display: flex; align-items: center; gap: 8px; }
+.top { display: flex; align-items: center; gap: 6px; }
 
 .picker {
-  flex: 1;
+  flex: 1 1 0; /* takes the row minus the History button's cell */
+  min-width: 0;
   display: flex;
   gap: 6px;
   overflow-x: auto;
@@ -57,13 +58,62 @@ body {
 }
 .picker::-webkit-scrollbar { display: none; }
 
-.picker button {
-  flex: 1 0 auto;
+.picker a {
+  flex: 1 1 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  min-width: 64px;
+  min-width: 60px;
+  padding: 4px 4px 3px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.68rem;
+  text-decoration: none;
+  cursor: pointer;
+  opacity: 0.75;
+}
+.picker a img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #eef1f8;
+  object-fit: contain;
+}
+.picker a:hover { opacity: 1; }
+.picker a[aria-current="page"] {
+  opacity: 1;
+  color: var(--text);
+  border-color: var(--accent);
+}
+/* Focus ring: no ring for mouse use or stray keys such as Shift. It appears only while someone is
+   moving between controls with Tab (main.js adds .using-tab), which is who needs it. */
+button:focus-visible, a:focus-visible { outline: none; }
+.using-tab button:focus-visible, .using-tab a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Lucide icons: drawn with the text colour; the line weight matches the thick comic outlines */
+.icon {
+  width: 1.2em;
+  height: 1.2em;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The History button is built like a character option: a 40px circle with a label underneath. */
+.hist-btn {
+  flex: 0 0 calc((100% - 24px) / 5); /* the row is five equal cells: four characters + this button */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 60px;
   padding: 4px 4px 3px;
   border: 2px solid transparent;
   border-radius: 12px;
@@ -72,36 +122,26 @@ body {
   font: inherit;
   font-size: 0.68rem;
   cursor: pointer;
-  opacity: 0.75;
 }
-.picker button img {
+.hist-circle {
+  display: grid;
+  place-items: center;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #eef1f8;
-  object-fit: contain;
+  background: var(--accent); /* the current character's theme colour */
+  color: var(--ink);
+  font-size: 1rem;
 }
-.picker button:hover { opacity: 1; }
-.picker button[aria-pressed="true"] {
-  opacity: 1;
-  color: var(--text);
-  border-color: var(--accent);
-}
-.picker button:focus-visible,
-.hist-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-.hist-btn {
-  flex: none;
-  padding: 7px 12px;
-  border: 2px solid var(--muted);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--text);
-  font: inherit;
-  font-size: 0.78rem;
-  cursor: pointer;
-}
-.hist-btn:hover { border-color: var(--accent); }
+.hist-btn:hover .hist-circle { filter: brightness(1.1); }
+.hist-btn[aria-expanded="true"] { color: var(--text); } /* no outline: only the selected character gets one */
+/* show the history icon and label when closed, the X and "Close" when open */
+.hist-btn .icon-close,
+.hist-btn .lbl-close { display: none; }
+.hist-btn[aria-expanded="true"] .icon-history,
+.hist-btn[aria-expanded="true"] .lbl-history { display: none; }
+.hist-btn[aria-expanded="true"] .icon-close { display: block; }
+.hist-btn[aria-expanded="true"] .lbl-close { display: inline; }
 
 /* ---- Stage: the comic panel ---- */
 .stage {
@@ -257,34 +297,68 @@ body {
   z-index: 5;
   padding: 12px;
   overflow-y: auto;
-  background: #14151a;
+  background: inherit; /* the stage's own background (pale theme tint + dots), so the two always match */
   color: var(--text);
+  /* A quiet scrollbar in the spirit of macOS: thin, no track (the dots show through), soft thumb that
+     firms up on hover. Browsers show the full classic bar when the Mac is set to "always show scroll
+     bars" or has a mouse attached; a web page can't switch that off, only restyle the bar. */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(20, 21, 26, 0.3) transparent;
+}
+.history:hover { scrollbar-color: rgba(20, 21, 26, 0.5) transparent; }
+/* browsers without scrollbar-width / scrollbar-color (older Safari and Chrome) */
+@supports not (scrollbar-width: thin) {
+  .history::-webkit-scrollbar { width: 11px; }
+  .history::-webkit-scrollbar-track { background: transparent; }
+  .history::-webkit-scrollbar-thumb {
+    background: rgba(20, 21, 26, 0.3);
+    background-clip: content-box;
+    border: 3px solid transparent;
+    border-radius: 999px;
+  }
+  .history:hover::-webkit-scrollbar-thumb { background-color: rgba(20, 21, 26, 0.5); }
 }
 .history-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 8px;
   margin-bottom: 12px;
   font-size: 0.72rem;
-  color: var(--muted);
+  color: rgba(20, 21, 26, 0.65); /* dark text for the pale background */
 }
 .history-bar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 4px 10px;
-  border: 1px solid #c0554b;
+  border: 1px solid #b03a30;
   border-radius: 999px;
   background: transparent;
-  color: #e08a82;
+  color: #8f2a22;
   font: inherit;
   cursor: pointer;
 }
-.history-bar button:hover { background: rgba(192, 85, 75, 0.15); }
+.history-bar button:hover { background: rgba(176, 58, 48, 0.12); }
 .messages { display: flex; flex-direction: column; gap: 10px; }
 .row { display: flex; align-items: flex-end; gap: 8px; max-width: 90%; }
 .row.bot { align-self: flex-start; }
 .row.user { align-self: flex-end; }
 .mini { flex: none; width: 28px; height: 28px; border-radius: 50%; background: #eef1f8; object-fit: contain; }
-.msg { padding: 9px 13px; border-radius: 14px; line-height: 1.4; font-size: 0.92rem; overflow-wrap: anywhere; }
+.msg { display: flow-root; padding: 9px 13px; border-radius: 14px; line-height: 1.4; font-size: 0.92rem; overflow-wrap: anywhere; }
+/* the time sits at the bottom right of the bubble, on the last line if there is room (WhatsApp style) */
+.msg time { float: right; margin: 7px 0 -3px 12px; font-size: 0.66rem; line-height: 1; opacity: 0.6; user-select: none; }
+/* a centred label wherever the day changes: Today, Yesterday, a weekday, then the date */
+.day-label {
+  align-self: center;
+  margin: 4px 0 0;
+  padding: 3px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  color: rgba(20, 21, 26, 0.72);
+  font-size: 0.72rem;
+  box-shadow: 0 1px 1px rgba(20, 21, 26, 0.15);
+}
 .msg.bot { background: #2f343f; border-bottom-left-radius: 4px; }
 .msg.user { background: #4a5568; border-bottom-right-radius: 4px; }
 

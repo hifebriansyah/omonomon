@@ -6,9 +6,14 @@ import {
   stageEl, pickerEl, nameEl, statusEl, heroEl, bubbleEl, bubbleText,
   youBubble, youText, srEl, historyBtn, historyEl, messagesEl, input,
 } from "./dom.js";
+import { hrefFor } from "./router.js";
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const FONT_STEPS = [1.15, 1.05, 0.96, 0.88, 0.8, 0.74]; // rem
+// From this many characters on, a reply starts at a smaller size than the normal 1.15rem
+// (it can still shrink further if it doesn't fit the bubble).
+const LONG_REPLY_CHARS = 90;
+const LONG_REPLY_STEP = 2; // index into FONT_STEPS: 0.96rem
 
 let typeTimer = null;
 let shown = ""; // full text of the bubble being typed
@@ -30,7 +35,8 @@ export function layoutBubble() {
 function fitBubble(text, keepText = false) {
   const current = bubbleText.textContent;
   bubbleText.textContent = text; // measure with the full text, even while it is being typed
-  for (const size of FONT_STEPS) {
+  const first = text.length >= LONG_REPLY_CHARS ? LONG_REPLY_STEP : 0;
+  for (const size of FONT_STEPS.slice(first)) {
     bubbleText.style.fontSize = `${size}rem`;
     if (bubbleText.scrollHeight <= bubbleText.clientHeight + 1) break;
   }
@@ -92,19 +98,24 @@ export function setScreenReaderText(text) {
 
 // ---- Picker and character look ----
 
-export function buildPicker(characters, onPick) {
-  for (const c of characters) {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.dataset.id = c.id;
-    btn.setAttribute("aria-pressed", "false");
+// Each character is a real link (so it can be opened, shared and crawled). A normal click is
+// handled by `onPick` without reloading; the same markup is pre-built by tools/make_site.py.
+export function buildPicker(characters, onPick, isPlainClick) {
+  pickerEl.replaceChildren(...characters.map((c) => {
+    const a = document.createElement("a");
+    a.href = hrefFor(c);
+    a.dataset.id = c.id;
     const img = document.createElement("img");
     img.src = c.image;
     img.alt = "";
-    btn.append(img, document.createTextNode(c.name));
-    btn.addEventListener("click", () => onPick(c.id));
-    pickerEl.append(btn);
-  }
+    a.append(img, document.createTextNode(c.name));
+    a.addEventListener("click", (e) => {
+      if (!isPlainClick(e)) return;
+      e.preventDefault();
+      onPick(c.id);
+    });
+    return a;
+  }));
 }
 
 // Put a character on stage: colour, picture, name, status, placeholder, picker highlight.
@@ -116,50 +127,98 @@ export function applyCharacter(c) {
   nameEl.textContent = c.name;
   statusEl.textContent = c.status;
   input.placeholder = `Say something to ${c.name}...`;
-  pickerEl.querySelectorAll("button").forEach((b) =>
-    b.setAttribute("aria-pressed", String(b.dataset.id === c.id))
-  );
+  pickerEl.querySelectorAll("a").forEach((a) => {
+    if (a.dataset.id === c.id) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  });
 }
 
 // ---- History panel: the full log for the open character ----
 
-function appendRow(c, who, text) {
+// WhatsApp-style times and day labels. They follow the visitor's browser language and clock format
+// (an Indonesian browser gets "Hari ini", "Kemarin" and 24-hour times).
+const timeFormat = new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit" });
+const dayKey = (t) => {
+  const d = new Date(t);
+  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+};
+
+function dayLabel(t) {
+  const day = new Date(t);
+  const now = new Date();
+  const midnight = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const daysAgo = Math.round((midnight(now) - midnight(day)) / 86400000);
+  if (daysAgo === 0 || daysAgo === 1) {
+    const word = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" }).format(-daysAgo, "day"); // today / yesterday
+    return word.charAt(0).toLocaleUpperCase() + word.slice(1);
+  }
+  if (daysAgo > 1 && daysAgo < 7) return day.toLocaleDateString(undefined, { weekday: "long" });
+  const sameYear = day.getFullYear() === now.getFullYear();
+  return day.toLocaleDateString(undefined, { day: "numeric", month: "short", ...(sameYear ? {} : { year: "numeric" }) });
+}
+
+let lastDay = null;    // the day of the last row drawn, to know when to add a new date label
+let chatStart = null;  // when the first timed message was sent; the greeting has no time, so it uses this day
+
+function appendMessage(c, m) {
+  // Messages saved before times existed have none, so they get no label. The greeting joins the first day.
+  const t = m.t ?? (m.g ? chatStart : null);
+  if (t != null && dayKey(t) !== lastDay) {
+    const label = document.createElement("div");
+    label.className = "day-label";
+    label.textContent = dayLabel(t);
+    messagesEl.append(label);
+    lastDay = dayKey(t);
+  }
+
   const row = document.createElement("div");
-  row.className = `row ${who}`;
-  if (who === "bot") {
+  row.className = `row ${m.who}`;
+  if (m.who === "bot") {
     const img = document.createElement("img");
     img.className = "mini";
     img.src = c.image;
     img.alt = "";
     row.append(img);
   }
-  const msg = document.createElement("div");
-  msg.className = `msg ${who}`;
-  msg.textContent = text;
-  row.append(msg);
+  const bubble = document.createElement("div");
+  bubble.className = `msg ${m.who}`;
+  const text = document.createElement("span");
+  text.textContent = m.text;
+  bubble.append(text);
+  if (m.t != null) {
+    const time = document.createElement("time");
+    time.dateTime = new Date(m.t).toISOString();
+    time.textContent = timeFormat.format(m.t);
+    bubble.append(time);
+  }
+  row.append(bubble);
   messagesEl.append(row);
 }
 
 function renderHistory(c, log) {
   messagesEl.replaceChildren();
-  for (const m of log) appendRow(c, m.who, m.text);
+  lastDay = null;
+  chatStart = log.find((m) => m.t != null)?.t ?? null;
+  for (const m of log) appendMessage(c, m);
   historyEl.scrollTop = historyEl.scrollHeight;
 }
 
 function setHistoryOpen(open) {
   historyEl.hidden = !open;
   historyBtn.setAttribute("aria-expanded", String(open));
-  historyBtn.textContent = open ? "Close" : "History";
+  // The button shows icons (CSS swaps history <-> close); its name is only for screen readers and the tooltip.
+  const label = open ? "Close chat history" : "Show chat history";
+  historyBtn.setAttribute("aria-label", label);
+  historyBtn.title = label;
 }
 
-export function toggleHistory(c, log) {
-  const open = historyEl.hidden;
+export const isHistoryOpen = () => !historyEl.hidden;
+
+// Open or close the panel to match the address.
+export function setHistory(open, c, log) {
+  if (open === isHistoryOpen()) return;
   setHistoryOpen(open);
   if (open) renderHistory(c, log);
-}
-
-export function closeHistory() {
-  setHistoryOpen(false);
 }
 
 // Re-draw the panel if it is open (after switching character).
@@ -167,9 +226,14 @@ export function refreshHistory(c, log) {
   if (!historyEl.hidden) renderHistory(c, log);
 }
 
-// Add one new row if the panel is open.
-export function addHistoryRow(c, who, text) {
+// Add one new message if the panel is open. The first timed message changes where the greeting's
+// day label goes, so in that case the whole panel is drawn again.
+export function addHistoryRow(c, m, log) {
   if (historyEl.hidden) return;
-  appendRow(c, who, text);
+  if (chatStart == null) {
+    renderHistory(c, log);
+    return;
+  }
+  appendMessage(c, m);
   historyEl.scrollTop = historyEl.scrollHeight;
 }

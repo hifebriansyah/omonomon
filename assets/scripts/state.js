@@ -2,6 +2,7 @@
 // Other modules import `state` and read or write its fields.
 
 export const state = {
+  site: null,           // site.json: address, name and default description
   manifest: null,       // builds/data/manifest.json: languages, shard info
   characters: [],       // characters.json
   current: null,        // the character on stage

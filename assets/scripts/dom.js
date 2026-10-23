@@ -12,6 +12,7 @@ export const bubbleEl = $("bubble");
 export const bubbleText = $("bubbleText");
 export const youBubble = $("youBubble");
 export const youText = $("youText");
+export const aboutEl = $("about");         // short description for search engines and screen readers
 export const srEl = $("sr");              // screen-reader copy of the reply
 export const historyBtn = $("historyBtn");
 export const historyEl = $("history");

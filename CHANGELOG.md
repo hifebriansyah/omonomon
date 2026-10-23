@@ -2,6 +2,11 @@
 
 Each version is one commit. Newest first.
 
+## 0.5.0 - Routing and SEO
+- assets/scripts/router.js gives each character its own address.
+- tools/make_site.py generates per-character pages, sitemap and structured data; tools/build_all.py runs every step.
+- Lucide icons, history panel and stage polish.
+
 ## 0.4.1 - Installable web app
 - manifest.webmanifest and app icons from make_images.py.
 

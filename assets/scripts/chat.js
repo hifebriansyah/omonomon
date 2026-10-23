@@ -6,6 +6,7 @@ import { input } from "./dom.js";
 import * as stage from "./stage.js";
 import { loadLog, saveLog, removeLog, rebuildHistory, saveCharacter } from "./storage.js";
 import { getReply } from "./replies.js";
+import { navigate } from "./router.js";
 
 function greeting(c) {
   return c.library ? state.manifest.languages[state.lastLang].greeting : inLang(c.greeting);
@@ -13,7 +14,8 @@ function greeting(c) {
 
 // Record a message for character `id` and show it if that character is on stage.
 function say(id, who, text, flags = {}) {
-  (state.logs[id] ||= []).push({ who, text, ...flags });
+  const msg = { who, text, t: Date.now(), ...flags };
+  (state.logs[id] ||= []).push(msg);
   saveLog(id);
   if (state.current.id !== id) return;
   if (who === "bot") {
@@ -23,7 +25,7 @@ function say(id, who, text, flags = {}) {
   } else {
     stage.showYou(text);
   }
-  stage.addHistoryRow(state.current, who, text);
+  stage.addHistoryRow(state.current, msg, state.logs[id]);
 }
 
 // Put a character on stage, restoring her saved chat (or starting with her greeting).
@@ -36,7 +38,8 @@ export function selectCharacter(id) {
   if (!state.logs[id]?.length) {
     const saved = loadLog(id);
     if (saved?.length) {
-      state.logs[id] = saved;
+      // the greeting is not saved: show today's greeting (and today's name) above the old messages
+      state.logs[id] = [{ who: "bot", text: greeting(c), g: true }, ...saved];
       rebuildHistory(id);
     }
   }
@@ -83,8 +86,19 @@ export function sendMessage(text) {
   botReply(state.current, text);
 }
 
+// Show what an address asks for: a character, and her history panel open or closed.
+export function showRoute({ id, history }) {
+  if (state.current?.id !== id) selectCharacter(id);
+  stage.setHistory(history, state.current, state.logs[id] || []);
+}
+
+// The character picker and the history button move to a new address; the router calls showRoute.
+export function pickCharacter(id) {
+  navigate({ id, history: stage.isHistoryOpen() });
+}
+
 export function toggleHistory() {
-  stage.toggleHistory(state.current, state.logs[state.current.id] || []);
+  navigate({ id: state.current.id, history: !stage.isHistoryOpen() });
 }
 
 export function clearChat() {
@@ -95,6 +109,7 @@ export function clearChat() {
   state.pending[c.id] = 0;
   state.epoch[c.id] = (state.epoch[c.id] || 0) + 1;
   removeLog(c.id);
-  stage.closeHistory();
+  stage.setHistory(false);
   selectCharacter(c.id);
+  navigate({ id: c.id, history: false }, { replace: true, silent: true });
 }
