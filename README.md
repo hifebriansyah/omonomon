@@ -102,8 +102,9 @@ assets/scripts/    the page logic, split into small ES modules (see main.js for 
   composer.js      the message box: length limit, counter, sending
 assets/img/        your big original art, 2048px (not published)
 builds/            everything Python generates (never edit by hand):
-  img/             web images made from assets/img by tools/make_images.py:
-                   thumbnails for the picker, stage/ holds the big cutouts
+  img/             web images (WebP, about 6x smaller than PNG) made from assets/img by
+                   tools/make_images.py: thumbnails for the picker, stage/ holds the big cutouts
+                   and the site icons (favicon.ico from favicon.png; app icons from appicon.png)
   data/            the reply library made by build.py
                    (all of builds/ is git-ignored and rebuilt on every deploy)
 source/, build.py  the rule library source and the script that builds builds/data/
@@ -132,9 +133,31 @@ the 2048px originals are in `assets/img/` and are not published):
 - If Gemini fails: Pocomon uses the JSON library; the others use a few backup lines
   from `characters.json` (`fallback`). Crisis phrases always use the local safety rule.
 - Add a character: put the big PNG (white background is fine) in `assets/img/<name>.png`, add an entry
-  to `characters.json` (`image`: `builds/img/<name>.png`, `stage`: `builds/img/stage/<name>.png`), run
+  to `characters.json` (`image`: `builds/img/<name>.webp`, `stage`: `builds/img/stage/<name>.webp`), run
   `python3 tools/make_images.py` (needs `pip3 install pillow`) to cut out the background
   and make the web images (GitHub Actions does the same on deploy), and add a matching block in `CHARACTERS` in `worker/worker.js`.
+
+## Site icons (two separate sets)
+| Source (you edit) | Becomes | Used for |
+|---|---|---|
+| `assets/img/favicon.png` | `builds/img/favicon.ico` (16/32/48 px, **transparent**) | the browser tab |
+| `assets/img/appicon.png` | `apple-touch-icon.png` (180), `icon-192.png`, `icon-512.png` (opaque) | phone home screens, Android/Chrome install |
+
+`python3 tools/make_images.py` builds both sets. For the favicon, the white background of your picture is removed
+(only the white connected to the outside edge, like the characters), so draw it on plain white or already
+transparent. The app icon stays a full opaque square, which phones need. `index.html` links only the favicon
+as `rel="icon"` and the app icon as `apple-touch-icon`, so the tab never shows the busy app icon.
+If a source file is missing its set is skipped. Browsers cache favicons hard: after changing one,
+hard-refresh or reopen the tab.
+
+## Install as an app (PWA)
+`manifest.webmanifest` makes the site installable ("Install app" in Chrome and Edge, "Add to Home screen"
+on Android; iPhone uses the `apple-touch-icon`). Edit it for the name and colours. Its icons are
+`builds/img/icon-192.png` and `icon-512.png`, which `make_images.py` builds from **`assets/img/appicon.png`**
+(never from `favicon.png`, which is only the tab icon). `id` gives the installed app a fixed identity, so later edits to
+`start_url` or the name don't make Chrome treat it as a different app. Don't rename or move
+`manifest.webmanifest`: browsers then stop updating apps people already installed. There is deliberately no service worker, so
+the installed app is the same site in its own window and still needs the internet (the chat does anyway).
 
 ## Look
 Comic style: the selected character is shown big on a halftone panel in her accent colour.

@@ -1,7 +1,7 @@
 {
   // Used by Cloudflare's Git integration to deploy worker.js on every push.
   // "name" must match the Worker you already created, so it updates in place.
-  "name": "indonomon",
+  "name": "omonomon",
   "main": "worker.js",
   "compatibility_date": "2025-09-01",
   // Keep the variables you set in the dashboard (ALLOWED_ORIGINS, GEMINI_MODEL, ...).

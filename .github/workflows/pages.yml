@@ -34,7 +34,7 @@ jobs:
       - name: Stage site
         run: |
           mkdir _site
-          cp index.html style.css config.js characters.json _site/
+          cp index.html style.css config.js characters.json manifest.webmanifest _site/
           mkdir -p _site/assets
           cp -r assets/scripts _site/assets/
           cp -r builds _site/            # everything generated (not the big originals in assets/img/)

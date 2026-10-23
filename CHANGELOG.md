@@ -2,6 +2,9 @@
 
 Each version is one commit. Newest first.
 
+## 0.4.1 - Installable web app
+- manifest.webmanifest and app icons from make_images.py.
+
 ## 0.4.0 - Split the page script into ES modules
 - script.js replaced by assets/scripts/ (chat, composer, dom, main, replies, rules, stage, state, storage, util).
 - Lighter character art; .DS_Store files kept out of the repo.

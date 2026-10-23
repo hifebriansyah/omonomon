@@ -1,4 +1,4 @@
-// Ghost Chat: pick a character and talk to them.
+// Omon Omon: pick a character and talk to them.
 // Replies come from Gemini (via the Worker). Pocomon also has a sharded JSON rule
 // library as backup; the other characters fall back to a few in-character lines.
 // Crisis phrases are always answered by the local safety rule and never sent to Gemini.
