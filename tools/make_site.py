@@ -40,7 +40,7 @@ def head_for(site, c, history):
     image = f"{site['url']}/builds/img/share/{c['id']}.jpg"
     if history:
         return dict(title=f"Chat history with {c['name']} | {site['name']}",
-                    description=f"Your saved chat with {c['name']}. It stays on this device.",
+                    description=f"Your saved chat with {c['name']}.",
                     url=f"{stage_url}history/", image=image, robots="noindex, follow")
     return dict(title=f"{c['name']}, {c['seo']['tagline']} | {site['name']}",
                 description=c["seo"]["description"].replace("{name}", c["name"]),

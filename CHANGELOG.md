@@ -2,6 +2,10 @@
 
 Each version is one commit. Newest first.
 
+## 0.7.0 - Request log in Axiom
+- The Worker sends one log line per request to Axiom when AXIOM_TOKEN is set.
+- .env.example replaces .env.deploy.example; deploy_worker.py copies secrets without printing them.
+
 ## 0.6.0 - Rate limit and custom domain for the Worker
 - Per-IP rate limit (20/min) via a Workers rate-limit binding; 429 shows a 'busy' line in the character's voice.
 - Worker served from its own securhat.com subdomain.

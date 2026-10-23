@@ -257,8 +257,30 @@ function stripLeaks(reply, secret) {
 const MAX_TURNS = 12;      // most recent turns forwarded to Gemini
 const MAX_CHARS = 300;     // per message (the page limits visitors to 200; this is the real cap)
 
+// One line per request goes to Axiom, if the secret AXIOM_TOKEN is set (an ingest-only token).
+// Each line holds: time, status, error word, character id, Gemini calls made, upstream status, country,
+// duration, plus the visitor's IP address, their message and the reply. That is personal data: the site
+// needs a privacy notice that says so, and the dataset's retention period should stay short.
+// Set the text variable LOG_CHAT to "off" to log only the technical fields (no IP, message or reply).
+//   AXIOM_DATASET  text  optional, default "omonomon"
+//   AXIOM_URL      text  optional, the dataset's edge address (default https://us-east-1.aws.edge.axiom.co;
+//                        the other one is https://eu-central-1.aws.edge.axiom.co). It must match the account's region.
+function logRequest(env, ctx, event) {
+  if (!env.AXIOM_TOKEN) return;
+  const url = `${env.AXIOM_URL || "https://us-east-1.aws.edge.axiom.co"}/v1/ingest/${encodeURIComponent(env.AXIOM_DATASET || "omonomon")}`;
+  ctx.waitUntil(
+    fetch(url, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${env.AXIOM_TOKEN}`, "Content-Type": "application/json" },
+      body: JSON.stringify([event]),
+    }).catch(() => {}) // logging must never break a reply
+  );
+}
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
+    const started = Date.now();
+    const info = { geminiCalls: 0 };
     const origin = request.headers.get("Origin") || "";
     const allowed = (env.ALLOWED_ORIGINS || "").split(",").map((s) => s.trim()).filter(Boolean);
     const originOk = allowed.includes(origin);
@@ -268,11 +290,29 @@ export default {
       "Access-Control-Allow-Headers": "Content-Type",
       "Vary": "Origin",
     };
-    const reply = (obj, status = 200) =>
-      new Response(JSON.stringify(obj), {
+    const reply = (obj, status = 200) => {
+      logRequest(env, ctx, {
+        _time: new Date().toISOString(),
+        status,
+        error: obj.error,
+        character: info.character,
+        geminiCalls: info.geminiCalls,
+        upstream: info.upstream,
+        country: request.headers.get("CF-IPCountry") || undefined,
+        ms: Date.now() - started,
+        ...(env.LOG_CHAT === "off"
+          ? {}
+          : {
+              ip: request.headers.get("CF-Connecting-IP") || undefined,
+              message: info.message,
+              reply: obj.reply,
+            }),
+      });
+      return new Response(JSON.stringify(obj), {
         status,
         headers: { "Content-Type": "application/json", ...cors },
       });
+    };
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
     if (request.method !== "POST" || !originOk) return reply({ error: "forbidden" }, 403);
@@ -297,6 +337,7 @@ export default {
     if (!Object.prototype.hasOwnProperty.call(CHARACTERS, character)) {
       return reply({ error: "unknown character" }, 400);
     }
+    info.character = character;
 
     // Expect {messages: [{role: "user" | "model", text: "..."}]}, ending with a user turn.
     const turns = Array.isArray(body.messages) ? body.messages.slice(-MAX_TURNS) : [];
@@ -307,6 +348,7 @@ export default {
     if (!contents.length || contents[contents.length - 1].role !== "user") {
       return reply({ error: "no user message" }, 400);
     }
+    info.message = contents[contents.length - 1].parts[0].text; // only for the request log
 
     const generationConfig = { maxOutputTokens: 120, temperature: 0.8 };
     if (env.THINKING_BUDGET !== undefined && env.THINKING_BUDGET !== "") {
@@ -318,6 +360,7 @@ export default {
     for (let attempt = 0; attempt < 2 && !text; attempt++) {
       const { prompt, secret } = buildPrompt(character); // a fresh prompt (and mode roll) on a retry
       let res;
+      info.geminiCalls++;
       try {
         res = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
@@ -335,6 +378,7 @@ export default {
         return reply({ error: "upstream unreachable" }, 502);
       }
       if (!res.ok) {
+        info.upstream = res.status;
         // Gemini's error text never contains the key; pass a short piece along for debugging.
         const err = await res.json().catch(() => null);
         return reply(

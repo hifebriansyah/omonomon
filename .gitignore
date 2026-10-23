@@ -1,4 +1,4 @@
 builds/
 __pycache__/
-.env.deploy
+.env
 .DS_Store

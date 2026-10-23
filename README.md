@@ -114,7 +114,7 @@ Instead of pasting `worker/worker.js` into the dashboard each time:
 1. Cloudflare dashboard > My Profile > API Tokens > Create Token > template
    **Edit Cloudflare Workers** (or a custom token with Account > Workers Scripts > Edit).
 2. Account ID: Workers & Pages overview page, right-hand side.
-3. `cp .env.deploy.example .env.deploy` and fill in both values (file is git-ignored).
+3. `cp .env.example .env` and fill in the values (file is git-ignored; `AXIOM_TOKEN` is optional).
 4. `python3 tools/deploy_worker.py` after every edit to `worker/worker.js`.
 
 ## Limits
@@ -129,6 +129,16 @@ Instead of pasting `worker/worker.js` into the dashboard each time:
 
 - Chats are saved per character in the visitor's own browser (`localStorage`, last 60 messages each) and
   restored on reload. Nothing is sent to a server for this. History > Clear deletes one character's chat.
+
+## Request log (Axiom, optional)
+If the Worker has the secret `AXIOM_TOKEN` (an ingest-only token for one dataset), it sends one line per request to
+Axiom: time, status, error word, character id, Gemini calls, upstream status, country, duration, **and the
+visitor's IP address, their message and the reply**. That is personal data, so the site needs a privacy notice
+that says so, and the dataset's retention (30 days by default) should stay short. Set the Worker text variable
+`LOG_CHAT` to `off` to log only the technical fields. Optional text variables on the Worker:
+`AXIOM_DATASET` (default `omonomon`) and `AXIOM_URL` (the dataset's edge address; default
+`https://us-east-1.aws.edge.axiom.co`, the other is `https://eu-central-1.aws.edge.axiom.co`; it must match the account's region). Without the token nothing is sent. Useful questions to ask the data: how many 429s
+per hour, which character is busiest, how many Gemini calls (cost), which countries.
 
 ## Code layout
 ```

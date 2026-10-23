@@ -56,7 +56,7 @@ export function headFor(route) {
   if (route.history) {
     return {
       title: `Chat history with ${c.name} | ${site.name}`,
-      description: `Your saved chat with ${c.name}. It stays on this device.`,
+      description: `Your saved chat with ${c.name}.`,
       url: `${stageUrl}history/`,
       image,
       robots: "noindex, follow",
