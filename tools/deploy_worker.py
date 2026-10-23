@@ -48,6 +48,10 @@ def main():
         "main_module": "worker.js",
         "compatibility_date": cfg["compatibility_date"],
         "keep_bindings": ["plain_text", "secret_text"],
+        "bindings": [
+            {"type": "ratelimit", "name": r["name"], "namespace_id": r["namespace_id"], "simple": r["simple"]}
+            for r in cfg.get("ratelimits", [])
+        ],
     }
 
     boundary = uuid.uuid4().hex

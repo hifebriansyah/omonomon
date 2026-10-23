@@ -46,6 +46,7 @@ async function init() {
     ]);
     state.manifest = manifest;
     state.characters = chars.characters;
+    state.trouble = chars.trouble;
     state.site = site;
 
     // Greet in the browser's language when we support it.

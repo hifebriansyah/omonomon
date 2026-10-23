@@ -8,6 +8,8 @@ import { loadLog, saveLog, removeLog, rebuildHistory, saveCharacter } from "./st
 import { getReply } from "./replies.js";
 import { navigate } from "./router.js";
 
+const TROUBLE_AFTER = 3;
+
 function greeting(c) {
   return c.library ? state.manifest.languages[state.lastLang].greeting : inLang(c.greeting);
 }
@@ -67,7 +69,7 @@ async function botReply(c, text) {
   let reply;
   let failed = false;
   try {
-    reply = await getReply(c, text);
+    ({ text: reply, error: failed = false } = await getReply(c, text));
   } catch (err) {
     reply = `Something went wrong (${err.message}).`;
     failed = true;
@@ -75,6 +77,8 @@ async function botReply(c, text) {
   await delay;
   if ((state.epoch[c.id] || 0) !== ep) return; // the chat was cleared while we waited
   state.pending[c.id]--;
+  // After a few Gemini failures in a row the status line says so, until the next success.
+  stage.setTrouble(state.failures >= TROUBLE_AFTER ? inLang(state.trouble) : null, state.current);
   if (!failed) (state.histories[c.id] ||= []).push({ role: "user", text }, { role: "model", text: reply });
   say(c.id, "bot", reply, failed ? { e: true } : {});
 }

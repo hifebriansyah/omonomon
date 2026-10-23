@@ -2,6 +2,10 @@
 
 Each version is one commit. Newest first.
 
+## 0.6.0 - Rate limit and custom domain for the Worker
+- Per-IP rate limit (20/min) via a Workers rate-limit binding; 429 shows a 'busy' line in the character's voice.
+- Worker served from its own securhat.com subdomain.
+
 ## 0.5.1 - Local Apache support
 - .htaccess so the site runs under local Apache with the same routes.
 - build.py moved to tools/make_shard.py.

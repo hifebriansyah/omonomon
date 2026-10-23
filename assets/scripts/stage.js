@@ -118,6 +118,13 @@ export function buildPicker(characters, onPick, isPlainClick) {
   }));
 }
 
+// While Gemini keeps failing the status line says so (text = null puts the character's own status back).
+let troubleText = null;
+export function setTrouble(text, c) {
+  troubleText = text;
+  if (c) statusEl.textContent = text || c.status;
+}
+
 // Put a character on stage: colour, picture, name, status, placeholder, picker highlight.
 export function applyCharacter(c) {
   layoutBubble();
@@ -125,7 +132,7 @@ export function applyCharacter(c) {
   heroEl.src = c.stage;
   heroEl.alt = c.name;
   nameEl.textContent = c.name;
-  statusEl.textContent = c.status;
+  statusEl.textContent = troubleText || c.status;
   input.placeholder = `Say something to ${c.name}...`;
   pickerEl.querySelectorAll("a").forEach((a) => {
     if (a.dataset.id === c.id) a.setAttribute("aria-current", "page");

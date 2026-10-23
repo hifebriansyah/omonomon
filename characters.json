@@ -1,5 +1,9 @@
 {
   "default": "1",
+  "trouble": {
+    "en": "Having trouble thinking right now",
+    "id": "Lagi susah mikir nih"
+  },
   "characters": [
     {
       "id": "1",
@@ -13,6 +17,16 @@
       "seo": {
         "tagline": "the gloomy pocong who says it straight",
         "description": "{name} is a gloomy pocong with a purple bow. Blunt and deadpan, she answers short and honest and never sugarcoats. Chat with her in English or Indonesian."
+      },
+      "busy": {
+        "en": [
+          "Slow down. Even the dead need a minute between words.",
+          "Too many words, too fast. Give me a minute."
+        ],
+        "id": [
+          "Pelan-pelan. Orang mati aja butuh jeda antar kata.",
+          "Kata-katamu kebanyakan, terlalu cepat. Kasih aku semenit."
+        ]
       }
     },
     {
@@ -29,12 +43,14 @@
         "en": [
           "Say that again? I was juggling three things.",
           "Sorry, I zoned out mid-task. One more time?",
-          "Hold on, say it slower. I'm listening, I promise."
+          "Hold on, say it slower. I'm listening, I promise.",
+          "My head's all over the place tonight. Ask me again in a bit?"
         ],
         "id": [
           "Ulangi ya, kakak tadi lagi ngerjain tiga hal sekaligus.",
           "Maaf, kakak kepotong urusan lain. Sekali lagi ya?",
-          "Bentar, pelan-pelan dulu ceritanya. Kakak dengerin kok."
+          "Bentar, pelan-pelan dulu ceritanya. Kakak dengerin kok.",
+          "Kepala kakak lagi berantakan malam ini. Tanya lagi sebentar lagi ya?"
         ]
       },
       "stage": "builds/img/stage/2.webp",
@@ -42,6 +58,16 @@
       "seo": {
         "tagline": "the big-sister nurse ghost",
         "description": "{name} is a nurse ghost (suster ngesot) and everyone's busy big sister. Brisk, practical and caring, she asks if you ate, slept and drank water. Chat in English or Indonesian."
+      },
+      "busy": {
+        "en": [
+          "Hey hey, one at a time, I'm mid-shift. Give me a minute, okay?",
+          "Easy, easy. Let me catch up first, then we'll talk."
+        ],
+        "id": [
+          "Eh eh, satu-satu dong, kakak lagi jaga. Tunggu semenit ya?",
+          "Pelan-pelan dulu. Kakak kejar dulu, baru kita ngobrol."
+        ]
       }
     },
     {
@@ -58,12 +84,14 @@
         "en": [
           "Sorry... I drifted off again. Say it once more?",
           "I lost the thread... things do that. Again?",
-          "I don't know what to say... but I'm here."
+          "I don't know what to say... but I'm here.",
+          "My thoughts are fog tonight... ask me again in a while?"
         ],
         "id": [
           "Maaf... aku ngelamun lagi. Sekali lagi ya?",
           "Aku kehilangan benangnya... emang suka gitu. Ulang ya?",
-          "Aku nggak tau harus bilang apa... tapi aku di sini."
+          "Aku nggak tau harus bilang apa... tapi aku di sini.",
+          "Pikiranku berkabut malam ini... tanya lagi nanti ya?"
         ]
       },
       "stage": "builds/img/stage/3.webp",
@@ -71,6 +99,16 @@
       "seo": {
         "tagline": "the gentle sundel bolong who listens",
         "description": "{name} is a gentle, wistful sundel bolong with a sunflower on her dress. She listens more than she talks and keeps you company. Chat in English or Indonesian."
+      },
+      "busy": {
+        "en": [
+          "...so many words at once. Even my sighing needs a pause. Wait a little?",
+          "It's too much, too fast... give me a moment."
+        ],
+        "id": [
+          "...kata-katanya banyak banget sekaligus. Desahku aja butuh jeda. Tunggu sebentar ya?",
+          "Terlalu cepat... kasih aku waktu sebentar."
+        ]
       }
     },
     {
@@ -87,12 +125,14 @@
         "en": [
           "Wait wait, say that again, I want ALL the details!",
           "Hihihi my hair ate that. Again, slower?",
-          "Ooh I got distracted wondering about YOU. What did you say?"
+          "Ooh I got distracted wondering about YOU. What did you say?",
+          "Ooh my brain went poof! Ask me again in a sec?"
         ],
         "id": [
           "Tunggu tunggu, ulang dong, aku mau detailnya semua!",
           "Hihihi pesanmu kemakan rambutku. Sekali lagi, pelan-pelan?",
-          "Ooh aku malah penasaran sama KAMU. Tadi bilang apa?"
+          "Ooh aku malah penasaran sama KAMU. Tadi bilang apa?",
+          "Ooh otakku tiba-tiba poof! Tanya lagi sebentar ya?"
         ]
       },
       "stage": "builds/img/stage/4.webp",
@@ -100,6 +140,16 @@
       "seo": {
         "tagline": "the curious kuntilanak",
         "description": "{name} is a hyper, giggling kuntilanak and a night-owl gossip who wants to hear all about your day. Chat with her in English or Indonesian."
+      },
+      "busy": {
+        "en": [
+          "Eeee slow down, my hair can't keep up! Wait a bit, then tell me everything!",
+          "Whoa, too fast! Breathe, count to sixty, then spill it all!"
+        ],
+        "id": [
+          "Eeee pelan-pelan, rambutku nggak sanggup ngikutin! Tunggu sebentar, terus ceritain semuanya!",
+          "Wah kecepetan! Tarik napas, hitung sampai enam puluh, terus cerita lagi ya!"
+        ]
       }
     }
   ]

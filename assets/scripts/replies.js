@@ -23,7 +23,7 @@ async function askGemini(c, text) {
       }),
       signal: ctrl.signal,
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw Object.assign(new Error(`HTTP ${res.status}`), { status: res.status });
     const { reply } = await res.json();
     if (typeof reply !== "string" || !reply.trim()) throw new Error("empty reply");
     return reply.trim();
@@ -32,6 +32,8 @@ async function askGemini(c, text) {
   }
 }
 
+// Gives { text, error }. `error` is true for a line that is not a real answer (the character asking
+// you to slow down), so the chat keeps it out of the context sent to Gemini.
 export async function getReply(c, text) {
   const { manifest } = state;
 
@@ -47,16 +49,22 @@ export async function getReply(c, text) {
   local ||= { reply: pick(manifest.languages[state.lastLang || manifest.defaultLang].fallback), priority: -1 };
   if (local.lang) state.lastLang = local.lang;
 
-  if (local.priority >= SAFETY_PRIORITY) return local.reply;
+  if (local.priority >= SAFETY_PRIORITY) return { text: local.reply };
 
   let reply;
   if (window.POCO_CONFIG.WORKER_URL) {
     try {
       reply = await askGemini(c, text);
+      state.failures = 0;
     } catch (err) {
+      if (err.status === 429) {
+        // Sending too fast: the character says so in her own voice. Not an outage, so no failure count.
+        return { text: pick(c.busy[state.lastLang] || c.busy.en), error: true };
+      }
+      state.failures++;
       console.warn("Gemini unavailable, using backup replies:", err.message);
     }
   }
   // Backup: Pocomon uses the rule library, the others use their own fallback lines.
-  return reply || (c.library ? local.reply : pick(c.fallback[state.lastLang] || c.fallback.en));
+  return { text: reply || (c.library ? local.reply : pick(c.fallback[state.lastLang] || c.fallback.en)) };
 }

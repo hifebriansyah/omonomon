@@ -92,6 +92,9 @@ def check_characters():
                 problems.append(f'{i}: "{key}" should be {want}')
         if not Path(f"assets/img/{i}.png").exists():
             problems.append(f"{i}: original art assets/img/{i}.png not found")
+        for lang in ("en", "id"):
+            if not c.get("busy", {}).get(lang):
+                problems.append(f'{i}: "busy" needs at least one line in "{lang}" (shown when the Worker says 429)')
         slug = c.get("slug", "")
         if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug) or slug in RESERVED_SLUGS:
             problems.append(f'{i}: slug "{slug}" must be lowercase letters/digits/hyphens and not one of {sorted(RESERVED_SLUGS)}')

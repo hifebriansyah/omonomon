@@ -11,6 +11,8 @@ export const state = {
   histories: {},        // character id -> [{role, text}]: context sent to Gemini
   pending: {},          // character id -> replies still on the way
   epoch: {},            // character id -> bumps when its chat is cleared
+  failures: 0,          // Gemini failures in a row (not counting "too many requests"); resets on a success
+  trouble: null,        // characters.json "trouble": status text shown while Gemini keeps failing
 };
 
 export const byId = (id) => state.characters.find((c) => c.id === id);

@@ -121,6 +121,11 @@ Instead of pasting `worker/worker.js` into the dashboard each time:
 - `INPUT_MAX_CHARS` in `config.js` (default 200) caps what a visitor can type; the Worker also cuts every
   message to 300 characters (`MAX_CHARS`), because a page-only limit can be bypassed.
 - `HISTORY_TURNS` (default 8) is how many earlier messages go to Gemini.
+- The Worker allows 20 requests a minute per IP (`ratelimits` in `worker/wrangler.jsonc`, sent as a Cloudflare
+  rate-limit binding by `tools/deploy_worker.py`). The `Origin` check only stops other websites: a script can fake
+  that header, so this limit is what slows scripts down. Over the limit the Worker answers 429 and the page
+  shows a 429 line in the character's voice (`busy` in `characters.json`; kept out of Gemini's context). Other failures use the
+  backup replies, and after 3 in a row the status line shows `trouble` until the next success. For a stronger guard add a Cloudflare WAF rate-limiting rule on the Worker's own domain.
 
 - Chats are saved per character in the visitor's own browser (`localStorage`, last 60 messages each) and
   restored on reload. Nothing is sent to a server for this. History > Clear deletes one character's chat.

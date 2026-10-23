@@ -6,5 +6,10 @@
   "compatibility_date": "2025-09-01",
   // Keep the variables you set in the dashboard (ALLOWED_ORIGINS, GEMINI_MODEL, ...).
   // The secret GEMINI_API_KEY is never touched by deploys.
-  "keep_vars": true
+  "keep_vars": true,
+  // Per-visitor limit: at most 20 chat requests a minute from one IP address (checked in worker.js).
+  // tools/deploy_worker.py sends this as a "ratelimit" binding; Cloudflare's Git integration reads it as is.
+  "ratelimits": [
+    { "name": "LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } }
+  ]
 }
