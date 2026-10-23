@@ -2,6 +2,10 @@
 
 Each version is one commit. Newest first.
 
+## 0.4.0 - Split the page script into ES modules
+- script.js replaced by assets/scripts/ (chat, composer, dom, main, replies, rules, stage, state, storage, util).
+- Lighter character art; .DS_Store files kept out of the repo.
+
 ## 0.3.0 - Comic-style stage
 - Big character on stage with comic speech bubbles and a redesigned layout.
 - tools/make_images.py builds the character cutouts.

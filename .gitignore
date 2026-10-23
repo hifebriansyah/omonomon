@@ -1,3 +1,4 @@
-data/
+builds/
 __pycache__/
 .env.deploy
+.DS_Store

@@ -257,9 +257,28 @@ body {
   z-index: 5;
   padding: 12px;
   overflow-y: auto;
-  background: rgba(20, 21, 26, 0.96);
+  background: #14151a;
   color: var(--text);
 }
+.history-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.history-bar button {
+  padding: 4px 10px;
+  border: 1px solid #c0554b;
+  border-radius: 999px;
+  background: transparent;
+  color: #e08a82;
+  font: inherit;
+  cursor: pointer;
+}
+.history-bar button:hover { background: rgba(192, 85, 75, 0.15); }
 .messages { display: flex; flex-direction: column; gap: 10px; }
 .row { display: flex; align-items: flex-end; gap: 8px; max-width: 90%; }
 .row.bot { align-self: flex-start; }

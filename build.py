@@ -3,15 +3,15 @@
 
 Reads   source/persona.json (per-language greeting, fallback, stopwords)
         source/rules/*.json     ("lang" per file or per rule; default = defaultLang)
-Writes  data/manifest.json
-        data/shards/<n>.json    trigger -> [[ruleId, priority, langIndex], ...]
-        data/replies/<n>.json   reply pools, REPLIES_PER_CHUNK rules per file
+Writes  builds/data/manifest.json
+        builds/data/shards/<n>.json    trigger -> [[ruleId, priority, langIndex], ...]
+        builds/data/replies/<n>.json   reply pools, REPLIES_PER_CHUNK rules per file
 
 Triggers are bucketed by FNV-1a hash, so the browser can find the right shard
 for any word without downloading an index. Keep normalize() and fnv1a() in
-sync with script.js.
+sync with assets/scripts/util.js.
 
-Usage: python3 build.py [--src source] [--out data]
+Usage: python3 build.py [--src source] [--out builds/data]
 """
 import argparse
 import hashlib
@@ -62,7 +62,7 @@ def load_rules(rules_dir, default_lang):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default="source")
-    ap.add_argument("--out", default="data")
+    ap.add_argument("--out", default="builds/data")
     args = ap.parse_args()
 
     src, out = Path(args.src), Path(args.out)
@@ -122,6 +122,18 @@ def main():
         "chunkSize": REPLIES_PER_CHUNK,
     }
     dump(out / "manifest.json", manifest)
+
+    if not Path("builds/img/stage").exists():
+        print("NOTE: no images yet. Run: python3 tools/make_images.py (needs: pip3 install pillow)")
+
+    # Every script module should be preloaded in index.html (otherwise the page loads
+    # them in slow one-import-at-a-time waves). A missing entry is only slower, not broken.
+    page = Path("index.html")
+    if page.exists():
+        html = page.read_text(encoding="utf-8")
+        for f in sorted(Path("assets/scripts").glob("*.js")):
+            if f"assets/scripts/{f.name}" not in html:
+                print(f"WARNING: assets/scripts/{f.name} is not preloaded in index.html")
 
     print(f"rules: {len(kept)} kept, {skipped} skipped (no triggers or replies)")
     print("per language: " + ", ".join(f"{l}={n}" for l, n in per_lang.items()))

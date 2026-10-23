@@ -4,7 +4,7 @@
     {
       "id": "pocomon",
       "name": "Pocomon",
-      "image": "img/pocomon.png",
+      "image": "builds/img/pocomon.png",
       "accent": "#a47fd0",
       "status": "no sugarcoating",
       "library": true,
@@ -12,12 +12,12 @@
         "en": "Pocomon is sighing...",
         "id": "Pocomon lagi menghela napas..."
       },
-      "stage": "img/stage/pocomon.png"
+      "stage": "builds/img/stage/pocomon.png"
     },
     {
       "id": "sustemon",
       "name": "Sustemon",
-      "image": "img/sustemon.png",
+      "image": "builds/img/sustemon.png",
       "accent": "#e0707a",
       "status": "busy, but listening",
       "greeting": {
@@ -40,12 +40,12 @@
         "en": "Sustemon is finishing something first...",
         "id": "Kak Sustemon lagi beresin sesuatu dulu..."
       },
-      "stage": "img/stage/sustemon.png"
+      "stage": "builds/img/stage/sustemon.png"
     },
     {
       "id": "sundemon",
       "name": "Sundemon",
-      "image": "img/sundemon.png",
+      "image": "builds/img/sundemon.png",
       "accent": "#e3b850",
       "status": "nothing lasts",
       "greeting": {
@@ -68,12 +68,12 @@
         "en": "Sundemon is staring at nothing...",
         "id": "Sundemon lagi menatap kosong..."
       },
-      "stage": "img/stage/sundemon.png"
+      "stage": "builds/img/stage/sundemon.png"
     },
     {
       "id": "kuntimon",
       "name": "Kuntimon",
-      "image": "img/kuntimon.png",
+      "image": "builds/img/kuntimon.png",
       "accent": "#5fcf8f",
       "status": "wants to know everything about you",
       "greeting": {
@@ -96,7 +96,7 @@
         "en": "Kuntimon is leaning in closer...",
         "id": "Kuntimon lagi nyondongin badan..."
       },
-      "stage": "img/stage/kuntimon.png"
+      "stage": "builds/img/stage/kuntimon.png"
     }
   ]
 }

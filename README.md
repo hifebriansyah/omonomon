@@ -22,12 +22,16 @@ answers crisis phrases with a caring, non-gloomy reply; keep it intact.
 3. Add a Spanish `safety.es.json` with local crisis resources.
 
 ## Run locally
-    python3 build.py
-    python3 -m http.server 8000   # open http://localhost:8000
+Needs Python 3 and Pillow (`pip3 install pillow`). Run both builds once, and again after you change
+the source rules or the original art in `assets/img/`:
+
+    python3 tools/make_images.py   # assets/img -> builds/img
+    python3 build.py               # source/    -> builds/data
+    python3 -m http.server 8000    # open http://localhost:8000
 
 ## Deploy
 Repo Settings > Pages > Source: **GitHub Actions**. Every push to `main` runs
-`build.py` and publishes. `data/` is generated and git-ignored.
+`tools/make_images.py` and `build.py` and publishes. Everything in `builds/` is generated and git-ignored.
 
 ## Benchmark
     python3 tools/gen_synthetic.py /tmp/syn
@@ -79,9 +83,41 @@ Instead of pasting `worker/worker.js` into the dashboard each time:
   message to 300 characters (`MAX_CHARS`), because a page-only limit can be bypassed.
 - `HISTORY_TURNS` (default 8) is how many earlier messages go to Gemini.
 
+- Chats are saved per character in the visitor's own browser (`localStorage`, last 60 messages each) and
+  restored on reload. Nothing is sent to a server for this. History > Clear chat deletes one character's chat.
+
+## Code layout
+```
+index.html, style.css, config.js, characters.json   the page, its look, settings, characters
+assets/scripts/    the page logic, split into small ES modules (see main.js for the map)
+  main.js          start-up: loads data, builds the picker, wires the buttons
+  state.js         shared data (current character, saved chats, ...)
+  dom.js           every page element the scripts use
+  util.js          small helpers (hash and tokenizer, kept in sync with build.py)
+  rules.js         lookup in the local rule library (builds/data/)
+  replies.js       safety rule, then Gemini (via the Worker), then backup replies
+  storage.js       saved chats in localStorage
+  stage.js         the big character, comic bubbles, picker, history panel (view only)
+  chat.js          sending, showing and clearing messages; switching characters
+  composer.js      the message box: length limit, counter, sending
+assets/img/        your big original art, 2048px (not published)
+builds/            everything Python generates (never edit by hand):
+  img/             web images made from assets/img by tools/make_images.py:
+                   thumbnails for the picker, stage/ holds the big cutouts
+  data/            the reply library made by build.py
+                   (all of builds/ is git-ignored and rebuilt on every deploy)
+source/, build.py  the rule library source and the script that builds builds/data/
+worker/            the Cloudflare Worker (Gemini proxy and character prompts)
+tools/             make_images.py, deploy_worker.py, gen_synthetic.py
+```
+New module? Add a `<link rel="modulepreload">` line for it in `index.html` (the page then downloads all
+modules at once instead of one import at a time; `build.py` warns if one is missing).
+The scripts use ES modules, so open the site through a web server (`python3 -m http.server`),
+not by double-clicking `index.html`.
+
 ## Characters
-The page has a picker with four ghost characters (`characters.json`, images in `img/`;
-the 2048px originals stay in `assets/` and are not published):
+The page has a picker with four ghost characters (`characters.json`, web images in `builds/img/`;
+the 2048px originals are in `assets/img/` and are not published):
 
 | id | name | personality |
 |---|---|---|
@@ -95,10 +131,10 @@ the 2048px originals stay in `assets/` and are not published):
   **After editing a persona, run `python3 tools/deploy_worker.py`.**
 - If Gemini fails: Pocomon uses the JSON library; the others use a few backup lines
   from `characters.json` (`fallback`). Crisis phrases always use the local safety rule.
-- Add a character: put the big PNG (white background is fine) in `assets/`, add an entry
-  to `characters.json` (`image`: `img/<name>.png`, `stage`: `img/stage/<name>.png`), run
+- Add a character: put the big PNG (white background is fine) in `assets/img/<name>.png`, add an entry
+  to `characters.json` (`image`: `builds/img/<name>.png`, `stage`: `builds/img/stage/<name>.png`), run
   `python3 tools/make_images.py` (needs `pip3 install pillow`) to cut out the background
-  and make the web images, and add a matching block in `CHARACTERS` in `worker/worker.js`.
+  and make the web images (GitHub Actions does the same on deploy), and add a matching block in `CHARACTERS` in `worker/worker.js`.
 
 ## Look
 Comic style: the selected character is shown big on a halftone panel in her accent colour.

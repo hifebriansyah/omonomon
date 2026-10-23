@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Ghost Chat</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Fetch every module at once instead of discovering them one import at a time.
+       Keep this list in sync with the files in assets/scripts/. -->
+  <link rel="modulepreload" href="assets/scripts/main.js">
+  <link rel="modulepreload" href="assets/scripts/state.js">
+  <link rel="modulepreload" href="assets/scripts/dom.js">
+  <link rel="modulepreload" href="assets/scripts/util.js">
+  <link rel="modulepreload" href="assets/scripts/rules.js">
+  <link rel="modulepreload" href="assets/scripts/replies.js">
+  <link rel="modulepreload" href="assets/scripts/storage.js">
+  <link rel="modulepreload" href="assets/scripts/stage.js">
+  <link rel="modulepreload" href="assets/scripts/chat.js">
+  <link rel="modulepreload" href="assets/scripts/composer.js">
 </head>
 <body>
   <main class="comic">
@@ -34,6 +46,10 @@
       </div>
 
       <aside id="history" class="history" hidden>
+        <div class="history-bar">
+          <span>Saved on this device only</span>
+          <button id="clearBtn" type="button">Clear chat</button>
+        </div>
         <div id="messages" class="messages"></div>
       </aside>
     </section>
@@ -48,6 +64,6 @@
   </main>
 
   <script src="config.js"></script>
-  <script src="script.js"></script>
+  <script type="module" src="assets/scripts/main.js"></script>
 </body>
 </html>

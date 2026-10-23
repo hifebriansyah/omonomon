@@ -22,13 +22,22 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Pillow
+        run: pip install pillow
+      - name: Build images
+        run: python3 tools/make_images.py   # assets/img (originals) -> builds/img
       - name: Build shards
-        run: python3 build.py
+        run: python3 build.py                # source/ -> builds/data
       - name: Stage site
         run: |
           mkdir _site
-          cp index.html style.css config.js characters.json script.js _site/
-          cp -r data img _site/
+          cp index.html style.css config.js characters.json _site/
+          mkdir -p _site/assets
+          cp -r assets/scripts _site/assets/
+          cp -r builds _site/            # everything generated (not the big originals in assets/img/)
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

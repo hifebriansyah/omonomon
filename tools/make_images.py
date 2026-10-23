@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Turn the big character PNGs in assets/ into web images (needs Pillow: pip3 install pillow).
+"""Turn your original character art into web images (needs Pillow: pip3 install pillow).
 
-For every character in characters.json it reads assets/<name>.png (the file name of
-its "image" field), removes the white background connected to the image edge (white
-dresses and faces stay), crops to the character, and writes:
-  img/stage/<name>.png  the big cutout shown on stage
-  img/<name>.png        a 256px square thumbnail for the picker
+For every character in characters.json it reads the original assets/img/<name>.png (<name>
+is the file name of its "image" field), removes the white background connected to the
+image edge (white dresses and faces stay), crops to the character, and writes:
+  builds/img/stage/<name>.png  the big cutout shown on stage
+  builds/img/<name>.png        a 256px square thumbnail for the picker
+Everything in builds/ is generated and git-ignored: never edit it by hand. GitHub Actions
+runs this script on every deploy; run it yourself to see the images locally.
 
 Usage: python3 tools/make_images.py
 """
@@ -43,20 +45,20 @@ def cutout(path, size=720):
 
 
 def main():
-    (ROOT / "img" / "stage").mkdir(parents=True, exist_ok=True)
+    (ROOT / "builds" / "img" / "stage").mkdir(parents=True, exist_ok=True)
     for c in json.loads((ROOT / "characters.json").read_text(encoding="utf-8"))["characters"]:
-        name = Path(c["image"]).stem
-        src = ROOT / "assets" / f"{name}.png"
+        name = Path(c["image"]).stem  # "builds/img/pocomon.png" -> "pocomon"
+        src = ROOT / "assets" / "img" / f"{name}.png"
         if not src.exists():
             print(f"skip {name}: {src} not found")
             continue
         big = cutout(src)
-        big.save(ROOT / "img" / "stage" / f"{name}.png", optimize=True)
+        big.save(ROOT / "builds" / "img" / "stage" / f"{name}.png", optimize=True)
         thumb = big.copy()
         thumb.thumbnail((240, 240), Image.LANCZOS)
         sq = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
         sq.paste(thumb, ((256 - thumb.width) // 2, (256 - thumb.height) // 2), thumb)
-        sq.save(ROOT / "img" / f"{name}.png", optimize=True)
+        sq.save(ROOT / "builds" / "img" / f"{name}.png", optimize=True)
         print(f"ok {name}")
 
 
