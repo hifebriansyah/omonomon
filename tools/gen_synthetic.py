@@ -2,7 +2,7 @@
 """Generate a large fake library to benchmark the shards.
 
 Usage: python3 tools/gen_synthetic.py <out_src_dir> [rules=200000] [triggers_per_rule=5]
-Then:  python3 build.py --src <out_src_dir> --out <out_data_dir>
+Then:  python3 tools/make_shard.py --src <out_src_dir> --out <out_data_dir>
 """
 import json
 import random

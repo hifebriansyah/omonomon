@@ -28,13 +28,17 @@ the source rules or the original art in `assets/img/`:
     python3 tools/build_all.py          # images, rule shards, then the site pages in builds/site/
     python3 -m http.server -d builds/site     # open http://localhost:8000
 
-(`build_all.py` runs `tools/make_images.py`, `build.py` and `tools/make_site.py` in that order. Serve `builds/site/`,
+(`build_all.py` runs `tools/make_images.py`, `tools/make_shard.py` and `tools/make_site.py` in that order. Serve `builds/site/`,
 not the repo root: the repo's `index.html` is only the template, and `/pocomon/` exists only in `builds/site/`.)
 
 If your local server serves the repo folder itself (e.g. Apache at `/for-fun/chat-learning/`), run
-`python3 tools/make_site.py --dev`: it writes only the `/<slug>/` and `/<slug>/history/` pages next to
+`python3 tools/build_all.py --dev`: it runs the same builds, but writes only the `/<slug>/` and `/<slug>/history/` pages next to
 `index.html` (git-ignored), so refreshing on those addresses works there too. Rerun it after editing
 `index.html` or `characters.json`.
+
+Or use the repo's `.htaccess` instead of `--dev`: it maps `/<slug>/` and `/<slug>/history/` to the pages in
+`builds/site/` (run `python3 tools/build_all.py` first). Apache needs `LoadModule rewrite_module ...` enabled and
+`AllowOverride FileInfo` (or `All`) on the web folder in `httpd.conf`, then `brew services restart httpd`.
 
 ## Deploy
 Repo Settings > Pages > Source: **GitHub Actions**. Every push to `main` runs `tools/build_all.py` and
@@ -63,7 +67,7 @@ and Back/Forward move between these addresses without reloading, and keeps the t
 
 ## Benchmark
     python3 tools/gen_synthetic.py /tmp/syn
-    python3 build.py --src /tmp/syn --out /tmp/syn-data
+    python3 tools/make_shard.py --src /tmp/syn --out /tmp/syn-data
 
 ## Gemini replies (optional)
 The page asks Gemini first and falls back to the local JSON rules if Gemini is
@@ -129,7 +133,7 @@ assets/scripts/    the page logic, split into small ES modules (see main.js for 
   main.js          start-up: loads data, builds the picker, wires the buttons
   state.js         shared data (current character, saved chats, ...)
   dom.js           every page element the scripts use
-  util.js          small helpers (hash and tokenizer, kept in sync with build.py)
+  util.js          small helpers (hash and tokenizer, kept in sync with tools/make_shard.py)
   rules.js         lookup in the local rule library (builds/data/)
   replies.js       safety rule, then Gemini (via the Worker), then backup replies
   storage.js       saved chats in localStorage
@@ -143,14 +147,14 @@ builds/            everything Python generates (never edit by hand):
   img/             web images (WebP, about 6x smaller than PNG) made from assets/img by
                    tools/make_images.py: thumbnails for the picker, stage/ holds the big cutouts
                    and the site icons (favicon.ico from favicon.png; app icons from appicon.png)
-  data/            the reply library made by build.py
+  data/            the reply library made by tools/make_shard.py
                    (all of builds/ is git-ignored and rebuilt on every deploy)
-source/, build.py  the rule library source and the script that builds builds/data/
+source/            the rule library source (tools/make_shard.py builds it into builds/data/)
 worker/            the Cloudflare Worker (Gemini proxy and character prompts)
-tools/             build_all.py, make_images.py, make_site.py, deploy_worker.py, gen_synthetic.py
+tools/             build_all.py, make_images.py, make_shard.py, make_site.py, deploy_worker.py, gen_synthetic.py
 ```
 New module? Add a `<link rel="modulepreload">` line for it in `index.html` (the page then downloads all
-modules at once instead of one import at a time; `build.py` warns if one is missing).
+modules at once instead of one import at a time; `tools/make_shard.py` warns if one is missing).
 The scripts use ES modules, so open the site through a web server (`python3 -m http.server`),
 not by double-clicking `index.html`. Serve `builds/site/` (see Run locally).
 
@@ -172,7 +176,7 @@ character by editing only `name` (and the greeting/typing text that mentions it)
 saved history, images and persona are untouched. Saved chats don't store the greeting, so even that
 text follows the new name. New character: use the next number (highest + 1) and never reuse a retired one.
 Keep names out of the `greeting`, `fallback` and `status` text (say "Hey!", not "Hey! Ngesomon here"), so a rename is
-one edit. `python3 build.py` warns if `characters.json`, the image names, the original art and the Worker drift apart,
+one edit. `python3 tools/make_shard.py` warns if `characters.json`, the image names, the original art and the Worker drift apart,
 or if a name appears in that text.
 
 - Each character has her own chat and memory; switching keeps the other chats.

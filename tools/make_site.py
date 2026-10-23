@@ -12,7 +12,7 @@ Each page has its own title, description, canonical link, share tags and structu
 character links are already in the HTML, so search engines and link previews see real content.
 The text rules mirror headFor() in assets/scripts/router.js: change one, change the other.
 
-Run after tools/make_images.py and build.py (tools/build_all.py runs all three).
+Run after tools/make_images.py and tools/make_shard.py (tools/build_all.py runs all three).
 Test locally:  python3 tools/make_site.py && python3 -m http.server -d builds/site
 Server that serves this folder itself (Apache...):  python3 tools/make_site.py --dev
 """

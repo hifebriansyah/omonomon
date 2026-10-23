@@ -1,4 +1,4 @@
-// The local rule library (builds/data/, made by build.py): look a message up in the shards.
+// The local rule library (builds/data/, made by tools/make_shard.py): look a message up in the shards.
 // Used for crisis phrases (always) and as Pocomon's backup replies.
 
 import { state } from "./state.js";

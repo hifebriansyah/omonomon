@@ -11,11 +11,12 @@ Triggers are bucketed by FNV-1a hash, so the browser can find the right shard
 for any word without downloading an index. Keep normalize() and fnv1a() in
 sync with assets/scripts/util.js.
 
-Usage: python3 build.py [--src source] [--out builds/data]
+Usage: python3 tools/make_shard.py [--src source] [--out builds/data]
 """
 import argparse
 import hashlib
 import json
+import os
 import re
 import math
 import shutil
@@ -124,6 +125,7 @@ def check_characters():
 
 
 def main():
+    os.chdir(Path(__file__).resolve().parent.parent)  # paths below are relative to the project folder
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default="source")
     ap.add_argument("--out", default="builds/data")

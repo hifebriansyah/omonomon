@@ -2,6 +2,10 @@
 
 Each version is one commit. Newest first.
 
+## 0.5.1 - Local Apache support
+- .htaccess so the site runs under local Apache with the same routes.
+- build.py moved to tools/make_shard.py.
+
 ## 0.5.0 - Routing and SEO
 - assets/scripts/router.js gives each character its own address.
 - tools/make_site.py generates per-character pages, sitemap and structured data; tools/build_all.py runs every step.

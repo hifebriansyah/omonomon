@@ -59,7 +59,7 @@ async function init() {
     startRouter(showRoute, (r) => (r.id ? r : { ...r, id: home, history: false }));
   } catch (err) {
     bubbleText.textContent =
-      `Could not start (${err.message}). Run "python3 build.py", then serve this folder over http, e.g. "python3 -m http.server".`;
+      `Could not start (${err.message}). Run "python3 tools/build_all.py" once, then open the site through a web server (not as a file).`;
   }
 }
 
