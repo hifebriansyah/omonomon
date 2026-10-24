@@ -11,6 +11,9 @@
   <link rel="apple-touch-icon" href="builds/img/apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="{{themeColor}}">
+  <!-- Dark from the very first paint (before the stylesheet arrives and between pages), so there is no white flash. -->
+  <meta name="color-scheme" content="dark">
+  <style>html { background: #1b1d23; color-scheme: dark; }</style>
   <link rel="stylesheet" href="app.css">
   <link rel="modulepreload" href="assets/scripts/shell/main.js">
   <link rel="modulepreload" href="assets/scripts/shell/home.js">

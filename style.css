@@ -4,7 +4,7 @@
   --text: #e4e7ed;
   --muted: #8a92a1;
   --accent: #a47fd0; /* changes with the selected character */
-  --page-w: 720px; /* every page is this wide at most: chat, list, games, me, privacy */
+  --page-w: 520px; /* every page is this wide at most: chat, list, games, me, privacy */
   --comic: "Comic Sans MS", "Comic Neue", "Chalkboard SE", "Marker Felt", "Segoe Print", system-ui, sans-serif;
 }
 

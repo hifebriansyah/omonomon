@@ -15,6 +15,9 @@
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1b1d23">
   <meta name="apple-mobile-web-app-title" content="Omon Omon">
+  <!-- Dark from the very first paint (before the stylesheet arrives and between pages), so there is no white flash. -->
+  <meta name="color-scheme" content="dark">
+  <style>html { background: #1b1d23; color-scheme: dark; }</style>
   <link rel="stylesheet" href="style.css">
   <!-- Fetch every module at once instead of discovering them one import at a time.
        Keep this list in sync with the files in assets/scripts/. -->
