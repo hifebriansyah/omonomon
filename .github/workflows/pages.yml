@@ -30,7 +30,7 @@ jobs:
       - name: Install Python packages
         run: pip install pillow numpy scipy   # make_images.py needs Pillow; make_scenes.py also needs numpy and scipy
       - name: Run tests
-        run: node --test tests/              # the Worker and the game rules (the runner ships a recent Node)
+        run: node --test tests/*.test.mjs    # the Worker and the game rules (Node 22 wants file paths, not a folder; the shell expands the *)
       - name: Build site
         run: python3 tools/build_all.py      # images -> rule shards -> builds/site (one HTML page per address)
       - uses: actions/configure-pages@v6

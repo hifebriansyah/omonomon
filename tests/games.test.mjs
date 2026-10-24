@@ -1,4 +1,4 @@
-// The rules of the games and the progress model, away from the page. Run: node --test tests/
+// The rules of the games and the progress model, away from the page. Run: node --test tests/*.test.mjs
 import test from "node:test";
 import assert from "node:assert/strict";
 import { todaysQuests, questProgress } from "../assets/scripts/games/quests.js";

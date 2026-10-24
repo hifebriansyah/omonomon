@@ -5,7 +5,7 @@
 - **Never run the unit tests on your own.** Run them only when the user asks.
 - **Exception: a test you just created.** Run that one test file, and only that file.
 - **Exception: a test you just changed.** Run that one test file, and only that file.
-- Never run the whole suite (`node --test tests/`) unless the user asks for it. Use the single-file form:
+- Never run the whole suite (`node --test tests/*.test.mjs`) unless the user asks for it. Use the single-file form:
 
 ```bash
 node --test tests/<name>.test.mjs

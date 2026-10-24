@@ -1,4 +1,4 @@
-// Pure functions of the API Worker. Run: node --test tests/
+// Pure functions of the API Worker. Run: node --test tests/*.test.mjs
 import test from "node:test";
 import assert from "node:assert/strict";
 import { cleanProgress, mergeProgress, weekStart, sameSecret } from "../worker/api.js";
