@@ -10,8 +10,10 @@ import { el, bubbleIcon, heartIcon, sendIcon, shareButton, linkCard } from "./ui
 import { isLoved, toggleLove } from "./loved-store.js";
 import { recordSocial } from "../games/progress.js";
 import { toast } from "../toast.js";
+import { rememberScroll, restoreScroll } from "./scroll-memory.js";
 import { adItem } from "./ads.js";
 
+const ghostsById = {}; // every ghost by id, filled when the feed loads (a comment may come from a ghost other than the whisper's)
 const badgeToast = (ids) => { if (ids.length) toast(ids.map((id) => T.badgeUnlocked(T.badges[id]?.[0] || id))); };
 
 async function getJson(url) {
@@ -21,6 +23,7 @@ async function getJson(url) {
 }
 
 export async function startWhispers() {
+  rememberScroll();
   const list = document.getElementById("whisperList");
   const note = document.getElementById("whisperNote");
   const say = (text) => { note.textContent = text; note.hidden = !text; };
@@ -34,7 +37,8 @@ export async function startWhispers() {
   }
 
   // ---- one whisper's comments ----
-  function commentItem(c, ghostChar, countEl, list, mine) {
+  function commentItem(c, whisperGhost, countEl, list, mine) {
+    const ghostChar = (c.kind === "ghost" && ghostsById[c.ghost]) || whisperGhost; // another ghost's comment shows her own picture and name
     const li = el("li", "comment");
     li.dataset.n = c.n;
     if (c.replyTo) li.dataset.replyTo = c.replyTo;
@@ -169,6 +173,7 @@ export async function startWhispers() {
   try {
     const [{ whispers }, { characters }] = await Promise.all([getJson(`${base}/whispers`), getJson("characters.json")]);
     const byId = Object.fromEntries(characters.map((c) => [c.id, c]));
+    Object.assign(ghostsById, byId);
     // One whisper as a list item. On its own page (single) the comments are open from the start.
     const whisperItem = (w, c, single) => {
       const li = el("li", "whisper");
@@ -182,9 +187,23 @@ export async function startWhispers() {
       time.dateTime = new Date(w.t).toISOString();
       const when = single ? time : el("a", "w-link");   // in the feed the time opens that whisper's own page
       if (!single) { when.href = `whispers/?n=${w.n}`; when.append(time); }
-      who.append(el("strong", "", c.name), when);
-      head.append(img, who);
-      const text = el("p", "w-text", w.text[lang] || w.text.en);
+      const name = el("a", "w-name");
+      name.href = `${c.slug}/profile/`;
+      name.append(el("strong", "", c.name));
+      who.append(name, when);
+      // her picture and name open her profile page
+      const pic = el("a", "w-pic");
+      pic.href = `${c.slug}/profile/`;
+      pic.setAttribute("aria-label", c.name);
+      pic.append(img);
+      head.append(pic, who);
+      const text = el("p", "w-text");
+      if (single) text.textContent = w.text[lang] || w.text.en;
+      else { // in the feed the text opens that whisper's own page (whispers/?n=<id>)
+        const open = el("a", "w-text-link", w.text[lang] || w.text.en);
+        open.href = `whispers/?n=${w.n}`;
+        text.append(open);
+      }
 
       const count = el("span", "w-count", String(w.comments || 0));
       const button = el("button", "w-comment");
@@ -284,6 +303,7 @@ export async function startWhispers() {
         }
       }
       list.replaceChildren(...items);
+      restoreScroll(); // coming back from a whisper or a profile: the feed is where the visitor left it
       say(whispers.length ? "" : T.whisperNone);
       if (whispers.length) markSeen(whispers[0].t);
     }

@@ -145,6 +145,7 @@ export function applyCharacter(c) {
   heroEl.src = c.stage;
   heroEl.alt = c.name;
   nameEl.textContent = c.name;
+  headAvatar.dataset.slug = c.slug; // a tap on her picture or name opens her profile page (see main.js)
   statusEl.textContent = troubleText || statusOf(c);
   input.placeholder = T.sayTo(c.name);
   // the labels the page ships with are English

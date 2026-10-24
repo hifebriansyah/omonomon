@@ -16,9 +16,11 @@ import { startMe, refreshMe } from "./me.js";
 import { startWhispers } from "./whispers.js";
 import { startLoved } from "./loved.js";
 import { startRoomPage } from "./room-page.js";
+import { startProfile } from "./profile.js";
 import { checkBadge } from "./whisper-badge.js";
 import { refresh, startRun, submitScore } from "../games/account.js";
 import { localizeData } from "./localize.js";
+import { smartBack } from "../back.js";
 import "../report.js";
 import "../offline.js";
 
@@ -147,6 +149,7 @@ async function startGame() {
 }
 
 applyCosmetics("");
+for (const b of document.querySelectorAll(".back-btn")) smartBack(b); // every back arrow returns to the page the visitor came from
 translateChrome();
 localizeData(page);
 showWallet();
@@ -155,6 +158,7 @@ else if (page === "me") startMe();
 else if (page === "whispers") startWhispers();
 else if (page === "loved") startLoved();
 else if (page === "room") startRoomPage();
+else if (page === "profile") startProfile(charId);
 else if (page === "hub") startHub();
 else if (page === "game") startGame().catch((err) => {
   $("how").textContent = `Could not start the game (${err.message}). Run "python3 tools/build_all.py" and open the site through a web server.`;

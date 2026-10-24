@@ -44,6 +44,7 @@ const TEXT = {
     me3d: "3D scenes", me3dLabel: "Show the 3D backdrop in chats",
     filterAll: "All", filterQuick: "Quick (under 1 min)", newTag: "NEW", continueGame: (name) => `Continue: ${name}`,
     meNotify: "Notifications", meNotifyLabel: "Tell me when a ghost whispers, and before my streak ends", notifyOn: "Notifications are on. At most one a day.", notifyDenied: "Notifications are blocked in this browser.", notifyUnsupported: "This browser cannot show notifications here.", notifyError: "Could not turn notifications on. Try again later.",
+    profileStories: "Stories", profileWhispers: "Latest whispers", profileGames: "Games", bannerSoon: "Banner coming soon",
     meBadges: "Badges", badgeUnlocked: (name) => `Badge earned: ${name}`,
     badges: {
       "first-run": ["First steps", "Finish your first game"], "plays-10": ["Regular", "Play 10 games"], "plays-50": ["Night owl", "Play 50 games"],
@@ -100,6 +101,7 @@ const TEXT = {
     me3d: "Adegan 3D", me3dLabel: "Tampilkan latar 3D di chat",
     filterAll: "Semua", filterQuick: "Cepat (di bawah 1 menit)", newTag: "BARU", continueGame: (name) => `Lanjut: ${name}`,
     meNotify: "Notifikasi", meNotifyLabel: "Kabari aku kalau hantu berbisik, dan sebelum rentetanku berakhir", notifyOn: "Notifikasi aktif. Paling banyak sehari sekali.", notifyDenied: "Notifikasi diblokir di browser ini.", notifyUnsupported: "Browser ini belum bisa menampilkan notifikasi di sini.", notifyError: "Notifikasi gagal diaktifkan. Coba lagi nanti.",
+    profileStories: "Cerita", profileWhispers: "Bisikan terbaru", profileGames: "Game", bannerSoon: "Banner segera hadir",
     meBadges: "Lencana", badgeUnlocked: (name) => `Lencana didapat: ${name}`,
     badges: {
       "first-run": ["Langkah pertama", "Selesaikan game pertamamu"], "plays-10": ["Langganan", "Main 10 game"], "plays-50": ["Burung hantu", "Main 50 game"],

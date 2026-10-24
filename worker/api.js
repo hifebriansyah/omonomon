@@ -432,19 +432,31 @@ export async function whisperContext(env, now, id, slot) {
   return month >= 10 || month <= 3 ? "it is the rainy season in Indonesia: say something about the rain, the damp or the sound of it" : "it is the dry season in Indonesia: say something about the heat, the dust or the clear night sky";
 }
 
-// Now and then another ghost answers a whisper in the comments (one extra Gemini call for about one whisper in four).
-async function ghostReply(env, whisper, now) {
-  if (whisper.n % 4 !== 0) return;
-  const other = GHOSTS.filter((g) => g !== whisper.ghost)[(whisper.n / 4) % (GHOSTS.length - 1)];
-  const res = await fetch(env.GEMINI_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Origin: env.SITE_ORIGIN, "X-Internal-Token": env.INTERNAL_TOKEN },
-    body: JSON.stringify({ character: other, kind: `another ghost just posted this whisper: "${String(whisper.en).slice(0, 200)}". Write a short, friendly reply to her, in your own voice, as one sentence a visitor can read under her whisper`, when: whenText(now), avoid: [] }),
-  });
-  const data = await res.json().catch(() => null);
-  if (!res.ok || !data?.whisper?.en) return;
-  await env.DB.prepare("INSERT INTO comments (whisper_n, kind, ghost, reply_to, body, body_id, created_at) VALUES (?1, 'ghost', ?2, NULL, ?3, ?4, ?5)")
-    .bind(whisper.n, other, String(data.whisper.en).slice(0, 200), data.whisper.id ? String(data.whisper.id).slice(0, 200) : null, now + 1).run();
+// Every new whisper gets company from the other ghosts: one to three of them love it (at random), one of them comments with an
+// open-ended question, and the whisper's own ghost answers that comment with a closed reply. A ghost's love is a row in `loves`
+// with the device "ghost:<id>", so it counts like any heart; two extra Gemini calls per whisper.
+export async function reactToWhisper(env, whisper, now, rng = Math.random) {
+  const others = GHOSTS.filter((g) => g !== whisper.ghost).sort(() => rng() - 0.5);
+  const lovers = others.slice(0, 1 + Math.floor(rng() * 3));
+  await env.DB.batch(lovers.map((g, i) => env.DB.prepare("INSERT OR IGNORE INTO loves (whisper_n, device_hash, created_at) VALUES (?1, ?2, ?3)").bind(whisper.n, `ghost:${g}`, now + i)));
+  const commenter = others[Math.floor(rng() * others.length)];
+  const ask = async (extra) => {
+    const res = await fetch(env.GEMINI_URL.replace(/\/whisper\/?$/, "/ghost-comment"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Origin: env.SITE_ORIGIN, "X-Internal-Token": env.INTERNAL_TOKEN },
+      body: JSON.stringify(extra),
+    });
+    const data = await res.json().catch(() => null);
+    if (!res.ok || !data?.en || !data?.id) throw new Error(`the Gemini Worker answered ${res.status}`);
+    return data;
+  };
+  const insert = (ghost, replyTo, c, at) => env.DB.prepare(
+    "INSERT INTO comments (whisper_n, kind, ghost, reply_to, body, body_id, created_at) VALUES (?1, 'ghost', ?2, ?3, ?4, ?5, ?6) RETURNING n"
+  ).bind(whisper.n, ghost, replyTo, c.en.slice(0, 200), c.id.slice(0, 200), at).first();
+  const comment = await ask({ mode: "comment", character: commenter, other: whisper.ghost, whisper: whisper.en });
+  const saved = await insert(commenter, null, comment, now + 1);
+  const answer = await ask({ mode: "reply", character: whisper.ghost, other: commenter, whisper: whisper.en, comment: comment.en });
+  await insert(whisper.ghost, saved.n, answer, now + 2);
 }
 
 // Ask the Gemini Worker for a whisper from `ghost` (default: whose turn it is in this round) and keep it.
@@ -492,7 +504,7 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
   const saved = await env.DB.prepare("INSERT INTO whispers (ghost, text_en, text_id, created_at, link_url, link_title, link_source, thumb_url) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8) RETURNING n")
     .bind(id, String(en).slice(0, 220), idText ? String(idText).slice(0, 220) : null, now,
       link?.url ?? null, link ? link.title.slice(0, 200) : null, link ? link.source.slice(0, 60) : null, link?.thumb ?? null).first();
-  await ghostReply(env, { n: saved.n, ghost: id, en }, now).catch(() => {});
+  await reactToWhisper(env, { n: saved.n, ghost: id, en }, now).catch(() => {}); // the other ghosts react; a failure only means no reaction
   await env.DB.prepare("DELETE FROM comments WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
   await env.DB.prepare("DELETE FROM loves WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
   await env.DB.prepare("DELETE FROM whispers WHERE created_at < ?1").bind(now - WHISPER_KEEP_MS).run();
@@ -611,7 +623,7 @@ export function mergeProgress(a, b) {
 // No payload is sent (that would need message encryption): the push only wakes the page's worker (sw.js), which asks
 // GET /push/latest?e=<hash of its endpoint> for the text. The request is signed with VAPID (ES256).
 const PUSH_GAP_MS = 20 * 3600_000;  // one push a day per subscriber, at most
-const PUSH_BATCH = 12;               // a timer run may only make a few outside requests
+const PUSH_BATCH = 8;                // a timer run may only make a few outside requests (the free plan allows 50 in all)
 
 export async function vapidHeader(env, endpoint) {
   const jwk = JSON.parse(env.VAPID_PRIVATE_JWK);

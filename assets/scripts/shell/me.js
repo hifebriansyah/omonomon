@@ -12,7 +12,6 @@ import { accountsEnabled, signedIn, currentUser, signInWithGoogle, signOut, dele
 
 const $ = (id) => document.getElementById(id);
 
-let stories = null; // stories.json, loaded once: { "<ghost id>": [{level, title, text}] }
 let names = {};
 
 function showStats() {
@@ -28,7 +27,6 @@ function showStats() {
   }
   showBadges(p);
   showShop(p);
-  showStories(p);
 }
 
 // The shop: stage looks and bubble colours, bought with Candles. Each row is Buy (price), Wear, or Worn.
@@ -96,46 +94,13 @@ function showBadges(p) {
   }));
 }
 
-// The ghosts' stories: each opens at a bond level; the rest show what unlocks them.
-function showStories(p) {
-  const box = $("storyList");
-  if (!stories) return;
-  const blocks = [];
-  for (const [id, list] of Object.entries(stories)) {
-    const level = levelProgress(p.bond[id] || 0).level;
-    const group = document.createElement("div");
-    group.className = "story-group";
-    const h = document.createElement("h3");
-    h.textContent = names[id] || "";
-    group.append(h);
-    for (const s of list) {
-      if (level >= s.level) {
-        const d = document.createElement("details");
-        const sum = document.createElement("summary");
-        sum.textContent = s.title[lang] || s.title.en;
-        const body = document.createElement("p");
-        body.textContent = s.text[lang] || s.text.en;
-        d.append(sum, body);
-        group.append(d);
-      } else {
-        const locked = document.createElement("p");
-        locked.className = "locked";
-        locked.textContent = T.meStoryLocked(s.level);
-        group.append(locked);
-      }
-    }
-    blocks.push(group);
-  }
-  box.replaceChildren(...blocks);
-}
-
-async function loadStories() {
+// Ghost names (for the ribbon frames in the shop). Her stories moved to her profile page (shell/profile.js).
+async function loadNames() {
   try {
-    const [s, c] = await Promise.all([fetch("stories.json"), fetch("characters.json")]);
-    stories = await s.json();
-    names = Object.fromEntries((await c.json()).characters.map((x) => [x.id, x.name]));
-    showStories(load());
-  } catch {} // stories are a bonus: without them the page still works
+    const c = await (await fetch("characters.json")).json();
+    names = Object.fromEntries(c.characters.map((x) => [x.id, x.name]));
+    showShop(load());
+  } catch {}
 }
 
 function showError(message) {
@@ -255,7 +220,7 @@ export function startMe() {
   $("meLovedCount").textContent = loved ? `\u00b7 ${loved}` : "";
   startNickname();
   showStats();
-  loadStories();
+  loadNames();
   showAccount();
   $("signOutBtn").addEventListener("click", async () => {
     await signOut();

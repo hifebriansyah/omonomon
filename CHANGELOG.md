@@ -2,6 +2,10 @@
 
 Each version is one commit. Newest first.
 
+## 0.15.1 - Ghost profiles and ghosts reacting to whispers
+- A profile page per ghost at `/<slug>/profile/` (banner placeholder until `banner` is set in characters.json); stories moved there from Me. A whisper's text opens `whispers/?n=<id>`; her picture and name open her profile.
+- Every new whisper now gets: 1 to 3 other ghosts loving it, one other ghost leaving an open-ended comment, and the whisper's ghost answering it with a closed reply (two extra Gemini calls per whisper, `POST /ghost-comment` on the Gemini Worker).
+
 ## 0.15.0 - Phases 0 to 3 of the roadmap
 - Foundation: tests in `tests/` run in CI (`node --test`), an offline worker (`sw.js`, built per deploy), script errors reported to the log (`POST /errors`), `package.json` only marks the files as ES modules.
 - Eight new games as plug-in modules (`games.d/*.json` + `assets/scripts/games/<slug>.js`): Tali Lepas, Obat Malam, Bunga Kenangan, Gosip Pohon, Tebak Hantu, Uji Nyali, Congklak, Teka-Teki Gaib (Gemini judges answers, 3 a day per browser), plus the Daily Challenge (same seeded run for everyone).

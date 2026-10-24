@@ -155,7 +155,7 @@ ICONS = {  # Lucide icons (ISC License)
     "games": '<line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/>',
     "whispers": '<path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>',
     "me": '<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
-    "back": '<path d="m15 18-6-6 6-6"/>',
+    "back": '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
     "more": '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
     "flame": '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
     "ghost": '<path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/>',
@@ -244,10 +244,10 @@ def shell_pages(site, characters, games):
 
     # /me/ : profile and progress (private page: not indexed, not in the sitemap)
     bonds = "".join(
-        f'<li data-char="{c["id"]}" style="--c:{c["accent"]}"><img src="{attr(c["image"])}" alt="">'
-        f'<span class="who">{escape(c["name"])} <small>&middot; <span data-level>1</span> <span data-title></span></small><span class="bar"></span></span></li>'
+        f'<li data-char="{c["id"]}" style="--c:{c["accent"]}"><a class="bond-link" href="{c["slug"]}/profile/"><img src="{attr(c["image"])}" alt="">'
+        f'<span class="who">{escape(c["name"])} <small>&middot; <span data-level>1</span> <span data-title></span></small><span class="bar"></span></span></a></li>'
         for c in characters)
-    me_content = (bar("Me", "", "tabMe") + f"""    <section class="me">
+    me_content = (f"""    <section class="me">
       <div class="profile"><span class="ph" id="profPhoto">{icon("ghost")}</span>
         <div class="who-am-i"><strong id="profName" data-t="meGuest">Guest</strong><p id="profNote" data-t="meNote">Your progress is saved in this browser.</p>
         <button class="signin" id="signinOff" type="button" disabled data-t="meSignIn">Sign in with Google (coming soon)</button>
@@ -275,8 +275,6 @@ def shell_pages(site, characters, games):
         <p class="nick-note" data-t="shopGhostStage">Each ghost also gets her own stage look at bond level 5, and her ribbon frame at level 8.</p></section>
       <h2 data-t="meBadges">Badges</h2>
       <ul class="badges" id="badgeList"></ul>
-      <h2 data-t="meStories">Stories</h2>
-      <div class="stories" id="storyList"></div>
       <ul class="links"><li><a href="room/" data-t="meRoom">My Ghost Room</a></li><li><a href="loved/"><span data-t="meLoved">Loved whispers</span> <span class="loved-count" id="meLovedCount"></span></a></li><li><a href="privacy/" data-t="mePrivacy">Privacy</a></li></ul>
     </section>""")
     me_h = dict(title=f"Me | {site['name']}", description=f"Your profile and progress in {site['name']}.",
@@ -310,6 +308,31 @@ def shell_pages(site, characters, games):
     room_h = dict(title=f"Ghost Room | {site['name']}", description="Your own little ghost room, decorated with what you bought with Candles.",
                   url=f"{site['url']}/room/", image=share_image(site), robots="noindex, follow")
     out.append(("room", fill("room", 1, room_h, room_content, None, "me"), room_h["url"], False))
+
+    # /<slug>/profile/ : each ghost's profile page (banner, about, bond, stories, latest whispers, her games). The banner picture is the
+    # character's "banner" in characters.json (a path under builds/img/ or assets/); until it is set a placeholder is drawn.
+    for c in characters:
+        seo = c.get("seo", {})
+        about = escape(seo.get("description", "").replace("{name}", c["name"]))
+        banner = (f'<img class="banner" src="{attr(c["banner"])}" alt="">' if c.get("banner")
+                  else f'<div class="banner placeholder" role="img" aria-label="Banner coming soon"><span>{escape(c["name"])}</span></div>')
+        her_games = "".join(f'<li><a href="games/{g["slug"]}/">{escape(g["title"])}</a></li>' for g in games["games"] if g["ready"] and g["character"] == c["id"])
+        back_named = (f'<a class="back-btn with-label" href="./" data-t-label="backChats" aria-label="Back to chats" title="Back to chats">'
+                      f'{icon("back")}<h1>{escape(c["name"])}</h1></a>')  # the arrow and her name are one back button
+        content = (f'    <header class="app-bar">{back_named}</header>\n'
+                   f'    <section class="profile-page" style="--accent:{c["accent"]}">\n      {banner}\n'
+                   f'      <div class="p-head"><img class="p-avatar" src="{attr(c["head"])}" alt=""><div><h2 class="p-name">{escape(c["name"])}</h2>'
+                   f'<p class="p-tagline">{escape(seo.get("tagline", c["status"]))}</p></div></div>\n'
+                   f'      <p class="p-about">{about}</p>\n'
+                   f'      <div class="p-bond" id="profBond"><span class="p-bond-label"></span><span class="bar"></span></div>\n'
+                   f'      <a class="p-chat" id="profChat" href="{c["slug"]}/">Chat with {escape(c["name"])}</a>\n'
+                   f'      <h2 data-t="profileStories">Stories</h2>\n      <div class="stories" id="profStories"></div>\n'
+                   f'      <h2 data-t="profileWhispers">Latest whispers</h2>\n      <ul class="p-whispers" id="profWhispers"></ul>\n      <a class="w-all" href="whispers/" data-t="allWhispers">All whispers</a>\n'
+                   f'      <h2 data-t="profileGames">Games</h2>\n      <ul class="p-games">{her_games}</ul>\n'
+                   f'    </section>')
+        h = dict(title=f"{c['name']}, {seo.get('tagline', c['status'])} | {site['name']}", description=seo.get("description", "").replace("{name}", c["name"]),
+                 url=f"{site['url']}/{c['slug']}/profile/", image=share_image(site, c["id"]), robots="index, follow")
+        out.append((f"{c['slug']}/profile", fill("profile", 2, h, content, structured_data(site, None, False), "chats", {"slug": "", "character": c["id"]}), h["url"], True))
 
     # /games/ : the hub
     cards = []

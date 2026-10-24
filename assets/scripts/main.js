@@ -13,12 +13,14 @@
 //   router.js   addresses (/<slug>/, /<slug>/history/) and the page <head>
 
 import { state } from "./state.js";
-import { bubbleText, historyBtn } from "./dom.js";
+import { bubbleText, historyBtn, headAvatar } from "./dom.js";
 import { showRoute, sendMessage, toggleHistory } from "./chat.js";
 import { startRouter } from "./router.js";
 import { initComposer } from "./composer.js";
 import { lang } from "./games/text.js";
 import "./viewport.js";
+import { nameEl } from "./dom.js";
+import { smartBack } from "./back.js";
 import "./report.js";
 import "./offline.js";
 
@@ -63,3 +65,16 @@ async function init() {
 }
 
 init();
+
+// The ghost's picture and name in the chat header open her profile page.
+for (const el of [headAvatar, nameEl]) {
+  if (!el) continue;
+  el.style.cursor = "pointer";
+  el.setAttribute("role", "link");
+  el.tabIndex = 0;
+  const go = () => { const slug = headAvatar.dataset.slug; if (slug) location.href = new URL(`${slug}/profile/`, document.baseURI).href; };
+  el.addEventListener("click", go);
+  el.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
+}
+
+smartBack(document.getElementById("backBtn")); // back from a ghost's chat returns to the page the visitor came from (her profile, the chat list)
