@@ -2,6 +2,10 @@
 
 Each version is one commit. Newest first.
 
+## 0.13.2 - Mobile keyboard handling
+- assets/scripts/viewport.js keeps the chat above the on-screen keyboard (iOS and Android).
+- Skips pinch-zoom, resizes the bubble with the stage and only rewrites the height when it changes.
+
 ## 0.13.1 - Deploy workflow fixes
 - Workflow installs pillow, numpy and scipy; GitHub actions bumped to Node 24 versions.
 

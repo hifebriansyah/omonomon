@@ -9,6 +9,7 @@
 //   replies.js  safety, Gemini, backup replies
 //   storage.js  saved chats          stage.js     big character, bubbles, history panel
 //   chat.js     sending, showing, clearing        composer.js  the message box
+//   viewport.js the chat follows the visible height when the keyboard opens
 //   router.js   addresses (/<slug>/, /<slug>/history/) and the page <head>
 
 import { state } from "./state.js";
@@ -17,6 +18,7 @@ import { bubbleText, historyBtn } from "./dom.js";
 import { showRoute, sendMessage, toggleHistory } from "./chat.js";
 import { startRouter } from "./router.js";
 import { initComposer } from "./composer.js";
+import "./viewport.js";
 
 async function getJson(url, what) {
   const res = await fetch(url);
