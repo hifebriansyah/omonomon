@@ -161,10 +161,20 @@ sign in with Google on the Me page and their progress follows them across device
 - Privacy: the account stores the Google id and email only. Chat logs are never linked to accounts. Delete account on the
   Me page removes the user, sessions and progress.
 
+## Edge rules (Cloudflare WAF)
+New hostnames are probed by scanners within minutes, and every request that reaches a Worker counts toward the free
+plan's 100,000 a day, even when the Worker answers 403. `python3 tools/setup_waf.py` creates two rules that stop them
+at Cloudflare's edge, before the Worker runs (needs a token with Zone > Zone WAF > Edit): requests to the Worker
+hostnames without the site's `Origin` header are blocked, and each IP is limited to 10 requests per 10 seconds there.
+The hostnames and allowed origins are read from `worker/gemini.jsonc` and `worker/api.jsonc`; run it again after a
+change. Check usage any time with the Workers analytics in the dashboard.
+
 ## Request log (Axiom, optional)
 If the Worker has the secret `AXIOM_TOKEN` (an ingest-only token for one dataset), it sends one line per request to
-Axiom: time, status, error word, character id, Gemini calls, upstream status, country, duration, **and the
-visitor's IP address, their message and the reply**. That is personal data, so the site needs a privacy notice
+Axiom (both Workers, one dataset; the `worker` field says which): time, HTTP `status`, error word, `method`, `url` (host, path
+and query, at most 200 characters), `ua` (browser type), country and duration. The Gemini Worker also logs character id,
+Gemini calls and upstream status, **and the visitor's IP address, their message and the reply**; the API Worker logs the IP
+address too (`LOG_IP` = `off` leaves it out) but never a credential, token, email or progress. That is personal data, so the site needs a privacy notice
 that says so, and the dataset's retention (30 days by default) should stay short. Set the Worker text variable
 `LOG_CHAT` to `off` to log only the technical fields. Optional text variables on the Worker:
 `AXIOM_DATASET` (default `omonomon`) and `AXIOM_URL` (the dataset's edge address; default
@@ -201,7 +211,7 @@ builds/            everything Python generates (never edit by hand):
                    (all of builds/ is git-ignored and rebuilt on every deploy)
 source/            the rule library source (tools/make_shard.py builds it into builds/data/)
 worker/            the Cloudflare Workers: gemini.js (Gemini proxy, character prompts, request log) and api.js (accounts, progress)
-tools/             build_all.py, make_images.py, make_shard.py, make_site.py, deploy_worker.py, setup_api.py, gen_synthetic.py
+tools/             build_all.py, make_images.py, make_shard.py, make_site.py, deploy_worker.py, setup_api.py, setup_waf.py, gen_synthetic.py
 ```
 New module? Add a `<link rel="modulepreload">` line for it in `chat.html` (the page then downloads all
 modules at once instead of one import at a time; `tools/make_shard.py` warns if one is missing).

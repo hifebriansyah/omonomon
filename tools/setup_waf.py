@@ -23,10 +23,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from deploy_worker import call, load_env, read_config  # noqa: E402
 
-# Old hostnames still served by the previous Workers; remove them from here once those Workers are deleted.
-LEGACY_HOSTS = ["apiomonomon.securhat.com", "apigameomonomon.securhat.com"]
-
-
 def quoted(items):
     return " ".join(f'"{i}"' for i in items)
 
@@ -39,7 +35,7 @@ def main():
     base = os.environ.get("CLOUDFLARE_API_BASE", "https://api.cloudflare.com/client/v4")
 
     configs = [read_config("gemini"), read_config("api")]
-    hosts = [c["domain"] for c in configs] + LEGACY_HOSTS
+    hosts = [c["domain"] for c in configs]
     origins = sorted({o.strip() for c in configs for o in c["vars"]["ALLOWED_ORIGINS"].split(",") if o.strip()})
     zone_name = ".".join(hosts[0].split(".")[-2:])
     zones = call(base, token, "GET", f"/zones?name={zone_name}").get("result") or []

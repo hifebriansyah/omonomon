@@ -21,6 +21,32 @@ const GOOGLE_ISSUERS = ["https://accounts.google.com", "accounts.google.com"];
 const MAX_BODY_BYTES = 8 * 1024;
 const MAX_VALUE = 1_000_000; // no stored number may be larger than this
 
+// ---- request log (Axiom) ----
+// One line per request to Axiom when the secret AXIOM_TOKEN is set (an ingest-only token). It holds: time, worker, status,
+// error word, method, the address asked for, browser type, country, duration and the IP address. Never a Google credential,
+// session token, email address or progress. Set the text variable LOG_IP to "off" to leave the IP address out.
+//   AXIOM_DATASET  text  optional, default "omonomon"
+//   AXIOM_URL      text  optional, the dataset's edge address (default https://us-east-1.aws.edge.axiom.co)
+// What was asked for, shortened: host + path + query (at most 200 characters), and the browser type (at most 120).
+// Scanners show up clearly here; nothing secret is ever in them (this API never puts tokens in the address).
+const requestUrl = (request) => {
+  const u = new URL(request.url);
+  return (u.host + u.pathname + u.search).slice(0, 200);
+};
+const userAgent = (request) => (request.headers.get("User-Agent") || "").slice(0, 120) || undefined;
+
+function logRequest(env, ctx, event) {
+  if (!env.AXIOM_TOKEN) return;
+  const url = `${env.AXIOM_URL || "https://us-east-1.aws.edge.axiom.co"}/v1/ingest/${encodeURIComponent(env.AXIOM_DATASET || "omonomon")}`;
+  ctx?.waitUntil?.(
+    fetch(url, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${env.AXIOM_TOKEN}`, "Content-Type": "application/json" },
+      body: JSON.stringify([event]),
+    }).catch(() => {}) // logging must never break a reply
+  );
+}
+
 // ---- small helpers ----
 
 const enc = new TextEncoder();
@@ -108,8 +134,22 @@ export default {
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
       "Vary": "Origin",
     };
-    const reply = (obj, status = 200) =>
-      new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store", ...cors } });
+    const started = Date.now();
+    const reply = (obj, status = 200) => {
+      logRequest(env, ctx, {
+        _time: new Date().toISOString(),
+        worker: "api",
+        status,
+        error: obj.error,
+        method: request.method,
+        url: requestUrl(request),
+        ua: userAgent(request),
+        country: request.headers.get("CF-IPCountry") || undefined,
+        ms: Date.now() - started,
+        ...(env.LOG_IP === "off" ? {} : { ip: request.headers.get("CF-Connecting-IP") || undefined }),
+      });
+      return new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store", ...cors } });
+    };
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
     if (!originOk) return reply({ error: "forbidden" }, 403);

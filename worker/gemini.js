@@ -258,13 +258,21 @@ const MAX_TURNS = 12;      // most recent turns forwarded to Gemini
 const MAX_CHARS = 300;     // per message (the page limits visitors to 200; this is the real cap)
 
 // One line per request goes to Axiom, if the secret AXIOM_TOKEN is set (an ingest-only token).
-// Each line holds: time, status, error word, character id, Gemini calls made, upstream status, country,
-// duration, plus the visitor's IP address, their message and the reply. That is personal data: the site
+// Each line holds: time, worker, status, error word, method, the address asked for (host, path, query), browser type,
+// character id, Gemini calls made, upstream status, country, duration, plus the visitor's IP address, their message and the reply. That is personal data: the site
 // needs a privacy notice that says so, and the dataset's retention period should stay short.
 // Set the text variable LOG_CHAT to "off" to log only the technical fields (no IP, message or reply).
 //   AXIOM_DATASET  text  optional, default "omonomon"
 //   AXIOM_URL      text  optional, the dataset's edge address (default https://us-east-1.aws.edge.axiom.co;
 //                        the other one is https://eu-central-1.aws.edge.axiom.co). It must match the account's region.
+// What was asked for, shortened: host + path + query (at most 200 characters), and the browser type (at most 120).
+// Scanners show up clearly here; nothing secret is ever in them (this API never puts tokens in the address).
+const requestUrl = (request) => {
+  const u = new URL(request.url);
+  return (u.host + u.pathname + u.search).slice(0, 200);
+};
+const userAgent = (request) => (request.headers.get("User-Agent") || "").slice(0, 120) || undefined;
+
 function logRequest(env, ctx, event) {
   if (!env.AXIOM_TOKEN) return;
   const url = `${env.AXIOM_URL || "https://us-east-1.aws.edge.axiom.co"}/v1/ingest/${encodeURIComponent(env.AXIOM_DATASET || "omonomon")}`;
@@ -293,8 +301,12 @@ export default {
     const reply = (obj, status = 200) => {
       logRequest(env, ctx, {
         _time: new Date().toISOString(),
+        worker: "gemini",
         status,
         error: obj.error,
+        method: request.method,
+        url: requestUrl(request),
+        ua: userAgent(request),
         character: info.character,
         geminiCalls: info.geminiCalls,
         upstream: info.upstream,

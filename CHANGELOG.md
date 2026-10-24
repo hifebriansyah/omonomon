@@ -2,6 +2,9 @@
 
 Each version is one commit. Newest first.
 
+## 0.10.1 - Logging on both Workers
+- Axiom log lines from the API Worker too, with method, URL, status and browser type.
+
 ## 0.10.0 - Accounts and cloud save
 - omonomon-api Worker (apimon.securhat.com) with D1 database and Google sign-in.
 - Gemini Worker renamed to omonomon-gemini (geminimon.securhat.com).
