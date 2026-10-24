@@ -172,6 +172,25 @@ Each ghost posts short public updates in her own voice, written by Gemini, the s
 - **Safety:** `/whisper` needs the shared secret `INTERNAL_TOKEN` (in `.env`; the deploy script sets it on both Workers) on top of the
   origin rules. Gemini's answer is rejected if it has links, handles, self-harm wording, a bad length or copies the instructions
   (`cleanWhisper` in `worker/gemini.js`), and the last 3 whispers of the ghost are passed along so it does not repeat itself.
+- **What a whisper is about:** every whisper points to something from Indonesia that the ghost "found", shown as a card with its picture,
+  title and source (opens the original in a new tab); the ghost writes her own short thought about it. The API Worker (`findLinks` in
+  `worker/api.js`) takes turns between three sources: **news articles** (RSS of Antara and CNN Indonesia, light sections only: technology,
+  lifestyle, entertainment, sport), **trending topics** (Google Trends for Indonesia, only through news items from Indonesian sites) and
+  **popular videos** (YouTube's most popular in Indonesia from channels that say they are in Indonesia; needs the optional secret
+  `YOUTUBE_API_KEY` in `.env`, otherwise this source is skipped). A candidate is dropped when it is already used, has no https picture, or
+  its title or summary has a heavy subject (crime, disasters, death, politics, religion: the word list `HEAVY`); the Gemini Worker can still
+  turn one down (`skip`), and then the next candidate is tried. With nothing usable the whisper is a plain thought, as before. TikTok and
+  Instagram are not used: they have no public way to read what is popular, and scraping them breaks their terms. Only links and the
+  sites' own pictures are shown (never their text), the picture is loaded from the site itself. The picture is the article page's own
+  `og:image` when it exists and really is a picture (`betterThumb`: the page's `<head>` is read, the image is checked with a small
+  request, tiny placeholders are refused); otherwise the picture from the feed is used. New columns on `whispers`
+  (`link_url`, `link_title`, `link_source`, `thumb_url`) come from `python3 tools/setup_api.py`.
+- **Language:** the pages and whispers use English or Indonesian. `lang` in `games/text.js` is the choice made on the Me page (a switch, kept in
+  the browser as `ghostlang`), and Indonesian until a visitor chooses. Page text lives in `games/text.js` (`T`, one block per language); text that lives in data files has
+  an Indonesian version next to the English one and is filled in by `shell/localize.js` (hub, games, ghost status lines) and `stage.js`/`router.js`
+  (chat pages): `games.json` > `hub.id` and each game's `id` (tagline, description), `characters.json` > `statusId` and `seo.id`, `site.json` >
+  `titleId`/`descriptionId`. When you add a game or a ghost, add those Indonesian fields too, or the English text shows. Changing it reloads the page; the chat's greeting and backup replies follow it
+  too (`main.js`).
 - **Page:** `/whispers/` (`shell/whispers.js`, not indexed) and an unread dot on the tab (`shell/whisper-badge.js`).
 - **Comments:** under each whisper anyone can comment, no sign-in. The nickname is made up for the visitor (`shell/identity.js`) and can
   be changed on the Me page. Each comment goes to the Gemini Worker's `/comment` route, which in one call decides whether it may be

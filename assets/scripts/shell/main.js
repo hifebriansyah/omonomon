@@ -16,6 +16,7 @@ import { startWhispers } from "./whispers.js";
 import { startLoved } from "./loved.js";
 import { checkBadge } from "./whisper-badge.js";
 import { refresh } from "../games/account.js";
+import { localizeData } from "./localize.js";
 
 const { page, game: gameSlug, char: charId } = document.body.dataset;
 const $ = (id) => document.getElementById(id);
@@ -107,6 +108,7 @@ async function startGame() {
 }
 
 translateChrome();
+localizeData(page);
 showWallet();
 if (page === "home") startHome();
 else if (page === "me") startMe();

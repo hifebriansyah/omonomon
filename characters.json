@@ -17,7 +17,11 @@
       "slug": "pocomon",
       "seo": {
         "tagline": "the gloomy pocong who says it straight",
-        "description": "{name} is a gloomy pocong with a purple bow. Blunt and deadpan, she answers short and honest and never sugarcoats. Chat with her in English or Indonesian."
+        "description": "{name} is a gloomy pocong with a purple bow. Blunt and deadpan, she answers short and honest and never sugarcoats. Chat with her in English or Indonesian.",
+        "id": {
+          "tagline": "pocong murung yang ngomong apa adanya",
+          "description": "{name} adalah pocong murung dengan pita ungu. Blak-blakan dan datar, jawabannya singkat dan jujur, tanpa basa-basi. Ngobrol sama dia pakai bahasa Indonesia atau Inggris."
+        }
       },
       "busy": {
         "en": [
@@ -28,7 +32,8 @@
           "Pelan-pelan. Orang mati aja butuh jeda antar kata.",
           "Kata-katamu kebanyakan, terlalu cepat. Kasih aku semenit."
         ]
-      }
+      },
+      "statusId": "blak-blakan"
     },
     {
       "id": "2",
@@ -59,7 +64,11 @@
       "slug": "ngesomon",
       "seo": {
         "tagline": "the big-sister nurse ghost",
-        "description": "{name} is a nurse ghost (suster ngesot) and everyone's busy big sister. Brisk, practical and caring, she asks if you ate, slept and drank water. Chat in English or Indonesian."
+        "description": "{name} is a nurse ghost (suster ngesot) and everyone's busy big sister. Brisk, practical and caring, she asks if you ate, slept and drank water. Chat in English or Indonesian.",
+        "id": {
+          "tagline": "suster hantu yang jadi kakak semua orang",
+          "description": "{name} adalah hantu suster (suster ngesot) sekaligus kakak yang selalu sibuk buat semua orang. Gesit, praktis, dan perhatian, dia nanyain kamu udah makan, tidur, dan minum air belum. Ngobrol pakai bahasa Indonesia atau Inggris."
+        }
       },
       "busy": {
         "en": [
@@ -70,7 +79,8 @@
           "Eh eh, satu-satu dong, kakak lagi jaga. Tunggu semenit ya?",
           "Pelan-pelan dulu. Kakak kejar dulu, baru kita ngobrol."
         ]
-      }
+      },
+      "statusId": "sibuk, tapi dengerin"
     },
     {
       "id": "3",
@@ -101,7 +111,11 @@
       "slug": "sundemon",
       "seo": {
         "tagline": "the gentle sundel bolong who listens",
-        "description": "{name} is a gentle, wistful sundel bolong with a sunflower on her dress. She listens more than she talks and keeps you company. Chat in English or Indonesian."
+        "description": "{name} is a gentle, wistful sundel bolong with a sunflower on her dress. She listens more than she talks and keeps you company. Chat in English or Indonesian.",
+        "id": {
+          "tagline": "sundel bolong lembut yang mau mendengarkan",
+          "description": "{name} adalah sundel bolong yang lembut dan sendu, dengan bunga matahari di gaunnya. Dia lebih banyak mendengarkan daripada bicara dan menemanimu. Ngobrol pakai bahasa Indonesia atau Inggris."
+        }
       },
       "busy": {
         "en": [
@@ -112,7 +126,8 @@
           "...kata-katanya banyak banget sekaligus. Desahku aja butuh jeda. Tunggu sebentar ya?",
           "Terlalu cepat... kasih aku waktu sebentar."
         ]
-      }
+      },
+      "statusId": "nggak ada yang abadi"
     },
     {
       "id": "4",
@@ -143,7 +158,11 @@
       "slug": "kuntimon",
       "seo": {
         "tagline": "the curious kuntilanak",
-        "description": "{name} is a hyper, giggling kuntilanak and a night-owl gossip who wants to hear all about your day. Chat with her in English or Indonesian."
+        "description": "{name} is a hyper, giggling kuntilanak and a night-owl gossip who wants to hear all about your day. Chat with her in English or Indonesian.",
+        "id": {
+          "tagline": "kuntilanak yang penasaran",
+          "description": "{name} adalah kuntilanak yang hiper dan suka cekikikan, tukang gosip begadang yang pengin dengar semua cerita harimu. Ngobrol sama dia pakai bahasa Indonesia atau Inggris."
+        }
       },
       "busy": {
         "en": [
@@ -154,7 +173,8 @@
           "Eeee pelan-pelan, rambutku nggak sanggup ngikutin! Tunggu sebentar, terus ceritain semuanya!",
           "Wah kecepetan! Tarik napas, hitung sampai enam puluh, terus cerita lagi ya!"
         ]
-      }
+      },
+      "statusId": "penasaran sama kamu"
     }
   ]
 }

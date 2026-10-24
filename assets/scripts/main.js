@@ -17,6 +17,7 @@ import { bubbleText, historyBtn } from "./dom.js";
 import { showRoute, sendMessage, toggleHistory } from "./chat.js";
 import { startRouter } from "./router.js";
 import { initComposer } from "./composer.js";
+import { lang } from "./games/text.js";
 import "./viewport.js";
 
 async function getJson(url, what) {
@@ -47,9 +48,8 @@ async function init() {
     state.trouble = chars.trouble;
     state.site = site;
 
-    // Greet in the browser's language when we support it.
-    const browser = (navigator.language || "").slice(0, 2);
-    state.lastLang = manifest.langs.includes(browser) ? browser : manifest.defaultLang;
+    // Greet in the visitor's language: the one chosen on the Me page, otherwise the browser's.
+    state.lastLang = manifest.langs.includes(lang) ? lang : manifest.defaultLang;
 
     // Every chat page is a character's own address; anything else falls back to the default character.
     startRouter(showRoute, (r) => (r.id ? r : { ...r, id: chars.default, history: false }));

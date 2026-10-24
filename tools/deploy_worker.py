@@ -188,6 +188,8 @@ def main():
     if target != "edge":  # the edge Worker has no secrets
         set_secret(base, account, cfg["name"], token, "AXIOM_TOKEN")
         set_secret(base, account, cfg["name"], token, "INTERNAL_TOKEN")  # the secret the two Workers share (whispers)
+        if target == "api":
+            set_secret(base, account, cfg["name"], token, "YOUTUBE_API_KEY")  # optional: popular Indonesian videos for whispers
     if cfg.get("crons"):
         res = call(base, token, "PUT", f"/accounts/{account}/workers/scripts/{cfg['name']}/schedules", [{"cron": c} for c in cfg["crons"]])
         print(f"Timer {', '.join(cfg['crons'])}" if res.get("success") else f"Timer NOT set: {res.get('errors')}")

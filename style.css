@@ -4,7 +4,7 @@
   --text: #e4e7ed;
   --muted: #8a92a1;
   --accent: #a47fd0; /* changes with the selected character */
-  --page-w: 480px; /* every page is this wide at most: chat, list, games, me, privacy */
+  --page-w: 720px; /* every page is this wide at most: chat, list, games, me, privacy */
   --comic: "Comic Sans MS", "Comic Neue", "Chalkboard SE", "Marker Felt", "Segoe Print", system-ui, sans-serif;
 }
 
@@ -245,12 +245,14 @@ button:focus-visible, a:focus-visible { outline: none; }
   object-fit: contain;
   transform-origin: 50% 100%;
   filter: drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22));
-  animation: bob 3.4s ease-in-out infinite;
+  animation: bob 3.4s linear infinite;
   user-select: none;
   -webkit-user-drag: none;
+  visibility: hidden;         /* the page ships with the picture, but it is only shown once stage.js has set the character up (.live): no flash at the wrong size, and the entrance fade starts from nothing */
 }
-.hero.talk { animation: hop 0.5s ease-out, bob 3.4s ease-in-out 0.5s infinite; }
-.hero.swap { animation: pop 0.4s ease-out, bob 3.4s ease-in-out 0.4s infinite; }
+.hero.live { visibility: visible; }
+.hero.talk { animation: hop 0.5s ease-out, bob 3.4s linear 0.5s infinite; }
+.hero.swap { animation: pop 1.8s ease-in-out, bob 3.4s linear 1.8s infinite; }
 
 /* History overlay */
 .history {
@@ -352,9 +354,22 @@ button:focus-visible, a:focus-visible { outline: none; }
 .composer button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.55); }
 
 /* ---- Animation ---- */
+/* A slow float and sway, as a sine wave sampled every 1/12 of the cycle (so it needs linear timing). It starts and ends at
+   rest: a loop that begins tilted makes the picture snap the moment it starts, after the entrance and after a hop. */
 @keyframes bob {
-  0%, 100% { transform: translateY(0) rotate(-0.6deg); }
-  50% { transform: translateY(-8px) rotate(0.6deg); }
+  0% { transform: translateY(0px) rotate(0.00deg); }
+  8.33% { transform: translateY(-0.54px) rotate(0.30deg); }
+  16.67% { transform: translateY(-2.00px) rotate(0.52deg); }
+  25% { transform: translateY(-4.00px) rotate(0.60deg); }
+  33.33% { transform: translateY(-6.00px) rotate(0.52deg); }
+  41.67% { transform: translateY(-7.46px) rotate(0.30deg); }
+  50% { transform: translateY(-8.00px) rotate(0.00deg); }
+  58.33% { transform: translateY(-7.46px) rotate(-0.30deg); }
+  66.67% { transform: translateY(-6.00px) rotate(-0.52deg); }
+  75% { transform: translateY(-4.00px) rotate(-0.60deg); }
+  83.33% { transform: translateY(-2.00px) rotate(-0.52deg); }
+  91.67% { transform: translateY(-0.54px) rotate(-0.30deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
 }
 @keyframes hop {
   0% { transform: scale(1, 1); }
@@ -362,9 +377,14 @@ button:focus-visible, a:focus-visible { outline: none; }
   60% { transform: scale(1.04, 0.96); }
   100% { transform: scale(1, 1); }
 }
+/* The ghost slowly appears: blurry and faint at first, flickering once on the way, then clear. (The drop-shadow is repeated
+   because animating `filter` replaces the one in .hero.) */
 @keyframes pop {
-  0% { transform: scale(0.7) translateY(30px); opacity: 0; }
-  100% { transform: scale(1) translateY(0); opacity: 1; }
+  0%   { opacity: 0;    filter: blur(10px) drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22)); }
+  35%  { opacity: 0.5;  filter: blur(5px)  drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22)); }
+  50%  { opacity: 0.4;  filter: blur(6px)  drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22)); }
+  75%  { opacity: 0.85; filter: blur(2px)  drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22)); }
+  100% { opacity: 1;    filter: blur(0)    drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22)); }
 }
 @keyframes blink {
   0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }

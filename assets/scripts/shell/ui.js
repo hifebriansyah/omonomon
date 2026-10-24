@@ -50,3 +50,27 @@ export function shareButton(text, url = `${location.origin}/`) {
   return button;
 }
 export const sendIcon = () => icon("M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7.627a2 2 0 0 1 0 1.396l-2.842 7.627a.498.498 0 0 0 .682.627l18-8.5a.5.5 0 0 0 0-.904z", "M6 12h16");
+
+// The card under a whisper for what the ghost found: its picture, title and where it is from. It opens the original in a new tab.
+// Only https addresses are used, whatever the server sent.
+const https = (u) => typeof u === "string" && /^https:\/\//.test(u);
+export function linkCard(link) {
+  if (!link || !https(link.url)) return null;
+  const a = el("a", "w-card");
+  a.href = link.url;
+  a.target = "_blank";
+  a.rel = "noopener noreferrer nofollow";
+  if (https(link.thumb)) {
+    const img = el("img");
+    img.src = link.thumb;
+    img.alt = "";
+    img.loading = "lazy";
+    img.referrerPolicy = "no-referrer";  // some sites refuse pictures that come with another site's address
+    img.addEventListener("error", () => img.remove()); // a picture that is gone leaves just the title
+    a.append(img);
+  }
+  const text = el("span", "w-card-text");
+  text.append(el("strong", "", String(link.title || link.url)), el("small", "", String(link.source || new URL(link.url).hostname)));
+  a.append(text);
+  return a;
+}

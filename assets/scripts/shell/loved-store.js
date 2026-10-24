@@ -27,7 +27,7 @@ export function toggleLove(whisper) {
     write(list.filter((w) => w.n !== whisper.n));
     return false;
   }
-  write([{ n: whisper.n, ghost: whisper.ghost, t: whisper.t, text: { en: whisper.text.en, id: whisper.text.id ?? null }, lovedAt: Date.now() }, ...list]);
+  write([{ n: whisper.n, ghost: whisper.ghost, t: whisper.t, text: { en: whisper.text.en, id: whisper.text.id ?? null }, link: whisper.link || null, lovedAt: Date.now() }, ...list]);
   return true;
 }
 

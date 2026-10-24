@@ -31,7 +31,11 @@ CREATE TABLE IF NOT EXISTS whispers (
   ghost       TEXT NOT NULL,               -- the character's number (characters.json)
   text_en     TEXT NOT NULL,
   text_id     TEXT,                        -- Indonesian version (may be missing)
-  created_at  INTEGER NOT NULL
+  created_at  INTEGER NOT NULL,
+  link_url    TEXT,                        -- what the whisper points to: an Indonesian article, a trending topic or a video
+  link_title  TEXT,
+  link_source TEXT,                        -- the site or channel
+  thumb_url   TEXT                         -- its picture (https only)
 );
 CREATE INDEX IF NOT EXISTS whispers_time ON whispers(created_at DESC);
 

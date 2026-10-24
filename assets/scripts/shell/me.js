@@ -1,7 +1,7 @@
 // The Me page: the account (Google sign-in), candles, games played and the bond level with each ghost.
 
 import { load, levelProgress } from "../games/progress.js";
-import { T, lang } from "../games/text.js";
+import { T, lang, setLang } from "../games/text.js";
 import { nickname, setNickname, randomNickname } from "./identity.js";
 import { lovedList } from "./loved-store.js";
 import { accountsEnabled, signedIn, currentUser, signInWithGoogle, signOut, deleteAccount, loadGoogleScript } from "../games/account.js";
@@ -118,7 +118,7 @@ async function showAccount() {
       },
     });
     $("gsi").replaceChildren();
-    google.accounts.id.renderButton($("gsi"), { theme: "filled_black", size: "large", shape: "pill", text: "signin_with" });
+    google.accounts.id.renderButton($("gsi"), { theme: "filled_black", size: "large", shape: "pill", text: "signin_with", locale: lang }); // its text in the page's language
     $("gsi").hidden = false;
   } catch {
     showError(T.meSignInError);
@@ -145,7 +145,20 @@ function startNickname() {
   input.addEventListener("input", () => say(T.meNickNote));
 }
 
+// English or Indonesian, remembered in this browser. The page is written in one language when it loads, so a change reloads it.
+function startLanguage() {
+  for (const button of document.querySelectorAll("#langSwitch button")) {
+    button.setAttribute("aria-pressed", String(button.dataset.lang === lang));
+    button.addEventListener("click", () => {
+      if (button.dataset.lang === lang) return;
+      setLang(button.dataset.lang);
+      location.reload();
+    });
+  }
+}
+
 export function startMe() {
+  startLanguage();
   const loved = lovedList().length;
   $("meLovedCount").textContent = loved ? `\u00b7 ${loved}` : "";
   startNickname();

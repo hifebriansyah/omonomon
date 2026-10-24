@@ -7,6 +7,7 @@
 
 import { state, byId } from "./state.js";
 import { aboutEl } from "./dom.js";
+import { T, lang } from "./games/text.js";
 
 // Pages are served with <base href> pointing at the site root ("../" one folder down). A relative
 // base can be re-resolved after pushState, so pin it to an absolute address first.
@@ -46,8 +47,8 @@ export function headFor(route) {
   const c = route.home ? null : byId(route.id);
   if (!c) {
     return {
-      title: site.title,
-      description: site.description,
+      title: (lang === "id" && site.titleId) || site.title,
+      description: (lang === "id" && site.descriptionId) || site.description,
       url: `${site.url}/`,
       image: `${site.url}/builds/img/scenes/1_1/${SHARE_DEFAULT}.jpg`,
       robots: "index, follow",
@@ -57,16 +58,17 @@ export function headFor(route) {
   const image = `${site.url}/builds/img/scenes/1_1/${c.id}.jpg`;
   if (route.history) {
     return {
-      title: `Chat history with ${c.name} | ${site.name}`,
-      description: `Your saved chat with ${c.name}.`,
+      title: `${T.historyTitle(c.name)} | ${site.name}`,
+      description: T.historyAbout(c.name),
       url: `${stageUrl}history/`,
       image,
       robots: "noindex, follow",
     };
   }
+  const seo = (lang === "id" && c.seo.id) || c.seo; // the Indonesian text when the visitor reads Indonesian
   return {
-    title: `${c.name}, ${c.seo.tagline} | ${site.name}`,
-    description: c.seo.description.replaceAll("{name}", c.name),
+    title: `${c.name}, ${seo.tagline} | ${site.name}`,
+    description: seo.description.replaceAll("{name}", c.name),
     url: stageUrl,
     image,
     robots: "index, follow",

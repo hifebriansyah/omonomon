@@ -175,6 +175,209 @@ export function roundOrder(round) {
   return order;
 }
 
+// ---- what a whisper points to ----
+// Every whisper is about something from Indonesia that the ghost "found": a news article, a topic people are searching for,
+// or a popular video, shown as a card with a picture. Light subjects only: anything about crime, disasters, death, politics
+// or religion is dropped here, and the Gemini Worker can still turn down one it finds heavy. Only links to Indonesian
+// sites are used, and only pictures served over https.
+
+const FEEDS = [ // [site, RSS address]: sections with light subjects
+  ["Antara", "https://www.antaranews.com/rss/tekno.xml"],
+  ["Antara", "https://www.antaranews.com/rss/hiburan.xml"],
+  ["Antara", "https://www.antaranews.com/rss/olahraga.xml"],
+  ["Antara", "https://www.antaranews.com/rss/humaniora.xml"],
+  ["CNN Indonesia", "https://www.cnnindonesia.com/teknologi/rss"],
+  ["CNN Indonesia", "https://www.cnnindonesia.com/gaya-hidup/rss"],
+  ["CNN Indonesia", "https://www.cnnindonesia.com/hiburan/rss"],
+  ["CNN Indonesia", "https://www.cnnindonesia.com/olahraga/rss"],
+];
+// A topic from Google Trends counts only through a news item from one of these sites (or any .id address).
+const INDONESIAN_SITE = /(^|\.)(id|co\.id|detik\.com|kompas\.com|cnnindonesia\.com|antaranews\.com|tribunnews\.com|liputan6\.com|kumparan\.com|suara\.com|tempo\.co|bola\.com|okezone\.com|idntimes\.com|cnbcindonesia\.com|merdeka\.com|jawapos\.com|sindonews\.com|bisnis\.com|viva\.co\.id|pikiran-rakyat\.com|suaramerdeka\.com|beritajatim\.com)$/;
+const HEAVY = new RegExp([
+  "korupsi", "tersangka", "ditangkap", "penangkapan", "pembunuh", "dibunuh", "bunuh", "tewas", "meninggal", "wafat", "jenazah",
+  "kecelakaan", "korban", "bencana", "gempa", "tsunami", "longsor", "kebakaran", "teroris", "\\bbom\\b", "narkoba", "sabu",
+  "pemerkosa", "pencabulan", "pelecehan", "asusila", "cabul", "\\bjudi\\b", "judol", "pinjol", "kekerasan", "penganiayaan",
+  "mutilasi", "perang", "tawuran", "unjuk rasa", "\\bdemo\\b", "politik", "pilkada", "pilpres", "pemilu", "capres", "cawapres",
+  "presiden", "wapres", "menteri", "\\bdpr", "partai", "prabowo", "jokowi", "gibran", "agama", "penistaan", "\\bsara\\b",
+  "banjir", "erupsi", "letusan", "puting beliung", "evakuasi", "terdampak", "pengungsi", "dinyatakan hilang", "pencarian korban", "darurat",
+  "polisi", "polri", "pidana", "vonis", "sidang", "pengadilan", "hakim", "jaksa", "\\bkpk\\b", "dipenjara", "penjara", "pelaku",
+  "lelang", "bangkrut", "utang", "cerai", "selingkuh", "skandal", "gugat", "klarifikasi", "kontroversi", "hoaks", "\\bhoax\\b",
+  "porno", "bokep", "depresi", "murder", "killed", "\\bdead\\b", "\\bdeath\\b", "crash", "disaster", "terror", "\\brape\\b", "\\bporn",
+].join("|"), "i");
+
+const unxml = (s) => String(s ?? "").replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1")
+  .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&");
+const plain = (s) => unxml(s).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+const tagText = (xml, name) => (new RegExp(`<${name}(?:\\s[^>]*)?>([\\s\\S]*?)</${name}>`).exec(xml) || [])[1];
+const attr = (xml, tag, name) => (new RegExp(`<${tag}\\b[^>]*?\\b${name}="([^"]+)"`).exec(xml) || [])[1];
+
+// Only https addresses are kept (a plain-http picture would be blocked on the page anyway), at a sane length.
+export function httpsUrl(url) {
+  try {
+    const u = new URL(unxml(url).trim());
+    if (u.protocol === "http:") u.protocol = "https:";
+    return u.protocol === "https:" && u.href.length <= 500 ? u.href : null;
+  } catch {
+    return null;
+  }
+}
+
+// The articles of one RSS feed: [{url, title, summary, thumb, source, kind}]
+export function parseFeed(xml, source) {
+  return [...String(xml).matchAll(/<item>([\s\S]*?)<\/item>/g)].map((m) => {
+    const item = m[1];
+    const description = tagText(item, "description") || "";
+    return {
+      kind: "article", source,
+      url: httpsUrl(tagText(item, "link") || tagText(item, "guid") || ""),
+      title: plain(tagText(item, "title")),
+      summary: plain(description).slice(0, 300),
+      thumb: httpsUrl(attr(item, "enclosure", "url") || attr(item, "media:content", "url") || (/<img[^>]+src="([^"]+)"/.exec(unxml(description)) || [])[1] || ""),
+    };
+  });
+}
+
+// Google Trends' list of what people in Indonesia are searching for now, each with news about it: [{...}] for the topics that
+// have a news item from an Indonesian site.
+export function parseTrends(xml) {
+  const out = [];
+  for (const m of String(xml).matchAll(/<item>([\s\S]*?)<\/item>/g)) {
+    const item = m[1];
+    const topic = plain(tagText(item, "title"));
+    const traffic = plain(tagText(item, "ht:approx_traffic"));
+    for (const n of item.matchAll(/<ht:news_item>([\s\S]*?)<\/ht:news_item>/g)) {
+      const url = httpsUrl(tagText(n[1], "ht:news_item_url") || "");
+      if (!url || !INDONESIAN_SITE.test(new URL(url).hostname.replace(/^www\./, ""))) continue;
+      out.push({
+        kind: "trend", url, source: plain(tagText(n[1], "ht:news_item_source")) || "Google Trends",
+        title: plain(tagText(n[1], "ht:news_item_title")),
+        summary: `Trending in Indonesia right now: "${topic}"${traffic ? ` (${traffic} searches)` : ""}.`,
+        thumb: httpsUrl(tagText(n[1], "ht:news_item_picture") || tagText(item, "ht:picture") || ""),
+      });
+      break; // one article per topic
+    }
+  }
+  return out;
+}
+
+const fetchFeed = (url, accept = "application/rss+xml, application/xml, text/xml, */*") =>
+  fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; OmonomonBot/1.0)", Accept: accept }, signal: AbortSignal.timeout(8000), cf: { cacheTtl: 300, cacheEverything: true } })
+    .then((r) => { if (!r.ok) throw new Error(`${url} ${r.status}`); return r; });
+
+const SOURCES = {
+  async article(env, slot) { // three feeds per time slot, rotating through the list
+    const picks = [0, 1, 2].map((i) => FEEDS[(slot + i * 3) % FEEDS.length]);
+    const lists = await Promise.all(picks.map(([site, url]) => fetchFeed(url).then((r) => r.text()).then((x) => parseFeed(x, site)).catch(() => [])));
+    return lists.flat();
+  },
+  async trend() {
+    return parseTrends(await (await fetchFeed("https://trends.google.com/trending/rss?geo=ID")).text());
+  },
+  async video(env) { // YouTube's most popular videos in Indonesia, from channels that say they are in Indonesia (needs the secret YOUTUBE_API_KEY)
+    if (!env.YOUTUBE_API_KEY) return [];
+    const key = encodeURIComponent(env.YOUTUBE_API_KEY);
+    const vids = (await (await fetchFeed(`https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&regionCode=ID&maxResults=30&key=${key}`, "application/json")).json()).items || [];
+    const channels = [...new Set(vids.map((v) => v.snippet?.channelId).filter(Boolean))].slice(0, 50);
+    const info = channels.length ? (await (await fetchFeed(`https://www.googleapis.com/youtube/v3/channels?part=snippet&id=${channels.join(",")}&maxResults=50&key=${key}`, "application/json")).json()).items || [] : [];
+    const indonesian = new Set(info.filter((c) => c.snippet?.country === "ID").map((c) => c.id));
+    return vids.filter((v) => indonesian.has(v.snippet?.channelId)).map((v) => ({
+      kind: "video", source: v.snippet.channelTitle || "YouTube", url: httpsUrl(`https://www.youtube.com/watch?v=${v.id}`),
+      title: plain(v.snippet.title), summary: plain(v.snippet.description || "").slice(0, 300),
+      thumb: httpsUrl(v.snippet.thumbnails?.high?.url || v.snippet.thumbnails?.medium?.url || ""),
+    }));
+  },
+};
+
+// ---- the picture: the article's own og:image first, the feed's picture as the fallback ----
+// A site's feed often has a small or cropped picture; the page itself names the one it wants shown when shared (og:image).
+const BROWSER = "Mozilla/5.0 (compatible; OmonomonBot/1.0)";
+const IMAGE_META = /^(og:image|og:image:secure_url|twitter:image|twitter:image:src)$/i;
+
+// The picture a page asks to be shown with (og:image, then its secure_url, then twitter:image), as an https address, or null.
+export function ogImage(html, pageUrl) {
+  let best = null;
+  let bestRank = 99;
+  for (const m of String(html).matchAll(/<meta\b[^>]*>/gi)) {
+    const key = (/\b(?:property|name)\s*=\s*["']([^"']+)["']/i.exec(m[0]) || [])[1];
+    const content = (/\bcontent\s*=\s*["']([^"']+)["']/i.exec(m[0]) || [])[1];
+    if (!key || !content || !IMAGE_META.test(key)) continue;
+    const rank = /^og:image$/i.test(key) ? 0 : /^og:image:secure_url$/i.test(key) ? 1 : 2;
+    let url = null;
+    try { url = httpsUrl(new URL(unxml(content), pageUrl).href); } catch { /* not an address */ }
+    if (url && rank < bestRank) { best = url; bestRank = rank; }
+  }
+  return best;
+}
+
+// Just the top of a page: its <head> holds the meta tags, so there is no need to download the rest.
+async function readHead(res, limit = 200_000) {
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let text = "";
+  while (text.length < limit) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    text += decoder.decode(value, { stream: true });
+    if (/<\/head>/i.test(text)) break;
+  }
+  reader.cancel().catch(() => {});
+  return text;
+}
+
+// Is this address a real picture? It must answer, say it is an image, and not be a tiny placeholder.
+export async function imageWorks(url) {
+  try {
+    const res = await fetch(url, { headers: { "User-Agent": BROWSER, Range: "bytes=0-2047", Accept: "image/*" }, signal: AbortSignal.timeout(6000) });
+    res.body?.cancel().catch(() => {});
+    if (res.status !== 200 && res.status !== 206) return false;
+    if (!/^image\//i.test(res.headers.get("content-type") || "")) return false;
+    const total = Number((/\/(\d+)$/.exec(res.headers.get("content-range") || "") || [])[1] || res.headers.get("content-length") || 0);
+    return total === 0 || total >= 4000; // size unknown: accepted; a few hundred bytes is a placeholder
+  } catch {
+    return false;
+  }
+}
+
+// The picture to show for a candidate: the page's og:image when it works, otherwise the one from the feed.
+export async function betterThumb(c) {
+  try {
+    const res = await fetch(c.url, { headers: { "User-Agent": BROWSER, Accept: "text/html" }, signal: AbortSignal.timeout(6000) });
+    if (res.ok && /html/i.test(res.headers.get("content-type") || "")) {
+      const og = ogImage(await readHead(res), res.url || c.url);
+      if (og && og !== c.thumb && (await imageWorks(og))) return og;
+    } else {
+      res.body?.cancel().catch(() => {});
+    }
+  } catch { /* the page did not answer: the feed's picture it is */ }
+  return c.thumb;
+}
+const SOURCE_ORDER = ["article", "trend", "video"];
+
+// Fit to show: a title and a picture, nothing heavy, not used before.
+export const fitsWhisper = (c, seen) =>
+  Boolean(c.url && c.thumb && c.title.length >= 8 && c.title.length <= 200 && !HEAVY.test(`${c.title} ${c.summary}`) && !seen.has(c.url));
+
+// Up to four things to talk about, the kind of this time slot first (articles, trends and videos take turns), then the others.
+async function findLinks(env, now, seen) {
+  const slot = Math.floor(now / WHISPER_EVERY_MS);
+  const found = [];
+  for (let i = 0; i < SOURCE_ORDER.length && found.length < 4; i++) {
+    const kind = SOURCE_ORDER[(slot + i) % SOURCE_ORDER.length];
+    const list = (await SOURCES[kind](env, slot).catch(() => [])).filter((c) => fitsWhisper(c, seen));
+    for (let j = list.length - 1; j > 0; j--) { // shuffled, so the newest is not always the one chosen
+      const k = Math.floor(Math.random() * (j + 1));
+      [list[j], list[k]] = [list[k], list[j]];
+    }
+    found.push(...list.slice(0, i === 0 ? 3 : 2));
+  }
+  return found.slice(0, 4);
+}
+
+const shapeWhisper = (r) => ({
+  n: r.n, ghost: r.ghost, t: r.created_at, comments: r.comments, loves: r.loves, text: { en: r.text_en, id: r.text_id },
+  link: r.link_url ? { url: r.link_url, title: r.link_title, source: r.link_source, thumb: r.thumb_url } : null,
+});
+
 // Ask the Gemini Worker for a whisper from `ghost` (default: whose turn it is in this round) and keep it.
 // Returns the saved post, or null when this ghost already posted in this time slot.
 export async function makeWhisper(env, now = Date.now(), ghost) {
@@ -188,20 +391,37 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
   }
   const kind = KINDS[(round + Number(id)) % KINDS.length];
   const recent = ((await env.DB.prepare("SELECT text_en FROM whispers WHERE ghost = ?1 ORDER BY created_at DESC LIMIT 3").bind(id).all()).results || []).map((r) => r.text_en);
-  const res = await fetch(env.GEMINI_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Origin: env.SITE_ORIGIN, "X-Internal-Token": env.INTERNAL_TOKEN },
-    body: JSON.stringify({ character: id, kind, when: whenText(now), avoid: recent }),
-  });
-  const data = await res.json().catch(() => null);
-  if (!res.ok || !data?.whisper?.en) throw new Error(`the Gemini Worker answered ${res.status}${data?.error ? ` (${data.error})` : ""}`);
+  const ask = async (extra) => {
+    const res = await fetch(env.GEMINI_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Origin: env.SITE_ORIGIN, "X-Internal-Token": env.INTERNAL_TOKEN },
+      body: JSON.stringify({ character: id, kind, when: whenText(now), avoid: recent, ...extra }),
+    });
+    const data = await res.json().catch(() => null);
+    return { res, data };
+  };
+  // Every whisper is about something found online. A candidate the ghost turns down (heavy subject) or that fails is skipped;
+  // with nothing usable, the whisper is a plain thought, as before.
+  const seen = new Set(((await env.DB.prepare("SELECT link_url FROM whispers WHERE link_url IS NOT NULL ORDER BY created_at DESC LIMIT 300").all()).results || []).map((r) => r.link_url));
+  let link = null;
+  let data = null;
+  for (const c of await findLinks(env, now, seen).catch(() => [])) {
+    const got = await ask({ link: { kind: c.kind, title: c.title, summary: c.summary, source: c.source } }).catch(() => null);
+    if (got?.res.ok && got.data?.whisper?.en) { link = { ...c, thumb: await betterThumb(c) }; data = got.data; break; }
+  }
+  if (!data) {
+    const got = await ask({});
+    if (!got.res.ok || !got.data?.whisper?.en) throw new Error(`the Gemini Worker answered ${got.res.status}${got.data?.error ? ` (${got.data.error})` : ""}`);
+    data = got.data;
+  }
   const { en, id: idText } = data.whisper;
-  const saved = await env.DB.prepare("INSERT INTO whispers (ghost, text_en, text_id, created_at) VALUES (?1, ?2, ?3, ?4) RETURNING n")
-    .bind(id, String(en).slice(0, 220), idText ? String(idText).slice(0, 220) : null, now).first();
+  const saved = await env.DB.prepare("INSERT INTO whispers (ghost, text_en, text_id, created_at, link_url, link_title, link_source, thumb_url) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8) RETURNING n")
+    .bind(id, String(en).slice(0, 220), idText ? String(idText).slice(0, 220) : null, now,
+      link?.url ?? null, link ? link.title.slice(0, 200) : null, link ? link.source.slice(0, 60) : null, link?.thumb ?? null).first();
   await env.DB.prepare("DELETE FROM comments WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
   await env.DB.prepare("DELETE FROM loves WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
   await env.DB.prepare("DELETE FROM whispers WHERE created_at < ?1").bind(now - WHISPER_KEEP_MS).run();
-  return { n: saved.n, ghost: id, t: now, text: { en, id: idText || null } };
+  return { n: saved.n, ghost: id, t: now, text: { en, id: idText || null }, link: link ? { url: link.url, title: link.title, source: link.source, thumb: link.thumb } : null };
 }
 
 // ---- comments ----
@@ -365,13 +585,13 @@ export default {
 
       if (path === "/whispers" && request.method === "GET") {
         const rows = (await env.DB.prepare(
-          "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, " +
+          "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, w.link_url, w.link_title, w.link_source, w.thumb_url, " +
           "(SELECT COUNT(*) FROM comments c WHERE c.whisper_n = w.n AND c.deleted = 0) AS comments, " +
           "(SELECT COUNT(*) FROM loves l WHERE l.whisper_n = w.n) AS loves " +
           "FROM whispers w ORDER BY w.created_at DESC LIMIT 40"
         ).all()).results || [];
         return reply(
-          { whispers: rows.map((r) => ({ n: r.n, ghost: r.ghost, t: r.created_at, comments: r.comments, loves: r.loves, text: { en: r.text_en, id: r.text_id } })) },
+          { whispers: rows.map(shapeWhisper) },
           200, { "Cache-Control": "public, max-age=120" }
         );
       }
@@ -379,14 +599,14 @@ export default {
       const oneWhisper = /^\/whispers\/(\d{1,10})$/.exec(path);
       if (oneWhisper && request.method === "GET") {
         const r = await env.DB.prepare(
-          "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, " +
+          "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, w.link_url, w.link_title, w.link_source, w.thumb_url, " +
           "(SELECT COUNT(*) FROM comments c WHERE c.whisper_n = w.n AND c.deleted = 0) AS comments, " +
           "(SELECT COUNT(*) FROM loves l WHERE l.whisper_n = w.n) AS loves " +
           "FROM whispers w WHERE w.n = ?1"
         ).bind(Number(oneWhisper[1])).first();
         if (!r) return reply({ error: "not found" }, 404);
         return reply(
-          { whisper: { n: r.n, ghost: r.ghost, t: r.created_at, comments: r.comments, loves: r.loves, text: { en: r.text_en, id: r.text_id } } },
+          { whisper: shapeWhisper(r) },
           200, { "Cache-Control": "public, max-age=60" }
         );
       }

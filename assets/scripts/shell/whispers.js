@@ -6,7 +6,7 @@ import { chatTime } from "../time.js";
 import { T, lang } from "../games/text.js";
 import { markSeen } from "./whisper-badge.js";
 import { nickname, deviceId, myComments, rememberComment, forgetComment } from "./identity.js";
-import { el, bubbleIcon, heartIcon, sendIcon, shareButton } from "./ui.js";
+import { el, bubbleIcon, heartIcon, sendIcon, shareButton, linkCard } from "./ui.js";
 import { isLoved, toggleLove } from "./loved-store.js";
 
 async function getJson(url) {
@@ -247,7 +247,7 @@ export async function startWhispers() {
         if (open) { await thread.show(); thread.focus(); }
       });
 
-      li.append(head, text, actions, thread.panel);
+      li.append(head, text, ...[linkCard(w.link)].filter(Boolean), actions, thread.panel);
       return li;
     };
 

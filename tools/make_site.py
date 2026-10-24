@@ -216,8 +216,9 @@ def shell_pages(site, characters, games):
             page = page.replace("{{" + key + "}}", value)
         return page
 
-    def bar(title, extra=""):
-        return f'    <header class="app-bar"><h1>{escape(title)}</h1>{extra}</header>\n'
+    def bar(title, extra="", key=None):  # key: the text.js entry that translates the title (none: it stays as written)
+        t = f' data-t="{key}"' if key else ""
+        return f'    <header class="app-bar"><h1{t}>{escape(title)}</h1>{extra}</header>\n'
 
     out = []
 
@@ -233,7 +234,7 @@ def shell_pages(site, characters, games):
             f'<span class="c-preview"></span></span></a>'
             f'<button class="more" type="button" aria-haspopup="menu" aria-expanded="false" data-t-label="moreOptions" '
             f'aria-label="More options" title="More options">{icon("more")}</button></li>')
-    home_content = (bar(site["name"]) + f'    <p class="intro">{escape(site["description"])}</p>\n'
+    home_content = (bar(site["name"]) + f'    <p class="intro" data-t="homeIntro">{escape(site["description"])}</p>\n'
                     + '    <ul class="contacts">\n' + "\n".join(rows) + "\n    </ul>"
                     + '\n    <p class="legal"><a href="privacy/" data-t="mePrivacy">Privacy</a></p>')
     home_h = head_for(site, None, False)
@@ -244,7 +245,7 @@ def shell_pages(site, characters, games):
         f'<li data-char="{c["id"]}" style="--c:{c["accent"]}"><img src="{attr(c["image"])}" alt="">'
         f'<span class="who">{escape(c["name"])} <small>&middot; <span data-level>1</span> <span data-title></span></small><span class="bar"></span></span></li>'
         for c in characters)
-    me_content = (bar("Me", "") + f"""    <section class="me">
+    me_content = (bar("Me", "", "tabMe") + f"""    <section class="me">
       <div class="profile"><span class="ph" id="profPhoto">{icon("ghost")}</span>
         <div class="who-am-i"><strong id="profName" data-t="meGuest">Guest</strong><p id="profNote" data-t="meNote">Your progress is saved in this browser.</p>
         <button class="signin" id="signinOff" type="button" disabled data-t="meSignIn">Sign in with Google (coming soon)</button>
@@ -254,6 +255,8 @@ def shell_pages(site, characters, games):
       <div class="stats"><div class="stat"><b id="meCandles">0</b><span data-t="meCandles">Candles</span></div>
         <div class="stat"><b id="mePlayed">0</b><span data-t="mePlayed">Games played</span></div></div>
       <p class="streak-me">{icon("flame")}<span id="meStreak"></span></p>
+      <h2 data-t="meLanguage">Language</h2>
+      <div class="langs" id="langSwitch" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">English</button><button type="button" data-lang="id" aria-pressed="false">Indonesia</button></div>
       <h2 data-t="meNickname">Nickname</h2>
       <form class="nick" id="nickForm" autocomplete="off"><input id="meNick" type="text" maxlength="24" aria-labelledby="nickLabel">
         <button type="submit" data-t="meSave">Save</button><button type="button" id="nickRandom" data-t="meRandom">Random</button></form>
@@ -269,7 +272,7 @@ def shell_pages(site, characters, games):
     out.append(("me", fill("me", 1, me_h, me_content, None, "me"), me_h["url"], False))
 
     # /whispers/ : the ghosts' latest public updates (written on a timer, filled in by the script: not indexed)
-    wh_content = (bar("Whispers") + '    <section class="whispers-page">\n      <p class="intro" data-t="whispersIntro">Little updates the ghosts post when the mood strikes.</p>\n'
+    wh_content = (bar("Whispers", "", "tabWhispers") + '    <section class="whispers-page">\n      <p class="intro" data-t="whispersIntro">Little updates the ghosts post when the mood strikes.</p>\n'
                   + '      <ul class="whispers" id="whisperList"></ul>\n      <p class="whisper-note" id="whisperNote" hidden></p>\n    </section>')
     wh_h = dict(title=f"Whispers | {site['name']}", description="Little updates the ghosts of Omon Omon post when the mood strikes.",
                 url=f"{site['url']}/whispers/", image=share_image(site), robots="noindex, follow")

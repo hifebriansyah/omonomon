@@ -63,6 +63,10 @@ MIGRATIONS = [
     "ALTER TABLE users ADD COLUMN name TEXT",
     "ALTER TABLE users ADD COLUMN picture TEXT",
     "ALTER TABLE comments ADD COLUMN deleted INTEGER NOT NULL DEFAULT 0",
+    "ALTER TABLE whispers ADD COLUMN link_url TEXT",
+    "ALTER TABLE whispers ADD COLUMN link_title TEXT",
+    "ALTER TABLE whispers ADD COLUMN link_source TEXT",
+    "ALTER TABLE whispers ADD COLUMN thumb_url TEXT",
 ]
 
 

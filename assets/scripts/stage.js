@@ -7,6 +7,10 @@ import {
   youBubble, youText, srEl, historyBtn, historyEl, messagesEl, input,
 } from "./dom.js";
 import { timeFormat, dayKey, dayLabel } from "./time.js";
+import { T, lang } from "./games/text.js";
+
+// The line under her name, in the visitor's language (statusId is the Indonesian one).
+const statusOf = (c) => (lang === "id" && c.statusId) || c.status;
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const FONT_STEPS = [1.15, 1.05, 0.96, 0.88, 0.8, 0.74]; // rem
@@ -89,7 +93,7 @@ export function hideYou() {
 export function animateHero(cls) {
   heroEl.classList.remove("talk", "swap");
   void heroEl.offsetWidth; // restart the animation
-  heroEl.classList.add(cls);
+  heroEl.classList.add("live", cls); // live: from now on the picture is shown (see .hero in style.css)
 }
 
 export function setScreenReaderText(text) {
@@ -102,7 +106,7 @@ export function setScreenReaderText(text) {
 let troubleText = null;
 export function setTrouble(text, c) {
   troubleText = text;
-  if (c) statusEl.textContent = text || c.status;
+  if (c) statusEl.textContent = text || statusOf(c);
 }
 
 // Put a character on stage: colour, picture, name, status, placeholder.
@@ -112,8 +116,16 @@ export function applyCharacter(c) {
   heroEl.src = c.stage;
   heroEl.alt = c.name;
   nameEl.textContent = c.name;
-  statusEl.textContent = troubleText || c.status;
-  input.placeholder = `Say something to ${c.name}...`;
+  statusEl.textContent = troubleText || statusOf(c);
+  input.placeholder = T.sayTo(c.name);
+  // the labels the page ships with are English
+  const back = document.getElementById("backBtn");
+  if (back) { back.setAttribute("aria-label", T.backChats); back.title = T.backChats; }
+  const history = historyEl.hidden ? T.historyShow : T.historyClose;
+  historyBtn.setAttribute("aria-label", history);
+  historyBtn.title = history;
+  const send = document.querySelector("#form button[type=submit]");
+  if (send) { send.setAttribute("aria-label", T.sendWord); send.title = T.sendWord; }
   headAvatar.src = c.image;
   headAvatar.alt = "";
 }
@@ -175,7 +187,7 @@ function setHistoryOpen(open) {
   historyEl.hidden = !open;
   historyBtn.setAttribute("aria-expanded", String(open));
   // The button shows icons (CSS swaps history <-> close); its name is only for screen readers and the tooltip.
-  const label = open ? "Close chat history" : "Show chat history";
+  const label = open ? T.historyClose : T.historyShow;
   historyBtn.setAttribute("aria-label", label);
   historyBtn.title = label;
 }
