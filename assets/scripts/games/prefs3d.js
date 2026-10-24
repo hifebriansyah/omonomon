@@ -1,4 +1,4 @@
-// The "3D scenes" setting (Me page): on by default only on capable devices (4 GB or more and 4+ cores); the player can switch it.
+// The "3D scenes" setting (Me page): off by default; the player turns it on (and it only works where the device can do 3D).
 const KEY = "ghost3d";
 
 export function use3d() {
@@ -7,7 +7,7 @@ export function use3d() {
     if (v === "on") return true;
     if (v === "off") return false;
   } catch {}
-  return (navigator.deviceMemory || 0) >= 4 && (navigator.hardwareConcurrency || 0) >= 4;
+  return false;
 }
 
 export function set3d(on) {
