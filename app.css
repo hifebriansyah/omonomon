@@ -66,6 +66,16 @@ body {
 .profile .ph .icon { width: 1.9em; height: 1.9em; }
 .profile strong { font-size: 1.1rem; }
 .profile p { margin: 2px 0 0; font-size: 0.85rem; color: var(--muted); }
+.who-am-i { min-width: 0; }
+/* Google's button is a light iframe; on a dark page the browser would paint a white box behind it unless the
+   iframe's colour scheme matches its own */
+#gsi, #gsi iframe { margin-top: 10px; color-scheme: light; }
+#gsi iframe { margin-top: 0; }
+.err { margin: 8px 0 0; font-size: 0.85rem; color: #ff8a80; }
+.acct { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.acct button { font: inherit; font-size: 0.85rem; color: var(--text); background: transparent; border: 1px solid #4a4f5c; border-radius: 10px; padding: 6px 12px; cursor: pointer; }
+.acct button:hover { background: rgba(255, 255, 255, 0.08); }
+.acct .danger { color: #ff8a80; border-color: #6b3a3a; }
 .signin { margin-top: 8px; font: inherit; font-size: 0.85rem; color: var(--muted); background: transparent; border: 1px dashed #4a4f5c; border-radius: 10px; padding: 6px 10px; }
 .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 18px; }
 .stat { background: var(--panel); border-radius: 12px; padding: 10px 12px; }

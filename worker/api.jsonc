@@ -1,0 +1,21 @@
+{
+  // The general API Worker (worker/api.js): accounts and saved game progress today, more later. Separate from the
+  // Gemini Worker so nothing here can touch the Gemini key or budget. Deployed by: python3 tools/deploy_worker.py api
+  "name": "omonomon-api",
+  "main": "api.js",
+  "compatibility_date": "2025-09-01",
+  // The public address the page calls (config.js API_URL). One level below securhat.com, so Cloudflare's free
+  // certificate covers it. tools/deploy_worker.py attaches it and turns the workers.dev address off.
+  "domain": "apimon.securhat.com",
+  // D1 database (name "omonomon"). Its id is written to worker/api-db.json by tools/setup_api.py.
+  "d1": { "binding": "DB", "name": "omonomon" },
+  // Plain (non-secret) variables, set on every deploy.
+  "vars": {
+    "GOOGLE_CLIENT_ID": "620395952409-mv96o61s4ep74n5vuohqvvk23tvt0i6p.apps.googleusercontent.com",
+    "ALLOWED_ORIGINS": "https://omonomon.securhat.com,http://localhost"
+  },
+  // At most 60 requests a minute from one IP address.
+  "ratelimits": [
+    { "name": "LIMITER", "namespace_id": "1002", "simple": { "limit": 60, "period": 60 } }
+  ]
+}

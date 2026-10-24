@@ -2,7 +2,7 @@
 
 **Status:** decisions made: nickname leaderboards, no age gate, existing art plus simple shapes, currency "Candles",
 Google sign-in only (client ID is in `config.js`). Built so far (step 1 and 2, guest mode): `/games/` hub, **Hop Hop**,
-candles, bond XP and levels in `localStorage`. Next: accounts (step 3), then the other three games.
+candles, bond XP and levels in `localStorage`. Step 3 (accounts) is written and tested locally: `worker/api.js`, D1 schema, Google sign-in, sync and the Me page; it goes live after `tools/setup_api.py` (needs the D1 token permission). Next: the other three games.
 
 
 Decisions so far: **mini-games with the ghosts**, **cloud save with accounts**, **design first**.
@@ -45,7 +45,7 @@ reaction line (written per character, EN and ID, like `busy` today).
   (`omonomon.securhat.com`) and the API host are the same site, so the cookie works with CORS credentials.
 - **Database:** Cloudflare **D1** (SQLite). Free tier is far above what this needs.
   Tables: `users`, `bonds`, `runs`, `quests`, `achievements`, `wallet_log`.
-- **API:** a second Worker (`omonomon-game`) on its own custom domain, separate from the chat Worker so a games
+- **API:** a second Worker (`omonomon-api`, at `apimon.securhat.com`) separate from the Gemini Worker (`omonomon-gemini`) so a games
   bug or flood can never touch the Gemini budget. Same rate-limit binding approach, Turnstile on first sign-in.
 - **Chat logs stay unlinked from accounts.** The Axiom request log keeps no account id, so game profiles and
   chat text are never joined.
@@ -73,10 +73,10 @@ The app is WhatsApp-style: `/` is the chat list, with a bottom tab bar (Chats, G
 ## 7. Build order (each step is shippable)
 1. **Foundation:** privacy page, `/games/` hub shell, games router, shared result screen, Bond/Candle model in `localStorage`.
 2. **Game 1: Hop Hop** end to end (guest mode). Tune until it is fun.
-3. **Accounts:** `omonomon-game` Worker, D1 schema, Google sign-in, save/load, guest merge, delete account.
+3. **Accounts:** `omonomon-api` Worker, D1 schema, Google sign-in, save/load, guest merge, delete account.
 4. **Games 2 to 4** (Night Rounds, Quiet Wish, Hair Catch).
 5. **Quests, streak, achievements** and the chat unlocks tied to Bond levels.
-6. **Leaderboards**, anti-cheat caps, polish, Axiom dashboards for the game API.
+6. **Leaderboards**, anti-cheat caps, polish, Axiom dashboards for the API Worker.
 
 ## 8. Open questions for you
 1. Sign-in: Google only (recommended), or Google plus email link?

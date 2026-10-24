@@ -11,6 +11,10 @@ const TEXT = {
     levelUp: (l) => `Bond level ${l}!`, tapToStart: "Tap or press Space to start", chatWith: (name) => `Chat with ${name}`,
     meGuest: "Guest", meNote: "Your progress is saved in this browser.", meSignIn: "Sign in with Google (coming soon)",
     meCandles: "Candles", mePlayed: "Games played", meBonds: "Bonds", mePrivacy: "Privacy",
+    meSignOut: "Sign out", meDelete: "Delete account", meSavedAccount: "Your progress is saved to your account.",
+    meSignedInAs: (email) => (email ? `Signed in as ${email}` : "Signed in"),
+    meDeleteConfirm: "Delete your account and the progress saved on our server? This cannot be undone. Progress in this browser stays.",
+    meSignInError: "Sign-in did not work. Please try again.",
   },
   id: {
     tabChats: "Obrolan", tabGames: "Game", tabMe: "Saya", backChats: "Kembali ke obrolan", backGames: "Kembali ke game",
@@ -21,6 +25,10 @@ const TEXT = {
     levelUp: (l) => `Ikatan level ${l}!`, tapToStart: "Ketuk atau tekan Spasi untuk mulai", chatWith: (name) => `Ngobrol dengan ${name}`,
     meGuest: "Tamu", meNote: "Progresmu tersimpan di browser ini.", meSignIn: "Masuk dengan Google (segera hadir)",
     meCandles: "Lilin", mePlayed: "Game dimainkan", meBonds: "Ikatan", mePrivacy: "Privasi",
+    meSignOut: "Keluar", meDelete: "Hapus akun", meSavedAccount: "Progresmu tersimpan di akunmu.",
+    meSignedInAs: (email) => (email ? `Masuk sebagai ${email}` : "Sudah masuk"),
+    meDeleteConfirm: "Hapus akunmu dan progres yang tersimpan di server kami? Ini tidak bisa dibatalkan. Progres di browser ini tetap ada.",
+    meSignInError: "Gagal masuk. Silakan coba lagi.",
   },
 };
 

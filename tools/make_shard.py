@@ -68,7 +68,7 @@ RESERVED_SLUGS = {"assets", "builds", "history", "worker", "source", "tools", "4
 def check_characters():
     """A character's id ties together characters.json, the image file names, the original art
     and the Worker's persona. The id never changes (the "name" is only a label); warn if they drift."""
-    chars_file, worker_file = Path("characters.json"), Path("worker/worker.js")
+    chars_file, worker_file = Path("characters.json"), Path("worker/gemini.js")
     if not (chars_file.exists() and worker_file.exists()):
         return
     data = json.loads(chars_file.read_text(encoding="utf-8"))
@@ -86,7 +86,7 @@ def check_characters():
         if not re.fullmatch(r"[0-9]+", i):
             problems.append(f'id "{i}" should be a number (digits only, never taken from a name)')
         if i not in worker_ids:
-            problems.append(f'"{i}" has no persona in worker/worker.js (CHARACTERS)')
+            problems.append(f'"{i}" has no persona in worker/gemini.js (CHARACTERS)')
         for key, want in (("image", f"builds/img/{i}.webp"), ("stage", f"builds/img/stage/{i}.webp")):
             if c.get(key) != want:
                 problems.append(f'{i}: "{key}" should be {want}')
@@ -122,7 +122,7 @@ def check_characters():
                     if label.lower() in text.lower():
                         problems.append(f'{c["id"]}: {field} mentions "{label}"; keep names only in "name"')
     for extra in sorted(worker_ids - set(ids)):
-        problems.append(f'worker/worker.js has a persona "{extra}" that is not in characters.json')
+        problems.append(f'worker/gemini.js has a persona "{extra}" that is not in characters.json')
     for p in problems:
         print(f"WARNING: {p}")
 

@@ -80,19 +80,20 @@ The page asks Gemini first and falls back to the local JSON rules if Gemini is
 unreachable, slow (`TIMEOUT_MS`) or out of quota. Crisis phrases (priority 100) are
 always answered by the local safety rule and never sent to Gemini.
 
-The API key never goes in the page. It lives in a Cloudflare Worker (`worker/worker.js`),
-which also holds the persona prompt, caps reply length and only accepts requests from
-your site's origin.
+The API key never goes in the page. It lives in a Cloudflare Worker, **omonomon-gemini**
+(`worker/gemini.js`, at `geminimon.securhat.com`), which also holds the persona prompt, caps reply length and only accepts
+requests from your site's origin. It does only two things: Gemini replies and the request log (Axiom). Everything else
+(accounts, game progress, later features) lives in the separate **omonomon-api** Worker (`worker/api.js`,
+at `apimon.securhat.com`), so nothing there can touch the Gemini key or budget.
 
 Setup (no Node needed):
 1. Get a key at https://aistudio.google.com/apikey (use a dedicated key/project).
-2. dash.cloudflare.com > Workers & Pages > Create > Hello World > name it > Deploy >
-   Edit code > paste `worker/worker.js` > Deploy.
-3. Worker > Settings > Variables and Secrets:
-   - `GEMINI_API_KEY` (type **Secret**) = your key
-   - `ALLOWED_ORIGINS` = `https://YOURNAME.github.io,http://localhost:8000`
-   - optional: `GEMINI_MODEL` (default `gemini-3.8-flash`), `THINKING_BUDGET` = `0`
-4. Put the worker URL in `config.js` as `WORKER_URL`, commit and push.
+2. Deploy from your machine (see "Deploy the Workers" below): `python3 tools/deploy_worker.py`.
+3. dash.cloudflare.com > Workers & Pages > omonomon-gemini > Settings > Variables and Secrets:
+   add `GEMINI_API_KEY` (type **Secret**) = your key. Deploys keep it. The other settings (`ALLOWED_ORIGINS`,
+   `THINKING_BUDGET`) are plain variables kept in `worker/gemini.jsonc` and set on every deploy; optional
+   `GEMINI_MODEL` (default `gemini-3.8-flash`) can be added there too.
+4. `WORKER_URL` in `config.js` is the Worker's domain (`https://geminimon.securhat.com/`). Commit and push.
 
 Instruction privacy: Gemini occasionally echoes part of its instructions (for example after a vague
 message like "kenapa?"). Before a reply is returned, the Worker drops any sentence that repeats 7 or more
@@ -105,29 +106,24 @@ Cost safety: the origin check only stops other websites, not scripts that fake t
 Origin header. Prefer a free-tier key (hard rate limits), or set a quota/budget cap on
 the Google Cloud project, and watch usage.
 
-## Auto-deploy the Worker on push
-Instead of pasting `worker/worker.js` into the dashboard each time:
-1. Push this repo to GitHub.
-2. Cloudflare dashboard > Workers & Pages > your Worker > Settings > Builds > Connect.
-3. Pick the GitHub repo and branch `main`. Set **Root directory** to `/worker`.
-   Leave the build command empty; keep the deploy command `npx wrangler deploy`.
-4. (Optional) Build watch paths: `worker/*`, so only worker changes trigger a deploy.
-5. Push a change to `worker/worker.js`; the Worker updates itself (see the Builds tab).
-
-`worker/wrangler.jsonc` must keep `"name"` equal to your Worker's name.
-
-## Deploy the Worker from your machine (no Node, no GitHub)
-1. Cloudflare dashboard > My Profile > API Tokens > Create Token > template
-   **Edit Cloudflare Workers** (or a custom token with Account > Workers Scripts > Edit).
+## Deploy the Workers (from your machine, no Node, no GitHub)
+1. Cloudflare dashboard > My Profile > API Tokens > Create Token with: Account > Workers Scripts > Edit,
+   Account > D1 > Edit (for omonomon-api), Zone > Workers Routes > Edit and Zone > DNS > Edit on your domain.
 2. Account ID: Workers & Pages overview page, right-hand side.
 3. `cp .env.example .env` and fill in the values (file is git-ignored; `AXIOM_TOKEN` is optional).
-4. `python3 tools/deploy_worker.py` after every edit to `worker/worker.js`.
+4. Deploy after every edit:
+
+       python3 tools/deploy_worker.py        # omonomon-gemini (worker/gemini.js, settings in worker/gemini.jsonc)
+       python3 tools/setup_api.py            # once: the D1 database for omonomon-api
+       python3 tools/deploy_worker.py api    # omonomon-api (worker/api.js, settings in worker/api.jsonc)
+
+   Each deploy also attaches the Worker's domain and turns its workers.dev address off.
 
 ## Limits
 - `INPUT_MAX_CHARS` in `config.js` (default 200) caps what a visitor can type; the Worker also cuts every
   message to 300 characters (`MAX_CHARS`), because a page-only limit can be bypassed.
 - `HISTORY_TURNS` (default 8) is how many earlier messages go to Gemini.
-- The Worker allows 20 requests a minute per IP (`ratelimits` in `worker/wrangler.jsonc`, sent as a Cloudflare
+- The Worker allows 20 requests a minute per IP (`ratelimits` in `worker/gemini.jsonc`, sent as a Cloudflare
   rate-limit binding by `tools/deploy_worker.py`). The `Origin` check only stops other websites: a script can fake
   that header, so this limit is what slows scripts down. Over the limit the Worker answers 429 and the page
   shows a 429 line in the character's voice (`busy` in `characters.json`; kept out of Gemini's context). Other failures use the
@@ -142,6 +138,28 @@ Instead of pasting `worker/worker.js` into the dashboard each time:
 (candles, bond XP per ghost, best scores, daily candle cap, saved in this browser), `text.js` (EN/ID words),
 `hub.js`, `runner.js` (**Hop Hop**, Pocomon's endless runner) and `main.js`. New game: add it to `games.json`, write
 its module, reuse `recordRun()` for rewards. Plan and status: `GAMIFICATION.md`.
+
+## Accounts and saved progress (omonomon-api)
+Optional. Without it, candles, bonds and best scores are kept in this browser only (guest mode). With it, a player can
+sign in with Google on the Me page and their progress follows them across devices.
+
+- `worker/api.js` is the **omonomon-api** Cloudflare Worker (separate from the Gemini one, so it can never touch the Gemini budget) with a D1 database named `omonomon`
+  (`worker/schema.sql`: users, sessions, progress). It verifies Google's ID token (signature, issuer, audience, expiry),
+  creates the account on first sign-in, and gives back a random session token (only its SHA-256 hash is stored).
+  Endpoints: `POST /auth/google`, `GET /me`, `PUT /progress`, `POST /auth/logout`, `DELETE /me`.
+  Progress is merged, never overwritten: for every number the larger value wins. Numbers are capped and odd keys dropped.
+- Client: `assets/scripts/games/account.js` (sign-in, refresh, sign out, delete account, push after each run) and the
+  Me page. The session token is kept in `localStorage` (Bearer header, not a cookie, so sign-in also works on localhost).
+- Setup (needs an API token with Account > D1 > Edit; the other permissions are the ones the chat Worker already uses):
+
+      python3 tools/setup_api.py           # create the D1 database and its tables (writes worker/api-db.json)
+      python3 tools/deploy_worker.py api   # upload worker/api.js (settings in worker/api.jsonc) and attach apimon.securhat.com
+
+  Then set `API_URL` in `config.js` and push. The sign-in button appears only when `API_URL` is set.
+- Google console: the OAuth client needs `https://omonomon.securhat.com` and `http://localhost` as authorized
+  JavaScript origins. The client ID is public (`config.js` and `worker/api.jsonc`); the client secret is not used.
+- Privacy: the account stores the Google id and email only. Chat logs are never linked to accounts. Delete account on the
+  Me page removes the user, sessions and progress.
 
 ## Request log (Axiom, optional)
 If the Worker has the secret `AXIOM_TOKEN` (an ingest-only token for one dataset), it sends one line per request to
@@ -182,8 +200,8 @@ builds/            everything Python generates (never edit by hand):
   data/            the reply library made by tools/make_shard.py
                    (all of builds/ is git-ignored and rebuilt on every deploy)
 source/            the rule library source (tools/make_shard.py builds it into builds/data/)
-worker/            the Cloudflare Worker (Gemini proxy and character prompts)
-tools/             build_all.py, make_images.py, make_shard.py, make_site.py, deploy_worker.py, gen_synthetic.py
+worker/            the Cloudflare Workers: gemini.js (Gemini proxy, character prompts, request log) and api.js (accounts, progress)
+tools/             build_all.py, make_images.py, make_shard.py, make_site.py, deploy_worker.py, setup_api.py, gen_synthetic.py
 ```
 New module? Add a `<link rel="modulepreload">` line for it in `chat.html` (the page then downloads all
 modules at once instead of one import at a time; `tools/make_shard.py` warns if one is missing).
@@ -212,13 +230,13 @@ one edit. `python3 tools/make_shard.py` warns if `characters.json`, the image na
 or if a name appears in that text.
 
 - Each character has her own chat and memory; switching keeps the other chats.
-- Personas live in `worker/worker.js` (`CHARACTERS`), so visitors can't swap prompts.
+- Personas live in `worker/gemini.js` (`CHARACTERS`), so visitors can't swap prompts.
   **After editing a persona, run `python3 tools/deploy_worker.py`.**
 - If Gemini fails: Pocomon uses the JSON library; the others use a few backup lines
   from `characters.json` (`fallback`). Crisis phrases always use the local safety rule.
 - Add a character: pick the next id (say `5`), put the big PNG (white background is fine) in `assets/img/5.png`,
   add an entry to `characters.json` (`id`: `"5"`, `image`: `builds/img/5.webp`, `stage`: `builds/img/stage/5.webp`),
-  add `"5": {...}` to `CHARACTERS` in `worker/worker.js`, and run `python3 tools/make_images.py`
+  add `"5": {...}` to `CHARACTERS` in `worker/gemini.js`, and run `python3 tools/make_images.py`
   (needs `pip3 install pillow`; GitHub Actions does the same on deploy) to cut out the background and make the web images.
 
 ## Site icons (two separate sets)

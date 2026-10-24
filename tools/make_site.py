@@ -212,8 +212,11 @@ def shell_pages(site, characters, games):
         for c in characters)
     me_content = (bar("Me", "") + f"""    <section class="me">
       <div class="profile"><span class="ph">{icon("ghost")}</span>
-        <div><strong data-t="meGuest">Guest</strong><p data-t="meNote">Your progress is saved in this browser.</p>
-        <button class="signin" type="button" disabled data-t="meSignIn">Sign in with Google (coming soon)</button></div></div>
+        <div class="who-am-i"><strong id="profName" data-t="meGuest">Guest</strong><p id="profNote" data-t="meNote">Your progress is saved in this browser.</p>
+        <button class="signin" id="signinOff" type="button" disabled data-t="meSignIn">Sign in with Google (coming soon)</button>
+        <div id="gsi" hidden></div><p class="err" id="acctErr" role="alert" hidden></p>
+        <div class="acct" id="acct" hidden><button type="button" id="signOutBtn" data-t="meSignOut">Sign out</button>
+        <button type="button" id="deleteBtn" class="danger" data-t="meDelete">Delete account</button></div></div></div>
       <div class="stats"><div class="stat"><b id="meCandles">0</b><span data-t="meCandles">Candles</span></div>
         <div class="stat"><b id="mePlayed">0</b><span data-t="mePlayed">Games played</span></div></div>
       <h2 data-t="meBonds">Bonds</h2>

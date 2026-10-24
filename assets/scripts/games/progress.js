@@ -24,8 +24,35 @@ export function load() {
   return blank();
 }
 
+const listeners = [];
+// Call `fn` after every save (the account code uses it to copy progress to the server).
+export function onChange(fn) { listeners.push(fn); }
+
 function save(p) {
   try { localStorage.setItem(KEY, JSON.stringify(p)); } catch {} // private mode: it still works this visit
+  for (const fn of listeners) fn(p);
+}
+
+// Combine this browser's progress with an account's: for every number the larger one wins, so signing in on a
+// second device never loses progress. (The daily candle count belongs to this device and is kept as it is.)
+export function merge(local, remote) {
+  const maxTable = (a = {}, b = {}) => {
+    const out = { ...a };
+    for (const [k, v] of Object.entries(b)) out[k] = Math.max(out[k] || 0, v);
+    return out;
+  };
+  return {
+    ...local,
+    candles: Math.max(local.candles || 0, remote.candles || 0),
+    plays: Math.max(local.plays || 0, remote.plays || 0),
+    bond: maxTable(local.bond, remote.bond),
+    best: maxTable(local.best, remote.best),
+  };
+}
+
+// Replace what is saved here with `p` (after a merge). Does not call the change listeners.
+export function replace(p) {
+  try { localStorage.setItem(KEY, JSON.stringify(p)); } catch {}
 }
 
 export function levelOf(xp) {

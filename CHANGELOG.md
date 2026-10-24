@@ -2,6 +2,11 @@
 
 Each version is one commit. Newest first.
 
+## 0.10.0 - Accounts and cloud save
+- omonomon-api Worker (apimon.securhat.com) with D1 database and Google sign-in.
+- Gemini Worker renamed to omonomon-gemini (geminimon.securhat.com).
+- tools/setup_api.py and tools/setup_waf.py (Cloudflare WAF rules for the Worker hosts).
+
 ## 0.9.0 - WhatsApp-style app shell and first game
 - shell.html with Chats, Games and Me tabs; the chat moves to chat.html.
 - Games hub and Hop Hop (endless runner); candles and bond XP saved in the browser.

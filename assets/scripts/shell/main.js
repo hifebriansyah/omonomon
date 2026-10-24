@@ -7,7 +7,8 @@ import { T, lang, pickLine } from "../games/text.js";
 import { startHub } from "../games/hub.js";
 import { startRunner } from "../games/runner.js";
 import { startHome } from "./home.js";
-import { startMe } from "./me.js";
+import { startMe, refreshMe } from "./me.js";
+import { refresh } from "../games/account.js";
 
 const { page, game: gameSlug, char: charId } = document.body.dataset;
 const $ = (id) => document.getElementById(id);
@@ -83,6 +84,14 @@ showWallet();
 if (page === "home") startHome();
 else if (page === "me") startMe();
 else if (page === "hub") startHub();
-else startGame().catch((err) => {
+else if (page === "game") startGame().catch((err) => {
   $("how").textContent = `Could not start the game (${err.message}). Run "python3 tools/build_all.py" and open the site through a web server.`;
+});
+
+// Signed in: bring the account's progress in, then draw the numbers again.
+refresh().then((user) => {
+  if (!user) return;
+  showWallet();
+  if (page === "hub") startHub();
+  if (page === "me") refreshMe();
 });

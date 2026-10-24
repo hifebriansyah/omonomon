@@ -318,7 +318,7 @@ export default {
     if (request.method !== "POST" || !originOk) return reply({ error: "forbidden" }, 403);
     if (!env.GEMINI_API_KEY) return reply({ error: "not configured" }, 500);
 
-    // At most N requests a minute per visitor IP (the limit itself is in wrangler.jsonc).
+    // At most N requests a minute per visitor IP (the limit itself is in gemini.jsonc).
     // A script can fake the Origin header above, but it cannot get around this.
     if (env.LIMITER) {
       const ip = request.headers.get("CF-Connecting-IP") || "unknown";
