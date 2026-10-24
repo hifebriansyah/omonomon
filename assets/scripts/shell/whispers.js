@@ -8,6 +8,7 @@ import { markSeen } from "./whisper-badge.js";
 import { nickname, deviceId, myComments, rememberComment, forgetComment } from "./identity.js";
 import { el, bubbleIcon, heartIcon, sendIcon, shareButton, linkCard } from "./ui.js";
 import { isLoved, toggleLove } from "./loved-store.js";
+import { adItem } from "./ads.js";
 
 async function getJson(url) {
   const res = await fetch(url);
@@ -267,7 +268,16 @@ export async function startWhispers() {
       all.href = "whispers/";
       list.after(all);
     } else {
-      list.replaceChildren(...whispers.filter((w) => byId[w.ghost]).map((w) => whisperItem(w, byId[w.ghost], false)));
+      const items = whispers.filter((w) => byId[w.ghost]).map((w) => whisperItem(w, byId[w.ghost], false));
+      // an ad after every few whispers (never at the end); only the feed has them, not a whisper's own page
+      const ads = await getJson("site.json").then((site) => site.ads).catch(() => null);
+      if (ads?.every) {
+        for (let i = ads.every; i < items.length; i += ads.every + 1) {
+          const ad = adItem(ads);
+          if (ad) items.splice(i, 0, ad);
+        }
+      }
+      list.replaceChildren(...items);
       say(whispers.length ? "" : T.whisperNone);
       if (whispers.length) markSeen(whispers[0].t);
     }

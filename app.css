@@ -209,6 +209,8 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .w-who time { font-size: 0.75rem; color: var(--muted); }
 .w-link { color: inherit; text-decoration: none; }
 .w-link:hover time { text-decoration: underline; }
+.w-ad { padding: 10px 4px; }
+.w-ad ins { min-width: 250px; }
 .w-all { display: inline-block; margin: 16px 4px; font-size: 0.85rem; color: var(--muted); }
 .whisper .avatar { width: 46px; height: 46px; }
 .w-text { margin: 10px 0 6px; font-family: var(--comic); line-height: 1.45; color: #e8ebf2; overflow-wrap: anywhere; }
