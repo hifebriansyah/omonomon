@@ -139,6 +139,17 @@ the Google Cloud project, and watch usage.
 `hub.js`, `runner.js` (**Hop Hop**, Pocomon's endless runner) and `main.js`. New game: add it to `games.json`, write
 its module, reuse `recordRun()` for rewards. Plan and status: `GAMIFICATION.md`.
 
+## Bond, quests and streak
+- **Bond XP** (per ghost, levels 1 to 10, titles from Stranger to Soulmate in `text.js`): games give 5 XP plus 2 per candle; every
+  message sent gives 2 XP, up to 20 XP a day per ghost. Level-ups show a toast in the chat.
+- **Payoffs:** the Me page opens each ghost's stories (`stories.json`, at bond levels 3 and 6); Gemini gets the bond level
+  and lets it colour the ghost's tone in four steps (levels 1-2, 3-5, 6-8, 9-10; `BOND_TONES` in `worker/gemini.js`).
+- **Daily quests:** three a day, the same for everyone, picked from the date (`assets/scripts/games/quests.js`: one about
+  chatting, one about games, one about bond XP). Each pays candles; finishing all three adds a 10 candle bonus.
+- **Streak:** finishing at least one quest a day keeps it going; a missed day resets it to 1. The best streak is kept.
+- Today's counters stay on the device; candles, bond, bests and the streak are saved to the account and merged (larger value wins,
+  the streak with the later day wins).
+
 ## Accounts and saved progress (omonomon-api)
 Optional. Without it, candles, bonds and best scores are kept in this browser only (guest mode). With it, a player can
 sign in with Google on the Me page and their progress follows them across devices.

@@ -19,7 +19,7 @@ Each set is skipped, with a note, if its source file is missing.
 Everything in builds/ is generated and git-ignored: never edit it by hand. GitHub Actions
 runs this script on every deploy; run it yourself to see the images locally.
 
-It also makes the 1200x630 link-preview pictures in builds/img/share/.
+It also makes the link-preview pictures in builds/img/share/: 1200x630 cards for the characters and a 512x512 app icon.
 
 Usage: python3 tools/make_images.py
 """
@@ -140,6 +140,8 @@ def main():
         print(f"ok {name}")
     if heroes:
         share_card(heroes).save(out / "share" / "home.jpg", quality=85, optimize=True)
+    if APPICON.exists():  # the app icon as a small square preview (home, games, me): WhatsApp shows it beside the title
+        Image.open(APPICON).convert("RGB").resize((512, 512), Image.LANCZOS).save(out / "share" / "icon.jpg", quality=85, optimize=True)
     make_app_icons(out)
     make_favicon(out)
 

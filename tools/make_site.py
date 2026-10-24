@@ -26,7 +26,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "builds" / "site"
-COPY_FILES = ["style.css", "app.css", "config.js", "characters.json", "site.json", "games.json", "manifest.webmanifest"]
+COPY_FILES = ["style.css", "app.css", "config.js", "characters.json", "site.json", "games.json", "stories.json", "manifest.webmanifest"]
 
 
 def attr(s):
@@ -37,7 +37,7 @@ def head_for(site, c, history):
     """Title, description, canonical address, share image and robots for one page (c=None: home)."""
     if c is None:
         return dict(title=site["title"], description=site["description"], url=f"{site['url']}/",
-                    image=f"{site['url']}/builds/img/share/home.jpg", robots="index, follow")
+                    image=f"{site['url']}/builds/img/share/icon.jpg", square=True, robots="index, follow")
     stage_url = f"{site['url']}/{c['slug']}/"
     image = f"{site['url']}/builds/img/share/{c['id']}.jpg"
     if history:
@@ -83,9 +83,9 @@ def head_tags(site, h, ld):
         f'<meta property="og:description" content="{attr(h["description"])}">',
         f'<meta property="og:url" content="{attr(h["url"])}">',
         f'<meta property="og:image" content="{attr(h["image"])}">',
-        '<meta property="og:image:width" content="1200">',
-        '<meta property="og:image:height" content="630">',
-        '<meta name="twitter:card" content="summary_large_image">',
+        f'<meta property="og:image:width" content="{512 if h.get("square") else 1200}">',
+        f'<meta property="og:image:height" content="{512 if h.get("square") else 630}">',
+        f'<meta name="twitter:card" content="{"summary" if h.get("square") else "summary_large_image"}">',
         f'<meta name="twitter:title" content="{attr(h["title"])}">',
         f'<meta name="twitter:description" content="{attr(h["description"])}">',
         f'<meta name="twitter:image" content="{attr(h["image"])}">',
@@ -145,6 +145,7 @@ ICONS = {  # Lucide icons (ISC License)
     "me": '<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
     "back": '<path d="m15 18-6-6 6-6"/>',
     "more": '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
+    "flame": '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>',
     "ghost": '<path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/>',
 }
 
@@ -201,17 +202,18 @@ def shell_pages(site, characters, games):
             f'<button class="more" type="button" aria-haspopup="menu" aria-expanded="false" data-t-label="moreOptions" '
             f'aria-label="More options" title="More options">{icon("more")}</button></li>')
     home_content = (bar(site["name"]) + f'    <p class="intro">{escape(site["description"])}</p>\n'
-                    + '    <ul class="contacts">\n' + "\n".join(rows) + "\n    </ul>")
+                    + '    <ul class="contacts">\n' + "\n".join(rows) + "\n    </ul>"
+                    + '\n    <p class="legal"><a href="privacy/" data-t="mePrivacy">Privacy</a></p>')
     home_h = head_for(site, None, False)
     out.append(("", fill("home", 0, home_h, home_content, structured_data(site, None, False), "chats"), home_h["url"], True))
 
     # /me/ : profile and progress (private page: not indexed, not in the sitemap)
     bonds = "".join(
         f'<li data-char="{c["id"]}" style="--c:{c["accent"]}"><img src="{attr(c["image"])}" alt="">'
-        f'<span class="who">{escape(c["name"])} <small>&middot; <span data-level>1</span></small><span class="bar"></span></span></li>'
+        f'<span class="who">{escape(c["name"])} <small>&middot; <span data-level>1</span> <span data-title></span></small><span class="bar"></span></span></li>'
         for c in characters)
     me_content = (bar("Me", "") + f"""    <section class="me">
-      <div class="profile"><span class="ph">{icon("ghost")}</span>
+      <div class="profile"><span class="ph" id="profPhoto">{icon("ghost")}</span>
         <div class="who-am-i"><strong id="profName" data-t="meGuest">Guest</strong><p id="profNote" data-t="meNote">Your progress is saved in this browser.</p>
         <button class="signin" id="signinOff" type="button" disabled data-t="meSignIn">Sign in with Google (coming soon)</button>
         <div id="gsi" hidden></div><p class="err" id="acctErr" role="alert" hidden></p>
@@ -219,12 +221,15 @@ def shell_pages(site, characters, games):
         <button type="button" id="deleteBtn" class="danger" data-t="meDelete">Delete account</button></div></div></div>
       <div class="stats"><div class="stat"><b id="meCandles">0</b><span data-t="meCandles">Candles</span></div>
         <div class="stat"><b id="mePlayed">0</b><span data-t="mePlayed">Games played</span></div></div>
+      <p class="streak-me">{icon("flame")}<span id="meStreak"></span></p>
       <h2 data-t="meBonds">Bonds</h2>
       <ul class="bonds">{bonds}</ul>
+      <h2 data-t="meStories">Stories</h2>
+      <div class="stories" id="storyList"></div>
       <ul class="links"><li><a href="privacy/" data-t="mePrivacy">Privacy</a></li></ul>
     </section>""")
     me_h = dict(title=f"Me | {site['name']}", description=f"Your profile and progress in {site['name']}.",
-                url=f"{site['url']}/me/", image=f"{site['url']}/builds/img/share/home.jpg", robots="noindex, follow")
+                url=f"{site['url']}/me/", image=f"{site['url']}/builds/img/share/icon.jpg", square=True, robots="noindex, follow")
     out.append(("me", fill("me", 1, me_h, me_content, None, "me"), me_h["url"], False))
 
     # /games/ : the hub
@@ -243,9 +248,11 @@ def shell_pages(site, characters, games):
                          f'<div class="meta"><span class="soon-tag">Coming soon</span></div></li>')
     hub_content = (bar(hub["heading"], '<p class="wallet" id="wallet" aria-live="polite"></p>')
                    + f'    <section class="hub">\n      <p class="intro">{escape(hub["intro"])}</p>\n'
+                   + f'      <section class="quests" aria-labelledby="questsTitle"><div class="quests-head"><h2 id="questsTitle" data-t="questsTitle">Today\'s quests</h2>'
+                   + f'<p class="streak" id="streak">{icon("flame")}<span id="streakText"></span></p></div><ul id="questList"></ul></section>\n'
                    + '      <ul class="cards">\n' + "\n".join(cards) + "\n      </ul>\n    </section>")
     hub_h = dict(title=hub["title"], description=hub["description"], url=f"{site['url']}/games/",
-                 image=f"{site['url']}/builds/img/share/home.jpg", robots="index, follow")
+                 image=f"{site['url']}/builds/img/share/icon.jpg", square=True, robots="index, follow")
     out.append(("games", fill("hub", 1, hub_h, hub_content, structured_data(site, None, False), "games"), hub_h["url"], True))
 
     # /games/<slug>/ : one game (no tab bar: like opening a chat)
@@ -262,7 +269,7 @@ def shell_pages(site, characters, games):
                    f'    <section class="game">\n      <p class="intro">{escape(desc)}</p>\n'
                    f'      <div class="play">\n        <canvas id="game" tabindex="0" role="img" aria-label="{attr(g["title"])} game"></canvas>\n'
                    f'        <div id="result" class="result" hidden>\n          <h2 id="rTitle"></h2>\n          <p id="rScore"></p>\n'
-                   f'          <p id="rReward"></p>\n          <p id="rSay" class="say"></p>\n          <div class="actions">\n'
+                   f'          <p id="rReward"></p>\n          <p id="rQuests" class="quests-done"></p>\n          <p id="rSay" class="say"></p>\n          <div class="actions">\n'
                    f'            <button id="rAgain" type="button">Play again</button>\n'
                    f'            <a id="rChat" href="{c["slug"]}/">Chat</a>\n          </div>\n        </div>\n      </div>\n'
                    f'      <p class="how" id="how">{escape(g["how"]["en"])}</p>\n'

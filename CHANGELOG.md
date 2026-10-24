@@ -2,6 +2,10 @@
 
 Each version is one commit. Newest first.
 
+## 0.11.0 - Bond rewards, daily quests and streak
+- Chat earns bond XP with level-up toasts; Gemini's tone follows the bond level.
+- Daily quests, streak and ghost stories that unlock at bond levels 3 and 6.
+
 ## 0.10.1 - Logging on both Workers
 - Axiom log lines from the API Worker too, with method, URL, status and browser type.
 

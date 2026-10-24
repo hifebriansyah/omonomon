@@ -95,6 +95,20 @@ export async function verifyGoogleIdToken(idToken, clientId, now = Date.now()) {
   return p;
 }
 
+// ---- profile ----
+
+// Only keep a photo link that really points at Google's image host.
+export function cleanPicture(url) {
+  if (typeof url !== "string" || url.length > 400) return null;
+  try {
+    const u = new URL(url);
+    return u.protocol === "https:" && /(^|\.)googleusercontent\.com$/.test(u.hostname) ? u.href : null;
+  } catch {
+    return null;
+  }
+}
+export const cleanName = (name) => (typeof name === "string" && name.trim() ? name.trim().slice(0, 80) : null);
+
 // ---- progress ----
 
 // Accept only the shape the game writes, with sane numbers. Anything else is dropped.
@@ -108,7 +122,13 @@ export function cleanProgress(input) {
     return out;
   };
   const p = input && typeof input === "object" ? input : {};
-  return { candles: num(p.candles), plays: num(p.plays), bond: table(p.bond, /^[0-9]{1,3}$/), best: table(p.best, /^[a-z0-9-]{1,32}$/) };
+  const s = p.streak && typeof p.streak === "object" ? p.streak : {};
+  const streak = { count: Math.min(num(s.count), 3650), last: /^\d{4}-\d{2}-\d{2}$/.test(s.last) ? s.last : "" };
+  if (!streak.last) streak.count = 0;
+  return {
+    candles: num(p.candles), plays: num(p.plays), bond: table(p.bond, /^[0-9]{1,3}$/), best: table(p.best, /^[a-z0-9-]{1,32}$/),
+    streak, bestStreak: Math.max(Math.min(num(p.bestStreak), 3650), streak.count),
+  };
 }
 
 // Merge two progress objects: for every number the larger one wins (so syncing never loses progress).
@@ -118,7 +138,12 @@ export function mergeProgress(a, b) {
     for (const [k, v] of Object.entries(y)) out[k] = Math.max(out[k] || 0, v);
     return out;
   };
-  return { candles: Math.max(a.candles, b.candles), plays: Math.max(a.plays, b.plays), bond: maxTable(a.bond, b.bond), best: maxTable(a.best, b.best) };
+  // the streak with the later day wins (the larger count on the same day); the best streak is the larger of the two
+  const streak = a.streak.last > b.streak.last || (a.streak.last === b.streak.last && a.streak.count >= b.streak.count) ? a.streak : b.streak;
+  return {
+    candles: Math.max(a.candles, b.candles), plays: Math.max(a.plays, b.plays), bond: maxTable(a.bond, b.bond), best: maxTable(a.best, b.best),
+    streak, bestStreak: Math.max(a.bestStreak, b.bestStreak, streak.count),
+  };
 }
 
 // ---- the handler ----
@@ -174,9 +199,9 @@ export default {
       if (!m) return null;
       const hash = await sha256Hex(m[1]);
       const row = await env.DB.prepare(
-        "SELECT u.id AS id, u.email AS email FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token_hash = ?1 AND s.expires_at > ?2"
+        "SELECT u.id AS id, u.email AS email, u.name AS name, u.picture AS picture FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token_hash = ?1 AND s.expires_at > ?2"
       ).bind(hash, now).first();
-      return row ? { id: row.id, email: row.email, hash } : null;
+      return row ? { id: row.id, email: row.email, name: row.name, picture: row.picture, hash } : null;
     };
 
     const loadProgress = async (userId) => {
@@ -199,28 +224,30 @@ export default {
           return reply({ error: "sign-in failed", detail: String(err.message).slice(0, 80) }, 401);
         }
 
+        const name = cleanName(claims.name);
+        const picture = cleanPicture(claims.picture);
         let user = await env.DB.prepare("SELECT id, email FROM users WHERE google_sub = ?1").bind(claims.sub).first();
         if (!user) {
           const id = crypto.randomUUID();
-          await env.DB.prepare("INSERT INTO users (id, google_sub, email, created_at, last_login) VALUES (?1, ?2, ?3, ?4, ?4)")
-            .bind(id, claims.sub, claims.email || null, now).run();
+          await env.DB.prepare("INSERT INTO users (id, google_sub, email, name, picture, created_at, last_login) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?6)")
+            .bind(id, claims.sub, claims.email || null, name, picture, now).run();
           user = { id, email: claims.email || null };
         } else {
-          await env.DB.prepare("UPDATE users SET last_login = ?2, email = COALESCE(?3, email) WHERE id = ?1")
-            .bind(user.id, now, claims.email || null).run();
+          await env.DB.prepare("UPDATE users SET last_login = ?2, email = COALESCE(?3, email), name = ?4, picture = ?5 WHERE id = ?1")
+            .bind(user.id, now, claims.email || null, name, picture).run();
         }
 
         const token = bytesToB64url(crypto.getRandomValues(new Uint8Array(32)));
         await env.DB.prepare("INSERT INTO sessions (token_hash, user_id, created_at, expires_at) VALUES (?1, ?2, ?3, ?4)")
           .bind(await sha256Hex(token), user.id, now, now + SESSION_DAYS * 86400_000).run();
         ctx?.waitUntil?.(env.DB.prepare("DELETE FROM sessions WHERE expires_at < ?1").bind(now).run()); // tidy old sessions
-        return reply({ token, user: { id: user.id, email: user.email }, progress: await loadProgress(user.id) });
+        return reply({ token, user: { id: user.id, email: user.email, name, picture }, progress: await loadProgress(user.id) });
       }
 
       if (path === "/me" && request.method === "GET") {
         const user = await sessionUser();
         if (!user) return reply({ error: "not signed in" }, 401);
-        return reply({ user: { id: user.id, email: user.email }, progress: await loadProgress(user.id) });
+        return reply({ user: { id: user.id, email: user.email, name: user.name, picture: user.picture }, progress: await loadProgress(user.id) });
       }
 
       if (path === "/progress" && request.method === "PUT") {

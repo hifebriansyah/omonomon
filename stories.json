@@ -1,0 +1,98 @@
+{
+  "1": [
+    {
+      "level": 3,
+      "title": {
+        "en": "The Wrapping",
+        "id": "Kain Pembungkus"
+      },
+      "text": {
+        "en": "People ask why I never take the cloth off. Honestly? It's warm. Being dead is cold and boring, and this is the only thing that still holds me together. Don't tell anyone I said that.",
+        "id": "Orang-orang nanya kenapa aku nggak pernah lepas kain ini. Jujur? Hangat. Mati itu dingin dan membosankan, dan cuma ini yang masih menahan aku utuh. Jangan bilang siapa-siapa."
+      }
+    },
+    {
+      "level": 6,
+      "title": {
+        "en": "Hop",
+        "id": "Lompat"
+      },
+      "text": {
+        "en": "I hop because I have to. Nobody ever taught me another way. But sometimes at night, when nobody is watching, I hop a little higher to get closer to the moon. It never works. I still do it.",
+        "id": "Aku lompat karena harus. Nggak ada yang pernah ngajarin cara lain. Tapi kadang malam-malam, kalau nggak ada yang lihat, aku lompat sedikit lebih tinggi biar lebih dekat ke bulan. Nggak pernah berhasil. Tetap aku lakukan."
+      }
+    }
+  ],
+  "2": [
+    {
+      "level": 3,
+      "title": {
+        "en": "Night Shift",
+        "id": "Jaga Malam"
+      },
+      "text": {
+        "en": "The ward never really closes. I count the beds twice, fix the blankets, check on the ones who can't sleep. Nobody asked me to. Somebody has to, and it turns out I'm good at being that somebody.",
+        "id": "Bangsal ini nggak pernah benar-benar tutup. Kakak hitung tempat tidur dua kali, rapikan selimut, tengok yang susah tidur. Nggak ada yang nyuruh. Harus ada yang lakuin, dan ternyata kakak jago jadi orang itu."
+      }
+    },
+    {
+      "level": 6,
+      "title": {
+        "en": "The Cap",
+        "id": "Topi Perawat"
+      },
+      "text": {
+        "en": "This cap has a red cross and a small tear nobody notices. Long story, a good one. I'll tell it once you've eaten something. Have you eaten? Then sit, and I'll tell you about the night the lights went out.",
+        "id": "Topi ini punya palang merah dan sobekan kecil yang nggak ada yang sadar. Ceritanya panjang, dan bagus. Kakak ceritain kalau kamu udah makan. Udah makan? Kalau gitu duduk, kakak ceritain malam saat lampu padam."
+      }
+    }
+  ],
+  "3": [
+    {
+      "level": 3,
+      "title": {
+        "en": "Sunflower",
+        "id": "Bunga Matahari"
+      },
+      "text": {
+        "en": "I wear a sunflower because it always turns toward the light. I never learned how. So I just carry it, and it keeps trying for both of us. That's enough, most nights.",
+        "id": "Aku pakai bunga matahari karena dia selalu menghadap cahaya. Aku nggak pernah belajar caranya. Jadi aku bawa aja, dan dia terus berusaha buat kami berdua. Itu cukup, hampir setiap malam."
+      }
+    },
+    {
+      "level": 6,
+      "title": {
+        "en": "Hollow",
+        "id": "Rongga"
+      },
+      "text": {
+        "en": "There's a hollow in my back where people say something should be. I used to hide it. Now I think it's just room, room for the quiet things you tell me. They fit surprisingly well.",
+        "id": "Ada lubang di punggungku, tempat orang bilang seharusnya ada sesuatu. Dulu aku sembunyikan. Sekarang kupikir itu cuma ruang, ruang buat hal-hal pelan yang kamu ceritakan. Ternyata muat banget."
+      }
+    }
+  ],
+  "4": [
+    {
+      "level": 3,
+      "title": {
+        "en": "The Banyan Tree",
+        "id": "Pohon Beringin"
+      },
+      "text": {
+        "en": "My favourite tree is the old banyan by the gate! It knows EVERYTHING that happens in the village, and it won't tell me, hihihi. So I listen very hard instead. Today it creaked twice. That must mean something. What do you think it means?!",
+        "id": "Pohon favoritku beringin tua di dekat gerbang! Dia tahu SEMUA yang terjadi di desa, dan nggak mau kasih tahu aku, hihihi. Jadi aku dengerin sekeras-kerasnya. Hari ini dia berderit dua kali. Pasti ada artinya. Menurutmu artinya apa?!"
+      }
+    },
+    {
+      "level": 6,
+      "title": {
+        "en": "Questions",
+        "id": "Pertanyaan"
+      },
+      "text": {
+        "en": "I keep a list of questions I haven't asked anyone yet. It's very long. The top one is about you, but I'm saving it until you trust me enough to answer properly. Almost there, I think! Hihihi.",
+        "id": "Aku nyimpen daftar pertanyaan yang belum kutanyain ke siapa pun. Panjang banget. Yang paling atas tentang kamu, tapi aku simpan sampai kamu cukup percaya buat jawab dengan jujur. Hampir sampai, kayaknya! Hihihi."
+      }
+    }
+  ]
+}

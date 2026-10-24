@@ -7,6 +7,10 @@ import * as stage from "./stage.js";
 import { loadLog, saveLog, rebuildHistory, saveMode, firstSeen } from "./storage.js";
 import { getReply } from "./replies.js";
 import { navigate } from "./router.js";
+import { recordChat } from "./games/progress.js";
+import { questLabel } from "./games/quests.js";
+import { T, lang } from "./games/text.js";
+import { toast } from "./toast.js";
 
 const TROUBLE_AFTER = 3;
 
@@ -89,7 +93,18 @@ async function botReply(c, text) {
 export function sendMessage(text) {
   if (!state.manifest || !state.current) return false;
   say(state.current.id, "user", text);
+  rewardMessage(state.current);
   botReply(state.current, text);
+}
+
+// A sent message earns a little bond XP and counts for the daily quests; tell the player about the good news.
+function rewardMessage(c) {
+  const r = recordChat(c.id, state.characters);
+  const lines = [];
+  if (r.levelAfter > r.levelBefore) lines.push(T.bondLevelUp(c.name, r.levelAfter, T.titles[r.levelAfter - 1]));
+  for (const q of r.completed) lines.push(T.questDone(questLabel(q, lang, state.characters), q.reward));
+  if (r.allDone) lines.push(T.allQuestsDone(10));
+  if (lines.length) toast(lines);
 }
 
 // Show what an address asks for: a character, and her history panel open or closed.

@@ -57,9 +57,22 @@ def database(account, token, name):
     return created["uuid"]
 
 
+# Columns added after the first release. SQLite has no "ADD COLUMN IF NOT EXISTS", so each statement may fail with
+# "duplicate column name" on a database that already has it; that is fine.
+MIGRATIONS = [
+    "ALTER TABLE users ADD COLUMN name TEXT",
+    "ALTER TABLE users ADD COLUMN picture TEXT",
+]
+
+
 def apply_schema(account, token, db_id):
     sql = (ROOT / "worker" / "schema.sql").read_text(encoding="utf-8")
     need(api("POST", f"/accounts/{account}/d1/database/{db_id}/query", token, {"sql": sql}), "Applying worker/schema.sql")
+    for stmt in MIGRATIONS:
+        res = api("POST", f"/accounts/{account}/d1/database/{db_id}/query", token, {"sql": stmt})
+        errors = "; ".join(e.get("message", "") for e in res.get("errors", []))
+        if not res.get("success") and "duplicate column" not in errors.lower():
+            sys.exit(f"Migration failed ({stmt}): {errors}")
     print("Tables ready (users, sessions, progress).")
 
 

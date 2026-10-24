@@ -15,6 +15,11 @@ const TEXT = {
     meSignedInAs: (email) => (email ? `Signed in as ${email}` : "Signed in"),
     meDeleteConfirm: "Delete your account and the progress saved on our server? This cannot be undone. Progress in this browser stays.",
     meSignInError: "Sign-in did not work. Please try again.",
+    questsTitle: "Today's quests", streakDays: (n) => (n === 1 ? "1 day streak" : `${n} day streak`), streakNone: "No streak yet",
+    questDone: (label, candles) => `Quest done: ${label} (+${candles} candles)`, allQuestsDone: (bonus) => `All quests done! +${bonus} candles`,
+    bondLevelUp: (name, level, title) => `Bond with ${name}: level ${level}, ${title}`, storyUnlocked: "New story unlocked on the Me page",
+    meStories: "Stories", meStoryLocked: (level) => `Unlocks at bond level ${level}`, meStreak: "Best streak", meDays: "days",
+    titles: ["Stranger", "Acquaintance", "Neighbour", "Friend", "Good friend", "Close friend", "Confidant", "Trusted", "Inseparable", "Soulmate"],
   },
   id: {
     tabChats: "Obrolan", tabGames: "Game", tabMe: "Saya", backChats: "Kembali ke obrolan", backGames: "Kembali ke game",
@@ -29,6 +34,11 @@ const TEXT = {
     meSignedInAs: (email) => (email ? `Masuk sebagai ${email}` : "Sudah masuk"),
     meDeleteConfirm: "Hapus akunmu dan progres yang tersimpan di server kami? Ini tidak bisa dibatalkan. Progres di browser ini tetap ada.",
     meSignInError: "Gagal masuk. Silakan coba lagi.",
+    questsTitle: "Misi hari ini", streakDays: (n) => `${n} hari beruntun`, streakNone: "Belum ada rentetan",
+    questDone: (label, candles) => `Misi selesai: ${label} (+${candles} lilin)`, allQuestsDone: (bonus) => `Semua misi selesai! +${bonus} lilin`,
+    bondLevelUp: (name, level, title) => `Ikatan dengan ${name}: level ${level}, ${title}`, storyUnlocked: "Cerita baru terbuka di halaman Saya",
+    meStories: "Cerita", meStoryLocked: (level) => `Terbuka di ikatan level ${level}`, meStreak: "Rentetan terbaik", meDays: "hari",
+    titles: ["Orang asing", "Kenalan", "Tetangga", "Teman", "Teman baik", "Teman dekat", "Tempat curhat", "Dipercaya", "Tak terpisahkan", "Belahan jiwa"],
   },
 };
 

@@ -5,6 +5,8 @@ CREATE TABLE IF NOT EXISTS users (
   id          TEXT PRIMARY KEY,            -- random id, never the Google id
   google_sub  TEXT NOT NULL UNIQUE,        -- Google's stable account id
   email       TEXT,                        -- from Google, only to know who the account belongs to
+  name        TEXT,                        -- display name from Google (shown on the Me page)
+  picture     TEXT,                        -- link to the Google profile photo (only googleusercontent.com links are kept)
   created_at  INTEGER NOT NULL,            -- ms since 1970
   last_login  INTEGER NOT NULL
 );

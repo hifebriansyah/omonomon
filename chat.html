@@ -29,7 +29,11 @@
   <link rel="modulepreload" href="assets/scripts/chat.js">
   <link rel="modulepreload" href="assets/scripts/composer.js">
   <link rel="modulepreload" href="assets/scripts/router.js">
+  <link rel="modulepreload" href="assets/scripts/toast.js">
   <link rel="modulepreload" href="assets/scripts/time.js">
+  <link rel="modulepreload" href="assets/scripts/games/progress.js">
+  <link rel="modulepreload" href="assets/scripts/games/quests.js">
+  <link rel="modulepreload" href="assets/scripts/games/text.js">
 </head>
 <body>
   <main class="comic">
@@ -72,6 +76,8 @@
         <div id="messages" class="messages"></div>
       </aside>
     </section>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
     <form id="form" class="composer" autocomplete="off">
       <div class="field">

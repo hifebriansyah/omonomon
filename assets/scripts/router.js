@@ -47,7 +47,7 @@ export function headFor(route) {
       title: site.title,
       description: site.description,
       url: `${site.url}/`,
-      image: `${site.url}/builds/img/share/home.jpg`,
+      image: `${site.url}/builds/img/share/icon.jpg`,
       robots: "index, follow",
     };
   }

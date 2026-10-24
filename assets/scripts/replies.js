@@ -4,6 +4,7 @@
 import { state } from "./state.js";
 import { findReply } from "./rules.js";
 import { pick } from "./util.js";
+import { load, levelOf } from "./games/progress.js";
 
 // Rules at or above this priority (the crisis/safety rules) are never handed to Gemini.
 const SAFETY_PRIORITY = 100;
@@ -19,6 +20,7 @@ async function askGemini(c, text) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         character: c.id,
+        bond: levelOf(load().bond[c.id] || 0), // how close the player is to this ghost (1 to 10); the Worker lets it colour her tone
         messages: [...history.slice(-cfg.HISTORY_TURNS), { role: "user", text }],
       }),
       signal: ctrl.signal,

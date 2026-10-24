@@ -368,3 +368,25 @@ button:focus-visible, a:focus-visible { outline: none; }
 @media (prefers-reduced-motion: reduce) {
   .hero, .hero.talk, .hero.swap, .dots i { animation: none; }
 }
+
+/* A short message at the top of the chat: bond level up, quest done */
+.toast {
+  position: fixed;
+  bottom: 84px; /* just above the message box */
+  left: 50%;
+  z-index: 30;
+  transform: translateX(-50%);
+  max-width: min(440px, calc(100% - 24px));
+  padding: 9px 14px;
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--comic);
+  font-size: 0.85rem;
+  line-height: 1.35;
+  text-align: center;
+  box-shadow: 3px 3px 0 var(--accent);
+  animation: toast-in 0.25s ease-out;
+}
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 10px); } }

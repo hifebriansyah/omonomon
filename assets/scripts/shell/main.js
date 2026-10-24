@@ -3,6 +3,7 @@
 
 import { load, recordRun } from "../games/progress.js";
 import { loadMode } from "../storage.js";
+import { questLabel } from "../games/quests.js";
 import { T, lang, pickLine } from "../games/text.js";
 import { startHub } from "../games/hub.js";
 import { startRunner } from "../games/runner.js";
@@ -61,12 +62,17 @@ async function startGame() {
     best: load().best[gameSlug] || 0,
     startText: T.tapToStart,
     onOver(score) {
-      const r = recordRun(gameSlug, charId, score);
+      const r = recordRun(gameSlug, charId, score, chars.characters);
       const tier = score < 200 ? "low" : score < 600 ? "mid" : "high";
       $("rTitle").textContent = r.newBest && r.best > 0 && score > 0 ? T.record : T.over;
       $("rScore").textContent = `${T.score} ${score} \u00b7 ${T.best} ${r.best}`;
       $("rReward").textContent = [T.reward(r.candles, r.xp), r.capped ? T.capped : "", r.levelAfter > r.levelBefore ? T.levelUp(r.levelAfter) : ""]
         .filter(Boolean).join(" ");
+      $("rQuests").textContent = [
+        ...r.completed.map((q) => T.questDone(questLabel(q, lang, chars.characters), q.reward)),
+        r.allDone ? T.allQuestsDone(10) : "",
+        r.completed.length && r.streak ? T.streakDays(r.streak) : "",
+      ].filter(Boolean).join(" \u00b7 ");
       const lines = (r.newBest && score >= 100 ? game.reactions.record : game.reactions[tier])[lang];
       $("rSay").textContent = pickLine(lines);
       showWallet();
