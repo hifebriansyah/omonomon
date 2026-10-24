@@ -22,7 +22,7 @@ answers crisis phrases with a caring, non-gloomy reply; keep it intact.
 3. Add a Spanish `safety.es.json` with local crisis resources.
 
 ## Run locally
-Needs Python 3 and Pillow (`pip3 install pillow`). Run both builds once, and again after you change
+Needs Python 3 and Pillow, numpy and scipy (`pip3 install pillow numpy scipy`). Run both builds once, and again after you change
 the source rules or the original art in `assets/img/`:
 
     python3 tools/build_all.py          # images, rule shards, then the site pages in builds/site/
