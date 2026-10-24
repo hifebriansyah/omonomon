@@ -19,7 +19,9 @@ Run after tools/make_images.py, tools/make_scenes.py and tools/make_shard.py (to
 Test locally:  python3 tools/make_site.py && python3 -m http.server -d builds/site
 Apache serving this folder: the repo's .htaccess maps the addresses to builds/site/.
 """
+import hashlib
 import json
+import re
 import shutil
 from html import escape
 from pathlib import Path
@@ -383,6 +385,37 @@ def check_sitemap(urls, site):
         raise SystemExit("make_site.py: public pages missing from the sitemap (add them to `urls` in main()): " + ", ".join(missing))
 
 
+VERSIONED = ("style.css", "app.css", "config.js")  # besides every script in assets/scripts/ and every JSON data file
+
+
+def stamp_versions(out):
+    """Cache busting: add ?v=<hash of the scripts, styles and data> to every address of a script, style or JSON file in the
+    built site (page tags, import lines, fetch calls). A deploy that changes any of them gets new addresses, so browsers, the
+    installed app and Cloudflare's cache all fetch the new files at once; a deploy that changes none keeps the cache.
+    One version for the whole site keeps it simple: a module imported under two addresses would run twice."""
+    files = sorted([*(out / "assets" / "scripts").rglob("*.js"), *(out / n for n in VERSIONED), *out.glob("*.json"),
+                    *(out / "builds" / "data").glob("*.json")])
+    digest = hashlib.sha256()
+    for f in files:
+        digest.update(f.relative_to(out).as_posix().encode() + b"\0" + f.read_bytes())
+    v = digest.hexdigest()[:10]
+
+    def json_ref(m):  # "characters.json" -> "characters.json?v=..." (only files that exist in the site)
+        return f"{m[1]}{m[2]}?v={v}{m[1]}" if (out / m[2]).is_file() else m[0]
+
+    for f in (out / "assets" / "scripts").rglob("*.js"):
+        js = f.read_text(encoding="utf-8")
+        js = re.sub(r"""((?:\bfrom|\bimport)\s*\(?\s*)(["'])(\.{1,2}/[^"'?]+\.js)\2""", rf"\1\2\3?v={v}\2", js)
+        js = re.sub(r"""(["'`])([\w./-]+\.json)\1""", json_ref, js)
+        f.write_text(js, encoding="utf-8")
+    assets = "|".join(re.escape(n) for n in VERSIONED)
+    for f in out.rglob("*.html"):
+        html = f.read_text(encoding="utf-8")
+        html = re.sub(rf"""((?:href|src)=")((?:assets/scripts/[^"?]+\.js)|{assets})(")""", rf"\1\2?v={v}\3", html)
+        f.write_text(html, encoding="utf-8")
+    return v
+
+
 def main():
     site = json.loads((ROOT / "site.json").read_text(encoding="utf-8"))
     data = json.loads((ROOT / "characters.json").read_text(encoding="utf-8"))
@@ -425,7 +458,8 @@ def main():
         + "".join(f"  <url><loc>{escape(u)}</loc></url>\n" for u in urls) + "</urlset>\n", encoding="utf-8")
     check_sitemap(urls, site)
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {site['url']}/sitemap.xml\n", encoding="utf-8")
-    print(f"ok site: {len(pages) + len(app_pages)} pages + 404.html, sitemap.xml, robots.txt in {OUT.relative_to(ROOT)}/")
+    version = stamp_versions(OUT)
+    print(f"ok site: {len(pages) + len(app_pages)} pages + 404.html, sitemap.xml, robots.txt in {OUT.relative_to(ROOT)}/ (assets ?v={version})")
 
 
 if __name__ == "__main__":

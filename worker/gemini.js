@@ -459,7 +459,8 @@ export default {
           : {
               ip: request.headers.get("CF-Connecting-IP") || undefined,
               message: info.message,
-              reply: obj.reply,
+              reply: obj.reply ?? obj.whisper?.en,   // a chat reply, a comment answer, or a whisper (English)
+              replyId: obj.whisper?.id ?? undefined, // a whisper's Indonesian version
             }),
       });
       return new Response(JSON.stringify(obj), {
@@ -491,6 +492,7 @@ export default {
       if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
       if (!Object.prototype.hasOwnProperty.call(CHARACTERS, body.character)) return reply({ error: "unknown character" }, 400);
       info.character = body.character;
+      info.message = `whisper: ${String(body.kind || "").slice(0, 80)} / ${String(body.when || "").slice(0, 60)}`; // what it was asked to write
       try {
         return reply({ whisper: await writeWhisper(env, body.character, body.kind, body.when, body.avoid, info) });
       } catch (err) {
@@ -503,6 +505,7 @@ export default {
       if (!Object.prototype.hasOwnProperty.call(CHARACTERS, body.character)) return reply({ error: "unknown character" }, 400);
       if (typeof body.comment !== "string" || !body.comment.trim() || typeof body.nickname !== "string") return reply({ error: "bad request" }, 400);
       info.character = body.character;
+      info.message = `${body.nickname.slice(0, 24)}: ${body.comment.slice(0, 300)}`; // the visitor's comment, logged like a chat message
       try {
         return reply(await judgeComment(env, body.character, body.whisper || "", body.nickname, body.comment, info));
       } catch (err) {

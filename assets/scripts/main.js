@@ -13,7 +13,6 @@
 //   router.js   addresses (/<slug>/, /<slug>/history/) and the page <head>
 
 import { state } from "./state.js";
-import { DATA_BASE } from "./rules.js";
 import { bubbleText, historyBtn } from "./dom.js";
 import { showRoute, sendMessage, toggleHistory } from "./chat.js";
 import { startRouter } from "./router.js";
@@ -39,7 +38,7 @@ async function init() {
 
   try {
     const [manifest, chars, site] = await Promise.all([
-      getJson(`${DATA_BASE}manifest.json`, "manifest"),
+      getJson("builds/data/manifest.json", "manifest"),  // a plain string, so the build can add ?v= to it
       getJson("characters.json", "characters"),
       getJson("site.json", "site"),
     ]);

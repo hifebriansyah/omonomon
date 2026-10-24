@@ -281,6 +281,10 @@ tools/             build_all.py, make_images.py, make_shard.py, make_site.py, de
 ```
 New module? Add a `<link rel="modulepreload">` line for it in `chat.html` (the page then downloads all
 modules at once instead of one import at a time; `tools/make_shard.py` warns if one is missing).
+**Cache busting:** `make_site.py` (`stamp_versions`) adds `?v=<hash>` to every script, style and JSON address in `builds/site/`
+(page tags, `import` lines and `fetch("x.json")` calls). The hash covers all of those files, so any change gives every one a new
+address and browsers, the installed app and Cloudflare fetch them fresh. Write data paths as plain strings (`"characters.json"`,
+not built from a variable) so the build can find them. Pages themselves are cached 10 minutes by GitHub Pages.
 The scripts use ES modules, so open the site through a web server (`python3 -m http.server`),
 not by double-clicking a template. Serve `builds/site/` (see Run locally).
 
