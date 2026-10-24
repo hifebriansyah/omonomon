@@ -7,14 +7,24 @@ import * as stage from "./stage.js";
 import { loadLog, saveLog, rebuildHistory, saveMode, firstSeen } from "./storage.js";
 import { getReply } from "./replies.js";
 import { navigate } from "./router.js";
-import { recordChat } from "./games/progress.js";
+import { recordChat, load as loadProgress, levelOf } from "./games/progress.js";
 import { questLabel } from "./games/quests.js";
 import { T, lang } from "./games/text.js";
 import { toast } from "./toast.js";
+import { maybeUpdateMemory } from "./games/chat-memory.js";
 
 const TROUBLE_AFTER = 3;
 
+// From bond level 2 she sometimes greets you with one of her own lines instead of the usual one.
+const GREETING_LEVEL = 2;
+const bondGreeting = {}; // her pick for this page load (null: the usual greeting), so every place that shows the greeting agrees
 function greeting(c) {
+  if (!(c.id in bondGreeting)) {
+    const extra = c.bondGreetings?.[state.lastLang] || c.bondGreetings?.[lang] || c.bondGreetings?.en;
+    const open = extra?.length && levelOf(loadProgress().bond[c.id] || 0) >= GREETING_LEVEL && Math.random() < 0.5;
+    bondGreeting[c.id] = open ? extra[Math.floor(Math.random() * extra.length)] : null;
+  }
+  if (bondGreeting[c.id]) return bondGreeting[c.id];
   return c.library ? state.manifest.languages[state.lastLang].greeting : inLang(c.greeting);
 }
 
@@ -96,6 +106,7 @@ export function sendMessage(text) {
   if (!state.manifest || !state.current) return false;
   say(state.current.id, "user", text);
   rewardMessage(state.current);
+  maybeUpdateMemory(state.current.id, state.histories[state.current.id] || []);
   botReply(state.current, text);
 }
 
@@ -106,6 +117,7 @@ function rewardMessage(c) {
   if (r.levelAfter > r.levelBefore) lines.push(T.bondLevelUp(c.name, r.levelAfter, T.titles[r.levelAfter - 1]));
   for (const q of r.completed) lines.push(T.questDone(questLabel(q, lang, state.characters), q.reward));
   if (r.allDone) lines.push(T.allQuestsDone(10));
+  for (const id of r.badges) lines.push(T.badgeUnlocked(T.badges[id]?.[0] || id));
   if (lines.length) toast(lines);
 }
 

@@ -1,0 +1,72 @@
+{
+  "slug": "lantern-flight",
+  "character": "3",
+  "ready": true,
+  "type": "module",
+  "module": "lantern-flight",
+  "title": "Lentera Terbang",
+  "tagline": "float a lantern up to the moon",
+  "description": "A calm one-touch game with {name}: a paper lantern rises through the night. Drift left and right to gather wishes, slip past branches and dark kites, and reach the moon.",
+  "how": {
+    "en": "Hold the screen (or Space) to drift right, let go to drift left. Collect the glowing wishes, avoid branches and kites. You have 3 flames.",
+    "id": "Tahan layar (atau Spasi) untuk melayang ke kanan, lepas untuk ke kiri. Kumpulkan harapan yang bersinar, hindari dahan dan layangan. Kamu punya 3 api."
+  },
+  "tiers": [
+    90,
+    180
+  ],
+  "recordMin": 90,
+  "scorePerCandle": 15,
+  "limits": {
+    "perSec": 8,
+    "slack": 60,
+    "max": 700
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "The flame went out early. It's alright, lanterns do that.",
+        "Not far this time. The sky will still be here."
+      ],
+      "id": [
+        "Apinya padam cepat. Nggak apa-apa, lentera memang begitu.",
+        "Belum jauh kali ini. Langitnya masih di sana kok."
+      ]
+    },
+    "mid": {
+      "en": [
+        "You drifted well. I watched the whole way up.",
+        "Quite a few wishes. They're warm to hold, aren't they."
+      ],
+      "id": [
+        "Kamu melayang dengan baik. Aku lihat sepanjang jalan naik.",
+        "Lumayan banyak harapan. Hangat ya kalau dipegang."
+      ]
+    },
+    "high": {
+      "en": [
+        "All the way to the moon... it was quiet up there, wasn't it.",
+        "You gathered so many. I'll remember them for a while."
+      ],
+      "id": [
+        "Sampai ke bulan... sepi ya di atas sana.",
+        "Kamu kumpulkan banyak sekali. Kuingat sebentar-sebentar."
+      ]
+    },
+    "record": {
+      "en": [
+        "Higher than ever. I'll keep this one, quietly.",
+        "A new best. The moon feels a little closer."
+      ],
+      "id": [
+        "Lebih tinggi dari sebelumnya. Yang ini kusimpan diam-diam.",
+        "Rekor baru. Bulannya terasa sedikit lebih dekat."
+      ]
+    }
+  },
+  "id": {
+    "tagline": "terbangkan lentera sampai ke bulan",
+    "description": "Game tenang satu sentuhan bareng {name}: lentera kertas naik menembus malam. Melayang ke kiri dan kanan untuk mengumpulkan harapan, lewati dahan dan layangan gelap, lalu capai bulan."
+  },
+  "added": "2026-10-25"
+}

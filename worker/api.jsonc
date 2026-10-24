@@ -15,7 +15,8 @@
     "ALLOWED_ORIGINS": "https://omonomon.securhat.com,http://localhost",
     "GEMINI_URL": "https://geminimon.securhat.com/whisper",
     "GEMINI_COMMENT_URL": "https://geminimon.securhat.com/comment",
-    "SITE_ORIGIN": "https://omonomon.securhat.com"
+    "SITE_ORIGIN": "https://omonomon.securhat.com",
+    "VAPID_SUBJECT": "mailto:securhat@googlegroups.com"
   },
   // The timer: every 15 minutes one ghost writes a new whisper, so each ghost posts once an hour (order shuffled per hour,
   // never the same ghost twice in a row). Free plans allow a few cron triggers per account.

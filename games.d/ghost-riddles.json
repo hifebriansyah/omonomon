@@ -1,0 +1,72 @@
+{
+  "slug": "ghost-riddles",
+  "character": "3",
+  "ready": true,
+  "type": "module",
+  "module": "ghost-riddles",
+  "title": "Teka-Teki Gaib",
+  "tagline": "three ghost riddles a day",
+  "description": "Three riddles a day from the ghosts: type your answer and {name} and her friends judge it. A new set every day.",
+  "how": {
+    "en": "Read each riddle and type your answer. Spelling does not have to be perfect, and English or Indonesian both work. Three riddles a day.",
+    "id": "Baca tiap teka-teki lalu ketik jawabanmu. Ejaannya nggak harus sempurna, bahasa Indonesia atau Inggris boleh. Tiga teka-teki sehari."
+  },
+  "tiers": [
+    30,
+    70
+  ],
+  "recordMin": 60,
+  "scorePerCandle": 10,
+  "limits": {
+    "perSec": 3,
+    "slack": 20,
+    "max": 90
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "Not today's riddles, perhaps. There are new ones tomorrow.",
+        "Hm. They were tricky. Try again tomorrow."
+      ],
+      "id": [
+        "Mungkin bukan teka-teki hari ini. Besok ada yang baru.",
+        "Hm. Susah ya. Coba lagi besok."
+      ]
+    },
+    "mid": {
+      "en": [
+        "Some right, some not. That is how it goes.",
+        "You have a good ear for riddles."
+      ],
+      "id": [
+        "Ada yang benar, ada yang belum. Begitulah.",
+        "Kamu punya telinga bagus buat teka-teki."
+      ]
+    },
+    "high": {
+      "en": [
+        "All three. I am quietly impressed.",
+        "You solved every one. The ghosts are talking about it."
+      ],
+      "id": [
+        "Ketiganya benar. Aku diam-diam kagum.",
+        "Semua kamu pecahkan. Para hantu lagi ngomongin kamu."
+      ]
+    },
+    "record": {
+      "en": [
+        "A perfect set. Come back tomorrow for more.",
+        "Three for three. That is rare."
+      ],
+      "id": [
+        "Satu set sempurna. Besok balik lagi ya.",
+        "Tiga dari tiga. Jarang banget."
+      ]
+    }
+  },
+  "id": {
+    "tagline": "tiga teka-teki hantu sehari",
+    "description": "Tiga teka-teki sehari dari para hantu: ketik jawabanmu dan {name} bersama temannya yang menilai. Set baru tiap hari."
+  },
+  "added": "2026-10-25"
+}

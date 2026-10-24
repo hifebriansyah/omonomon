@@ -19,6 +19,9 @@ import { startRouter } from "./router.js";
 import { initComposer } from "./composer.js";
 import { lang } from "./games/text.js";
 import "./viewport.js";
+import "./report.js";
+import "./offline.js";
+
 
 async function getJson(url, what) {
   const res = await fetch(url);

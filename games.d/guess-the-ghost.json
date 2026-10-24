@@ -1,0 +1,73 @@
+{
+  "slug": "guess-the-ghost",
+  "character": "4",
+  "ready": true,
+  "type": "module",
+  "module": "guess-the-ghost",
+  "title": "Tebak Hantu",
+  "tagline": "guess which ghost said it",
+  "description": "{name} reads out a line and you guess which of the four ghosts said it. Ten new lines every day, and a streak of right answers pays extra.",
+  "how": {
+    "en": "Read the line, then tap the ghost you think said it. Ten lines a day, the same for everyone. Right answers in a row earn bonus points.",
+    "id": "Baca kalimatnya, lalu ketuk hantu yang menurutmu mengucapkannya. Sepuluh kalimat per hari, sama untuk semua orang. Jawaban benar beruntun dapat poin bonus."
+  },
+  "tiers": [
+    60,
+    110
+  ],
+  "recordMin": 50,
+  "scorePerCandle": 10,
+  "limits": {
+    "perSec": 12,
+    "slack": 30,
+    "max": 170
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "Hihi, they all sound alike in the dark! Try again, I want to see you get it!",
+        "Ooh, so many mix-ups! Which ones fooled you? Tell me, tell me!"
+      ],
+      "id": [
+        "Hihi, di gelap suaranya mirip semua! Coba lagi, aku pengen liat kamu bisa!",
+        "Ooh, banyak yang ketuker! Yang mana yang nipu kamu? Cerita dong!"
+      ]
+    },
+    "mid": {
+      "en": [
+        "Not bad at all! You have been listening to us, haven't you? Nosy, I like it!",
+        "Ooh, you know us pretty well! What else do you know? Spill!"
+      ],
+      "id": [
+        "Lumayan banget! Kamu nyimak kami ya? Kepo, aku suka!",
+        "Ooh, kamu lumayan kenal kami! Tau apa lagi? Ceritain!"
+      ]
+    },
+    "high": {
+      "en": [
+        "WOW, you know every one of us! Have you been eavesdropping on ME?!",
+        "Perfect ears! Okay, I need to know your secret, right now!"
+      ],
+      "id": [
+        "WAH, kamu kenal kami semua! Jangan-jangan kamu nguping aku?!",
+        "Telinga sempurna! Oke, aku harus tau rahasiamu, sekarang!"
+      ]
+    },
+    "record": {
+      "en": [
+        "A new best!! I am telling everyone, the branches, the well, everybody!",
+        "Record!! Hihihi, I knew you were the nosy kind, just like me!"
+      ],
+      "id": [
+        "Rekor baru!! Aku kabarin semua orang, dahan, sumur, semuanya!",
+        "Rekor!! Hihihi, aku tau kamu tipe kepo juga, kayak aku!"
+      ]
+    }
+  },
+  "id": {
+    "tagline": "tebak hantu mana yang ngomong",
+    "description": "{name} membacakan satu kalimat dan kamu menebak hantu mana dari empat hantu yang mengucapkannya. Sepuluh kalimat baru tiap hari, dan jawaban benar beruntun dapat bonus."
+  },
+  "added": "2026-10-25",
+  "quick": true
+}

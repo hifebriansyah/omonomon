@@ -62,6 +62,8 @@ def database(account, token, name):
 MIGRATIONS = [
     "ALTER TABLE users ADD COLUMN name TEXT",
     "ALTER TABLE users ADD COLUMN picture TEXT",
+    "ALTER TABLE users ADD COLUMN nickname TEXT",
+    "ALTER TABLE comments ADD COLUMN body_id TEXT",
     "ALTER TABLE comments ADD COLUMN deleted INTEGER NOT NULL DEFAULT 0",
     "ALTER TABLE whispers ADD COLUMN link_url TEXT",
     "ALTER TABLE whispers ADD COLUMN link_title TEXT",
@@ -78,7 +80,7 @@ def apply_schema(account, token, db_id):
         errors = "; ".join(e.get("message", "") for e in res.get("errors", []))
         if not res.get("success") and "duplicate column" not in errors.lower():
             sys.exit(f"Migration failed ({stmt}): {errors}")
-    print("Tables ready (users, sessions, progress).")
+    print("Tables ready (users, sessions, progress, scores, runs, riddle_log, push_subs).")
 
 
 def main():

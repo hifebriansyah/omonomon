@@ -21,6 +21,17 @@
         "en": "I hop because I have to. Nobody ever taught me another way. But sometimes at night, when nobody is watching, I hop a little higher to get closer to the moon. It never works. I still do it.",
         "id": "Aku lompat karena harus. Nggak ada yang pernah ngajarin cara lain. Tapi kadang malam-malam, kalau nggak ada yang lihat, aku lompat sedikit lebih tinggi biar lebih dekat ke bulan. Nggak pernah berhasil. Tetap aku lakukan."
       }
+    },
+    {
+      "level": 10,
+      "title": {
+        "en": "What I Kept",
+        "id": "Yang Kusimpan"
+      },
+      "text": {
+        "en": "I never told anyone why I hop. The cloth is tied too tight to walk, yes. But the first time someone stayed to watch me hop, I did not want to stop. So I kept hopping, and I kept being honest, because honest people get watched. You stayed. That is the whole secret. Do not look so pleased.",
+        "id": "Aku nggak pernah cerita kenapa aku melompat. Kainnya terlalu kencang buat jalan, iya. Tapi waktu pertama kali ada yang betah nontonin aku lompat, aku nggak mau berhenti. Jadi aku terus lompat, dan terus jujur, soalnya orang jujur ditontonin. Kamu betah. Itu seluruh rahasianya. Jangan senyum begitu."
+      }
     }
   ],
   "2": [
@@ -44,6 +55,17 @@
       "text": {
         "en": "This cap has a red cross and a small tear nobody notices. Long story, a good one. I'll tell it once you've eaten something. Have you eaten? Then sit, and I'll tell you about the night the lights went out.",
         "id": "Topi ini punya palang merah dan sobekan kecil yang nggak ada yang sadar. Ceritanya panjang, dan bagus. Kakak ceritain kalau kamu udah makan. Udah makan? Kalau gitu duduk, kakak ceritain malam saat lampu padam."
+      }
+    },
+    {
+      "level": 10,
+      "title": {
+        "en": "The Last Chart",
+        "id": "Catatan Terakhir"
+      },
+      "text": {
+        "en": "Every night I keep one chart that is not on the ward list. It has no room number, only a name I kept after the others went home. I check it last, when it is quiet, and I say good night to it. You are on that chart now. Do not tell the head nurse. She would say there is no such form. There is.",
+        "id": "Tiap malam aku nyimpen satu catatan yang nggak ada di daftar bangsal. Nggak ada nomor kamarnya, cuma nama yang kusimpan setelah yang lain pulang. Kucek paling akhir, pas sepi, dan kuucapin selamat malam. Sekarang kamu ada di catatan itu. Jangan bilang kepala perawat. Dia bakal bilang formulirnya nggak ada. Ada kok."
       }
     }
   ],
@@ -69,6 +91,17 @@
         "en": "There's a hollow in my back where people say something should be. I used to hide it. Now I think it's just room, room for the quiet things you tell me. They fit surprisingly well.",
         "id": "Ada lubang di punggungku, tempat orang bilang seharusnya ada sesuatu. Dulu aku sembunyikan. Sekarang kupikir itu cuma ruang, ruang buat hal-hal pelan yang kamu ceritakan. Ternyata muat banget."
       }
+    },
+    {
+      "level": 10,
+      "title": {
+        "en": "The Window",
+        "id": "Jendela"
+      },
+      "text": {
+        "en": "I wait by the window not because someone will come. I wait because it taught me how to be still. When you visit, the glass fogs a little, and I draw something in it with one finger. It never stays. I draw it anyway. Tonight it was a small flower, for you.",
+        "id": "Aku nunggu di jendela bukan karena bakal ada yang datang. Aku nunggu karena jendela itu ngajarin aku diam. Kalau kamu mampir, kacanya berembun sedikit, dan aku gambar sesuatu pakai satu jari. Nggak pernah bertahan. Tetap kugambar. Malam ini bunga kecil, buat kamu."
+      }
     }
   ],
   "4": [
@@ -92,6 +125,17 @@
       "text": {
         "en": "I keep a list of questions I haven't asked anyone yet. It's very long. The top one is about you, but I'm saving it until you trust me enough to answer properly. Almost there, I think! Hihihi.",
         "id": "Aku nyimpen daftar pertanyaan yang belum kutanyain ke siapa pun. Panjang banget. Yang paling atas tentang kamu, tapi aku simpan sampai kamu cukup percaya buat jawab dengan jujur. Hampir sampai, kayaknya! Hihihi."
+      }
+    },
+    {
+      "level": 10,
+      "title": {
+        "en": "The Biggest Secret",
+        "id": "Rahasia Terbesar"
+      },
+      "text": {
+        "en": "I collect secrets because I was scared nobody would tell me anything real. Then you did. Not the loud ones, the small true ones. I keep those in the highest branch, where the wind cannot get them. So here is one back, the biggest I own: I like it best when you come back.",
+        "id": "Aku ngumpulin rahasia karena dulu takut nggak ada yang cerita hal yang beneran. Terus kamu cerita. Bukan yang heboh, yang kecil-kecil dan jujur. Kusimpan di dahan paling tinggi, tempat angin nggak bisa nyampe. Jadi ini satu buat kamu, yang terbesar yang kupunya: aku paling suka kalau kamu balik lagi."
       }
     }
   ]

@@ -3,6 +3,7 @@
 // The session token lives in localStorage (it is a random value; the API stores only its hash).
 
 import { load, merge, replace, onChange } from "./progress.js";
+import { nickname } from "../shell/identity.js";
 
 const SESSION_KEY = "ghostgame:session";
 const cfg = () => window.POCO_CONFIG || {};
@@ -44,8 +45,8 @@ async function sync(remote) {
 }
 
 // Called with the credential Google gives the page after sign-in.
-export async function signInWithGoogle(credential) {
-  const { token, user, progress } = await api("/auth/google", { method: "POST", body: { credential } });
+export async function signInWithGoogle(credential, turnstile) {
+  const { token, user, progress } = await api("/auth/google", { method: "POST", body: { credential, turnstile } });
   writeSession({ token, user });
   await sync(progress);
   return user;
@@ -75,6 +76,38 @@ export async function deleteAccount() {
   writeSession(null);
 }
 
+// A run starts: ask the API for a token. The Worker times the run between this call and the score, so the browser cannot
+// claim a length. Resolves to the token, or null for guests and when it did not work.
+export async function startRun(game) {
+  if (!accountsEnabled() || !signedIn()) return null;
+  try {
+    return (await api("/runs/start", { method: "POST", body: { game } })).token;
+  } catch {
+    return null;
+  }
+}
+
+// Put a finished run (its token from startRun) on this week's board.
+// Resolves to {accepted, rank, score}, or null for guests and when it did not work.
+export async function submitScore(game, score, token) {
+  if (!token) return null;
+  try {
+    return await api("/scores", { method: "POST", body: { game, score, token, nickname: nickname() } });
+  } catch (err) {
+    return err.status === 422 ? { accepted: false, refused: true } : null;
+  }
+}
+
+// This week's board for one game: {entries, me} (me is null for guests), or null when it could not be loaded.
+export async function fetchBoard(game) {
+  if (!cfg().API_URL) return null;
+  try {
+    return await api(`/leaderboard/${encodeURIComponent(game)}`);
+  } catch {
+    return null;
+  }
+}
+
 // After every game run, copy the new progress to the account (waits a moment so quick runs go out together).
 let timer = 0;
 onChange((p) => {
@@ -94,4 +127,58 @@ export function loadGoogleScript() {
     s.onerror = () => reject(new Error("could not load Google sign-in"));
     document.head.append(s);
   });
+}
+
+// Cloudflare Turnstile: a bot check that only shows something when it is unsure. Resolves to a token, or "" when it is
+// switched off (no site key) or could not load; the API then decides (it only insists on a token for a new account).
+export function getTurnstileToken(container) {
+  const key = cfg().TURNSTILE_SITE_KEY;
+  if (!key) return Promise.resolve("");
+  return new Promise((resolve) => {
+    const run = () => {
+      try {
+        window.turnstile.render(container, { sitekey: key, appearance: "interaction-only", callback: resolve, "error-callback": () => resolve("") });
+      } catch { resolve(""); }
+    };
+    if (window.turnstile) return run();
+    const s = document.createElement("script");
+    s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    s.async = true;
+    s.onload = run;
+    s.onerror = () => resolve("");
+    document.head.append(s);
+  });
+}
+
+// ---- Web Push (opt-in) ----
+export const pushSupported = () => "serviceWorker" in navigator && "PushManager" in window && "Notification" in window && Boolean(cfg().VAPID_PUBLIC_KEY && cfg().API_URL);
+
+const keyBytes = (b64url) => Uint8Array.from(atob(b64url.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0));
+
+export async function pushEnabled() {
+  if (!pushSupported()) return false;
+  try { return Boolean(await (await navigator.serviceWorker.ready).pushManager.getSubscription()); } catch { return false; }
+}
+
+// Ask permission, subscribe this browser and tell the API (signed in: it also links the browser to the account for streak
+// reminders). Resolves to "on", "denied" or "error".
+export async function enablePush(lang) {
+  try {
+    if (await Notification.requestPermission() !== "granted") return "denied";
+    const reg = await navigator.serviceWorker.ready;
+    const sub = (await reg.pushManager.getSubscription()) || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: keyBytes(cfg().VAPID_PUBLIC_KEY) });
+    await api("/push/subscribe", { method: "POST", body: { endpoint: sub.endpoint, lang } });
+    return "on";
+  } catch {
+    return "error";
+  }
+}
+
+export async function disablePush() {
+  try {
+    const sub = await (await navigator.serviceWorker.ready).pushManager.getSubscription();
+    if (!sub) return;
+    await api("/push/subscribe", { method: "DELETE", body: { endpoint: sub.endpoint } }).catch(() => {});
+    await sub.unsubscribe();
+  } catch {}
 }

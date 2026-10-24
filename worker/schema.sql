@@ -62,3 +62,42 @@ CREATE TABLE IF NOT EXISTS loves (
   created_at   INTEGER NOT NULL,
   PRIMARY KEY (whisper_n, device_hash)
 );
+
+-- Weekly best score per player and game (the leaderboard). The week is the Monday it started, as YYYY-MM-DD (UTC).
+-- Scores come from the browser, so the Worker only keeps ones that are plausible (see SCORE_LIMITS in worker/api.js).
+CREATE TABLE IF NOT EXISTS scores (
+  user_id     TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  game        TEXT NOT NULL,
+  week        TEXT NOT NULL,
+  score       INTEGER NOT NULL,
+  updated_at  INTEGER NOT NULL,
+  PRIMARY KEY (user_id, game, week)
+);
+CREATE INDEX IF NOT EXISTS scores_board ON scores(game, week, score DESC);
+
+-- Finished runs: one row per run token, so a token can be used for one score only. Old rows are removed by the timer.
+CREATE TABLE IF NOT EXISTS runs (
+  nonce       TEXT PRIMARY KEY,
+  user_id     TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at  INTEGER NOT NULL
+);
+
+-- Riddle answers judged by Gemini (Teka-Teki Gaib): one row per judged answer, for the daily caps per browser and in total.
+CREATE TABLE IF NOT EXISTS riddle_log (
+  device_hash TEXT NOT NULL,
+  created_at  INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS riddle_log_time ON riddle_log(created_at);
+
+-- Web Push subscribers (opt-in). The browser's endpoint is the address a push is sent to; the page can only read a notification's
+-- text back by the endpoint's hash, so the text is parked in `pending`. At most one push a day per subscriber.
+CREATE TABLE IF NOT EXISTS push_subs (
+  endpoint_hash TEXT PRIMARY KEY,
+  endpoint      TEXT NOT NULL,
+  user_id       TEXT,                    -- set when the player was signed in (needed for streak reminders)
+  lang          TEXT NOT NULL DEFAULT 'id',
+  created_at    INTEGER NOT NULL,
+  last_sent     INTEGER NOT NULL DEFAULT 0,
+  last_streak   TEXT NOT NULL DEFAULT '',  -- the Jakarta date of the last streak reminder
+  pending       TEXT
+);

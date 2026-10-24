@@ -152,8 +152,8 @@ button:focus-visible, a:focus-visible { outline: none; }
   padding: 14px 18px;
   border: 3px solid var(--ink);
   border-radius: 26px 30px 28px 24px / 30px 26px 32px 24px;
-  background: #fff;
-  color: var(--ink);
+  background: var(--bubble-bg, #fff);
+  color: var(--bubble-ink, var(--ink));
   font-family: var(--comic);
   font-size: 1.15rem;
   line-height: 1.35;
@@ -185,7 +185,7 @@ button:focus-visible, a:focus-visible { outline: none; }
   margin-left: -14px;
 }
 .bubble::after {
-  border-color: #fff transparent transparent transparent;
+  border-color: var(--bubble-bg, #fff) transparent transparent transparent;
   border-width: 19px 11px 0 11px;
   bottom: -17px;
   margin-left: -11px;
@@ -416,3 +416,35 @@ button:focus-visible, a:focus-visible { outline: none; }
   animation: toast-in 0.25s ease-out;
 }
 @keyframes toast-in { from { opacity: 0; transform: translate(-50%, 10px); } }
+
+/* ---- Looks from the Candle shop and from bond rewards (set on <html> by games/cosmetics.js) ---- */
+/* bond level 5: each ghost's own stage look (a bought look below wins, as it comes later) */
+html[data-ghost-stage="1"] .stage { background-color: color-mix(in srgb, var(--accent) 35%, #fff); background-image: radial-gradient(circle at 80% 18%, #fff8d8 0 22px, transparent 24px), radial-gradient(color-mix(in srgb, var(--accent) 55%, transparent) 1.7px, transparent 2.2px); background-size: auto, 14px 14px; }
+html[data-ghost-stage="2"] .stage { background-image: repeating-linear-gradient(0deg, color-mix(in srgb, var(--accent) 35%, transparent) 0 2px, transparent 2px 28px), radial-gradient(color-mix(in srgb, var(--accent) 45%, transparent) 1.7px, transparent 2.2px); background-size: auto, 14px 14px; }
+html[data-ghost-stage="3"] .stage { background-image: radial-gradient(ellipse 7px 4px at 20% 30%, color-mix(in srgb, var(--accent) 70%, #fff) 99%, transparent), radial-gradient(ellipse 7px 4px at 70% 60%, color-mix(in srgb, var(--accent) 70%, #fff) 99%, transparent), radial-gradient(color-mix(in srgb, var(--accent) 45%, transparent) 1.7px, transparent 2.2px); background-size: 90px 90px, 120px 120px, 14px 14px; }
+html[data-ghost-stage="4"] .stage { background-image: linear-gradient(160deg, transparent 0 60%, color-mix(in srgb, var(--accent) 40%, transparent) 60% 100%), radial-gradient(color-mix(in srgb, var(--accent) 55%, transparent) 1.7px, transparent 2.2px); background-size: auto, 14px 14px; }
+/* shop: stage looks */
+html[data-stage="stripes"] .stage { background-image: repeating-linear-gradient(45deg, color-mix(in srgb, var(--accent) 35%, transparent) 0 10px, transparent 10px 22px); background-size: auto; }
+html[data-stage="grid"] .stage { background-color: #fffdf4; background-image: linear-gradient(color-mix(in srgb, var(--accent) 40%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--accent) 40%, transparent) 1px, transparent 1px); background-size: 20px 20px; }
+html[data-stage="stars"] .stage { background-color: #1b1f3a; background-image: radial-gradient(#fff 1px, transparent 1.6px), radial-gradient(#ffe9a8 1.2px, transparent 2px); background-size: 37px 37px, 61px 61px; background-position: 0 0, 18px 22px; }
+html[data-stage="dusk"] .stage { background-color: #3a2a4d; background-image: radial-gradient(circle at 78% 20%, #fff3c4 0 18px, transparent 20px), linear-gradient(#3a2a4d, color-mix(in srgb, var(--accent) 45%, #f4a36b)); background-size: auto; }
+/* shop: bubble colours */
+html[data-bubble="mint"] { --bubble-bg: #dcf7e8; }
+html[data-bubble="rose"] { --bubble-bg: #fde0e6; }
+html[data-bubble="sky"] { --bubble-bg: #dcecff; }
+html[data-bubble="night"] { --bubble-bg: #25274d; --bubble-ink: #f1f1ff; }
+
+/* profile frames (shop, bond level 8): a ring around the header picture */
+html[data-frame="gold"] { --frame: 0 0 0 3px #f5c542, 0 0 12px #f5c542aa; }
+html[data-frame="ember"] { --frame: 0 0 0 3px #ff7a45, 0 0 12px #ff5a1faa; }
+html[data-frame="moon"] { --frame: 0 0 0 3px #cfe3ff, 0 0 14px #9fc4ffcc; }
+html[data-frame="rainbow"] { --frame: 0 0 0 3px #ff6b9d, 0 0 0 6px #ffd166, 0 0 0 9px #6bd6ff; }
+html[data-frame="ribbon-1"] { --frame: 0 0 0 3px #a47fd0, 0 0 12px #a47fd0aa; }
+html[data-frame="ribbon-2"] { --frame: 0 0 0 3px #4ec9b0, 0 0 12px #4ec9b0aa; }
+html[data-frame="ribbon-3"] { --frame: 0 0 0 3px #f28fb5, 0 0 12px #f28fb5aa; }
+html[data-frame="ribbon-4"] { --frame: 0 0 0 3px #8fd16b, 0 0 12px #8fd16baa; }
+.head-avatar { box-shadow: var(--frame, none); }
+
+/* time of day in Jakarta (set on <html> by games/cosmetics.js): night darkens the stage a little */
+html[data-tod="night"] .stage { box-shadow: inset 0 0 0 999px rgba(12, 12, 48, 0.3), 6px 6px 0 rgba(0, 0, 0, 0.55); }
+html[data-tod="evening"] .stage { box-shadow: inset 0 0 0 999px rgba(70, 30, 70, 0.1), 6px 6px 0 rgba(0, 0, 0, 0.55); }

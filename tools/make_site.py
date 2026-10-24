@@ -193,6 +193,8 @@ def play_area(g, c):
                 f'        <div class="rooms" id="rooms" role="group" aria-label="{attr(g["title"])}">{rooms}</div>\n'
                 '        <p class="sighs" id="sighs" aria-live="polite"></p>\n'
                 '        <button type="button" class="m-start" id="mStart">Begin</button>')
+    if g.get("type") == "module":  # a game that builds its own markup (assets/scripts/games/<module>.js)
+        return '        <div class="module-root" id="moduleRoot"></div>'
     return f'        <canvas id="game" tabindex="0" role="img" aria-label="{attr(g["title"])} game"></canvas>'
 
 
@@ -249,7 +251,7 @@ def shell_pages(site, characters, games):
       <div class="profile"><span class="ph" id="profPhoto">{icon("ghost")}</span>
         <div class="who-am-i"><strong id="profName" data-t="meGuest">Guest</strong><p id="profNote" data-t="meNote">Your progress is saved in this browser.</p>
         <button class="signin" id="signinOff" type="button" disabled data-t="meSignIn">Sign in with Google (coming soon)</button>
-        <div id="gsi" hidden></div><p class="err" id="acctErr" role="alert" hidden></p>
+        <div id="gsi" hidden></div><div id="turnstile"></div><p class="err" id="acctErr" role="alert" hidden></p>
         <div class="acct" id="acct" hidden><button type="button" id="signOutBtn" data-t="meSignOut">Sign out</button>
         <button type="button" id="deleteBtn" class="danger" data-t="meDelete">Delete account</button></div></div></div>
       <div class="stats"><div class="stat"><b id="meCandles">0</b><span data-t="meCandles">Candles</span></div>
@@ -257,15 +259,25 @@ def shell_pages(site, characters, games):
       <p class="streak-me">{icon("flame")}<span id="meStreak"></span></p>
       <h2 data-t="meLanguage">Language</h2>
       <div class="langs" id="langSwitch" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="false">English</button><button type="button" data-lang="id" aria-pressed="false">Indonesia</button></div>
+      <h2 data-t="me3d">3D scenes</h2>
+      <p class="toggle3d"><label><input type="checkbox" id="me3d"> <span data-t="me3dLabel">Show the 3D backdrop in chats</span></label></p>
+      <h2 data-t="meNotify">Notifications</h2>
+      <p class="toggle3d"><label><input type="checkbox" id="meNotify"> <span data-t="meNotifyLabel">Tell me when a ghost whispers, and before my streak ends</span></label></p>
+      <p class="nick-note" id="notifyNote"></p>
       <h2 data-t="meNickname">Nickname</h2>
       <form class="nick" id="nickForm" autocomplete="off"><input id="meNick" type="text" maxlength="24" aria-labelledby="nickLabel">
         <button type="submit" data-t="meSave">Save</button><button type="button" id="nickRandom" data-t="meRandom">Random</button></form>
       <p class="nick-note" id="nickNote" data-t="meNickNote">Shown next to your comments on whispers.</p>
       <h2 data-t="meBonds">Bonds</h2>
       <ul class="bonds">{bonds}</ul>
+      <h2 data-t="shopTitle">Candle shop</h2>
+      <section class="shop" id="shop"><p class="shop-balance" id="shopBalance" aria-live="polite"></p><p class="shop-msg" id="shopMsg" role="status"></p><div id="shopList"></div>
+        <p class="nick-note" data-t="shopGhostStage">Each ghost also gets her own stage look at bond level 5, and her ribbon frame at level 8.</p></section>
+      <h2 data-t="meBadges">Badges</h2>
+      <ul class="badges" id="badgeList"></ul>
       <h2 data-t="meStories">Stories</h2>
       <div class="stories" id="storyList"></div>
-      <ul class="links"><li><a href="loved/"><span data-t="meLoved">Loved whispers</span> <span class="loved-count" id="meLovedCount"></span></a></li><li><a href="privacy/" data-t="mePrivacy">Privacy</a></li></ul>
+      <ul class="links"><li><a href="room/" data-t="meRoom">My Ghost Room</a></li><li><a href="loved/"><span data-t="meLoved">Loved whispers</span> <span class="loved-count" id="meLovedCount"></span></a></li><li><a href="privacy/" data-t="mePrivacy">Privacy</a></li></ul>
     </section>""")
     me_h = dict(title=f"Me | {site['name']}", description=f"Your profile and progress in {site['name']}.",
                 url=f"{site['url']}/me/", image=share_image(site), robots="noindex, follow")
@@ -292,6 +304,13 @@ def shell_pages(site, characters, games):
                    url=f"{site['url']}/loved/", image=share_image(site), robots="noindex, follow")
     out.append(("loved", fill("loved", 1, loved_h, loved_content, None, "me"), loved_h["url"], False))
 
+    # /room/ : the Ghost Room (3D, with a 2D fallback). A friend's room opens from a link that carries the furniture in its #hash.
+    room_content = (f'    <header class="app-bar">{back_me}<h1 data-t="roomTitle">Ghost Room</h1><button type="button" class="room-share" id="roomShare" data-t="roomShare">Share my room</button></header>\n'
+                    + '    <section class="room-page"><div class="room-root" id="roomRoot"></div><p class="room-note" id="roomNote" role="status"></p></section>')
+    room_h = dict(title=f"Ghost Room | {site['name']}", description="Your own little ghost room, decorated with what you bought with Candles.",
+                  url=f"{site['url']}/room/", image=share_image(site), robots="noindex, follow")
+    out.append(("room", fill("room", 1, room_h, room_content, None, "me"), room_h["url"], False))
+
     # /games/ : the hub
     cards = []
     for g in games["games"]:
@@ -301,15 +320,23 @@ def shell_pages(site, characters, games):
                  f'<span class="tagline">{escape(g["tagline"])}</span><span class="desc">{desc}</span></span>')
         meta = '<span class="bond" data-bond></span><span class="best" data-best></span>'
         if g["ready"]:
-            cards.append(f'      <li class="card" data-game="{g["slug"]}" data-char="{c["id"]}" style="--accent:{c["accent"]}"><a href="games/{g["slug"]}/">{inner}</a>'
+            extra = (' data-quick="1"' if g.get("quick") else "") + (f' data-added="{g["added"]}"' if g.get("added") else "")
+            cards.append(f'      <li class="card" data-game="{g["slug"]}" data-char="{c["id"]}"{extra} style="--accent:{c["accent"]}"><a href="games/{g["slug"]}/">{inner}</a>'
                          f'<div class="meta">{meta}</div></li>')
         else:
             cards.append(f'      <li class="card soon" data-game="{g["slug"]}" data-char="{c["id"]}"><div class="card-body">{inner}</div>'
                          f'<div class="meta"><span class="soon-tag">Coming soon</span></div></li>')
+    lb_tabs = "".join(f'<button type="button" data-game="{g["slug"]}" aria-pressed="false">{escape(g["title"])}</button>' for g in games["games"] if g["ready"])
+    leaderboard = ('      <section class="leaderboard" id="leaderboard" aria-labelledby="lbHead" hidden><h2 id="lbHead" data-t="lbTitle">This week\'s best</h2>'
+                   f'<div class="lb-tabs" id="lbTabs" role="group">{lb_tabs}</div><ol id="lbList"></ol><p class="lb-me" id="lbMe" aria-live="polite"></p>'
+                   '<p class="lb-note" data-t="lbResets">Starts again every Monday.</p></section>\n')
     hub_content = (bar(hub["heading"], '<p class="wallet" id="wallet" aria-live="polite"></p>')
                    + f'    <section class="hub">\n      <p class="intro">{escape(hub["intro"])}</p>\n'
                    + f'      <section class="quests" aria-labelledby="questsTitle"><div class="quests-head"><h2 id="questsTitle" data-t="questsTitle">Today\'s quests</h2>'
                    + f'<p class="streak" id="streak">{icon("flame")}<span id="streakText"></span></p></div><ul id="questList"></ul></section>\n'
+                   + '      <section class="event" id="eventBanner" hidden><img src="" alt=""><div><strong data-event-title></strong><p data-event-body></p></div><span class="event-count" data-event-count></span></section>\n'
+                   + '      <div class="hub-tools"><a class="continue" id="continueBtn" href="#" hidden></a><div class="filters" id="gameFilters" role="group" aria-label="Filter games"></div></div>\n'
+                   + leaderboard
                    + '      <ul class="cards">\n' + "\n".join(cards) + "\n      </ul>\n    </section>")
     hub_h = dict(title=hub["title"], description=hub["description"], url=f"{site['url']}/games/",
                  image=share_image(site), robots="index, follow")
@@ -327,7 +354,7 @@ def shell_pages(site, characters, games):
         back = (f'<a class="back-btn" href="games/" data-t-label="backGames" aria-label="Back to games" title="Back to games">{icon("back")}</a>')
         content = (f'    <header class="app-bar">{back}<h1>{escape(g["title"])}</h1><p class="wallet" id="wallet" aria-live="polite"></p></header>\n'
                    f'    <section class="game">\n      <p class="intro">{escape(desc)}</p>\n'
-                   f'      <div class="play{" memory" if g.get("type") in ("memory", "rounds") else ""}{" rounds" if g.get("type") == "rounds" else ""}">\n{play_area(g, c)}\n'
+                   f'      <div class="play{" memory" if g.get("type") in ("memory", "rounds") else ""}{" rounds" if g.get("type") == "rounds" else ""}{" module" if g.get("type") == "module" else ""}">\n{play_area(g, c)}\n'
                    f'        <div id="result" class="result" hidden>\n          <h2 id="rTitle"></h2>\n          <p id="rScore"></p>\n'
                    f'          <p id="rReward"></p>\n          <p id="rQuests" class="quests-done"></p>\n          <p id="rSay" class="say"></p>\n          <div class="actions">\n'
                    f'            <button id="rAgain" type="button">Play again</button>\n'
@@ -419,6 +446,36 @@ def stamp_versions(out):
     return v
 
 
+def load_games():
+    """games.json plus every games.d/<slug>.json (one game object each, added after the ones in games.json)."""
+    games = json.loads((ROOT / "games.json").read_text(encoding="utf-8"))
+    folder = ROOT / "games.d"
+    if folder.is_dir():
+        for f in sorted(folder.glob("*.json")):
+            games["games"].append(json.loads(f.read_text(encoding="utf-8")))
+    return games
+
+
+def write_service_worker(out, version):
+    """sw.js: the offline shell. It saves every page, script, style and data file of this build when it installs."""
+    urls = ["./"]
+    for f in sorted(out.rglob("index.html")):
+        folder = f.parent.relative_to(out).as_posix()
+        if folder != ".":
+            urls.append(folder + "/")
+    for f in sorted(out.rglob("*")):
+        rel = f.relative_to(out).as_posix()
+        if not f.is_file() or rel.startswith("builds/") or rel in ("sw.js", "404.html", "robots.txt", "sitemap.xml"):
+            continue
+        if rel.endswith((".js", ".css", ".json")):
+            urls.append(f"{rel}?v={version}")
+    cfg = (ROOT / "config.js").read_text(encoding="utf-8")
+    api = re.search(r'API_URL:\s*"([^"]*)"', cfg)
+    text = ((ROOT / "sw.js").read_text(encoding="utf-8").replace("__VERSION__", version).replace("__PRECACHE__", json.dumps(urls))
+            .replace("__API_URL__", api.group(1) if api else ""))
+    (out / "sw.js").write_text(text, encoding="utf-8")
+
+
 def main():
     site = json.loads((ROOT / "site.json").read_text(encoding="utf-8"))
     data = json.loads((ROOT / "characters.json").read_text(encoding="utf-8"))
@@ -432,6 +489,8 @@ def main():
         shutil.copy2(ROOT / name, OUT / name)
     (OUT / "assets").mkdir()
     shutil.copytree(ROOT / "assets" / "scripts", OUT / "assets" / "scripts")
+    if (ROOT / "assets" / "vendor").exists():
+        shutil.copytree(ROOT / "assets" / "vendor", OUT / "assets" / "vendor")  # pinned third-party code (three.js), loaded only by the 3D pages
     if (ROOT / "builds").exists():
         shutil.copytree(ROOT / "builds", OUT / "builds", ignore=shutil.ignore_patterns("site"))  # images and data, not this folder itself
 
@@ -444,7 +503,8 @@ def main():
         html, _ = render(template, site, characters, c, history, depth)
         path.write_text(html, encoding="utf-8")
 
-    games = json.loads((ROOT / "games.json").read_text(encoding="utf-8"))
+    games = load_games()
+    (OUT / "games.json").write_text(json.dumps(games, ensure_ascii=False, indent=2), encoding="utf-8")  # the merged list the pages fetch
     app_urls = []
     app_pages = shell_pages(site, characters, games)
     for folder, html, url, listed in app_pages:
@@ -462,6 +522,7 @@ def main():
     check_sitemap(urls, site)
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {site['url']}/sitemap.xml\n", encoding="utf-8")
     version = stamp_versions(OUT)
+    write_service_worker(OUT, version)
     print(f"ok site: {len(pages) + len(app_pages)} pages + 404.html, sitemap.xml, robots.txt in {OUT.relative_to(ROOT)}/ (assets ?v={version})")
 
 

@@ -1,6 +1,6 @@
 # Roadmap
 
-Where Omon Omon goes after v0.13. `GAMIFICATION.md` was the first plan; this one picks up what is left from it and adds
+Where Omon Omon goes after v0.13. **Phases 0 to 3 were built in 0.15** (see CHANGELOG); still open from them: ghost outfits and accessories (1.1, needs art), the fifth ghost (3.6, needs art), how-to-play clips (hub upgrades) and the rewarded 3D items that need playtesting on real phones. `GAMIFICATION.md` was the first plan; this one picks up what is left from it and adds
 more games, a 3D track with three.js, and a monetization plan. Each phase can ship on its own. Sizes: **S** is an evening, **M** a day or two, **L** a week.
 
 The constraints still hold:
@@ -18,8 +18,8 @@ The constraints still hold:
 - **Whispers:** a Gemini post every 15 minutes (each ghost once an hour, shuffled), with comments, ghost replies and loves.
 
 What is missing:
-- **Candles have nothing to buy.** The currency piles up with no point.
-- **Planned but not built:** achievements and leaderboards (from `GAMIFICATION.md`).
+- **Candle shop:** built in 0.14 (stage looks and bubble colours); outfits and profile frames are still open.
+- **Built in 0.14:** achievements (14 badges) and weekly leaderboards. More badges and a Turnstile check on first sign-in are still open.
 - **Stale scripts after a deploy.** Cloudflare's 4-hour browser cache can run new HTML with an old script.
 - **Tests aren't in the repo.** They live outside it, and CI only checks that the build works.
 

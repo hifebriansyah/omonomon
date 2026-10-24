@@ -33,7 +33,29 @@
           "Kata-katamu kebanyakan, terlalu cepat. Kasih aku semenit."
         ]
       },
-      "statusId": "blak-blakan"
+      "statusId": "blak-blakan",
+      "bondGreetings": {
+        "en": [
+          "You came back. I counted. Do not make it weird.",
+          "Hm. You again. Sit. I will say something true, and you will pretend you did not flinch."
+        ],
+        "id": [
+          "Kamu balik. Aku ngitung, lho. Jangan dibikin aneh.",
+          "Hm. Kamu lagi. Duduk. Aku bakal ngomong jujur, kamu pura-pura nggak kaget."
+        ]
+      },
+      "moods": {
+        "en": [
+          "hopping in circles",
+          "thinking something unkind, kindly",
+          "counting tombstones"
+        ],
+        "id": [
+          "lompat muter-muter",
+          "mikir yang nyelekit, tapi baik",
+          "ngitungin nisan"
+        ]
+      }
     },
     {
       "id": "2",
@@ -80,7 +102,29 @@
           "Pelan-pelan dulu. Kakak kejar dulu, baru kita ngobrol."
         ]
       },
-      "statusId": "sibuk, tapi dengerin"
+      "statusId": "sibuk, tapi dengerin",
+      "bondGreetings": {
+        "en": [
+          "You made it in. I have exactly one minute, so tell me everything slowly.",
+          "Shift is quiet. For now. Come in, mind the wet floor."
+        ],
+        "id": [
+          "Kamu dateng. Aku cuma punya satu menit, jadi cerita pelan-pelan aja.",
+          "Shift lagi tenang. Buat sekarang. Masuk aja, awas lantai basah."
+        ]
+      },
+      "moods": {
+        "en": [
+          "between two rooms",
+          "checking the night chart",
+          "sipping cold tea"
+        ],
+        "id": [
+          "di antara dua kamar",
+          "ngecek catatan malam",
+          "nyeruput teh dingin"
+        ]
+      }
     },
     {
       "id": "3",
@@ -127,7 +171,29 @@
           "Terlalu cepat... kasih aku waktu sebentar."
         ]
       },
-      "statusId": "nggak ada yang abadi"
+      "statusId": "nggak ada yang abadi",
+      "bondGreetings": {
+        "en": [
+          "Oh, it is you. The air feels softer already.",
+          "I was just remembering something. Stay a while, and I will tell you about it."
+        ],
+        "id": [
+          "Oh, kamu. Udaranya langsung terasa lebih lembut.",
+          "Aku lagi inget sesuatu. Tinggal sebentar, nanti aku ceritain."
+        ]
+      },
+      "moods": {
+        "en": [
+          "watching the petals fall",
+          "humming an old tune",
+          "waiting by the window"
+        ],
+        "id": [
+          "ngeliatin kelopak jatuh",
+          "nyanyi lagu lama",
+          "nunggu di jendela"
+        ]
+      }
     },
     {
       "id": "4",
@@ -174,7 +240,29 @@
           "Wah kecepetan! Tarik napas, hitung sampai enam puluh, terus cerita lagi ya!"
         ]
       },
-      "statusId": "penasaran sama kamu"
+      "statusId": "penasaran sama kamu",
+      "bondGreetings": {
+        "en": [
+          "You are here! I heard a secret on the way and I am dying to trade.",
+          "Ooh, you came back. Quick, ask me anything. I know things."
+        ],
+        "id": [
+          "Kamu dateng! Aku denger rahasia tadi dan pengen banget tukeran.",
+          "Ooh, kamu balik. Cepet, tanya apa aja. Aku tau banyak hal."
+        ]
+      },
+      "moods": {
+        "en": [
+          "listening at the branches",
+          "collecting secrets",
+          "poking at something odd"
+        ],
+        "id": [
+          "nguping di dahan",
+          "ngumpulin rahasia",
+          "colek-colek sesuatu yang aneh"
+        ]
+      }
     }
   ]
 }

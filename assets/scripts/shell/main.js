@@ -1,11 +1,12 @@
 // App pages: the chat list (/), the games (/games/, /games/<slug>/) and Me (/me/).
 // Progress is kept in this browser.
 
-import { load, recordRun } from "../games/progress.js";
+import { load, recordRun, balance } from "../games/progress.js";
+import { applyCosmetics } from "../games/cosmetics.js";
 import { loadMode } from "../storage.js";
 import { questLabel } from "../games/quests.js";
 import { T, lang, pickLine } from "../games/text.js";
-import { startHub } from "../games/hub.js";
+import { startHub, rememberLastGame } from "../games/hub.js";
 import { startRunner } from "../games/runner.js";
 import { startMemory } from "../games/memory.js";
 import { startCatch } from "../games/catch.js";
@@ -14,15 +15,19 @@ import { startHome } from "./home.js";
 import { startMe, refreshMe } from "./me.js";
 import { startWhispers } from "./whispers.js";
 import { startLoved } from "./loved.js";
+import { startRoomPage } from "./room-page.js";
 import { checkBadge } from "./whisper-badge.js";
-import { refresh } from "../games/account.js";
+import { refresh, startRun, submitScore } from "../games/account.js";
 import { localizeData } from "./localize.js";
+import "../report.js";
+import "../offline.js";
+
 
 const { page, game: gameSlug, char: charId } = document.body.dataset;
 const $ = (id) => document.getElementById(id);
 
 function showWallet() {
-  if ($("wallet")) $("wallet").textContent = `${T.candles}: ${load().candles}`;
+  if ($("wallet")) $("wallet").textContent = `${T.candles}: ${balance(load())}`;
 }
 
 // Static English text is the default; an Indonesian browser gets Indonesian.
@@ -50,6 +55,22 @@ const loadImage = (src) =>
     img.src = src;
   });
 
+// Games that build their own markup (games.json "type": "module"). Each file exports start(root, ctx), see games/README.md.
+const MODULES = {
+  "rope-untangle": () => import("../games/rope-untangle.js"),
+  "night-meds": () => import("../games/night-meds.js"),
+  "memory-garden": () => import("../games/memory-garden.js"),
+  "tree-gossip": () => import("../games/tree-gossip.js"),
+  "guess-the-ghost": () => import("../games/guess-the-ghost.js"),
+  "dare-night": () => import("../games/dare-night.js"),
+  "congklak": () => import("../games/congklak.js"),
+  "ghost-riddles": () => import("../games/ghost-riddles.js"),
+  "daily": () => import("../games/daily.js"),
+  "hop-hop-3d": () => import("../games/hop-hop-3d.js"),
+  "lantern-flight": () => import("../games/lantern-flight.js"),
+  "haunted-house": () => import("../games/haunted-house.js"),
+};
+
 async function startGame() {
   const [games, chars] = await Promise.all([getJson("games.json"), getJson("characters.json")]);
   const game = games.games.find((g) => g.slug === gameSlug);
@@ -66,14 +87,20 @@ async function startGame() {
   const result = $("result");
 
   // What happens when a run ends (the same for every kind of game).
-  function onOver(score) {
-    const r = recordRun(gameSlug, charId, score, chars.characters, game.scorePerCandle);
+  let runToken = startRun(gameSlug); // a promise: the weekly board only accepts a score that comes with the token of its run
+  function onOver(score, opts = {}) {
+    const token = runToken;
+    rememberLastGame(gameSlug);
+    const r = recordRun(gameSlug, opts.char || charId, score, chars.characters, game.scorePerCandle);
     const tier = score < lowTier ? "low" : score < midTier ? "mid" : "high";
     $("rTitle").textContent = r.newBest && r.best > 0 && score > 0 ? T.record : (game.overTitle?.[lang] || T.over);
     $("rScore").textContent = `${T.score} ${score} \u00b7 ${T.best} ${r.best}`;
     $("rReward").textContent = [T.reward(r.candles, r.xp), r.capped ? T.capped : "", r.levelAfter > r.levelBefore ? T.levelUp(r.levelAfter) : ""]
       .filter(Boolean).join(" ");
     $("rQuests").textContent = [
+      r.hosted ? T.eventDouble : "",
+      r.weeklyReward ? T.eventPaid(r.weeklyReward) : "",
+      ...r.badges.map((id) => T.badgeUnlocked(T.badges[id]?.[0] || id)),
       ...r.completed.map((q) => T.questDone(questLabel(q, lang, chars.characters), q.reward)),
       r.allDone ? T.allQuestsDone(10) : "",
       r.completed.length && r.streak ? T.streakDays(r.streak) : "",
@@ -81,6 +108,11 @@ async function startGame() {
     const lines = (r.newBest && score >= recordMin ? game.reactions.record : game.reactions[tier])[lang];
     $("rSay").textContent = pickLine(lines);
     showWallet();
+    token.then((t) => submitScore(gameSlug, score, t)).then((b) => {
+      if (!b) return;
+      if (b.accepted) $("rQuests").textContent = [$("rQuests").textContent, T.lbRank(b.rank)].filter(Boolean).join(" \u00b7 ");
+      else if (b.refused) $("rQuests").textContent = [$("rQuests").textContent, T.lbBad].filter(Boolean).join(" \u00b7 ");
+    });
     setTimeout(() => { result.hidden = false; $("rAgain").focus(); }, 450);
   }
 
@@ -96,6 +128,12 @@ async function startGame() {
       onOver,
       text: { begin: T.rdBegin, calling: T.rdCalling, thanks: T.rdThanks, missed: T.rdMissed, lives: T.rdLives, room: T.rdRoom },
     });
+  } else if (game.type === "module") {
+    const mod = await MODULES[game.module]();
+    play = mod.start($("moduleRoot"), {
+      onOver, lang, T, char, chars: chars.characters, best: load().best[gameSlug] || 0,
+      reduceMotion: matchMedia("(prefers-reduced-motion: reduce)").matches, game,
+    });
   } else {
     const hero = await loadImage(char.stage);
     const options = { hero, accent: char.accent, best: load().best[gameSlug] || 0, startText, onOver };
@@ -103,10 +141,12 @@ async function startGame() {
   }
   $("rAgain").addEventListener("click", () => {
     result.hidden = true;
+    runToken = startRun(gameSlug);
     play.restart(load().best[gameSlug] || 0);
   });
 }
 
+applyCosmetics("");
 translateChrome();
 localizeData(page);
 showWallet();
@@ -114,6 +154,7 @@ if (page === "home") startHome();
 else if (page === "me") startMe();
 else if (page === "whispers") startWhispers();
 else if (page === "loved") startLoved();
+else if (page === "room") startRoomPage();
 else if (page === "hub") startHub();
 else if (page === "game") startGame().catch((err) => {
   $("how").textContent = `Could not start the game (${err.message}). Run "python3 tools/build_all.py" and open the site through a web server.`;

@@ -1,0 +1,72 @@
+{
+  "slug": "congklak",
+  "character": "3",
+  "ready": true,
+  "type": "module",
+  "module": "congklak",
+  "title": "Congklak",
+  "tagline": "sow the seeds, fill your house",
+  "description": "The old Indonesian seed-sowing game with {name}: pick an opponent ghost, sow the seeds hole by hole and fill your house before they fill theirs.",
+  "how": {
+    "en": "Pick one of your holes (bottom row, or arrow keys + Enter). Seeds are sown one by one to the right, through your house on the far right. Last seed in your house: go again. Last seed in a full hole: keep sowing from it. Last seed in an empty hole of yours: capture the seeds across from it. Most seeds in your house wins.",
+    "id": "Pilih salah satu lubangmu (baris bawah, atau tombol panah + Enter). Biji ditabur satu-satu ke kanan, lewat lumbungmu di ujung kanan. Biji terakhir di lumbungmu: jalan lagi. Biji terakhir di lubang berisi: lanjut menabur dari situ. Biji terakhir di lubangmu yang kosong: ambil biji di seberangnya. Yang lumbungnya paling banyak menang."
+  },
+  "tiers": [
+    45,
+    85
+  ],
+  "recordMin": 45,
+  "scorePerCandle": 8,
+  "limits": {
+    "perSec": 4,
+    "slack": 20,
+    "max": 140
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "The seeds slipped away this time. It's alright, they'll be back in the next game.",
+        "Mm. Not tonight. We can sow again, slowly, whenever you like."
+      ],
+      "id": [
+        "Bijinya lepas dari tanganmu kali ini. Nggak apa-apa, nanti juga kembali di permainan berikutnya.",
+        "Hm. Belum malam ini. Kita bisa menabur lagi pelan-pelan, kapan pun kamu mau."
+      ]
+    },
+    "mid": {
+      "en": [
+        "A good, quiet game. Your house is heavy with seeds.",
+        "You sowed carefully. I liked watching it, truly."
+      ],
+      "id": [
+        "Permainan yang tenang dan bagus. Lumbungmu berat oleh biji.",
+        "Kamu menabur dengan hati-hati. Aku senang melihatnya, sungguh."
+      ]
+    },
+    "high": {
+      "en": [
+        "Look at all those seeds... you filled your house to the brim.",
+        "That was lovely. Like an old game remembering itself through you."
+      ],
+      "id": [
+        "Lihat semua biji itu... lumbungmu penuh sampai tepi.",
+        "Indah sekali tadi. Seperti permainan lama yang mengingat dirinya lewat kamu."
+      ]
+    },
+    "record": {
+      "en": [
+        "The fullest house you've ever had. I'll remember it, quietly.",
+        "A new best. The seeds will keep it for a while."
+      ],
+      "id": [
+        "Lumbung paling penuh yang pernah kamu punya. Kusimpan diam-diam.",
+        "Rekor baru. Biji-bijinya akan menjaganya sebentar."
+      ]
+    }
+  },
+  "id": {
+    "tagline": "tabur biji, penuhi lumbungmu",
+    "description": "Permainan menabur biji tradisional Indonesia bareng {name}: pilih hantu lawan, tabur biji lubang demi lubang dan penuhi lumbungmu sebelum lumbung mereka penuh."
+  },
+  "added": "2026-10-25"
+}

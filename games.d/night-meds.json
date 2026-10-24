@@ -1,0 +1,73 @@
+{
+  "slug": "night-meds",
+  "character": "2",
+  "ready": true,
+  "type": "module",
+  "module": "night-meds",
+  "title": "Obat Malam",
+  "tagline": "sort the night meds",
+  "description": "Pills keep falling and {name} is out of hands. Send each one to the right patient's bed, matched by colour and shape. Three lives, and the night shift speeds up.",
+  "how": {
+    "en": "Tap the bed that matches the pill's colour and shape (or press 1, 2, 3). Wrong bed or a missed pill costs a life. Five right in a row pays extra.",
+    "id": "Ketuk ranjang yang cocok dengan warna dan bentuk pil (atau tekan 1, 2, 3). Salah ranjang atau pil lolos mengurangi satu nyawa. Lima benar beruntun dapat bonus."
+  },
+  "tiers": [
+    300,
+    800
+  ],
+  "recordMin": 200,
+  "scorePerCandle": 80,
+  "limits": {
+    "perSec": 12,
+    "slack": 40,
+    "max": 4000
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "Okay, okay, I'll finish the rest myself. Go sit, drink some water.",
+        "Rough shift. It happens. Next round's yours, I've got the rest."
+      ],
+      "id": [
+        "Ya udah, sisanya aku yang beresin. Duduk dulu sana, minum air.",
+        "Shift yang berat ya. Wajar kok. Ronde berikutnya kamu lagi, sisanya aku pegang."
+      ]
+    },
+    "mid": {
+      "en": [
+        "Not bad, not bad. Half my patients would've gotten the wrong pill without you. Kidding. Mostly.",
+        "Okay, that was actually useful. Pass me the chart, I'm late for bed three."
+      ],
+      "id": [
+        "Lumayan, lumayan. Tanpa kamu separuh pasienku kebagian pil yang salah. Bercanda. Kayaknya.",
+        "Oke, ini beneran ngebantu. Sini kasih aku catatannya, aku telat ke ranjang tiga."
+      ]
+    },
+    "high": {
+      "en": [
+        "Whoa, steady hands! You could take my shift. Please. I'm so tired.",
+        "Every pill in the right bed? Okay, I'm impressed. Quick, before the next round starts."
+      ],
+      "id": [
+        "Wih, tangannya mantap! Gantiin shift aku aja deh. Please. Aku capek banget.",
+        "Semua pil masuk ranjang yang bener? Oke, aku salut. Cepet, sebelum ronde berikutnya mulai."
+      ]
+    },
+    "record": {
+      "en": [
+        "A new record! I'd clap but my hands are full. Thank you, really.",
+        "Best night yet. I'm writing it in the log, right under 'finally, some help'."
+      ],
+      "id": [
+        "Rekor baru! Mau tepuk tangan tapi tanganku penuh. Makasih ya, beneran.",
+        "Malam terbaik sejauh ini. Aku catat di buku jaga, tepat di bawah 'akhirnya ada yang bantu'."
+      ]
+    }
+  },
+  "id": {
+    "tagline": "pilah obat malam",
+    "description": "Pil terus berjatuhan dan {name} kehabisan tangan. Kirim tiap pil ke ranjang pasien yang tepat, cocokkan warna dan bentuknya. Tiga nyawa, dan shift malam makin cepat."
+  },
+  "added": "2026-10-25",
+  "quick": true
+}

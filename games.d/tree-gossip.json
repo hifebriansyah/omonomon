@@ -1,0 +1,73 @@
+{
+  "slug": "tree-gossip",
+  "character": "4",
+  "ready": true,
+  "type": "module",
+  "module": "tree-gossip",
+  "title": "Gosip Pohon",
+  "tagline": "tap the secrets in the tree",
+  "description": "Secrets peek out of the branches of {name}'s tree. Tap each one before it hides, but leave the crows and bats alone. Three lives, and it gets faster.",
+  "how": {
+    "en": "Tap the glowing secrets before they hide (or press 1 to 9). Don't touch the crow or the bat!",
+    "id": "Tap rahasia yang menyala sebelum bersembunyi (atau tekan 1 sampai 9). Jangan sentuh gagak atau kelelawar!"
+  },
+  "tiers": [
+    200,
+    500
+  ],
+  "recordMin": 150,
+  "scorePerCandle": 50,
+  "limits": {
+    "perSec": 20,
+    "slack": 60,
+    "max": 5000
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "Hihi, the secrets hid from you! Again, again, I want to hear them!",
+        "Ooh, so few! Who was whispering up there?!"
+      ],
+      "id": [
+        "Hihi, rahasianya sembunyi dari kamu! Lagi, lagi, aku mau dengar!",
+        "Ooh, sedikit banget! Siapa tadi yang bisik-bisik di atas sana?!"
+      ]
+    },
+    "mid": {
+      "en": [
+        "Ooh, good ears! What did the secrets say? Tell me, tell me!",
+        "Hihi, quick fingers! One more round, there are still more secrets up there!"
+      ],
+      "id": [
+        "Ooh, telingamu tajam! Rahasianya bilang apa? Ceritain, ceritain!",
+        "Hihi, jarimu cepat! Satu ronde lagi, masih banyak rahasia di atas sana!"
+      ]
+    },
+    "high": {
+      "en": [
+        "WOW, you caught almost all the gossip!! Spill everything you heard!!",
+        "Hihihi, you're SO nosy, I love it! What did the secrets say?!"
+      ],
+      "id": [
+        "WAH, hampir semua gosip kamu tangkap!! Bocorin semua yang kamu dengar!!",
+        "Hihihi, kamu kepo banget, aku suka! Rahasianya bilang apa?!"
+      ]
+    },
+    "record": {
+      "en": [
+        "A NEW RECORD!! I'm telling the whole tree! Hihihi!",
+        "Best gossip catcher ever!! Come closer, I have a secret just for you!"
+      ],
+      "id": [
+        "REKOR BARU!! Aku kasih tahu satu pohon! Hihihi!",
+        "Penangkap gosip terbaik!! Sini dekat, aku punya rahasia khusus buat kamu!"
+      ]
+    }
+  },
+  "id": {
+    "tagline": "tap rahasia-rahasia di pohon",
+    "description": "Rahasia mengintip dari dahan-dahan pohon {name}. Tap tiap rahasia sebelum bersembunyi, tapi jangan sentuh gagak dan kelelawar. Tiga nyawa, dan makin lama makin cepat."
+  },
+  "added": "2026-10-25",
+  "quick": true
+}

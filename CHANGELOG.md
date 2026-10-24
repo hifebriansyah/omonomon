@@ -2,6 +2,24 @@
 
 Each version is one commit. Newest first.
 
+## 0.15.0 - Phases 0 to 3 of the roadmap
+- Foundation: tests in `tests/` run in CI (`node --test`), an offline worker (`sw.js`, built per deploy), script errors reported to the log (`POST /errors`), `package.json` only marks the files as ES modules.
+- Eight new games as plug-in modules (`games.d/*.json` + `assets/scripts/games/<slug>.js`): Tali Lepas, Obat Malam, Bunga Kenangan, Gosip Pohon, Tebak Hantu, Uji Nyali, Congklak, Teka-Teki Gaib (Gemini judges answers, 3 a day per browser), plus the Daily Challenge (same seeded run for everyone).
+- 3D with a pinned three.js r160 (`assets/vendor/three/`) and a shared kit (`assets/scripts/three/kit.js`): Hop Hop 3D, Rumah Hantu, Lentera Terbang, the Ghost Room page (`/room/`, shareable by link) and a 3D chat backdrop (Me > 3D scenes). All have 2D fallbacks.
+- Shop: profile frames and Ghost Room furniture; bond level 8 gives a ribbon frame, level 10 a secret story and a confiding Gemini tone.
+- Weekly event (one hosting ghost: double bond XP and a themed quest, her whispers mention it), hub filters, Continue and NEW tags, 22 badges.
+- Living ghosts: whispers about holidays, seasons, the week's event and a recent comment; ghosts answering each other's whispers; chat memory for signed-in players (`POST /memory`); the mood follows the hour in Jakarta; opt-in Web Push (a whisper, and a streak reminder at 20:00) with VAPID.
+- `tools/sync_limits.py` copies every game's score limits into the Worker on deploy.
+
+## 0.14.0 - Leaderboards, badges, shop and bond rewards
+- Weekly top 20 per game on the games hub (nickname only, signed-in players). The API Worker keeps one best score per player, game and week, and drops implausible runs (score per second and absolute caps).
+- 14 badges, kept in the saved progress and shown on Me; a toast or the result screen announces new ones.
+- Run tokens: `/runs/start` signs a token, the Worker times the run itself and one token counts for one score (`runs` table).
+- Candle shop on Me (4 stage looks, 4 bubble colours); `spent` is stored apart from `candles` so syncing never gives Candles back.
+- Bond rewards: own greetings from level 2, moods under her name from level 4, her own stage look at level 5.
+- Turnstile bot check on creating an account; privacy page updated; Axiom dashboard "Omon Omon API and games".
+- New `scores` table and `users.nickname` column (run tools/setup_api.py); a nickname is screened by Gemini before it is first shown.
+
 ## 0.13.2 - Mobile keyboard handling
 - assets/scripts/viewport.js keeps the chat above the on-screen keyboard (iOS and Android).
 - Skips pinch-zoom, resizes the bubble with the stage and only rewrites the height when it changes.

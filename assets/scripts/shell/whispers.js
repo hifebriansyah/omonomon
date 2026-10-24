@@ -8,7 +8,11 @@ import { markSeen } from "./whisper-badge.js";
 import { nickname, deviceId, myComments, rememberComment, forgetComment } from "./identity.js";
 import { el, bubbleIcon, heartIcon, sendIcon, shareButton, linkCard } from "./ui.js";
 import { isLoved, toggleLove } from "./loved-store.js";
+import { recordSocial } from "../games/progress.js";
+import { toast } from "../toast.js";
 import { adItem } from "./ads.js";
+
+const badgeToast = (ids) => { if (ids.length) toast(ids.map((id) => T.badgeUnlocked(T.badges[id]?.[0] || id))); };
 
 async function getJson(url) {
   const res = await fetch(url);
@@ -51,7 +55,7 @@ export async function startWhispers() {
     const time = el("time", "", chatTime(c.t));
     time.dateTime = new Date(c.t).toISOString();
     head.append(time);
-    body.append(head, el("p", c.deleted ? "c-text c-deleted" : "c-text", c.deleted ? T.commentDeleted : c.body));
+    body.append(head, el("p", c.deleted ? "c-text c-deleted" : "c-text", c.deleted ? T.commentDeleted : (lang === "id" && c.bodyId) || c.body));
     li.append(body);
     if (c.kind === "user" && !c.deleted && mine.has(c.n)) {
       const del = el("button", "c-del", "×");
@@ -136,6 +140,7 @@ export async function startWhispers() {
         const { status: code, data } = await api(`/whispers/${w.n}/comments`, { method: "POST", body: { text, nickname: nickname(), device: deviceId() } });
         if (code === 200) {
           rememberComment(data.comment.n);
+          badgeToast(recordSocial("comments"));
           mine.add(data.comment.n);
           pending.replaceWith(commentItem(data.comment, ghostChar, countEl, items, mine));
           items.append(commentItem(data.reply, ghostChar, countEl, items, mine));
@@ -214,6 +219,7 @@ export async function startWhispers() {
         try {
           const { status, data } = await api(`/whispers/${w.n}/love`, { method: sending ? "PUT" : "DELETE", body: { device: deviceId() }, signal: inFlight.signal });
           if (status !== 200) throw new Error(String(status));
+          if (sending && sentState !== true) badgeToast(recordSocial("loves"));
           sentState = sending;
           othersNow = Math.max(0, data.loves - (sending ? 1 : 0));
           showCount();

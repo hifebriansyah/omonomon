@@ -49,8 +49,23 @@
       <tr><td>Sign in with Google: your Google account id, email address, name and the link to your profile photo (the photo itself stays at Google)</td>
           <td>To recognise you and save your game progress</td>
           <td>Our database, until you delete your account.</td></tr>
-      <tr><td>Game progress (scores, levels, items), when games are available</td><td>To save your progress</td>
+      <tr><td>Game progress (scores, candles, bond levels, badges, streak)</td><td>To save your progress</td>
           <td>Your browser, and our database if you sign in.</td></tr>
+      <tr><td>Chat memory, when you are signed in: a short note per ghost (for example a name you gave and your interests), written by Google's Gemini from your recent messages</td>
+          <td>So a ghost remembers you across devices</td>
+          <td>Your browser and, with your progress, our database. It is deleted with your account. Please don't tell a ghost anything you don't want remembered.</td></tr>
+      <tr><td>Riddle answers you type in Teka-Teki Gaib that are not an exact match, plus a random id from your browser (kept only as a one-way hash)</td>
+          <td>Gemini judges the answer; the hash keeps the daily limit fair</td>
+          <td>Sent to Gemini; the hash is kept for 2 days.</td></tr>
+      <tr><td>Notifications, if you switch them on: your browser's push address, your language and (when signed in) a link to your account for streak reminders</td>
+          <td>To tell you when a ghost whispers or your streak is about to end, at most once a day</td>
+          <td>Our database, until you switch notifications off (Me page) or your browser drops the subscription.</td></tr>
+      <tr><td>Script errors from your browser: the message, file and line, the page address and your browser type (nothing you typed)</td>
+          <td>To find and fix bugs</td>
+          <td>The request log (Axiom), 30 days.</td></tr>
+      <tr><td>Weekly leaderboard, when you are signed in: your nickname and your best score per game for the week, plus a random id for each finished run (kept for a few days so one run counts once)</td>
+          <td>To show the weekly top 20</td>
+          <td>Our database. The nickname and score are public to every visitor. Google's Gemini checks a nickname before it is first shown. Scores are removed with your account.</td></tr>
     </table>
 
     <h2>Who else sees it</h2>
@@ -74,7 +89,7 @@
     <ul>
       <li>Delete your saved chats any time with Clear in the History panel, or by clearing this site's data in your browser.</li>
       <li>You can ask us to access, correct or delete the data we hold about you, including log lines that contain your IP address.</li>
-      <li>When accounts are available, deleting your account removes your profile and progress.</li>
+      <li>When accounts are available, deleting your account removes your profile, progress, badges and leaderboard scores.</li>
     </ul>
 {{contact}}
     <h2>Who this is for</h2>

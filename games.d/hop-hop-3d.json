@@ -1,0 +1,73 @@
+{
+  "slug": "hop-hop-3d",
+  "character": "1",
+  "ready": true,
+  "type": "module",
+  "module": "hop-hop-3d",
+  "title": "Hop Hop 3D",
+  "tagline": "hop through the graveyard, in 3D",
+  "description": "Run {name}, the pocong who can only hop, down a three-lane graveyard path. Switch lanes, hop over tombstones and crosses, and stay low under the hanging branches. How far can you get?",
+  "how": {
+    "en": "Swipe left or right (or use the arrow keys / A and D) to change lane. Tap, swipe up, or press Space or W to hop over tombstones and crosses. Do not hop under a branch: change lane or stay on the ground.",
+    "id": "Geser kiri atau kanan (atau tombol panah / A dan D) untuk pindah jalur. Tap, geser ke atas, atau tekan Spasi atau W untuk melompati nisan dan salib. Jangan lompat di bawah dahan: pindah jalur atau tetap di tanah."
+  },
+  "tiers": [
+    250,
+    700
+  ],
+  "recordMin": 100,
+  "scorePerCandle": 60,
+  "limits": {
+    "perSec": 45,
+    "slack": 20,
+    "max": 20000
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "That was short. The graveyard barely noticed you.",
+        "You hit the first thing you saw. Again."
+      ],
+      "id": [
+        "Pendek banget. Kuburannya aja nggak sempat sadar kamu lewat.",
+        "Kamu nabrak yang pertama kelihatan. Ulang."
+      ]
+    },
+    "mid": {
+      "en": [
+        "Not terrible. Not good either. I only have legs when I hop, so you're ahead of me.",
+        "You almost looked like you knew where you were going."
+      ],
+      "id": [
+        "Lumayan. Belum bagus juga. Aku cuma bisa lompat, jadi kamu masih lebih jago.",
+        "Hampir kelihatan kamu tahu mau ke mana."
+      ]
+    },
+    "high": {
+      "en": [
+        "Fine. That was good. Don't let it go to your head.",
+        "You dodged the dead. Impressive. Rest your thumbs."
+      ],
+      "id": [
+        "Oke. Itu bagus. Jangan sombong.",
+        "Kamu menghindari yang mati-mati itu. Hebat. Istirahatin jempolmu."
+      ]
+    },
+    "record": {
+      "en": [
+        "A new record. I'm almost happy. Do not tell anyone.",
+        "Your best yet. Go drink some water, you earned it."
+      ],
+      "id": [
+        "Rekor baru. Aku hampir senang. Jangan bilang siapa-siapa.",
+        "Rekormu sejauh ini. Sana minum air, kamu pantas."
+      ]
+    }
+  },
+  "id": {
+    "tagline": "melompat di kuburan, versi 3D",
+    "description": "Larikan {name}, si pocong yang cuma bisa melompat, di jalan kuburan tiga jalur. Pindah jalur, lompati nisan dan salib, dan merunduk di bawah dahan yang menggantung. Sejauh apa kamu bisa lari?"
+  },
+  "added": "2026-10-25",
+  "quick": true
+}

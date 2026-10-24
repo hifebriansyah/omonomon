@@ -1,0 +1,72 @@
+{
+  "slug": "rope-untangle",
+  "character": "1",
+  "ready": true,
+  "type": "module",
+  "module": "rope-untangle",
+  "title": "Tali Lepas",
+  "tagline": "untangle the ropes",
+  "description": "{name} has knotted ropes everywhere and can only hop. Drag the knots until no two ropes cross, as many boards as you can in 90 seconds.",
+  "how": {
+    "en": "Drag the knots with your finger or mouse until no rope crosses another (crossing ropes glow red). Faster solves score more. Stuck? Skip the level for -5 points. You have 90 seconds.",
+    "id": "Seret simpulnya dengan jari atau mouse sampai tidak ada tali yang bersilang (tali bersilang menyala merah). Makin cepat selesai, makin tinggi skornya. Buntu? Lewati level dengan -5 poin. Waktumu 90 detik."
+  },
+  "tiers": [
+    150,
+    350
+  ],
+  "recordMin": 100,
+  "scorePerCandle": 40,
+  "limits": {
+    "perSec": 25,
+    "slack": 120,
+    "max": 2000
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "That's a knot. Still a knot. I'd help, but I can only hop.",
+        "Ropes don't untangle themselves. Believe me, I've waited."
+      ],
+      "id": [
+        "Itu masih kusut. Tetap kusut. Aku mau bantu, tapi aku cuma bisa lompat.",
+        "Tali nggak bakal lepas sendiri. Percaya deh, aku sudah lama nunggu."
+      ]
+    },
+    "mid": {
+      "en": [
+        "Not bad. Most of it came loose. Don't get proud.",
+        "Fine, that was decent. I almost watched without sighing."
+      ],
+      "id": [
+        "Lumayan. Sebagian besar sudah lepas. Jangan sombong dulu.",
+        "Ya sudah, itu lumayan. Aku nonton tanpa menghela napas, hampir."
+      ]
+    },
+    "high": {
+      "en": [
+        "Everything came loose. I'm glad you were the one holding it.",
+        "That was clean. Quick hands. I'd tell you if it was bad, so believe me."
+      ],
+      "id": [
+        "Semuanya lepas. Aku lega kamu yang pegang talinya.",
+        "Itu rapi. Tanganmu cepat. Kalau jelek aku bilang jelek, jadi percayalah."
+      ]
+    },
+    "record": {
+      "en": [
+        "A new best. I'm not smiling. My face just doesn't move. But I'm glad.",
+        "Record. Good. Rest your hands now. I mean it."
+      ],
+      "id": [
+        "Rekor baru. Aku nggak senyum. Mukaku memang kaku. Tapi aku senang.",
+        "Rekor. Bagus. Istirahatin tanganmu sekarang, aku serius."
+      ]
+    }
+  },
+  "id": {
+    "tagline": "urai tali-talinya",
+    "description": "{name} dikelilingi tali kusut dan cuma bisa lompat. Seret simpulnya sampai tidak ada dua tali yang bersilang, sebanyak mungkin papan dalam 90 detik."
+  },
+  "added": "2026-10-25"
+}

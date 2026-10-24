@@ -1,12 +1,20 @@
 // Omon Omon API Worker (Cloudflare Worker + D1): Google sign-in, sessions and the saved game progress today, more later.
 // A separate Worker from the Gemini Worker (omonomon-gemini), so a games bug or flood can never touch the Gemini budget.
 //
-//   POST   /auth/google   {credential}   verify Google's ID token, create the account on first sign-in,
+//   POST   /auth/google   {credential, turnstile?}   verify Google's ID token, create the account on first sign-in,
 //                                        answer {token, user, progress}
+//   POST   /riddle      {character, riddle, answers[], guess, device}   Gemini judges a riddle answer: {correct, reply}; 3 a day per browser
+//   POST   /push/subscribe {endpoint, lang}  /  DELETE /push/subscribe {endpoint}   opt-in Web Push (signed in: also streak reminders)
+//   GET    /push/latest?e=<sha256 of the endpoint>   the text of the notification just sent to that browser
+//   POST   /errors      {message, source, line, page}   a script error from a page, written to the request log (no sign-in)
 //   GET    /me                           {user, progress}
 //   PUT    /progress      {progress}     merge the browser's progress into the account (the larger value wins)
 //   POST   /auth/logout                  end this session
 //   DELETE /me                           delete the account and everything stored for it
+//   POST   /runs/start   {game}         a run token (signed with INTERNAL_TOKEN, valid for one score); the run's length is
+//                                        measured by the Worker's clock between this call and the score
+//   POST   /scores       {token, score, nickname}  a finished run: kept as this week's best when plausible; answers {accepted, rank}
+//   GET    /leaderboard/<game>           this week's top 20 {entries: [{rank, nickname, score}], me: {rank, score}|null, week}
 //   GET    /whispers                     the ghosts' latest public updates, newest first (no sign-in)
 //   GET    /whispers/<n>                 one whisper by its number (older ones are no longer in the list above)
 //   POST   /internal/whisper             (secret INTERNAL_TOKEN) write one now; {ghost} optional
@@ -30,11 +38,40 @@
 //                      SITE_ORIGIN the Origin header sent with them
 //   (rate limit bindings LIMITER for everything and COMMENT_LIMITER for posting comments)
 //   INTERNAL_TOKEN     secret shared with the Gemini Worker
+//   VAPID_PRIVATE_JWK  (optional) the Web Push private key (JWK JSON); VAPID_SUBJECT the contact (mailto:...) sent to push services
+//   TURNSTILE_SECRET   (optional) Cloudflare Turnstile secret: with it, creating an account needs a passed bot check
 
 const SESSION_DAYS = 30;
 const JWKS_URL = "https://www.googleapis.com/oauth2/v3/certs";
 const GOOGLE_ISSUERS = ["https://accounts.google.com", "accounts.google.com"];
 const MAX_BODY_BYTES = 8 * 1024;
+// What a run can plausibly score: at most `perSec` points a second (plus `slack`) and never above `max`. Scores come from the
+// browser, so this only stops silly ones; the boards are cosmetic.
+// BEGIN SCORE_LIMITS (written by tools/sync_limits.py from the "limits" of every game in games.json and games.d/)
+const SCORE_LIMITS = {
+  "hop-hop": { perSec: 45, slack: 20, max: 20000 },
+  "night-rounds": { perSec: 35, slack: 30, max: 20000 },
+  "quiet-wish": { perSec: 8, slack: 30, max: 3000 },
+  "hair-catch": { perSec: 55, slack: 30, max: 30000 },
+  "congklak": { perSec: 4, slack: 20, max: 140 },
+  "daily": { perSec: 55, slack: 30, max: 30000 },
+  "dare-night": { perSec: 8, slack: 30, max: 200 },
+  "ghost-riddles": { perSec: 3, slack: 20, max: 90 },
+  "guess-the-ghost": { perSec: 12, slack: 30, max: 170 },
+  "haunted-house": { perSec: 4, slack: 30, max: 150 },
+  "hop-hop-3d": { perSec: 45, slack: 20, max: 20000 },
+  "lantern-flight": { perSec: 8, slack: 60, max: 700 },
+  "memory-garden": { perSec: 300, slack: 600, max: 12000 },
+  "night-meds": { perSec: 12, slack: 40, max: 4000 },
+  "rope-untangle": { perSec: 25, slack: 120, max: 2000 },
+  "tree-gossip": { perSec: 20, slack: 60, max: 5000 },
+};
+// END SCORE_LIMITS
+const MIN_RUN_SECS = 3;
+const MAX_RUN_SECS = 3600; // a run token older than this is no longer valid
+const BOARD_SIZE = 20;
+const RIDDLES_PER_DEVICE_DAY = 3;
+const RIDDLES_PER_DAY = 300;
 const MAX_VALUE = 1_000_000; // no stored number may be larger than this
 
 // ---- request log (Axiom) ----
@@ -378,6 +415,38 @@ const shapeWhisper = (r) => ({
   link: r.link_url ? { url: r.link_url, title: r.link_title, source: r.link_source, thumb: r.thumb_url } : null,
 });
 
+// Things worth a whisper right now, beyond the news: this week's event (for its host), an Indonesian holiday, the season, a
+// kind comment a visitor left lately. Returns a short topic for the Gemini Worker, or null.
+const HOLIDAYS = { "01-01": "New Year's Day", "04-21": "Kartini Day", "05-02": "National Education Day", "06-01": "Pancasila Day", "08-17": "Indonesian Independence Day", "10-28": "Youth Pledge Day", "10-31": "Halloween night", "11-10": "Heroes' Day", "12-25": "Christmas Day", "12-31": "New Year's Eve" };
+export async function whisperContext(env, now, id, slot) {
+  const jakarta = new Date(now + 7 * 3600_000);
+  const day = jakarta.toISOString().slice(5, 10);
+  if (hostOfWeek(now) === id && slot % 2 === 0) return "this week you host the game week of this little app: tell readers, in your own way, that your mini game gives double bond XP all week (do not give a link)";
+  if (HOLIDAYS[day]) return `today is ${HOLIDAYS[day]} in Indonesia: say something about it in your own voice`;
+  if (slot % 3 !== 0) return null; // the rest of the time whispers stay about what was found online
+  const comment = await env.DB.prepare(
+    "SELECT body FROM comments WHERE kind = 'user' AND deleted = 0 AND created_at > ?1 ORDER BY created_at DESC LIMIT 1"
+  ).bind(now - 86400_000).first().catch(() => null);
+  if (comment?.body && slot % 6 === 0) return `a visitor wrote under one of the whispers lately: "${String(comment.body).slice(0, 100)}". Answer them kindly without naming them, as a new whisper`;
+  const month = jakarta.getUTCMonth() + 1;
+  return month >= 10 || month <= 3 ? "it is the rainy season in Indonesia: say something about the rain, the damp or the sound of it" : "it is the dry season in Indonesia: say something about the heat, the dust or the clear night sky";
+}
+
+// Now and then another ghost answers a whisper in the comments (one extra Gemini call for about one whisper in four).
+async function ghostReply(env, whisper, now) {
+  if (whisper.n % 4 !== 0) return;
+  const other = GHOSTS.filter((g) => g !== whisper.ghost)[(whisper.n / 4) % (GHOSTS.length - 1)];
+  const res = await fetch(env.GEMINI_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Origin: env.SITE_ORIGIN, "X-Internal-Token": env.INTERNAL_TOKEN },
+    body: JSON.stringify({ character: other, kind: `another ghost just posted this whisper: "${String(whisper.en).slice(0, 200)}". Write a short, friendly reply to her, in your own voice, as one sentence a visitor can read under her whisper`, when: whenText(now), avoid: [] }),
+  });
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.whisper?.en) return;
+  await env.DB.prepare("INSERT INTO comments (whisper_n, kind, ghost, reply_to, body, body_id, created_at) VALUES (?1, 'ghost', ?2, NULL, ?3, ?4, ?5)")
+    .bind(whisper.n, other, String(data.whisper.en).slice(0, 200), data.whisper.id ? String(data.whisper.id).slice(0, 200) : null, now + 1).run();
+}
+
 // Ask the Gemini Worker for a whisper from `ghost` (default: whose turn it is in this round) and keep it.
 // Returns the saved post, or null when this ghost already posted in this time slot.
 export async function makeWhisper(env, now = Date.now(), ghost) {
@@ -405,7 +474,12 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
   const seen = new Set(((await env.DB.prepare("SELECT link_url FROM whispers WHERE link_url IS NOT NULL ORDER BY created_at DESC LIMIT 300").all()).results || []).map((r) => r.link_url));
   let link = null;
   let data = null;
-  for (const c of await findLinks(env, now, seen).catch(() => [])) {
+  const topic = await whisperContext(env, now, id, slot).catch(() => null);
+  if (topic) { // a whisper about the moment instead of a link
+    const got = await ask({ kind: topic }).catch(() => null);
+    if (got?.res.ok && got.data?.whisper?.en) data = got.data;
+  }
+  for (const c of data ? [] : await findLinks(env, now, seen).catch(() => [])) {
     const got = await ask({ link: { kind: c.kind, title: c.title, summary: c.summary, source: c.source } }).catch(() => null);
     if (got?.res.ok && got.data?.whisper?.en) { link = { ...c, thumb: await betterThumb(c) }; data = got.data; break; }
   }
@@ -418,6 +492,7 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
   const saved = await env.DB.prepare("INSERT INTO whispers (ghost, text_en, text_id, created_at, link_url, link_title, link_source, thumb_url) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8) RETURNING n")
     .bind(id, String(en).slice(0, 220), idText ? String(idText).slice(0, 220) : null, now,
       link?.url ?? null, link ? link.title.slice(0, 200) : null, link ? link.source.slice(0, 60) : null, link?.thumb ?? null).first();
+  await ghostReply(env, { n: saved.n, ghost: id, en }, now).catch(() => {});
   await env.DB.prepare("DELETE FROM comments WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
   await env.DB.prepare("DELETE FROM loves WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
   await env.DB.prepare("DELETE FROM whispers WHERE created_at < ?1").bind(now - WHISPER_KEEP_MS).run();
@@ -434,7 +509,7 @@ const DEVICE_ID = /^[A-Za-z0-9_-]{16,64}$/;
 const NOT_PUBLIC = /https?:|www\.|@|#\w/i; // no links, handles or hashtags
 const TALKS_OF_SELF_HARM = /suicid|bunuh diri|mengakhiri hidup|self[- ]?harm|ingin mati|pengen mati|mau mati|want to die|kill myself|end my life/i;
 
-const shapeComment = (r) => ({ n: r.n, kind: r.kind, author: r.author, ghost: r.ghost, replyTo: r.reply_to, body: r.deleted ? "" : r.body, deleted: Boolean(r.deleted), t: r.created_at });
+const shapeComment = (r) => ({ n: r.n, kind: r.kind, author: r.author, ghost: r.ghost, replyTo: r.reply_to, body: r.deleted ? "" : r.body, bodyId: r.deleted ? null : r.body_id || null, deleted: Boolean(r.deleted), t: r.created_at });
 
 // Ask the Gemini Worker to screen a comment and write the ghost's reply. Returns {ok, care, reply} or throws.
 async function judgeComment(env, ghost, whisper, nickname, comment) {
@@ -448,6 +523,38 @@ async function judgeComment(env, ghost, whisper, nickname, comment) {
   return data;
 }
 
+// Cloudflare Turnstile: did this visitor pass the bot check? Fails closed (a Turnstile outage blocks only new accounts).
+async function turnstileOk(env, token, ip) {
+  if (typeof token !== "string" || !token || token.length > 2048) return false;
+  try {
+    const res = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      body: new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: token, ...(ip ? { remoteip: ip } : {}) }),
+    });
+    return (await res.json()).success === true;
+  } catch {
+    return false;
+  }
+}
+
+// A run token is "nonce.startMs.signature": the signature covers the user, game, nonce and start time, so a token cannot be
+// made up, moved to another player or game, or have its start time changed.
+async function signRun(env, userId, game, nonce, start) {
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(String(env.INTERNAL_TOKEN)), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(`${userId}|${game}|${nonce}|${start}`));
+  return bytesToB64url(new Uint8Array(sig));
+}
+
+// The Monday (UTC) of the week `ms` falls in, as YYYY-MM-DD: leaderboards start again every week.
+export function weekStart(ms) {
+  const d = new Date(ms);
+  d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+  return d.toISOString().slice(0, 10);
+}
+
+// The ghost who hosts the weekly event (same rule as assets/scripts/games/event.js: it follows the week number).
+export const hostOfWeek = (ms) => GHOSTS[Math.floor(Date.parse(weekStart(ms) + "T00:00:00Z") / 86400_000 / 7) % GHOSTS.length];
+
 // ---- progress ----
 
 // Accept only the shape the game writes, with sane numbers. Anything else is dropped.
@@ -460,13 +567,23 @@ export function cleanProgress(input) {
     }
     return out;
   };
+  const look = (v) => (typeof v === "string" && /^[a-z0-9-]{0,32}$/.test(v) ? v : "");
   const p = input && typeof input === "object" ? input : {};
   const s = p.streak && typeof p.streak === "object" ? p.streak : {};
   const streak = { count: Math.min(num(s.count), 3650), last: /^\d{4}-\d{2}-\d{2}$/.test(s.last) ? s.last : "" };
   if (!streak.last) streak.count = 0;
   return {
-    candles: num(p.candles), plays: num(p.plays), bond: table(p.bond, /^[0-9]{1,3}$/), best: table(p.best, /^[a-z0-9-]{1,32}$/),
+    candles: num(p.candles), spent: num(p.spent), plays: num(p.plays), bond: table(p.bond, /^[0-9]{1,3}$/), best: table(p.best, /^[a-z0-9-]{1,32}$/),
     streak, bestStreak: Math.max(Math.min(num(p.bestStreak), 3650), streak.count),
+    badges: Array.isArray(p.badges) ? [...new Set(p.badges.filter((b) => typeof b === "string" && /^[a-z0-9-]{1,32}$/.test(b)))].slice(0, 60) : [],
+    memory: (() => { // what each ghost remembers about the player: a short note per ghost (see games/chat-memory.js)
+      const out = {};
+      if (p.memory && typeof p.memory === "object") for (const [k, v] of Object.entries(p.memory).slice(0, 8)) if (/^[1-9][0-9]{0,2}$/.test(k) && typeof v === "string") out[k] = v.replace(/\s+/g, " ").trim().slice(0, 400);
+      return out;
+    })(),
+    social: { comments: num(p.social?.comments), loves: num(p.social?.loves) },
+    owned: Array.isArray(p.owned) ? [...new Set(p.owned.filter((b) => typeof b === "string" && /^[a-z0-9-]{1,32}$/.test(b)))].slice(0, 60) : [],
+    equipped: { stage: look(p.equipped?.stage), bubble: look(p.equipped?.bubble), frame: look(p.equipped?.frame) },
   };
 }
 
@@ -482,7 +599,70 @@ export function mergeProgress(a, b) {
   return {
     candles: Math.max(a.candles, b.candles), plays: Math.max(a.plays, b.plays), bond: maxTable(a.bond, b.bond), best: maxTable(a.best, b.best),
     streak, bestStreak: Math.max(a.bestStreak, b.bestStreak, streak.count),
+    badges: [...new Set([...a.badges, ...b.badges])].slice(0, 60),
+    memory: { ...a.memory, ...b.memory }, // what the device just sent wins
+    social: { comments: Math.max(a.social.comments, b.social.comments), loves: Math.max(a.social.loves, b.social.loves) },
+    spent: Math.max(a.spent, b.spent), owned: [...new Set([...a.owned, ...b.owned])].slice(0, 60),
+    equipped: { stage: b.equipped.stage || a.equipped.stage, bubble: b.equipped.bubble || a.equipped.bubble, frame: b.equipped.frame || a.equipped.frame }, // what the device just sent wins
   };
+}
+
+// ---- Web Push ----
+// No payload is sent (that would need message encryption): the push only wakes the page's worker (sw.js), which asks
+// GET /push/latest?e=<hash of its endpoint> for the text. The request is signed with VAPID (ES256).
+const PUSH_GAP_MS = 20 * 3600_000;  // one push a day per subscriber, at most
+const PUSH_BATCH = 12;               // a timer run may only make a few outside requests
+
+export async function vapidHeader(env, endpoint) {
+  const jwk = JSON.parse(env.VAPID_PRIVATE_JWK);
+  const key = await crypto.subtle.importKey("jwk", jwk, { name: "ECDSA", namedCurve: "P-256" }, false, ["sign"]);
+  const part = (o) => bytesToB64url(enc.encode(JSON.stringify(o)));
+  const unsigned = `${part({ typ: "JWT", alg: "ES256" })}.${part({ aud: new URL(endpoint).origin, exp: Math.floor(Date.now() / 1000) + 12 * 3600, sub: env.VAPID_SUBJECT || "mailto:admin@example.com" })}`;
+  const sig = new Uint8Array(await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, key, enc.encode(unsigned)));
+  const pub = bytesToB64url(Uint8Array.from([4, ...b64urlToBytes(jwk.x), ...b64urlToBytes(jwk.y)])); // the uncompressed public point
+  return `vapid t=${unsigned}.${bytesToB64url(sig)}, k=${pub}`;
+}
+
+// Send one text to one subscriber: park it in `pending`, then wake the browser. Gone subscribers (404/410) are removed.
+async function pushTo(env, sub, message, now, streakDate) {
+  await env.DB.prepare("UPDATE push_subs SET pending = ?1, last_sent = ?2, last_streak = COALESCE(?3, last_streak) WHERE endpoint_hash = ?4")
+    .bind(JSON.stringify(message), now, streakDate ?? null, sub.endpoint_hash).run();
+  try {
+    const res = await fetch(sub.endpoint, { method: "POST", headers: { Authorization: await vapidHeader(env, sub.endpoint), TTL: "3600", Urgency: "low", "Content-Length": "0" } });
+    if (res.status === 404 || res.status === 410) await env.DB.prepare("DELETE FROM push_subs WHERE endpoint_hash = ?1").bind(sub.endpoint_hash).run();
+  } catch {}
+}
+
+const GHOST_NAMES = { 1: "Pocomon", 2: "Ngesomon", 3: "Sundemon", 4: "Kuntimon" };
+export async function pushWhisper(env, whisper, now) {
+  if (!env.VAPID_PRIVATE_JWK) return;
+  const subs = (await env.DB.prepare("SELECT endpoint_hash, endpoint, lang FROM push_subs WHERE last_sent < ?1 ORDER BY last_sent ASC LIMIT ?2").bind(now - PUSH_GAP_MS, PUSH_BATCH).all()).results || [];
+  for (const s of subs) {
+    const text = s.lang === "en" ? whisper.en : whisper.id || whisper.en;
+    await pushTo(env, s, { title: `${GHOST_NAMES[whisper.ghost] || "A ghost"} ${s.lang === "en" ? "whispered" : "berbisik"}`, body: String(text).slice(0, 140), url: "whispers/" }, now);
+  }
+}
+
+// About 20:00 in Jakarta: a player whose streak would end at midnight gets a reminder (once a day, signed-in subscribers only).
+export async function pushStreaks(env, now) {
+  if (!env.VAPID_PRIVATE_JWK) return;
+  const j = new Date(now + 7 * 3600_000);
+  if (j.getUTCHours() !== 20) return;
+  const today = j.toISOString().slice(0, 10);
+  const yesterday = new Date(j.getTime() - 86400_000).toISOString().slice(0, 10);
+  const subs = (await env.DB.prepare(
+    "SELECT s.endpoint_hash, s.endpoint, s.lang, p.data FROM push_subs s JOIN progress p ON p.user_id = s.user_id WHERE s.last_streak != ?1 AND s.last_sent < ?2 LIMIT 40"
+  ).bind(today, now - 6 * 3600_000).all()).results || [];
+  let sent = 0;
+  for (const s of subs) {
+    if (sent >= PUSH_BATCH) break;
+    let streak;
+    try { streak = JSON.parse(s.data).streak; } catch { continue; }
+    if (!streak || streak.count < 2 || streak.last !== yesterday) continue; // already kept today, or not a streak worth a reminder
+    sent++;
+    const en = s.lang === "en";
+    await pushTo(env, s, { title: en ? "Your streak ends tonight" : "Rentetanmu berakhir malam ini", body: en ? `Finish one quest to keep your ${streak.count} day streak.` : `Selesaikan satu misi untuk menjaga rentetan ${streak.count} harimu.`, url: "games/" }, now, today);
+  }
 }
 
 // ---- the handler ----
@@ -538,9 +718,9 @@ export default {
       if (!m) return null;
       const hash = await sha256Hex(m[1]);
       const row = await env.DB.prepare(
-        "SELECT u.id AS id, u.email AS email, u.name AS name, u.picture AS picture FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token_hash = ?1 AND s.expires_at > ?2"
+        "SELECT u.id AS id, u.email AS email, u.name AS name, u.picture AS picture, u.nickname AS nickname FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token_hash = ?1 AND s.expires_at > ?2"
       ).bind(hash, now).first();
-      return row ? { id: row.id, email: row.email, name: row.name, picture: row.picture, hash } : null;
+      return row ? { id: row.id, email: row.email, name: row.name, picture: row.picture, nickname: row.nickname, hash } : null;
     };
 
     const loadProgress = async (userId) => {
@@ -555,7 +735,7 @@ export default {
 
     try {
       if (path === "/auth/google" && request.method === "POST") {
-        const { credential } = await readJson();
+        const { credential, turnstile } = await readJson();
         let claims;
         try {
           claims = await verifyGoogleIdToken(credential, env.GOOGLE_CLIENT_ID, now);
@@ -567,6 +747,7 @@ export default {
         const picture = cleanPicture(claims.picture);
         let user = await env.DB.prepare("SELECT id, email FROM users WHERE google_sub = ?1").bind(claims.sub).first();
         if (!user) {
+          if (env.TURNSTILE_SECRET && !(await turnstileOk(env, turnstile, request.headers.get("CF-Connecting-IP")))) return reply({ error: "bot check failed" }, 403);
           const id = crypto.randomUUID();
           await env.DB.prepare("INSERT INTO users (id, google_sub, email, name, picture, created_at, last_login) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?6)")
             .bind(id, claims.sub, claims.email || null, name, picture, now).run();
@@ -614,7 +795,7 @@ export default {
       const onWhisper = /^\/whispers\/(\d{1,10})\/comments$/.exec(path);
       if (onWhisper && request.method === "GET") {
         const rows = (await env.DB.prepare(
-          "SELECT n, kind, author, ghost, reply_to, body, deleted, created_at FROM comments WHERE whisper_n = ?1 ORDER BY created_at ASC, n ASC LIMIT 200"
+          "SELECT n, kind, author, ghost, reply_to, body, body_id, deleted, created_at FROM comments WHERE whisper_n = ?1 ORDER BY created_at ASC, n ASC LIMIT 200"
         ).bind(Number(onWhisper[1])).all()).results || [];
         return reply({ comments: rows.map(shapeComment) }, 200, { "Cache-Control": "no-store" });
       }
@@ -725,6 +906,138 @@ export default {
         return reply({ ok: true });
       }
 
+      if (path === "/riddle" && request.method === "POST") {
+        const b = await readJson();
+        const clip = (v, n) => String(v ?? "").replace(/\s+/g, " ").trim().slice(0, n);
+        if (typeof b.device !== "string" || !DEVICE_ID.test(b.device) || !GHOSTS.includes(String(b.character))) return reply({ error: "bad request" }, 400);
+        const answers = (Array.isArray(b.answers) ? b.answers : []).slice(0, 8).map((a) => clip(a, 40)).filter(Boolean);
+        const riddle = clip(b.riddle, 240);
+        const guess = clip(b.guess, 60);
+        if (!riddle || !guess || !answers.length) return reply({ error: "bad request" }, 400);
+        if (NOT_PUBLIC.test(guess)) return reply({ correct: false, reply: "" });
+        const device = await sha256Hex(b.device);
+        const since = now - 86400_000;
+        const mine = await env.DB.prepare("SELECT COUNT(*) AS c FROM riddle_log WHERE device_hash = ?1 AND created_at > ?2").bind(device, since).first();
+        if (mine.c >= RIDDLES_PER_DEVICE_DAY) return reply({ error: "daily limit" }, 429);
+        const all = await env.DB.prepare("SELECT COUNT(*) AS c FROM riddle_log WHERE created_at > ?1").bind(since).first();
+        if (all.c >= RIDDLES_PER_DAY) return reply({ error: "resting" }, 503);
+        let verdict;
+        try {
+          const res = await fetch(env.GEMINI_URL.replace(/\/whisper\/?$/, "/riddle"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Origin: env.SITE_ORIGIN, "X-Internal-Token": env.INTERNAL_TOKEN },
+            body: JSON.stringify({ character: String(b.character), riddle, answers, guess }),
+          });
+          verdict = await res.json().catch(() => null);
+          if (!res.ok || typeof verdict?.correct !== "boolean") throw new Error("no verdict");
+        } catch {
+          return reply({ error: "try again later" }, 503); // a failed judging is not counted against the player
+        }
+        await env.DB.prepare("INSERT INTO riddle_log (device_hash, created_at) VALUES (?1, ?2)").bind(device, now).run();
+        ctx?.waitUntil?.(env.DB.prepare("DELETE FROM riddle_log WHERE created_at < ?1").bind(now - 2 * 86400_000).run());
+        return reply({ correct: verdict.correct, reply: clip(verdict.reply, 120) });
+      }
+
+      if (path === "/push/subscribe" && request.method === "POST") {
+        const b = await readJson();
+        if (typeof b.endpoint !== "string" || !/^https:\/\/[^\s]{10,600}$/.test(b.endpoint)) return reply({ error: "bad request" }, 400);
+        const user = await sessionUser();
+        const hash = await sha256Hex(b.endpoint);
+        await env.DB.prepare(
+          "INSERT INTO push_subs (endpoint_hash, endpoint, user_id, lang, created_at) VALUES (?1, ?2, ?3, ?4, ?5) " +
+          "ON CONFLICT(endpoint_hash) DO UPDATE SET user_id = COALESCE(excluded.user_id, user_id), lang = excluded.lang"
+        ).bind(hash, b.endpoint, user?.id ?? null, b.lang === "en" ? "en" : "id", now).run();
+        return reply({ ok: true });
+      }
+
+      if (path === "/push/subscribe" && request.method === "DELETE") {
+        const b = await readJson();
+        if (typeof b.endpoint === "string") await env.DB.prepare("DELETE FROM push_subs WHERE endpoint_hash = ?1").bind(await sha256Hex(b.endpoint)).run();
+        return reply({ ok: true });
+      }
+
+      if (path === "/push/latest" && request.method === "GET") {
+        const e = new URL(request.url).searchParams.get("e") || "";
+        const row = /^[0-9a-f]{64}$/.test(e) ? await env.DB.prepare("SELECT pending FROM push_subs WHERE endpoint_hash = ?1").bind(e).first() : null;
+        let message = null;
+        try { message = row?.pending ? JSON.parse(row.pending) : null; } catch {}
+        return reply({ message });
+      }
+
+      if (path === "/errors" && request.method === "POST") {
+        const b = await readJson(); // sent as text/plain by the page; readJson parses it either way
+        const clip = (v, n) => String(v ?? "").replace(/\s+/g, " ").slice(0, n);
+        if (!clip(b.message, 300)) return reply({ error: "bad request" }, 400);
+        logRequest(env, ctx, {
+          _time: new Date().toISOString(), worker: "api", url: "client-error", method: "POST", status: 200,
+          error: clip(b.message, 300), message: `${clip(b.source, 200)}:${Number(b.line) || 0} on ${clip(b.page, 100)}`, ua: userAgent(request),
+        });
+        return reply({ ok: true });
+      }
+
+      if (path === "/runs/start" && request.method === "POST") {
+        const user = await sessionUser();
+        if (!user) return reply({ error: "not signed in" }, 401);
+        const b = await readJson();
+        if (!SCORE_LIMITS[b.game]) return reply({ error: "bad request" }, 400);
+        const nonce = bytesToB64url(crypto.getRandomValues(new Uint8Array(12)));
+        return reply({ token: `${nonce}.${now}.${await signRun(env, user.id, b.game, nonce, now)}` });
+      }
+
+      if (path === "/scores" && request.method === "POST") {
+        const user = await sessionUser();
+        if (!user) return reply({ error: "not signed in" }, 401);
+        const b = await readJson();
+        const limit = SCORE_LIMITS[b.game];
+        const nickname = typeof b.nickname === "string" ? b.nickname.replace(/\s+/g, " ").trim() : "";
+        const parts = typeof b.token === "string" ? b.token.split(".") : [];
+        if (!limit || parts.length !== 3 || !/^[A-Za-z0-9_-]{16}$/.test(parts[0]) || !/^\d{10,15}$/.test(parts[1]) || !Number.isFinite(b.score) || !NICKNAME.test(nickname)) return reply({ error: "bad request" }, 400);
+        const [nonce, startText, sig] = parts;
+        const start = Number(startText);
+        if (!sameSecret(sig, await signRun(env, user.id, b.game, nonce, start))) return reply({ error: "bad token" }, 400);
+        const secs = (now - start) / 1000;
+        const score = Math.floor(b.score);
+        if (secs < MIN_RUN_SECS || secs > MAX_RUN_SECS || score < 1 || score > limit.max || score > secs * limit.perSec + limit.slack) return reply({ accepted: false, reason: "implausible" });
+        const fresh = await env.DB.prepare("INSERT OR IGNORE INTO runs (nonce, user_id, created_at) VALUES (?1, ?2, ?3)").bind(nonce, user.id, now).run();
+        if (!fresh.meta?.changes) return reply({ accepted: false, reason: "used" }); // this run already counted
+        if (nickname !== user.nickname) { // a new public name is screened once, before it is ever shown
+          if (NOT_PUBLIC.test(nickname)) return reply({ error: "not allowed" }, 422);
+          let verdict;
+          try { verdict = await judgeComment(env, "1", "", "Anonymous", nickname); } catch { return reply({ error: "try again later" }, 503); }
+          if (!verdict.ok) return reply({ error: "not allowed" }, 422);
+          await env.DB.prepare("UPDATE users SET nickname = ?1 WHERE id = ?2").bind(nickname, user.id).run();
+        }
+        const week = weekStart(now);
+        await env.DB.prepare(
+          "INSERT INTO scores (user_id, game, week, score, updated_at) VALUES (?1, ?2, ?3, ?4, ?5) " +
+          "ON CONFLICT(user_id, game, week) DO UPDATE SET score = MAX(score, excluded.score), updated_at = excluded.updated_at"
+        ).bind(user.id, b.game, week, score, now).run();
+        const mine = await env.DB.prepare("SELECT score FROM scores WHERE user_id = ?1 AND game = ?2 AND week = ?3").bind(user.id, b.game, week).first();
+        const ahead = await env.DB.prepare("SELECT COUNT(*) AS c FROM scores WHERE game = ?1 AND week = ?2 AND score > ?3").bind(b.game, week, mine.score).first();
+        return reply({ accepted: true, score: mine.score, rank: ahead.c + 1 });
+      }
+
+      const onBoard = /^\/leaderboard\/([a-z0-9-]{1,32})$/.exec(path);
+      if (onBoard && request.method === "GET") {
+        const game = onBoard[1];
+        if (!SCORE_LIMITS[game]) return reply({ error: "not found" }, 404);
+        const week = weekStart(now);
+        const rows = (await env.DB.prepare(
+          "SELECT s.score AS score, u.nickname AS nickname FROM scores s JOIN users u ON u.id = s.user_id " +
+          "WHERE s.game = ?1 AND s.week = ?2 AND u.nickname IS NOT NULL ORDER BY s.score DESC, s.updated_at ASC LIMIT ?3"
+        ).bind(game, week, BOARD_SIZE).all()).results || [];
+        let me = null;
+        const user = await sessionUser();
+        if (user) {
+          const mine = await env.DB.prepare("SELECT score FROM scores WHERE user_id = ?1 AND game = ?2 AND week = ?3").bind(user.id, game, week).first();
+          if (mine) {
+            const ahead = await env.DB.prepare("SELECT COUNT(*) AS c FROM scores WHERE game = ?1 AND week = ?2 AND score > ?3").bind(game, week, mine.score).first();
+            me = { rank: ahead.c + 1, score: mine.score };
+          }
+        }
+        return reply({ week, entries: rows.map((r, i) => ({ rank: i + 1, nickname: r.nickname, score: r.score })), me }, 200, { "Cache-Control": "no-store" });
+      }
+
       if (path === "/me" && request.method === "GET") {
         const user = await sessionUser();
         if (!user) return reply({ error: "not signed in" }, 401);
@@ -752,6 +1065,7 @@ export default {
         await env.DB.batch([
           env.DB.prepare("DELETE FROM sessions WHERE user_id = ?1").bind(user.id),
           env.DB.prepare("DELETE FROM progress WHERE user_id = ?1").bind(user.id),
+          env.DB.prepare("DELETE FROM scores WHERE user_id = ?1").bind(user.id),
           env.DB.prepare("DELETE FROM users WHERE id = ?1").bind(user.id),
         ]);
         return reply({ ok: true });
@@ -766,8 +1080,10 @@ export default {
 
   // The timer (cron): one new whisper every 15 minutes; each ghost once an hour, in a shuffled order.
   async scheduled(event, env, ctx) {
+    ctx.waitUntil(env.DB.prepare("DELETE FROM runs WHERE created_at < ?1").bind(event.scheduledTime - 2 * MAX_RUN_SECS * 1000).run().catch(() => {}));
+    ctx.waitUntil(pushStreaks(env, event.scheduledTime).catch(() => {}));
     ctx.waitUntil(
-      makeWhisper(env, event.scheduledTime).catch((err) =>
+      makeWhisper(env, event.scheduledTime).then((w) => (w ? pushWhisper(env, { ghost: w.ghost, en: w.text.en, id: w.text.id }, event.scheduledTime).catch(() => {}) : null)).catch((err) =>
         logRequest(env, ctx, { _time: new Date().toISOString(), worker: "api", url: "cron:whisper", status: 500, error: String(err.message).slice(0, 120) })
       )
     );

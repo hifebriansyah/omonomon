@@ -1,0 +1,22 @@
+{
+  "slug": "example-game",
+  "character": "1",
+  "ready": true,
+  "type": "module",
+  "module": "example-game",
+  "title": "Example",
+  "tagline": "one line",
+  "description": "What {name} and you do, in one or two sentences (used for the page and search results).",
+  "how": { "en": "How to play.", "id": "Cara main." },
+  "tiers": [60, 150],
+  "recordMin": 60,
+  "scorePerCandle": 20,
+  "limits": { "perSec": 10, "slack": 30, "max": 3000 },
+  "reactions": {
+    "low": { "en": ["..."], "id": ["..."] },
+    "mid": { "en": ["..."], "id": ["..."] },
+    "high": { "en": ["..."], "id": ["..."] },
+    "record": { "en": ["..."], "id": ["..."] }
+  },
+  "id": { "tagline": "satu baris", "description": "Deskripsi bahasa Indonesia, sama artinya." }
+}

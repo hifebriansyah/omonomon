@@ -1,0 +1,72 @@
+{
+  "slug": "haunted-house",
+  "character": "2",
+  "ready": true,
+  "type": "module",
+  "module": "haunted-house",
+  "title": "Rumah Hantu",
+  "tagline": "walk the haunted house, four rooms, four ghosts",
+  "description": "A short walk through a haunted house with {name} and her friends: four rooms, four tiny puzzles, and a clock that is gently ticking.",
+  "how": {
+    "en": "Walk with WASD or the arrow keys (left thumb on a phone), drag to look around, tap or press Space to act. Find the hidden glows, light the lanterns in the told order, follow the petals, open the whispering furniture. Finish fast for a bonus.",
+    "id": "Jalan pakai WASD atau tombol panah (jempol kiri di HP), geser untuk melihat sekitar, ketuk atau tekan Spasi untuk beraksi. Cari cahaya tersembunyi, nyalakan lentera sesuai urutan, ikuti kelopak, buka perabot yang berbisik. Selesai cepat dapat bonus."
+  },
+  "tiers": [
+    75,
+    115
+  ],
+  "recordMin": 75,
+  "scorePerCandle": 11,
+  "limits": {
+    "perSec": 4,
+    "slack": 30,
+    "max": 150
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "You left early. Fine. I've got rounds anyway.",
+        "Not all rooms done. The house will still be here. Unfortunately."
+      ],
+      "id": [
+        "Pergi duluan ya. Ya sudah. Aku juga masih harus keliling.",
+        "Belum semua kamar beres. Rumahnya tetap di sini kok. Sayangnya."
+      ]
+    },
+    "mid": {
+      "en": [
+        "Four rooms, not bad. A bit slow, but not bad.",
+        "You got through. Sit a minute, drink something warm."
+      ],
+      "id": [
+        "Empat kamar, lumayan. Agak lambat, tapi lumayan.",
+        "Kamu berhasil lewat. Duduk dulu sebentar, minum yang hangat."
+      ]
+    },
+    "high": {
+      "en": [
+        "Quick and clean. I'd hire you for the night shift.",
+        "All four rooms, barely a minute lost. Good. Really."
+      ],
+      "id": [
+        "Cepat dan rapi. Kamu boleh ikut shift malamku.",
+        "Empat kamar, hampir nggak ada waktu terbuang. Bagus. Beneran."
+      ]
+    },
+    "record": {
+      "en": [
+        "A new record. Don't tell the others, they'll want a rematch.",
+        "Best run yet. I'll write it on the chart. Kindly."
+      ],
+      "id": [
+        "Rekor baru. Jangan bilang yang lain, nanti minta ulang.",
+        "Lari terbaikmu. Kucatat di bagan. Dengan sepenuh hati."
+      ]
+    }
+  },
+  "id": {
+    "tagline": "jalan keliling rumah hantu, empat kamar, empat hantu",
+    "description": "Jalan-jalan singkat di rumah hantu bareng {name} dan teman-temannya: empat kamar, empat teka-teki kecil, dan jam yang pelan-pelan berdetak."
+  },
+  "added": "2026-10-25"
+}

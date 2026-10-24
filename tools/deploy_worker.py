@@ -15,6 +15,7 @@ entered in the Cloudflare dashboard, AXIOM_TOKEN (the request log) and INTERNAL_
 """
 import json
 import os
+import subprocess
 import sys
 import urllib.error
 import urllib.request
@@ -127,6 +128,8 @@ def main():
     if target not in TARGETS:
         sys.exit(f"Unknown Worker '{target}'. Use: {', '.join(TARGETS)}")
     cfg = read_config(target)
+    if target == "api":
+        subprocess.run([sys.executable, str(ROOT / "tools" / "sync_limits.py")], check=True)  # every game's score limits into api.js
     code_file = TARGETS[target][1]
     code = (ROOT / "worker" / code_file).read_text(encoding="utf-8")
     bindings = [
@@ -190,6 +193,8 @@ def main():
         set_secret(base, account, cfg["name"], token, "INTERNAL_TOKEN")  # the secret the two Workers share (whispers)
         if target == "api":
             set_secret(base, account, cfg["name"], token, "YOUTUBE_API_KEY")  # optional: popular Indonesian videos for whispers
+            set_secret(base, account, cfg["name"], token, "VAPID_PRIVATE_JWK")  # optional: Web Push to subscribers
+            set_secret(base, account, cfg["name"], token, "TURNSTILE_SECRET")  # optional: the bot check on a first sign-in
     if cfg.get("crons"):
         res = call(base, token, "PUT", f"/accounts/{account}/workers/scripts/{cfg['name']}/schedules", [{"cron": c} for c in cfg["crons"]])
         print(f"Timer {', '.join(cfg['crons'])}" if res.get("success") else f"Timer NOT set: {res.get('errors')}")

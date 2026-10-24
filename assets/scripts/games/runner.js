@@ -19,7 +19,7 @@ const STARS = Array.from({ length: 28 }, (_, i) => ({ x: (i * 97) % W, y: 12 + (
 //   best      best score so far (shown on screen)
 //   onOver    called with the final score
 //   startText what the start screen says
-export function startRunner(canvas, { hero, accent, best, onOver, startText }) {
+export function startRunner(canvas, { hero, accent, best, onOver, startText, rng = Math.random }) {
   const ctx = canvas.getContext("2d");
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   canvas.width = W * dpr;
@@ -57,10 +57,10 @@ export function startRunner(canvas, { hero, accent, best, onOver, startText }) {
 
     s.spawnIn -= s.speed * dt;
     if (s.spawnIn <= 0) {
-      const w = 22 + Math.random() * 14;
-      const h = 30 + Math.random() * 26;
+      const w = 22 + rng() * 14;
+      const h = 30 + rng() * 26;
       s.obstacles.push({ x: W + 20, w, h });
-      s.spawnIn = (0.9 + Math.random() * 0.9) * s.speed + 90; // always a jumpable gap
+      s.spawnIn = (0.9 + rng() * 0.9) * s.speed + 90; // always a jumpable gap
     }
     for (const o of s.obstacles) o.x -= s.speed * dt;
     s.obstacles = s.obstacles.filter((o) => o.x + o.w > -20);

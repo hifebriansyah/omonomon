@@ -8,9 +8,19 @@ import {
 } from "./dom.js";
 import { timeFormat, dayKey, dayLabel } from "./time.js";
 import { T, lang } from "./games/text.js";
+import { load as loadProgress, levelOf } from "./games/progress.js";
+import { applyCosmetics } from "./games/cosmetics.js";
+import { use3d } from "./games/prefs3d.js";
 
 // The line under her name, in the visitor's language (statusId is the Indonesian one).
-const statusOf = (c) => (lang === "id" && c.statusId) || c.status;
+// From bond level 4 she also has moods: one is picked each time the page opens.
+const MOOD_LEVEL = 4;
+const moodPick = {};
+const statusOf = (c) => {
+  const moods = c.moods?.[lang] || c.moods?.en;
+  if (moods?.length && levelOf(loadProgress().bond[c.id] || 0) >= MOOD_LEVEL) return (moodPick[c.id] ||= moods[Math.floor(Math.random() * moods.length)]);
+  return (lang === "id" && c.statusId) || c.status;
+};
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const FONT_STEPS = [1.15, 1.05, 0.96, 0.88, 0.8, 0.74]; // rem
@@ -109,10 +119,29 @@ export function setTrouble(text, c) {
   if (c) statusEl.textContent = text || statusOf(c);
 }
 
+// The 3D backdrop behind the ghost (three/stage3d.js, loaded only when it will be used): not with a bought stage look, and not
+// when the 3D setting is off or the device cannot do it. One instance at a time.
+let scene3d = null;
+let scene3dFor = null;
+async function syncScene3d(c) {
+  scene3dFor = c.id;
+  const wanted = use3d() && !document.documentElement.dataset.stage;
+  if (!wanted || scene3d?.char !== c.id) { scene3d?.handle?.destroy?.(); scene3d = null; }
+  if (!wanted || scene3d) return;
+  try {
+    const { mountStage3d } = await import("./three/stage3d.js");
+    const handle = await mountStage3d(stageEl, c);
+    if (handle && scene3dFor === c.id) scene3d = { char: c.id, handle };
+    else handle?.destroy?.();
+  } catch {} // the 2D stage stays
+}
+
 // Put a character on stage: colour, picture, name, status, placeholder.
 export function applyCharacter(c) {
   layoutBubble();
   document.documentElement.style.setProperty("--accent", c.accent);
+  applyCosmetics(c.id);
+  syncScene3d(c);
   heroEl.src = c.stage;
   heroEl.alt = c.name;
   nameEl.textContent = c.name;

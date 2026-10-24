@@ -1,0 +1,72 @@
+{
+  "slug": "memory-garden",
+  "character": "3",
+  "ready": true,
+  "type": "module",
+  "module": "memory-garden",
+  "title": "Bunga Kenangan",
+  "tagline": "tend the memory garden",
+  "description": "A calm match-3 with {name}: swap petals to line up three or more. No timer, just twenty gentle moves and a garden that remembers.",
+  "how": {
+    "en": "Tap a petal, then a neighbour (or drag it) to swap. Line up three or more of the same shape and colour. You have 20 moves; a swap that matches nothing costs nothing.",
+    "id": "Ketuk satu kelopak, lalu tetangganya (atau geser) untuk menukar. Sejajarkan tiga atau lebih yang bentuk dan warnanya sama. Kamu punya 20 langkah; tukar yang tidak cocok tidak memakan langkah."
+  },
+  "tiers": [
+    800,
+    1600
+  ],
+  "recordMin": 800,
+  "scorePerCandle": 100,
+  "limits": {
+    "perSec": 300,
+    "slack": 600,
+    "max": 12000
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "The garden is still small. That's alright. It grows slowly.",
+        "A few petals, then quiet. I don't mind quiet."
+      ],
+      "id": [
+        "Tamannya masih kecil. Nggak apa-apa. Tumbuhnya memang pelan.",
+        "Beberapa kelopak, lalu sunyi. Aku nggak keberatan sama sunyi."
+      ]
+    },
+    "mid": {
+      "en": [
+        "The petals found each other. I watched them. It was nice.",
+        "You were gentle with them. They remember that."
+      ],
+      "id": [
+        "Kelopaknya saling menemukan. Aku memperhatikannya. Rasanya tenang.",
+        "Kamu lembut sama mereka. Mereka ingat itu."
+      ]
+    },
+    "high": {
+      "en": [
+        "So many blooms... the whole garden is soft with colour. Thank you.",
+        "I think I felt something, watching them fall into place."
+      ],
+      "id": [
+        "Banyak sekali bunga... seluruh taman jadi lembut warnanya. Terima kasih.",
+        "Kurasa aku merasakan sesuatu, melihat mereka jatuh ke tempatnya."
+      ]
+    },
+    "record": {
+      "en": [
+        "The fullest garden yet. I'll keep it, quietly.",
+        "A new best. Nothing lasts, but this will, a little."
+      ],
+      "id": [
+        "Taman terpenuh sejauh ini. Kusimpan diam-diam.",
+        "Rekor baru. Nggak ada yang abadi, tapi ini bertahan sebentar."
+      ]
+    }
+  },
+  "id": {
+    "tagline": "rawat taman kenangan",
+    "description": "Match-3 yang tenang bareng {name}: tukar kelopak sampai tiga atau lebih sejajar. Tanpa timer, cuma dua puluh langkah pelan dan taman yang mengingat."
+  },
+  "added": "2026-10-25"
+}

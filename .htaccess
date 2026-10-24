@@ -9,6 +9,8 @@
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # games.json and sw.js in the repo root are sources: the built copies hold the merged game list (games.d/*.json) and the filled-in worker
+  RewriteRule ^(games\.json|sw\.js)$ builds/site/$1 [L]
   # / -> the built chat list
   RewriteRule ^$ builds/site/index.html [L]
   # /privacy -> /privacy/ (GitHub Pages does this itself; the pages' relative paths need the slash)

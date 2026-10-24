@@ -69,7 +69,13 @@
       "id": {
         "tagline": "melompati kuburan",
         "description": "Bantu {name}, si pocong yang cuma bisa melompat, melewati batu nisan di game lari tanpa akhir satu tombol ini. Sejauh apa kamu bisa lari?"
-      }
+      },
+      "limits": {
+        "perSec": 45,
+        "slack": 20,
+        "max": 20000
+      },
+      "quick": true
     },
     {
       "slug": "night-rounds",
@@ -138,7 +144,13 @@
       "id": {
         "tagline": "jawab lampu yang menyala sebelum habis waktunya",
         "description": "Bantu {name} jaga shift malamnya: tap tiap kamar yang menyala sebelum waktunya habis. Panggilan makin cepat, dan makin banyak sekaligus, seiring malam bergulir."
-      }
+      },
+      "limits": {
+        "perSec": 35,
+        "slack": 30,
+        "max": 20000
+      },
+      "quick": true
     },
     {
       "slug": "quiet-wish",
@@ -207,6 +219,11 @@
       "id": {
         "tagline": "ulangi kelopak yang bersinar",
         "description": "Game ingatan yang pelan dan tenang bareng {name}: lihat kelopak bersinar, lalu ulangi sesuai urutan. Tanpa timer, tanpa tekanan."
+      },
+      "limits": {
+        "perSec": 8,
+        "slack": 30,
+        "max": 3000
       }
     },
     {
@@ -276,7 +293,13 @@
       "id": {
         "tagline": "tangkap rahasia-rahasianya",
         "description": "Geser kiri dan kanan untuk bantu {name} menangkap rahasia yang jatuh pakai rambutnya, dan hindari yang gelap. Tiga nyawa, dan makin lama makin cepat."
-      }
+      },
+      "limits": {
+        "perSec": 55,
+        "slack": 30,
+        "max": 30000
+      },
+      "quick": true
     }
   ]
 }

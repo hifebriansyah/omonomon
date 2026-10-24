@@ -1,0 +1,72 @@
+{
+  "slug": "dare-night",
+  "character": "1",
+  "ready": true,
+  "type": "module",
+  "module": "dare-night",
+  "title": "Uji Nyali",
+  "tagline": "a night walk with a ghost beside you",
+  "description": "A choose-your-path night walk with {name} or any ghost you pick: a cemetery, a ward, a banyan grove. Your choices shape how the night ends.",
+  "how": {
+    "en": "Pick a ghost to walk with, then choose what to do at each step (tap, or press 1 to 3). The closer your bond, the more the night opens up.",
+    "id": "Pilih hantu yang menemanimu, lalu tentukan apa yang kamu lakukan di tiap langkah (ketuk, atau tekan 1 sampai 3). Makin dekat ikatan kalian, makin banyak yang terbuka."
+  },
+  "tiers": [
+    70,
+    110
+  ],
+  "recordMin": 60,
+  "scorePerCandle": 10,
+  "limits": {
+    "perSec": 8,
+    "slack": 30,
+    "max": 200
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "You ran. Fine. The night will still be here. Unfortunately.",
+        "Short walk. I won't tell anyone. I don't talk to anyone anyway."
+      ],
+      "id": [
+        "Kamu kabur. Ya udah. Malamnya tetap di sini kok. Sayangnya.",
+        "Jalannya sebentar. Nggak bakal kukasih tahu siapa-siapa. Aku juga nggak ngobrol sama siapa-siapa."
+      ]
+    },
+    "mid": {
+      "en": [
+        "Not bad. You didn't scream once. I noticed. I notice things.",
+        "You made some decent choices. Don't let it go to your head. I don't have one to spare."
+      ],
+      "id": [
+        "Lumayan. Kamu nggak teriak sekali pun. Aku sadar. Aku memang sadaran.",
+        "Pilihanmu cukup bagus. Jangan besar kepala. Kepalaku aja udah ditutup kain."
+      ]
+    },
+    "high": {
+      "en": [
+        "Huh. That was a proper night walk. I almost enjoyed it. Almost.",
+        "You walked it like you belonged there. Annoyingly well done."
+      ],
+      "id": [
+        "Hah. Itu jalan malam yang bener. Hampir aku nikmatin. Hampir.",
+        "Kamu jalan seolah kamu memang cocok di sana. Nyebelin banget bagusnya."
+      ]
+    },
+    "record": {
+      "en": [
+        "Your best walk yet. I'm not clapping. My arms are wrapped. But I'm thinking about it.",
+        "A new record. Fine. I'll remember this one."
+      ],
+      "id": [
+        "Jalan terbaikmu sejauh ini. Aku nggak tepuk tangan. Tanganku terikat. Tapi aku kepikiran.",
+        "Rekor baru. Ya udah. Yang ini bakal kuingat."
+      ]
+    }
+  },
+  "id": {
+    "tagline": "jalan malam ditemani hantu",
+    "description": "Jalan malam pilih-jalanmu-sendiri bareng {name} atau hantu lain yang kamu pilih: makam, bangsal, hutan beringin. Pilihanmu menentukan bagaimana malam berakhir."
+  },
+  "added": "2026-10-25"
+}

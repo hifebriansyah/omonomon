@@ -1,0 +1,73 @@
+{
+  "slug": "daily",
+  "character": "4",
+  "ready": true,
+  "type": "module",
+  "module": "daily",
+  "title": "Daily Challenge",
+  "tagline": "the same run for everyone, today",
+  "description": "One seeded run a day, the same for every player: Hop Hop and Hair Catch take turns. Beat today's board with {name}.",
+  "how": {
+    "en": "Same rules as the game of the day. Everyone gets the same obstacles today; Play again replays them.",
+    "id": "Aturannya sama seperti game hari ini. Semua orang dapat rintangan yang sama hari ini; Main lagi mengulang rintangan itu."
+  },
+  "tiers": [
+    200,
+    600
+  ],
+  "recordMin": 150,
+  "scorePerCandle": 60,
+  "limits": {
+    "perSec": 55,
+    "slack": 30,
+    "max": 30000
+  },
+  "reactions": {
+    "low": {
+      "en": [
+        "A short one. Try the same run again, it is the same obstacles.",
+        "Today's run is the same for everyone. Again?"
+      ],
+      "id": [
+        "Pendek ya. Coba lagi, rintangannya sama kok.",
+        "Rintangan hari ini sama buat semua orang. Ulang?"
+      ]
+    },
+    "mid": {
+      "en": [
+        "Not bad for one run. The board is watching.",
+        "You learn the run a little more each time."
+      ],
+      "id": [
+        "Lumayan buat satu kali main. Papannya ngeliatin.",
+        "Tiap ulang kamu makin hafal."
+      ]
+    },
+    "high": {
+      "en": [
+        "That is a run to be proud of today.",
+        "Everyone got the same run. Few did that."
+      ],
+      "id": [
+        "Ini permainan yang bisa dibanggakan hari ini.",
+        "Semua dapat rintangan yang sama. Sedikit yang sampai sejauh ini."
+      ]
+    },
+    "record": {
+      "en": [
+        "Your best on the daily. I saw it.",
+        "A new best. Same run, better you."
+      ],
+      "id": [
+        "Rekor terbaikmu di tantangan harian. Aku lihat.",
+        "Rekor baru. Rintangan sama, kamunya lebih jago."
+      ]
+    }
+  },
+  "id": {
+    "tagline": "rintangan sama untuk semua, hari ini",
+    "description": "Satu permainan berbenih per hari, sama untuk semua pemain: Hop Hop dan Hair Catch bergantian. Kalahkan papan hari ini bareng {name}."
+  },
+  "added": "2026-10-25",
+  "quick": true
+}
