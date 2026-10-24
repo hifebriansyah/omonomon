@@ -62,6 +62,7 @@ def database(account, token, name):
 MIGRATIONS = [
     "ALTER TABLE users ADD COLUMN name TEXT",
     "ALTER TABLE users ADD COLUMN picture TEXT",
+    "ALTER TABLE comments ADD COLUMN deleted INTEGER NOT NULL DEFAULT 0",
 ]
 
 

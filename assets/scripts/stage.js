@@ -122,6 +122,7 @@ export function applyCharacter(c) {
 
 let lastDay = null;    // the day of the last row drawn, to know when to add a new date label
 let chatStart = null;  // when the first timed message was sent; the greeting has no time, so it uses this day
+let lastHead = null;   // the head next to the newest bot message: only that one is visible
 
 function appendMessage(c, m) {
   // Messages saved before times existed have none, so they get no label. The greeting joins the first day.
@@ -140,8 +141,10 @@ function appendMessage(c, m) {
   if (m.who === "bot") {
     const img = document.createElement("img");
     img.className = "mini";
-    img.src = c.image;
+    img.src = c.head;
     img.alt = "";
+    lastHead?.classList.add("old");  // hidden, not removed, so the bubbles stay lined up
+    lastHead = img;
     row.append(img);
   }
   const bubble = document.createElement("div");
@@ -162,6 +165,7 @@ function appendMessage(c, m) {
 function renderHistory(c, log) {
   messagesEl.replaceChildren();
   lastDay = null;
+  lastHead = null;
   chatStart = log.find((m) => m.t != null)?.t ?? null;
   for (const m of log) appendMessage(c, m);
   historyEl.scrollTop = historyEl.scrollHeight;

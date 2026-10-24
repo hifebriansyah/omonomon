@@ -7,6 +7,18 @@
 //   PUT    /progress      {progress}     merge the browser's progress into the account (the larger value wins)
 //   POST   /auth/logout                  end this session
 //   DELETE /me                           delete the account and everything stored for it
+//   GET    /whispers                     the ghosts' latest public updates, newest first (no sign-in)
+//   GET    /whispers/<n>                 one whisper by its number (older ones are no longer in the list above)
+//   POST   /internal/whisper             (secret INTERNAL_TOKEN) write one now; {ghost} optional
+//   DELETE /internal/whisper/<n>         (secret INTERNAL_TOKEN) remove one
+//   GET    /whispers/<n>/comments        the comments under a whisper, oldest first (visitors' and the ghost's replies)
+//   POST   /whispers/<n>/comments        {text, nickname, device}: screened by Gemini, answered by the ghost; no sign-in
+//   PUT    /whispers/<n>/love            {device}: love a whisper (once per browser); answers {loves}
+//   DELETE /whispers/<n>/love            {device}: take the love back; answers {loves}
+//   DELETE /comments/<n>                 {device}: a visitor deletes their own comment (kept in the database with deleted = 1, shown as "deleted")
+//   GET    /internal/comments            (secret INTERNAL_TOKEN) the newest comments, for moderation
+//   DELETE /internal/comment/<n>         (secret INTERNAL_TOKEN) remove one
+// A timer (cron) writes a whisper every 3 hours, one ghost after the other, by asking the Gemini Worker.
 //
 // The session token is a random 256-bit value sent as "Authorization: Bearer ...". Only its SHA-256 hash is stored.
 // (Bearer instead of a cookie so sign-in also works from http://localhost while developing.)
@@ -14,6 +26,10 @@
 // Worker settings (see worker/api.jsonc): D1 binding DB, rate limit binding LIMITER, and the plain variables
 //   GOOGLE_CLIENT_ID   the OAuth client ID (public)
 //   ALLOWED_ORIGINS    comma-separated site origins that may call this API
+//   GEMINI_URL         address of the Gemini Worker's /whisper route; GEMINI_COMMENT_URL its /comment route;
+//                      SITE_ORIGIN the Origin header sent with them
+//   (rate limit bindings LIMITER for everything and COMMENT_LIMITER for posting comments)
+//   INTERNAL_TOKEN     secret shared with the Gemini Worker
 
 const SESSION_DAYS = 30;
 const JWKS_URL = "https://www.googleapis.com/oauth2/v3/certs";
@@ -109,6 +125,84 @@ export function cleanPicture(url) {
 }
 export const cleanName = (name) => (typeof name === "string" && name.trim() ? name.trim().slice(0, 80) : null);
 
+// ---- whispers ----
+
+const GHOSTS = ["1", "2", "3", "4"];
+const WHISPER_EVERY_MS = 3 * 3600_000;
+const WHISPER_KEEP_MS = 14 * 86400_000;
+const KINDS = [
+  "a passing thought", "a small complaint about life as a ghost", "something you noticed tonight",
+  "a question for the people who follow you", "a bit of gossip from the graveyard", "a tiny wish",
+];
+
+// "Saturday night" in Jakarta, so a whisper can fit the moment.
+export function whenText(now) {
+  const d = new Date(now + 7 * 3600_000);
+  const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][d.getUTCDay()];
+  const h = d.getUTCHours();
+  const part = h < 5 ? "the middle of the night" : h < 11 ? "morning" : h < 15 ? "midday" : h < 18 ? "afternoon" : h < 21 ? "evening" : "night";
+  return `${day} ${part}`;
+}
+
+export function sameSecret(a, b) { // compares without stopping at the first difference
+  if (typeof a !== "string" || typeof b !== "string" || !a || a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+// Ask the Gemini Worker for a whisper from `ghost` (default: the next ghost in turn) and keep it.
+// Returns the saved post, or null when this ghost already posted in this time slot.
+export async function makeWhisper(env, now = Date.now(), ghost) {
+  const slot = Math.floor(now / WHISPER_EVERY_MS);
+  const id = ghost || GHOSTS[slot % GHOSTS.length];
+  if (!GHOSTS.includes(id)) throw new Error("unknown ghost");
+  if (!ghost) {
+    const done = await env.DB.prepare("SELECT n FROM whispers WHERE ghost = ?1 AND created_at >= ?2").bind(id, slot * WHISPER_EVERY_MS).first();
+    if (done) return null; // the timer fired twice
+  }
+  const kind = KINDS[(Math.floor(slot / GHOSTS.length) + Number(id)) % KINDS.length];
+  const recent = ((await env.DB.prepare("SELECT text_en FROM whispers WHERE ghost = ?1 ORDER BY created_at DESC LIMIT 3").bind(id).all()).results || []).map((r) => r.text_en);
+  const res = await fetch(env.GEMINI_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Origin: env.SITE_ORIGIN, "X-Internal-Token": env.INTERNAL_TOKEN },
+    body: JSON.stringify({ character: id, kind, when: whenText(now), avoid: recent }),
+  });
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.whisper?.en) throw new Error(`the Gemini Worker answered ${res.status}${data?.error ? ` (${data.error})` : ""}`);
+  const { en, id: idText } = data.whisper;
+  const saved = await env.DB.prepare("INSERT INTO whispers (ghost, text_en, text_id, created_at) VALUES (?1, ?2, ?3, ?4) RETURNING n")
+    .bind(id, String(en).slice(0, 220), idText ? String(idText).slice(0, 220) : null, now).first();
+  await env.DB.prepare("DELETE FROM comments WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
+  await env.DB.prepare("DELETE FROM loves WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
+  await env.DB.prepare("DELETE FROM whispers WHERE created_at < ?1").bind(now - WHISPER_KEEP_MS).run();
+  return { n: saved.n, ghost: id, t: now, text: { en, id: idText || null } };
+}
+
+// ---- comments ----
+
+const COMMENT_MAX = 200;        // characters
+const DEVICE_DAILY_CAP = 10;    // comments one browser may post in 24 hours
+const GLOBAL_DAILY_CAP = 300;   // comments in 24 hours in total: a circuit breaker for the Gemini cost
+const NICKNAME = /^[\p{L}\p{N} _-]{2,24}$/u;
+const DEVICE_ID = /^[A-Za-z0-9_-]{16,64}$/;
+const NOT_PUBLIC = /https?:|www\.|@|#\w/i; // no links, handles or hashtags
+const TALKS_OF_SELF_HARM = /suicid|bunuh diri|mengakhiri hidup|self[- ]?harm|ingin mati|pengen mati|mau mati|want to die|kill myself|end my life/i;
+
+const shapeComment = (r) => ({ n: r.n, kind: r.kind, author: r.author, ghost: r.ghost, replyTo: r.reply_to, body: r.deleted ? "" : r.body, deleted: Boolean(r.deleted), t: r.created_at });
+
+// Ask the Gemini Worker to screen a comment and write the ghost's reply. Returns {ok, care, reply} or throws.
+async function judgeComment(env, ghost, whisper, nickname, comment) {
+  const res = await fetch(env.GEMINI_COMMENT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Origin: env.SITE_ORIGIN, "X-Internal-Token": env.INTERNAL_TOKEN },
+    body: JSON.stringify({ character: ghost, whisper, nickname, comment }),
+  });
+  const data = await res.json().catch(() => null);
+  if (!res.ok || typeof data?.ok !== "boolean") throw new Error(`the Gemini Worker answered ${res.status}`);
+  return data;
+}
+
 // ---- progress ----
 
 // Accept only the shape the game writes, with sane numbers. Anything else is dropped.
@@ -160,7 +254,7 @@ export default {
       "Vary": "Origin",
     };
     const started = Date.now();
-    const reply = (obj, status = 200) => {
+    const reply = (obj, status = 200, headers = {}) => {
       logRequest(env, ctx, {
         _time: new Date().toISOString(),
         worker: "api",
@@ -173,7 +267,7 @@ export default {
         ms: Date.now() - started,
         ...(env.LOG_IP === "off" ? {} : { ip: request.headers.get("CF-Connecting-IP") || undefined }),
       });
-      return new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store", ...cors } });
+      return new Response(JSON.stringify(obj), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store", ...headers, ...cors } });
     };
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
@@ -244,6 +338,148 @@ export default {
         return reply({ token, user: { id: user.id, email: user.email, name, picture }, progress: await loadProgress(user.id) });
       }
 
+      if (path === "/whispers" && request.method === "GET") {
+        const rows = (await env.DB.prepare(
+          "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, " +
+          "(SELECT COUNT(*) FROM comments c WHERE c.whisper_n = w.n AND c.deleted = 0) AS comments, " +
+          "(SELECT COUNT(*) FROM loves l WHERE l.whisper_n = w.n) AS loves " +
+          "FROM whispers w ORDER BY w.created_at DESC LIMIT 40"
+        ).all()).results || [];
+        return reply(
+          { whispers: rows.map((r) => ({ n: r.n, ghost: r.ghost, t: r.created_at, comments: r.comments, loves: r.loves, text: { en: r.text_en, id: r.text_id } })) },
+          200, { "Cache-Control": "public, max-age=120" }
+        );
+      }
+
+      const oneWhisper = /^\/whispers\/(\d{1,10})$/.exec(path);
+      if (oneWhisper && request.method === "GET") {
+        const r = await env.DB.prepare(
+          "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, " +
+          "(SELECT COUNT(*) FROM comments c WHERE c.whisper_n = w.n AND c.deleted = 0) AS comments, " +
+          "(SELECT COUNT(*) FROM loves l WHERE l.whisper_n = w.n) AS loves " +
+          "FROM whispers w WHERE w.n = ?1"
+        ).bind(Number(oneWhisper[1])).first();
+        if (!r) return reply({ error: "not found" }, 404);
+        return reply(
+          { whisper: { n: r.n, ghost: r.ghost, t: r.created_at, comments: r.comments, loves: r.loves, text: { en: r.text_en, id: r.text_id } } },
+          200, { "Cache-Control": "public, max-age=60" }
+        );
+      }
+
+      const onWhisper = /^\/whispers\/(\d{1,10})\/comments$/.exec(path);
+      if (onWhisper && request.method === "GET") {
+        const rows = (await env.DB.prepare(
+          "SELECT n, kind, author, ghost, reply_to, body, deleted, created_at FROM comments WHERE whisper_n = ?1 ORDER BY created_at ASC, n ASC LIMIT 200"
+        ).bind(Number(onWhisper[1])).all()).results || [];
+        return reply({ comments: rows.map(shapeComment) }, 200, { "Cache-Control": "no-store" });
+      }
+
+      if (onWhisper && request.method === "POST") {
+        if (env.COMMENT_LIMITER) {
+          const ip = request.headers.get("CF-Connecting-IP") || "unknown";
+          if (!(await env.COMMENT_LIMITER.limit({ key: ip })).success) return reply({ error: "too many requests" }, 429);
+        }
+        const b = await readJson();
+        const text = typeof b.text === "string" ? b.text.replace(/\s+/g, " ").trim() : "";
+        const nickname = typeof b.nickname === "string" ? b.nickname.replace(/\s+/g, " ").trim() : "";
+        if (typeof b.device !== "string" || !DEVICE_ID.test(b.device)) return reply({ error: "bad request" }, 400);
+        if (!text || [...text].length > COMMENT_MAX) return reply({ error: "bad comment" }, 400);
+        if (!NICKNAME.test(nickname)) return reply({ error: "bad nickname" }, 400);
+        if (TALKS_OF_SELF_HARM.test(text)) return reply({ error: "not allowed", care: true }, 422);
+        if (NOT_PUBLIC.test(text) || NOT_PUBLIC.test(nickname)) return reply({ error: "not allowed", care: false }, 422);
+
+        const whisper = await env.DB.prepare("SELECT n, ghost, text_en FROM whispers WHERE n = ?1").bind(Number(onWhisper[1])).first();
+        if (!whisper) return reply({ error: "not found" }, 404);
+        const device = await sha256Hex(b.device);
+        const since = now - 86400_000;
+        const mine = await env.DB.prepare("SELECT COUNT(*) AS c FROM comments WHERE kind = 'user' AND device_hash = ?1 AND created_at > ?2").bind(device, since).first();
+        if (mine.c >= DEVICE_DAILY_CAP) return reply({ error: "daily limit" }, 429);
+        const all = await env.DB.prepare("SELECT COUNT(*) AS c FROM comments WHERE kind = 'user' AND created_at > ?1").bind(since).first();
+        if (all.c >= GLOBAL_DAILY_CAP) return reply({ error: "resting" }, 503);
+
+        let verdict;
+        try {
+          verdict = await judgeComment(env, whisper.ghost, whisper.text_en, nickname, text);
+        } catch {
+          return reply({ error: "try again later" }, 503); // nothing unscreened is ever posted
+        }
+        if (!verdict.ok) return reply({ error: "not allowed", care: verdict.care === true }, 422);
+
+        const saved = await env.DB.prepare(
+          "INSERT INTO comments (whisper_n, kind, author, body, device_hash, created_at) VALUES (?1, 'user', ?2, ?3, ?4, ?5) RETURNING n"
+        ).bind(whisper.n, nickname, text, device, now).first();
+        const answer = await env.DB.prepare(
+          "INSERT INTO comments (whisper_n, kind, ghost, reply_to, body, created_at) VALUES (?1, 'ghost', ?2, ?3, ?4, ?5) RETURNING n"
+        ).bind(whisper.n, whisper.ghost, saved.n, String(verdict.reply).slice(0, 200), now + 1).first();
+        return reply({
+          comment: shapeComment({ n: saved.n, kind: "user", author: nickname, reply_to: null, body: text, created_at: now }),
+          reply: shapeComment({ n: answer.n, kind: "ghost", ghost: whisper.ghost, reply_to: saved.n, body: String(verdict.reply).slice(0, 200), created_at: now + 1 }),
+        });
+      }
+
+      if (onWhisper === null) {
+        const onLove = /^\/whispers\/(\d{1,10})\/love$/.exec(path);
+        if (onLove && (request.method === "PUT" || request.method === "DELETE")) {
+          const b = await readJson();
+          if (typeof b.device !== "string" || !DEVICE_ID.test(b.device)) return reply({ error: "bad request" }, 400);
+          const n = Number(onLove[1]);
+          if (!(await env.DB.prepare("SELECT n FROM whispers WHERE n = ?1").bind(n).first())) return reply({ error: "not found" }, 404);
+          const device = await sha256Hex(b.device);
+          if (request.method === "PUT") {
+            await env.DB.prepare("INSERT OR IGNORE INTO loves (whisper_n, device_hash, created_at) VALUES (?1, ?2, ?3)").bind(n, device, now).run();
+          } else {
+            await env.DB.prepare("DELETE FROM loves WHERE whisper_n = ?1 AND device_hash = ?2").bind(n, device).run();
+          }
+          const total = await env.DB.prepare("SELECT COUNT(*) AS c FROM loves WHERE whisper_n = ?1").bind(n).first();
+          return reply({ loves: total.c });
+        }
+      }
+
+      const ownComment = /^\/comments\/(\d{1,10})$/.exec(path);
+      if (ownComment && request.method === "DELETE") {
+        const b = await readJson();
+        if (typeof b.device !== "string" || !DEVICE_ID.test(b.device)) return reply({ error: "bad request" }, 400);
+        const mine = await env.DB.prepare("SELECT n FROM comments WHERE n = ?1 AND kind = 'user' AND device_hash = ?2").bind(Number(ownComment[1]), await sha256Hex(b.device)).first();
+        if (!mine) return reply({ error: "forbidden" }, 403);
+        await env.DB.prepare("UPDATE comments SET deleted = 1 WHERE n = ?1").bind(mine.n).run(); // the row stays; the page shows "deleted"
+        return reply({ ok: true });
+      }
+
+      if (path === "/internal/comments" && request.method === "GET") {
+        if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
+        const rows = (await env.DB.prepare(
+          "SELECT n, whisper_n, kind, author, ghost, reply_to, body, deleted, created_at FROM comments ORDER BY created_at DESC, n DESC LIMIT 60"
+        ).all()).results || [];
+        return reply({ comments: rows.map((r) => ({ ...shapeComment(r), whisper: r.whisper_n })) });
+      }
+
+      const removeComment = /^\/internal\/comment\/(\d{1,10})$/.exec(path);
+      if (removeComment && request.method === "DELETE") {
+        if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
+        await env.DB.batch([
+          env.DB.prepare("DELETE FROM comments WHERE reply_to = ?1").bind(Number(removeComment[1])),
+          env.DB.prepare("DELETE FROM comments WHERE n = ?1").bind(Number(removeComment[1])),
+        ]);
+        return reply({ ok: true });
+      }
+
+      if (path === "/internal/whisper" && request.method === "POST") {
+        if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
+        const { ghost } = await readJson();
+        try {
+          return reply({ whisper: await makeWhisper(env, now, ghost ? String(ghost) : undefined) });
+        } catch (err) {
+          return reply({ error: String(err.message).slice(0, 120) }, 502);
+        }
+      }
+
+      const removal = /^\/internal\/whisper\/(\d{1,10})$/.exec(path);
+      if (removal && request.method === "DELETE") {
+        if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
+        await env.DB.prepare("DELETE FROM whispers WHERE n = ?1").bind(Number(removal[1])).run();
+        return reply({ ok: true });
+      }
+
       if (path === "/me" && request.method === "GET") {
         const user = await sessionUser();
         if (!user) return reply({ error: "not signed in" }, 401);
@@ -281,5 +517,14 @@ export default {
       if (err.status) return reply({ error: err.message }, err.status);
       return reply({ error: "server error" }, 500);
     }
+  },
+
+  // The timer (cron): one new whisper every 3 hours, one ghost after the other.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(
+      makeWhisper(env, event.scheduledTime).catch((err) =>
+        logRequest(env, ctx, { _time: new Date().toISOString(), worker: "api", url: "cron:whisper", status: 500, error: String(err.message).slice(0, 120) })
+      )
+    );
   },
 };

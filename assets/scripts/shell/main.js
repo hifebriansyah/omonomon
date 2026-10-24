@@ -12,6 +12,9 @@ import { startCatch } from "../games/catch.js";
 import { startRounds } from "../games/rounds.js";
 import { startHome } from "./home.js";
 import { startMe, refreshMe } from "./me.js";
+import { startWhispers } from "./whispers.js";
+import { startLoved } from "./loved.js";
+import { checkBadge } from "./whisper-badge.js";
 import { refresh } from "../games/account.js";
 
 const { page, game: gameSlug, char: charId } = document.body.dataset;
@@ -107,6 +110,8 @@ translateChrome();
 showWallet();
 if (page === "home") startHome();
 else if (page === "me") startMe();
+else if (page === "whispers") startWhispers();
+else if (page === "loved") startLoved();
 else if (page === "hub") startHub();
 else if (page === "game") startGame().catch((err) => {
   $("how").textContent = `Could not start the game (${err.message}). Run "python3 tools/build_all.py" and open the site through a web server.`;
@@ -119,3 +124,6 @@ refresh().then((user) => {
   if (page === "hub") startHub();
   if (page === "me") refreshMe();
 });
+
+// A dot on the Whispers tab when there is something new.
+checkBadge();

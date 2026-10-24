@@ -9,6 +9,7 @@ Characters: assets/img/<id>.png, cut out here at full resolution (see cutout) an
 
 For every background it writes, into builds/img/scenes/<ratio>/:
   <id>.jpg    one character on the background (id from characters.json)
+and, into builds/img/heads/: <id>.webp, the head only, from assets/img/head-<id>.png, background removed, on a square transparent canvas.
 Nothing uses these yet: look at them, decide where each goes, then wire it in (make_site.py).
 Everything in builds/ is generated: never edit it by hand.
 
@@ -32,6 +33,17 @@ SCENES = {
     "16_9": ("bg-16_9.png", (1600, 900), 0.7),
     "9_16": ("bg-9_16.png", (1080, 1920), 0.42),
 }
+
+HEAD_SIZE = 256    # side of the square head picture, px
+
+
+def head(path):
+    """Your head art (assets/img/head-<id>.png): background removed, shrunk, centred on a square transparent canvas."""
+    art = cutout(path)
+    art.thumbnail((HEAD_SIZE, HEAD_SIZE), Image.LANCZOS)
+    square = Image.new("RGBA", (HEAD_SIZE, HEAD_SIZE), (0, 0, 0, 0))
+    square.paste(art, ((HEAD_SIZE - art.width) // 2, (HEAD_SIZE - art.height) // 2), art)
+    return square
 
 
 def cutout(path):
@@ -112,6 +124,13 @@ def main():
         src = ROOT / "assets" / "img" / f"{c['id']}.png"
         if src.exists():
             heroes.append((c["id"], cutout(src)))
+            head_src = ROOT / "assets" / "img" / f"head-{c['id']}.png"
+            if head_src.exists():
+                heads = ROOT / "builds" / "img" / "heads"
+                heads.mkdir(parents=True, exist_ok=True)
+                head(head_src).save(heads / f"{c['id']}.webp", "WEBP", quality=90, alpha_quality=100, method=6)
+            else:
+                print(f"skip head {c['id']}: {head_src.relative_to(ROOT)} not found")
         else:
             print(f"skip {c['id']}: {src} not found")
     for ratio, (bgfile, size, solo) in SCENES.items():

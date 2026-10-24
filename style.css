@@ -279,7 +279,8 @@ button:focus-visible, a:focus-visible { outline: none; }
 .row { display: flex; align-items: flex-end; gap: 8px; max-width: 90%; }
 .row.bot { align-self: flex-start; }
 .row.user { align-self: flex-end; }
-.mini { flex: none; width: 28px; height: 28px; border-radius: 50%; background: #eef1f8; object-fit: contain; }
+.mini { flex: none; width: 28px; height: 28px; object-fit: contain; }
+.mini.old { visibility: hidden; }
 .msg { display: flow-root; padding: 9px 13px; border-radius: 14px; line-height: 1.4; font-size: 0.92rem; overflow-wrap: anywhere; }
 /* the time sits at the bottom right of the bubble, on the last line if there is room (WhatsApp style) */
 .msg time { float: right; margin: 7px 0 -3px 12px; font-size: 0.66rem; line-height: 1; opacity: 0.6; user-select: none; }

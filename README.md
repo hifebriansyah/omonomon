@@ -156,6 +156,42 @@ New game: add it to `games.json`, write its module (return `{ restart, destroy }
 `play_area()` in `tools/make_site.py` and to the dispatch in `shell/main.js`; `recordRun()` pays the rewards.
 Rules that can run without a page (`createEngine` in `rounds.js`) are easy to test alone.
 
+## Whispers (the 4th tab)
+Each ghost posts short public updates in her own voice, written by Gemini, the same for every visitor.
+- **Timer, not visitors:** `omonomon-api` has a cron trigger (`crons` in `worker/api.jsonc`, every 3 hours UTC). Each run asks the
+  Gemini Worker's `/whisper` route for one whisper from the next ghost in turn (about 8 Gemini calls a day, fixed), with a topic
+  (a thought, a complaint, a question for followers, ...) and the Jakarta time of day. English and Indonesian come in one call.
+  Posts are kept 14 days in the D1 table `whispers`; `GET /whispers` (public, cached 2 minutes) lists the newest 40.
+- **Safety:** `/whisper` needs the shared secret `INTERNAL_TOKEN` (in `.env`; the deploy script sets it on both Workers) on top of the
+  origin rules. Gemini's answer is rejected if it has links, handles, self-harm wording, a bad length or copies the instructions
+  (`cleanWhisper` in `worker/gemini.js`), and the last 3 whispers of the ghost are passed along so it does not repeat itself.
+- **Page:** `/whispers/` (`shell/whispers.js`, not indexed) and an unread dot on the tab (`shell/whisper-badge.js`).
+- **Comments:** under each whisper anyone can comment, no sign-in. The nickname is made up for the visitor (`shell/identity.js`) and can
+  be changed on the Me page. Each comment goes to the Gemini Worker's `/comment` route, which in one call decides whether it may be
+  shown (no hate, sexual content, threats, personal data, spam, links; talk of self-harm is not posted and the writer gets a kind
+  message) and writes the ghost's short reply in her voice. If Gemini cannot answer, nothing is posted. Limits: 200 characters,
+  10 comments per browser per day, 4 per minute per IP (`COMMENT_LIMITER`), 300 per day in total (a circuit breaker for the Gemini
+  cost). Authors can delete their own comment: the row stays in the database with `deleted = 1` and the page shows "deleted" instead of the text (old databases get the column from `python3 tools/setup_api.py`); comments vanish with their whisper after 14 days. The browser's random id is stored
+  server-side only as a hash. `setup_waf.py` keeps `/whisper` and `/comment` out of the edge rate limit because only the API Worker calls them.
+- **Moderate:** `python3 tools/whisper_now.py --comments` lists the newest comments with numbers, `--delete-comment 7` removes one.
+- **Love:** a heart with a public count on each whisper (`PUT/DELETE /whispers/<n>/love`, one love per browser: the table `loves` keeps a hash
+  of the browser's random id, and a repeat love is ignored). The tap shows at once; taps are combined (only the last state is sent, after half a second, and an earlier request still on its way is cancelled), and it is undone if the server cannot be reached. The feed
+  list is cached for 2 minutes, so other people's counts can lag a little. The visitor's own loves also go to *Loved whispers* (`/loved/`,
+  linked from the Me page, with a count): that list lives in the browser (`shell/loved-store.js`) together with a copy of each whisper's
+  text, so a loved whisper stays after the feed deletes it at 14 days. It is not saved to the account yet.
+- **Make them whisper now:** `python3 tools/whisper_now.py` writes one new whisper from every ghost (`... 2 4` for only some,
+  `--list` shows the latest with their numbers, `--delete 12` removes one). Each whisper is one Gemini call.
+- **Or by hand** with curl (needs the secret; send an `Origin: https://omonomon.securhat.com` header too, the edge rule requires it):
+
+      # write one now (optional {"ghost": "1"} to choose who)
+      curl -X POST https://apimon.securhat.com/internal/whisper -H "Origin: https://omonomon.securhat.com" \
+        -H "Content-Type: application/json" -H "X-Internal-Token: $INTERNAL_TOKEN" -d '{}'
+      # delete post number 12
+      curl -X DELETE https://apimon.securhat.com/internal/whisper/12 -H "Origin: https://omonomon.securhat.com" \
+        -H "X-Internal-Token: $INTERNAL_TOKEN"
+
+- The tab is called "Whispers" ("Bisikan" in Indonesian): change `tabWhispers` in `assets/scripts/games/text.js` and the label in `tools/make_site.py`.
+
 ## Bond, quests and streak
 - **Bond XP** (per ghost, levels 1 to 10, titles from Stranger to Soulmate in `text.js`): games give 5 XP plus 2 per candle; every
   message sent gives 2 XP, up to 20 XP a day per ghost. Level-ups show a toast in the chat.
@@ -193,7 +229,7 @@ sign in with Google on the Me page and their progress follows them across device
 New hostnames are probed by scanners within minutes, and every request that reaches a Worker counts toward the free
 plan's 100,000 a day, even when the Worker answers 403. `python3 tools/setup_waf.py` creates two rules that stop them
 at Cloudflare's edge, before the Worker runs (needs a token with Zone > Zone WAF > Edit): requests to the Worker
-hostnames without the site's `Origin` header are blocked, and each IP is limited to 10 requests per 10 seconds there.
+hostnames without the site's `Origin` header are blocked, and each IP is limited to 40 requests per 10 seconds there (generous on purpose: many people share one address on mobile networks, and a country exemption such as "not Indonesia" needs a paid Cloudflare plan).
 The hostnames and allowed origins are read from `worker/gemini.jsonc` and `worker/api.jsonc`; run it again after a
 change. Check usage any time with the Workers analytics in the dashboard.
 
@@ -233,13 +269,13 @@ assets/img/        your big original art, 2048px (not published)
 assets/icons/      notes and license for the Lucide icons pasted inline in chat.html and the site generator (not published)
 builds/            everything Python generates (never edit by hand):
   img/             web images (WebP, about 6x smaller than PNG) made from assets/img by
-                   tools/make_images.py: thumbnails for the chat list, stage/ holds the big cutouts
+                   tools/make_images.py: thumbnails for the chat list, stage/ holds the big cutouts, heads/ the head-only pictures in the chat bubbles (tools/make_scenes.py)
                    and the site icons (favicon.ico from favicon.png; app icons from appicon.png)
   data/            the reply library made by tools/make_shard.py
                    (all of builds/ is git-ignored and rebuilt on every deploy)
 source/            the rule library source (tools/make_shard.py builds it into builds/data/)
 worker/            the Cloudflare Workers: gemini.js (Gemini proxy, character prompts, request log) and api.js (accounts, progress)
-tools/             build_all.py, make_images.py, make_shard.py, make_site.py, deploy_worker.py, setup_api.py, setup_waf.py, gen_synthetic.py
+tools/             build_all.py, make_images.py, make_shard.py, make_site.py, deploy_worker.py, setup_api.py, setup_waf.py, whisper_now.py, gen_synthetic.py
 ```
 New module? Add a `<link rel="modulepreload">` line for it in `chat.html` (the page then downloads all
 modules at once instead of one import at a time; `tools/make_shard.py` warns if one is missing).
@@ -272,10 +308,10 @@ or if a name appears in that text.
   **After editing a persona, run `python3 tools/deploy_worker.py`.**
 - If Gemini fails: Pocomon uses the JSON library; the others use a few backup lines
   from `characters.json` (`fallback`). Crisis phrases always use the local safety rule.
-- Add a character: pick the next id (say `5`), put the big PNG (white background is fine) in `assets/img/5.png`,
-  add an entry to `characters.json` (`id`: `"5"`, `image`: `builds/img/5.webp`, `stage`: `builds/img/stage/5.webp`),
-  add `"5": {...}` to `CHARACTERS` in `worker/gemini.js`, and run `python3 tools/make_images.py`
-  (needs `pip3 install pillow`; GitHub Actions does the same on deploy) to cut out the background and make the web images.
+- Add a character: pick the next id (say `5`), put the big PNG (white background is fine) in `assets/img/5.png` and the head-only one in `assets/img/head-5.png`,
+  add an entry to `characters.json` (`id`: `"5"`, `image`: `builds/img/5.webp`, `stage`: `builds/img/stage/5.webp`, `head`: `builds/img/heads/5.webp`, and the head art in `assets/img/head-5.png`),
+  add `"5": {...}` to `CHARACTERS` in `worker/gemini.js`, and run `python3 tools/build_all.py`
+  (needs `pip3 install pillow numpy scipy`; GitHub Actions does the same on deploy) to cut out the background and make the web images.
 
 ## Site icons (two separate sets)
 | Source (you edit) | Becomes | Used for |

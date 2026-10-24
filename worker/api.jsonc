@@ -12,10 +12,18 @@
   // Plain (non-secret) variables, set on every deploy.
   "vars": {
     "GOOGLE_CLIENT_ID": "620395952409-mv96o61s4ep74n5vuohqvvk23tvt0i6p.apps.googleusercontent.com",
-    "ALLOWED_ORIGINS": "https://omonomon.securhat.com,http://localhost"
+    "ALLOWED_ORIGINS": "https://omonomon.securhat.com,http://localhost",
+    "GEMINI_URL": "https://geminimon.securhat.com/whisper",
+    "GEMINI_COMMENT_URL": "https://geminimon.securhat.com/comment",
+    "SITE_ORIGIN": "https://omonomon.securhat.com"
   },
+  // The timer: every 3 hours (UTC) one ghost writes a new whisper. Free plans allow a few cron triggers per account.
+  "crons": ["0 */3 * * *"],
   // At most 60 requests a minute from one IP address.
   "ratelimits": [
-    { "name": "LIMITER", "namespace_id": "1002", "simple": { "limit": 60, "period": 60 } }
+    { "name": "LIMITER", "namespace_id": "1002", "simple": { "limit": 60, "period": 60 } },
+    // posting comments (each one is a Gemini call): at most 12 a minute from one IP address. Many people can share one address
+    // on a mobile network, so this is generous; the real cost caps are 10 comments per browser a day and 300 a day in total.
+    { "name": "COMMENT_LIMITER", "namespace_id": "1003", "simple": { "limit": 12, "period": 60 } }
   ]
 }

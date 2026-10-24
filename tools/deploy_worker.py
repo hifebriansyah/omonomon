@@ -9,7 +9,7 @@ Setup: copy .env.example to .env and fill in the values (it is git-ignored). The
 
 Each deploy also (re)attaches the Worker's domain and turns its workers.dev address off. Plain variables and the rate limit
 come from the .jsonc file on every deploy. Secrets are never in the repo and are kept across deploys: GEMINI_API_KEY is
-entered in the Cloudflare dashboard, AXIOM_TOKEN (the request log, both Workers) is copied from .env.
+entered in the Cloudflare dashboard, AXIOM_TOKEN (the request log) and INTERNAL_TOKEN (the secret the two Workers share) are copied from .env, for both Workers.
 """
 import json
 import os
@@ -163,6 +163,10 @@ def main():
         sys.exit(f"Deploy failed: {payload.get('errors')}")
     print(f"Deployed worker '{cfg['name']}' ({len(code)} bytes).")
     set_secret(base, account, cfg["name"], token, "AXIOM_TOKEN")
+    set_secret(base, account, cfg["name"], token, "INTERNAL_TOKEN")  # the secret the two Workers share (whispers)
+    if cfg.get("crons"):
+        res = call(base, token, "PUT", f"/accounts/{account}/workers/scripts/{cfg['name']}/schedules", [{"cron": c} for c in cfg["crons"]])
+        print(f"Timer {', '.join(cfg['crons'])}" if res.get("success") else f"Timer NOT set: {res.get('errors')}")
     if target == "gemini":
         print("GEMINI_API_KEY is a secret you enter in the dashboard (Worker > Settings > Variables and Secrets); deploys keep it.")
     attach_domain(base, account, token, cfg)

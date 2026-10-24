@@ -62,7 +62,7 @@ def load_rules(rules_dir, default_lang):
 
 
 # Folders and files a character page must not shadow (each character's page lives at /<slug>/).
-RESERVED_SLUGS = {"assets", "builds", "history", "worker", "source", "tools", "404", "privacy", "games", "me", "leaderboard"}
+RESERVED_SLUGS = {"assets", "builds", "history", "worker", "source", "tools", "404", "privacy", "games", "me", "leaderboard", "whispers", "loved"}
 
 
 def check_characters():

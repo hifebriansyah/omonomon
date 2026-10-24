@@ -2,6 +2,8 @@
 
 import { load, levelProgress } from "../games/progress.js";
 import { T, lang } from "../games/text.js";
+import { nickname, setNickname, randomNickname } from "./identity.js";
+import { lovedList } from "./loved-store.js";
 import { accountsEnabled, signedIn, currentUser, signInWithGoogle, signOut, deleteAccount, loadGoogleScript } from "../games/account.js";
 
 const $ = (id) => document.getElementById(id);
@@ -123,7 +125,30 @@ async function showAccount() {
   }
 }
 
+// The nickname shown next to the visitor's comments on whispers.
+function startNickname() {
+  const input = $("meNick");
+  const note = $("nickNote");
+  input.value = nickname();
+  const say = (text, bad = false) => { note.textContent = text; note.classList.toggle("bad", bad); };
+  $("nickForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const saved = setNickname(input.value);
+    if (!saved) return say(T.meNickBad, true);
+    input.value = saved;
+    say(T.meNickSaved);
+  });
+  $("nickRandom").addEventListener("click", () => {
+    input.value = setNickname(randomNickname());
+    say(T.meNickSaved);
+  });
+  input.addEventListener("input", () => say(T.meNickNote));
+}
+
 export function startMe() {
+  const loved = lovedList().length;
+  $("meLovedCount").textContent = loved ? `\u00b7 ${loved}` : "";
+  startNickname();
   showStats();
   loadStories();
   showAccount();

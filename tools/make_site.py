@@ -151,6 +151,7 @@ def privacy_page(site):
 ICONS = {  # Lucide icons (ISC License)
     "chats": '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
     "games": '<line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/>',
+    "whispers": '<path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/>',
     "me": '<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
     "back": '<path d="m15 18-6-6 6-6"/>',
     "more": '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
@@ -165,11 +166,12 @@ def icon(name):
 
 def tabbar(active):
     """The bottom navigation of the app pages: Chats, Games, Me."""
-    tabs = [("chats", "./", "Chats", "tabChats"), ("games", "games/", "Games", "tabGames"), ("me", "me/", "Me", "tabMe")]
+    tabs = [("chats", "./", "Chats", "tabChats"), ("whispers", "whispers/", "Whispers", "tabWhispers"),
+            ("games", "games/", "Games", "tabGames"), ("me", "me/", "Me", "tabMe")]
     links = ""
     for key, href, label, tkey in tabs:
         cur = ' aria-current="page"' if key == active else ""
-        links += f'<a class="tab" href="{href}"{cur}>{icon(key)}<span data-t="{tkey}">{label}</span></a>'
+        links += f'<a class="tab" href="{href}" data-tab="{key}"{cur}>{icon(key)}<span data-t="{tkey}">{label}</span></a>'
     return f'  <nav class="tabbar" aria-label="Main"><div class="tabbar-in">{links}</div></nav>\n'
 
 
@@ -250,15 +252,34 @@ def shell_pages(site, characters, games):
       <div class="stats"><div class="stat"><b id="meCandles">0</b><span data-t="meCandles">Candles</span></div>
         <div class="stat"><b id="mePlayed">0</b><span data-t="mePlayed">Games played</span></div></div>
       <p class="streak-me">{icon("flame")}<span id="meStreak"></span></p>
+      <h2 data-t="meNickname">Nickname</h2>
+      <form class="nick" id="nickForm" autocomplete="off"><input id="meNick" type="text" maxlength="24" aria-labelledby="nickLabel">
+        <button type="submit" data-t="meSave">Save</button><button type="button" id="nickRandom" data-t="meRandom">Random</button></form>
+      <p class="nick-note" id="nickNote" data-t="meNickNote">Shown next to your comments on whispers.</p>
       <h2 data-t="meBonds">Bonds</h2>
       <ul class="bonds">{bonds}</ul>
       <h2 data-t="meStories">Stories</h2>
       <div class="stories" id="storyList"></div>
-      <ul class="links"><li><a href="privacy/" data-t="mePrivacy">Privacy</a></li></ul>
+      <ul class="links"><li><a href="loved/"><span data-t="meLoved">Loved whispers</span> <span class="loved-count" id="meLovedCount"></span></a></li><li><a href="privacy/" data-t="mePrivacy">Privacy</a></li></ul>
     </section>""")
     me_h = dict(title=f"Me | {site['name']}", description=f"Your profile and progress in {site['name']}.",
                 url=f"{site['url']}/me/", image=share_image(site), robots="noindex, follow")
     out.append(("me", fill("me", 1, me_h, me_content, None, "me"), me_h["url"], False))
+
+    # /whispers/ : the ghosts' latest public updates (written on a timer, filled in by the script: not indexed)
+    wh_content = (bar("Whispers") + '    <section class="whispers-page">\n      <p class="intro" data-t="whispersIntro">Little updates the ghosts post when the mood strikes.</p>\n'
+                  + '      <ul class="whispers" id="whisperList"></ul>\n      <p class="whisper-note" id="whisperNote" hidden></p>\n    </section>')
+    wh_h = dict(title=f"Whispers | {site['name']}", description="Little updates the ghosts of Omon Omon post when the mood strikes.",
+                url=f"{site['url']}/whispers/", image=share_image(site), robots="noindex, follow")
+    out.append(("whispers", fill("whispers", 1, wh_h, wh_content, None, "whispers"), wh_h["url"], False))
+
+    # /loved/ : the whispers this visitor loved (kept in their browser: not indexed, reached from Me)
+    back_me = f'<a class="back-btn" href="me/" data-t-label="backMe" aria-label="Back" title="Back">{icon("back")}</a>'
+    loved_content = (f'    <header class="app-bar">{back_me}<h1 data-t="lovedTitle">Loved whispers</h1></header>\n'
+                     + '    <section class="whispers-page">\n      <ul class="whispers" id="lovedList"></ul>\n      <p class="whisper-note" id="lovedNote" hidden></p>\n    </section>')
+    loved_h = dict(title=f"Loved whispers | {site['name']}", description="Whispers you loved, kept on this device.",
+                   url=f"{site['url']}/loved/", image=share_image(site), robots="noindex, follow")
+    out.append(("loved", fill("loved", 1, loved_h, loved_content, None, "me"), loved_h["url"], False))
 
     # /games/ : the hub
     cards = []

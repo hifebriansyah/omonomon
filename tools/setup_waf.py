@@ -10,8 +10,15 @@ blocked here never reach the Worker and cost nothing.
 
   1. Custom rule: block requests to the Worker hostnames that do not carry one of the site's Origin headers.
      (Browsers on your site always send it, scanners and curl do not.)
-  2. Rate limit: at most 10 requests per 10 seconds per IP to those hostnames; the rest are blocked for 10 seconds.
+  2. Rate limit: at most 40 requests per 10 seconds per IP to those hostnames; the rest are blocked for 10 seconds.
      (The free plan allows one rule with a 10 second period; it catches scripts that fake the Origin header.)
+     The limit is generous on purpose: mobile networks (Indonesia especially) put many people behind one shared address,
+     and a low limit blocked real visitors. Leaving a country out of the limit would be better, but that needs a paid plan
+     ("ip.src.country" is not allowed in free rate limiting rules). The page also sends few requests (taps on a heart are
+     combined into one), and each Worker has its own limits as well.
+     The Gemini Worker's /whisper and /comment routes are left out: only the API Worker calls them, always from the same
+     Cloudflare address, so a few people commenting at once would otherwise trip the limit for everybody. They stay
+     protected by the Origin rule above, the secret INTERNAL_TOKEN and the Worker's own limits.
 
 The API token in .env needs Zone > Zone WAF > Edit on the zone.
 """
@@ -44,6 +51,7 @@ def main():
     zone = zones[0]["id"]
 
     on_workers = f"http.host in {{{quoted(hosts)}}}"
+    internal = f'(http.host eq "{configs[0]["domain"]}" and http.request.uri.path in {{"/whisper" "/comment"}})'
     no_origin = f"not any(http.request.headers[\"origin\"][*] in {{{quoted(origins)}}})"
     rules = {
         "http_request_firewall_custom": [{
@@ -53,9 +61,9 @@ def main():
         }],
         "http_ratelimit": [{
             "action": "block",
-            "description": "Omon Omon: at most 10 requests per 10 seconds per IP to the Workers",
-            "expression": f"({on_workers})",
-            "ratelimit": {"characteristics": ["cf.colo.id", "ip.src"], "period": 10, "requests_per_period": 10, "mitigation_timeout": 10},
+            "description": "Omon Omon: at most 40 requests per 10 seconds per IP to the Workers",
+            "expression": f"({on_workers} and not {internal})",
+            "ratelimit": {"characteristics": ["cf.colo.id", "ip.src"], "period": 10, "requests_per_period": 40, "mitigation_timeout": 10},
         }],
     }
     for phase, phase_rules in rules.items():

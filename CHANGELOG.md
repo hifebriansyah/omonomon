@@ -2,6 +2,11 @@
 
 Each version is one commit. Newest first.
 
+## 0.13.0 - Whispers
+- Whispers tab: every 3 hours a ghost posts a Gemini-written thought (cron on the API Worker).
+- Anonymous comments with ghost replies, love counts and a Loved page on Me.
+- tools/whisper_now.py forces a whisper.
+
 ## 0.12.0 - Three more mini-games
 - Night Rounds, Quiet Wish and Hair Catch, with scene art from tools/make_scenes.py.
 

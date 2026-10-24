@@ -13,6 +13,7 @@
       "status": "no sugarcoating",
       "library": true,
       "stage": "builds/img/stage/1.webp",
+      "head": "builds/img/heads/1.webp",
       "slug": "pocomon",
       "seo": {
         "tagline": "the gloomy pocong who says it straight",
@@ -54,6 +55,7 @@
         ]
       },
       "stage": "builds/img/stage/2.webp",
+      "head": "builds/img/heads/2.webp",
       "slug": "ngesomon",
       "seo": {
         "tagline": "the big-sister nurse ghost",
@@ -95,6 +97,7 @@
         ]
       },
       "stage": "builds/img/stage/3.webp",
+      "head": "builds/img/heads/3.webp",
       "slug": "sundemon",
       "seo": {
         "tagline": "the gentle sundel bolong who listens",
@@ -136,6 +139,7 @@
         ]
       },
       "stage": "builds/img/stage/4.webp",
+      "head": "builds/img/heads/4.webp",
       "slug": "kuntimon",
       "seo": {
         "tagline": "the curious kuntilanak",
