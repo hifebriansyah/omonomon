@@ -6,6 +6,7 @@ GitHub Pages cannot route, so every address gets its own real HTML file, made fr
     /                  home
     /<slug>/           each character on stage
     /<slug>/history/   each character's history panel (noindex)
+    /privacy/          the privacy page (from privacy.html)
     404.html, sitemap.xml, robots.txt
 
 Each page has its own title, description, canonical link, share tags and structured data, and the
@@ -128,6 +129,23 @@ def render(template, site, characters, c, history, depth):
     return page, h
 
 
+def privacy_page(site):
+    """/privacy/: what is stored, who processes it, how to delete it. Needed for Google sign-in too."""
+    from datetime import date
+    page = (ROOT / "privacy.html").read_text(encoding="utf-8")
+    email = site.get("contactEmail", "").strip()
+    if email:
+        contact = f'    <h2>Contact</h2>\n    <p>Questions or requests: <a href="mailto:{attr(email)}">{escape(email)}</a>.</p>\n'
+    else:
+        contact = ""
+        print('WARNING: site.json has no "contactEmail", so the privacy page has no way to contact you (Google asks for one)')
+    values = {"name": escape(site["name"]), "url": site["url"], "themeColor": site["themeColor"],
+              "updated": date.today().isoformat(), "contact": contact}
+    for key, value in values.items():
+        page = page.replace("{{" + key + "}}", value)
+    return page
+
+
 def not_found(site):
     """404.html: GitHub Pages serves it with a real 404 status for any unknown address."""
     base = "/" + site["url"].split("//", 1)[1].partition("/")[2]
@@ -175,6 +193,23 @@ def make_dev_pages():
     print(f"ok dev pages: {', '.join(c['slug'] + '/' for c in characters)} next to index.html")
 
 
+def check_sitemap(urls, site):
+    """Every public page (not marked noindex) must be listed in sitemap.xml. When you add a page, add its
+    address to `urls` in main(); this check fails the build if you forget."""
+    import re
+    missing = []
+    for page in sorted(OUT.rglob("index.html")):
+        html = page.read_text(encoding="utf-8")
+        if re.search(r'<meta name="robots" content="[^"]*noindex', html):
+            continue
+        rel = page.relative_to(OUT).parent.as_posix()
+        url = f"{site['url']}/" if rel == "." else f"{site['url']}/{rel}/"
+        if url not in urls:
+            missing.append(url)
+    if missing:
+        raise SystemExit("make_site.py: public pages missing from the sitemap (add them to `urls` in main()): " + ", ".join(missing))
+
+
 def main():
     if "--dev" in sys.argv:
         return make_dev_pages()
@@ -202,11 +237,14 @@ def main():
         html, _ = render(template, site, characters, c, history, depth)
         path.write_text(html, encoding="utf-8")
 
+    (OUT / "privacy").mkdir()
+    (OUT / "privacy" / "index.html").write_text(privacy_page(site), encoding="utf-8")
     (OUT / "404.html").write_text(not_found(site), encoding="utf-8")
-    urls = [f"{site['url']}/"] + [f"{site['url']}/{c['slug']}/" for c in characters]
+    urls = [f"{site['url']}/"] + [f"{site['url']}/{c['slug']}/" for c in characters] + [f"{site['url']}/privacy/"]
     (OUT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + "".join(f"  <url><loc>{escape(u)}</loc></url>\n" for u in urls) + "</urlset>\n", encoding="utf-8")
+    check_sitemap(urls, site)
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {site['url']}/sitemap.xml\n", encoding="utf-8")
     print(f"ok site: {len(pages)} pages + 404.html, sitemap.xml, robots.txt in {OUT.relative_to(ROOT)}/")
 

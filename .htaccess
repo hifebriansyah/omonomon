@@ -1,8 +1,16 @@
 # Local Apache only (GitHub Pages ignores this file, and it is not copied into builds/site/).
-# Serves the pages made by `python3 tools/build_all.py` for /<slug>/ and /<slug>/history/, so refreshing
-# on those addresses works. Needs mod_rewrite and `AllowOverride FileInfo` (or All) for this folder.
+# Serves the pages made by `python3 tools/build_all.py` for /privacy/, /<slug>/, /<slug>/history/, sitemap.xml and
+# robots.txt, so refreshing on those addresses works. Needs mod_rewrite and `AllowOverride FileInfo` (or All) for this folder.
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  # /privacy -> /privacy/ (GitHub Pages does this itself; the pages' relative paths need the slash)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^[a-z0-9-]+(/history)?$ %{REQUEST_URI}/ [R=301,L]
+  # /sitemap.xml and /robots.txt -> the built copies
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(sitemap\.xml|robots\.txt)$ builds/site/$1 [L]
+  # /privacy/ -> builds/site/privacy/index.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^([a-z0-9-]+/(history/)?)$ builds/site/$1index.html [L]

@@ -2,6 +2,10 @@
 
 Each version is one commit. Newest first.
 
+## 0.8.0 - Privacy page and gamification plan
+- privacy.html added to the site and sitemap.
+- GAMIFICATION.md: plan for mini-games, bonds, quests and accounts.
+
 ## 0.7.0 - Request log in Axiom
 - The Worker sends one log line per request to Axiom when AXIOM_TOKEN is set.
 - .env.example replaces .env.deploy.example; deploy_worker.py copies secrets without printing them.

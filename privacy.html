@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="../">
+  <title>Privacy | {{name}}</title>
+  <meta name="description" content="What {{name}} stores about you, who processes your messages, and how to delete your data.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{url}}/privacy/">
+  <link rel="icon" href="builds/img/favicon.ico" sizes="48x48">
+  <meta name="theme-color" content="{{themeColor}}">
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; background: {{themeColor}}; color: #e4e7ed; font: 1rem/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width: 680px; margin: 0 auto; padding: 24px 16px 64px; }
+    h1 { font-size: 1.6rem; margin: 0 0 4px; }
+    h2 { font-size: 1.1rem; margin: 28px 0 6px; }
+    p, li { color: #cfd4de; }
+    a { color: #c9b3ee; }
+    .updated { color: #8a92a1; font-size: 0.85rem; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+    th, td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid #2c2f38; }
+  </style>
+</head>
+<body>
+  <main>
+    <p><a href="./">&larr; Back to {{name}}</a></p>
+    <h1>Privacy</h1>
+    <p class="updated">Last updated {{updated}}</p>
+
+    <p>{{name}} is a small hobby project: you chat with four ghost characters. This page says what happens to your data.
+    It is written in plain words, not as legal advice.</p>
+
+    <h2>What we handle</h2>
+    <table>
+      <tr><th>Data</th><th>Why</th><th>Where it lives</th></tr>
+      <tr><td>Your chat messages and the replies</td><td>To answer you</td>
+          <td>Sent to our server, then to Google's Gemini service to write the reply. Saved chats are also kept in your own browser.</td></tr>
+      <tr><td>A request log: time, status, character, your IP address and country, your message and the reply</td>
+          <td>To fix problems, stop abuse and watch costs</td>
+          <td>A logging service (Axiom). Kept for 30 days, then deleted.</td></tr>
+      <tr><td>Saved chat history</td><td>So your chat is still there when you come back</td>
+          <td>Only in your browser (local storage). The History panel's Clear button deletes it.</td></tr>
+      <tr><td>Sign in with Google (when it is available): your Google account id, email address and name</td>
+          <td>To recognise you and save your game progress</td>
+          <td>Our database, until you delete your account.</td></tr>
+      <tr><td>Game progress (scores, levels, items), when games are available</td><td>To save your progress</td>
+          <td>Your browser, and our database if you sign in.</td></tr>
+    </table>
+
+    <h2>Who else sees it</h2>
+    <ul>
+      <li><strong>Google (Gemini)</strong> receives your message so it can write a reply. Please don't type anything you want to keep private.</li>
+      <li><strong>Cloudflare</strong> runs our server and DNS, and <strong>GitHub</strong> hosts this website. They see your IP address when you connect, as any website host does.</li>
+      <li><strong>Axiom</strong> stores the request log described above.</li>
+      <li>We don't sell your data and we don't use it for advertising.</li>
+    </ul>
+
+    <h2>Sign in with Google</h2>
+    <p>If you sign in, we receive your Google account id, email address and name from Google. We use them only to log you in and to
+    save your progress. We don't read your Gmail, Drive or contacts, and we never ask for those permissions.</p>
+
+    <h2>Cookies</h2>
+    <p>We use browser storage for your saved chats and settings, and, once you sign in, one cookie that keeps you signed in.
+    We don't use advertising or tracking cookies.</p>
+
+    <h2>Your choices</h2>
+    <ul>
+      <li>Delete your saved chats any time with Clear in the History panel, or by clearing this site's data in your browser.</li>
+      <li>You can ask us to access, correct or delete the data we hold about you, including log lines that contain your IP address.</li>
+      <li>When accounts are available, deleting your account removes your profile and progress.</li>
+    </ul>
+{{contact}}
+    <h2>Who this is for</h2>
+    <p>{{name}} is not aimed at young children. If you think a child has shared personal data with us, contact us and we will delete it.</p>
+
+    <h2>Changes</h2>
+    <p>If this changes in a way that matters, we update this page and its date.</p>
+  </main>
+</body>
+</html>
