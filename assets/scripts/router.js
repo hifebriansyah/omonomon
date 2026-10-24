@@ -38,6 +38,8 @@ function meta(attr, name, content) {
   el.content = content;
 }
 
+const SHARE_DEFAULT = "1"; // builds/img/scenes/1_1/1.jpg: the share picture of pages that are not one character's (same as make_site.py)
+
 // What a route says about itself: title, description, canonical address, share image, robots.
 export function headFor(route) {
   const { site } = state;
@@ -47,12 +49,12 @@ export function headFor(route) {
       title: site.title,
       description: site.description,
       url: `${site.url}/`,
-      image: `${site.url}/builds/img/share/icon.jpg`,
+      image: `${site.url}/builds/img/scenes/1_1/${SHARE_DEFAULT}.jpg`,
       robots: "index, follow",
     };
   }
   const stageUrl = `${site.url}/${hrefFor(c)}`;
-  const image = `${site.url}/builds/img/share/${c.id}.jpg`;
+  const image = `${site.url}/builds/img/scenes/1_1/${c.id}.jpg`;
   if (route.history) {
     return {
       title: `Chat history with ${c.name} | ${site.name}`,

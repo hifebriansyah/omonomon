@@ -2,7 +2,7 @@
 
 **Status:** decisions made: nickname leaderboards, no age gate, existing art plus simple shapes, currency "Candles",
 Google sign-in only (client ID is in `config.js`). Built so far (step 1 and 2, guest mode): `/games/` hub, **Hop Hop**,
-candles, bond XP and levels in `localStorage`. Done too: bond payoffs in chat (chat XP, level toasts, stories on Me, Gemini tone by bond) and daily quests with a streak. Step 3 (accounts) is live: `worker/api.js`, D1 schema, Google sign-in, sync and the Me page; it goes live after `tools/setup_api.py` (needs the D1 token permission). Next: the other three games.
+candles, bond XP and levels in `localStorage`. Done too: bond payoffs in chat (chat XP, level toasts, stories on Me, Gemini tone by bond) and daily quests with a streak. All four mini-games are built (Hop Hop, Night Rounds, Quiet Wish, Hair Catch). Step 3 (accounts) is live: `worker/api.js`, D1 schema, Google sign-in, sync and the Me page; it goes live after `tools/setup_api.py` (needs the D1 token permission). Next: the other three games.
 
 
 Decisions so far: **mini-games with the ghosts**, **cloud save with accounts**, **design first**.

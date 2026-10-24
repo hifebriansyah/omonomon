@@ -157,3 +157,45 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 
 .profile .ph { overflow: hidden; }
 .profile .ph img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+/* Quiet Wish (memory game) */
+.play.memory { display: grid; justify-items: center; gap: 10px; padding: 18px 14px 20px; background: radial-gradient(circle at 50% 0%, #2b2547, #17152b 70%); }
+.memory-ghost { width: 96px; height: auto; max-height: 120px; object-fit: contain; filter: drop-shadow(0 4px 0 rgba(0, 0, 0, 0.3)); }
+.m-status { margin: 0; min-height: 1.5em; font-family: var(--comic); color: #fff; font-size: 1.05rem; }
+.petals { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: min(300px, 100%); }
+.petal { aspect-ratio: 1; border: 3px solid #14151a; border-radius: 62% 38% 60% 40% / 45% 55% 45% 55%; cursor: pointer; opacity: 0.55;
+  background: radial-gradient(circle at 35% 30%, var(--c1), var(--c2)); box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+  transition: opacity 0.25s, transform 0.25s, box-shadow 0.25s; }
+.petal.p0 { --c1: #f3dc8a; --c2: #c9983a; }
+.petal.p1 { --c1: #f4b4c8; --c2: #c9607e; }
+.petal.p2 { --c1: #a9d6f5; --c2: #4f8fc0; }
+.petal.p3 { --c1: #b5e8c6; --c2: #4aa56b; }
+.petal.p1 { border-radius: 40% 60% 38% 62% / 55% 45% 55% 45%; }
+.petal.p2 { border-radius: 60% 40% 62% 38% / 45% 55% 45% 55%; }
+.petal:not(:disabled):hover { opacity: 0.8; }
+.petal:disabled { cursor: default; }
+.petal.on { opacity: 1; transform: scale(1.07); box-shadow: 0 0 26px 8px var(--c1), 3px 3px 0 rgba(0, 0, 0, 0.5); }
+.petal.wrong { opacity: 0.25; animation: shake 0.35s; }
+@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.petal:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.sighs { margin: 0; font-size: 0.8rem; color: var(--muted); min-height: 1.2em; }
+.m-start { font: inherit; font-weight: 700; color: #14151a; background: var(--accent); border: 2px solid #14151a; border-radius: 12px;
+  padding: 9px 22px; box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.55); cursor: pointer; }
+.m-start[hidden] { display: none; }
+
+/* Night Rounds */
+.play.rounds { background: radial-gradient(circle at 50% 0%, #2a2f4a, #15172a 70%); }
+.rooms { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: min(340px, 100%); }
+.room { position: relative; aspect-ratio: 1.15; display: grid; place-items: center; border: 3px solid #14151a; border-radius: 14px; cursor: pointer;
+  background: #2b3050; color: #8d96c4; box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5); transition: background 0.2s, transform 0.15s, box-shadow 0.2s; overflow: hidden; }
+.room-num { font-family: var(--comic); font-size: 1.6rem; }
+.room-bar { position: absolute; left: 8px; right: 8px; bottom: 7px; height: 5px; border-radius: 3px; background: rgba(0, 0, 0, 0.35); overflow: hidden; opacity: 0; }
+.room-bar i { display: block; height: 100%; width: calc(var(--left, 0) * 100%); background: #fff; border-radius: 3px; }
+.room:disabled { cursor: default; }
+.room.lit { background: #ffd966; color: #14151a; transform: scale(1.04); box-shadow: 0 0 22px 6px rgba(255, 217, 102, 0.65), 3px 3px 0 rgba(0, 0, 0, 0.5); }
+.room.lit .room-bar { opacity: 1; }
+.room.lit .room-bar i { background: linear-gradient(90deg, #e0603a, #14151a); }
+.room.ok { background: #7bd88f; color: #14151a; }
+.room.missed { background: #c0392b; color: #fff; animation: shake 0.35s; }
+.room.idle { animation: shake 0.25s; }
+.room:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }

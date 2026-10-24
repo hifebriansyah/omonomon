@@ -100,9 +100,10 @@ function settleQuests(p, characters) {
 }
 
 // Book the result of one game run. Returns what to show the player.
-export function recordRun(game, charId, score, characters) {
+// `perCandle` is how many points make one candle in this game (games.json `scorePerCandle`; gentle games score lower).
+export function recordRun(game, charId, score, characters, perCandle = SCORE_PER_CANDLE) {
   const p = load();
-  const wanted = Math.min(MAX_CANDLES_PER_RUN, Math.floor(score / SCORE_PER_CANDLE));
+  const wanted = Math.min(MAX_CANDLES_PER_RUN, Math.floor(score / perCandle));
   const candles = Math.min(wanted, Math.max(0, DAILY_CANDLE_CAP - p.daily.candles));
   const xp = 5 + candles * 2; // playing always grows the bond a little
   const levelBefore = levelOf(p.bond[charId] || 0);

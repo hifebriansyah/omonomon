@@ -55,8 +55,8 @@ a chat list with a bottom tab bar (Chats, Games, Me); opening a ghost opens her 
 | `/me/` | guest profile, candles, bond levels, Privacy link (Me tab) | `shell.html` | no (`noindex`) |
 | `/privacy/` | privacy page | `privacy.html` | yes |
 
-Each page has its own `<title>`, description, canonical link, Open Graph and Twitter tags, a 1200x630 share
-picture (`builds/img/share/`), JSON-LD, and the character links already in the HTML. Also generated: `404.html`
+Each page has its own `<title>`, description, canonical link, Open Graph and Twitter tags, a square share
+picture (a character on the 1:1 scene, `builds/img/scenes/1_1/`, made by `tools/make_scenes.py`), JSON-LD, and the character links already in the HTML. Also generated: `404.html`
 (a real 404), `sitemap.xml` and `robots.txt`. In the browser, `router.js` makes the History button
 and Back/Forward move between these addresses without reloading, and keeps the title and meta tags current.
 
@@ -94,6 +94,11 @@ Setup (no Node needed):
    `THINKING_BUDGET`) are plain variables kept in `worker/gemini.jsonc` and set on every deploy; optional
    `GEMINI_MODEL` (default `gemini-3.8-flash`) can be added there too.
 4. `WORKER_URL` in `config.js` is the Worker's domain (`https://geminimon.securhat.com/`). Commit and push.
+
+Where the Worker runs matters: Google refuses the Gemini API from some places Cloudflare has data centres (Hong Kong
+answers "User location is not supported"), and a Worker normally runs in the data centre nearest the visitor. So
+`worker/gemini.jsonc` pins it near Singapore (`placement`, sent by `tools/deploy_worker.py`). If chat suddenly
+falls back to canned lines, check the Axiom log for `status` 502 with `upstream` 400.
 
 Instruction privacy: Gemini occasionally echoes part of its instructions (for example after a vague
 message like "kenapa?"). Before a reply is returned, the Worker drops any sentence that repeats 7 or more
@@ -134,10 +139,22 @@ the Google Cloud project, and watch usage.
 
 ## Games
 `/games/` lists the mini-games and `/games/<slug>/` is one game (built by `tools/make_site.py` from `shell.html` and
-`games.json`; a game only gets a page once `"ready": true`). Code is in `assets/scripts/games/`: `progress.js`
-(candles, bond XP per ghost, best scores, daily candle cap, saved in this browser), `text.js` (EN/ID words),
-`hub.js`, `runner.js` (**Hop Hop**, Pocomon's endless runner) and `main.js`. New game: add it to `games.json`, write
-its module, reuse `recordRun()` for rewards. Plan and status: `GAMIFICATION.md`.
+`games.json`; a game only gets a page once `"ready": true`). Code is in `assets/scripts/games/`:
+
+| game | ghost | module | how it plays |
+|---|---|---|---|
+| Hop Hop | 1 | `runner.js` | one-button endless runner: hop over tombstones |
+| Night Rounds | 2 | `rounds.js` | tap the rooms that light up before the timer runs out; 3 missed calls end the shift |
+| Quiet Wish | 3 | `memory.js` | slow memory game with four petals; no timer, 3 sighs |
+| Hair Catch | 4 | `catch.js` | slide to catch falling secrets with her hair, dodge the dark ones; 3 lives |
+
+`games.json` holds each game's text, `type` (`runner`, `rounds`, `memory`, `catch`), reactions per score tier, and its balance:
+`tiers` (score limits for the low/mid reactions), `recordMin` (score from which a new best gets the record reaction) and
+`scorePerCandle` (points per candle; the games score on different scales). `progress.js` (candles, bond, best scores, daily
+caps, saved in this browser), `quests.js`, `text.js` (EN/ID words), `hub.js`, `account.js` and `shell/main.js` are shared.
+New game: add it to `games.json`, write its module (return `{ restart, destroy }`, call `onOver(score)`), add its type to
+`play_area()` in `tools/make_site.py` and to the dispatch in `shell/main.js`; `recordRun()` pays the rewards.
+Rules that can run without a page (`createEngine` in `rounds.js`) are easy to test alone.
 
 ## Bond, quests and streak
 - **Bond XP** (per ghost, levels 1 to 10, titles from Stranger to Soulmate in `text.js`): games give 5 XP plus 2 per candle; every

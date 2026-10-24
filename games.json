@@ -13,37 +13,248 @@
       "title": "Hop Hop",
       "tagline": "hop over the graveyard",
       "description": "Help {name}, the pocong who can only hop, jump over tombstones in this one-button endless runner. How far can you get?",
-      "how": { "en": "Tap, click or press Space to hop.", "id": "Ketuk, klik, atau tekan Spasi untuk melompat." },
+      "how": {
+        "en": "Tap, click or press Space to hop.",
+        "id": "Ketuk, klik, atau tekan Spasi untuk melompat."
+      },
       "reactions": {
-        "low":    { "en": ["That was short. Even the dead last longer.", "Hm. Again."], "id": ["Pendek banget. Orang mati aja lebih awet.", "Hm. Ulang."] },
-        "mid":    { "en": ["Not terrible. Not good either.", "You hop like you mean it. Almost."], "id": ["Lumayan. Tapi belum bagus.", "Kamu lompat dengan niat. Hampir."] },
-        "high":   { "en": ["Fine. That was good. Don't let it go to your head.", "Impressive. For someone who still has legs."], "id": ["Oke. Itu bagus. Jangan sombong.", "Hebat. Buat yang masih punya kaki."] },
-        "record": { "en": ["A new record. I'm almost happy.", "Your best yet. Do not tell anyone I said so."], "id": ["Rekor baru. Aku hampir senang.", "Terbaikmu sejauh ini. Jangan bilang siapa-siapa."] }
-      }
+        "low": {
+          "en": [
+            "That was short. Even the dead last longer.",
+            "Hm. Again."
+          ],
+          "id": [
+            "Pendek banget. Orang mati aja lebih awet.",
+            "Hm. Ulang."
+          ]
+        },
+        "mid": {
+          "en": [
+            "Not terrible. Not good either.",
+            "You hop like you mean it. Almost."
+          ],
+          "id": [
+            "Lumayan. Tapi belum bagus.",
+            "Kamu lompat dengan niat. Hampir."
+          ]
+        },
+        "high": {
+          "en": [
+            "Fine. That was good. Don't let it go to your head.",
+            "Impressive. For someone who still has legs."
+          ],
+          "id": [
+            "Oke. Itu bagus. Jangan sombong.",
+            "Hebat. Buat yang masih punya kaki."
+          ]
+        },
+        "record": {
+          "en": [
+            "A new record. I'm almost happy.",
+            "Your best yet. Do not tell anyone I said so."
+          ],
+          "id": [
+            "Rekor baru. Aku hampir senang.",
+            "Terbaikmu sejauh ini. Jangan bilang siapa-siapa."
+          ]
+        }
+      },
+      "type": "runner"
     },
     {
       "slug": "night-rounds",
       "character": "2",
-      "ready": false,
+      "ready": true,
       "title": "Night Rounds",
       "tagline": "answer the lights before they run out",
-      "description": "Help {name} on her night shift: tap the rooms that light up before their timers run out."
+      "description": "Help {name} on her night shift: tap each room that lights up before its timer runs out. Rooms call faster, and more at once, as the night goes on.",
+      "type": "rounds",
+      "how": {
+        "en": "Tap the rooms that light up before the timer runs out (or press 1 to 6).",
+        "id": "Ketuk kamar yang menyala sebelum waktunya habis (atau tekan 1 sampai 6)."
+      },
+      "overTitle": {
+        "en": "Shift over",
+        "id": "Shift selesai"
+      },
+      "tiers": [
+        250,
+        700
+      ],
+      "recordMin": 150,
+      "scorePerCandle": 120,
+      "reactions": {
+        "low": {
+          "en": [
+            "Hm, a few calls slipped by. Drink some water and try again.",
+            "Not your best shift. Have you eaten?"
+          ],
+          "id": [
+            "Hm, beberapa panggilan kelewat. Minum dulu, terus coba lagi.",
+            "Shift-mu kurang bagus. Udah makan belum?"
+          ]
+        },
+        "mid": {
+          "en": [
+            "Decent shift. Quick hands.",
+            "Good work. Now sit down for a minute."
+          ],
+          "id": [
+            "Shift yang lumayan. Tanganmu cepat juga.",
+            "Kerja bagus. Sekarang duduk dulu sebentar."
+          ]
+        },
+        "high": {
+          "en": [
+            "Excellent. Not a single room left waiting. I'm proud.",
+            "That was a proper night shift. Go rest, you earned it."
+          ],
+          "id": [
+            "Bagus sekali. Nggak ada kamar yang dibiarin nunggu. Kakak bangga.",
+            "Itu baru jaga malam yang benar. Istirahat sana, kamu pantas."
+          ]
+        },
+        "record": {
+          "en": [
+            "Best shift on record. I'm putting it in the logbook.",
+            "New record! Fine, one biscuit. Just one."
+          ],
+          "id": [
+            "Shift terbaik yang tercatat. Kakak tulis di buku catatan.",
+            "Rekor baru! Oke, satu biskuit. Satu aja."
+          ]
+        }
+      }
     },
     {
       "slug": "quiet-wish",
       "character": "3",
-      "ready": false,
+      "ready": true,
       "title": "Quiet Wish",
       "tagline": "repeat the glowing petals",
-      "description": "A slow, calm memory game with {name}: repeat the glowing petals. No timer, no pressure."
+      "description": "A slow, calm memory game with {name}: watch the petals glow, then repeat them in order. No timer, no pressure.",
+      "type": "memory",
+      "how": {
+        "en": "Watch the petals glow, then tap them in the same order (or press 1 to 4).",
+        "id": "Perhatikan kelopak yang menyala, lalu ketuk dalam urutan yang sama (atau tekan 1 sampai 4)."
+      },
+      "overTitle": {
+        "en": "Rest now",
+        "id": "Istirahat dulu"
+      },
+      "tiers": [
+        60,
+        150
+      ],
+      "recordMin": 60,
+      "reactions": {
+        "low": {
+          "en": [
+            "...it fades. That's alright. Most things do.",
+            "A short one. Even short is something, I suppose."
+          ],
+          "id": [
+            "...memudar. Nggak apa-apa. Banyak hal begitu.",
+            "Pendek ya. Tapi pendek pun masih ada artinya, kurasa."
+          ]
+        },
+        "mid": {
+          "en": [
+            "You held on longer than I expected. Hm.",
+            "The petals remember you. Strange."
+          ],
+          "id": [
+            "Kamu bertahan lebih lama dari dugaanku. Hm.",
+            "Kelopaknya ingat kamu. Aneh."
+          ]
+        },
+        "high": {
+          "en": [
+            "So many... you carried all of them. I'm almost moved.",
+            "Quiet, and still you remembered. Thank you."
+          ],
+          "id": [
+            "Banyak sekali... kamu bawa semuanya. Aku hampir terharu.",
+            "Hening, dan kamu tetap ingat. Terima kasih."
+          ]
+        },
+        "record": {
+          "en": [
+            "The furthest you've gone. I'll keep it, quietly.",
+            "A new best. Nothing lasts, but this will, a little."
+          ],
+          "id": [
+            "Paling jauh yang pernah kamu capai. Kusimpan diam-diam.",
+            "Rekor baru. Nggak ada yang abadi, tapi ini bertahan sebentar."
+          ]
+        }
+      },
+      "scorePerCandle": 20
     },
     {
       "slug": "hair-catch",
       "character": "4",
-      "ready": false,
+      "ready": true,
       "title": "Hair Catch",
       "tagline": "catch the secrets",
-      "description": "Move left and right to help {name} catch falling secrets with her hair, and dodge the duds."
+      "description": "Slide left and right to help {name} catch falling secrets with her hair, and dodge the dark ones. Three lives, and it gets faster.",
+      "type": "catch",
+      "how": {
+        "en": "Move your finger or mouse (or use the arrow keys) to catch the secrets. Dodge the dark ones!",
+        "id": "Gerakkan jari atau mouse (atau tombol panah) untuk menangkap rahasia. Hindari yang gelap!"
+      },
+      "startText": {
+        "en": "Tap to start, then slide left and right",
+        "id": "Ketuk untuk mulai, lalu geser kiri dan kanan"
+      },
+      "tiers": [
+        150,
+        400
+      ],
+      "recordMin": 100,
+      "scorePerCandle": 60,
+      "reactions": {
+        "low": {
+          "en": [
+            "Hihihi, my hair got tangled! Again, again!",
+            "Ooh, so few secrets! Where did they all go?!"
+          ],
+          "id": [
+            "Hihihi, rambutku kusut! Lagi, lagi!",
+            "Ooh, sedikit banget rahasianya! Pada ke mana?!"
+          ]
+        },
+        "mid": {
+          "en": [
+            "Hihi, nice catching! Whose secrets were those, I wonder?!",
+            "More! I want to know what's INSIDE them!"
+          ],
+          "id": [
+            "Hihi, tangkapanmu bagus! Itu rahasia siapa ya?!",
+            "Lagi! Aku mau tahu isinya apa!"
+          ]
+        },
+        "high": {
+          "en": [
+            "WOW, so many secrets!! Tell me everything you know!!",
+            "Hihihi, you are SO good at this! What did you hear?!"
+          ],
+          "id": [
+            "WAH, banyak banget rahasia!! Ceritain semua yang kamu tahu!!",
+            "Hihihi, kamu jago banget! Kamu dengar apa aja?!"
+          ]
+        },
+        "record": {
+          "en": [
+            "A NEW RECORD!! I'm going to tell everyone! Hihihi!",
+            "Best catch ever!! Don't move, let me look at you!"
+          ],
+          "id": [
+            "REKOR BARU!! Aku mau kasih tahu semua orang! Hihihi!",
+            "Tangkapan terbaik!! Jangan gerak, biar kulihat kamu!"
+          ]
+        }
+      }
     }
   ]
 }

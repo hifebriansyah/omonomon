@@ -123,6 +123,8 @@ def main():
         "bindings": bindings,
     }
     metadata["keep_bindings"] = ["secret_text"]  # secrets (GEMINI_API_KEY, ...) stay across deploys
+    if cfg.get("placement"):
+        metadata["placement"] = cfg["placement"]  # where the Worker runs (see worker/gemini.jsonc)
 
     boundary = uuid.uuid4().hex
     parts = [

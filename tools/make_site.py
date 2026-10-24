@@ -15,7 +15,7 @@ Each page has its own title, description, canonical link, share tags and structu
 character links are already in the HTML, so search engines and link previews see real content.
 The text rules mirror headFor() in assets/scripts/router.js: change one, change the other.
 
-Run after tools/make_images.py and tools/make_shard.py (tools/build_all.py runs all three).
+Run after tools/make_images.py, tools/make_scenes.py and tools/make_shard.py (tools/build_all.py runs all of them).
 Test locally:  python3 tools/make_site.py && python3 -m http.server -d builds/site
 Apache serving this folder: the repo's .htaccess maps the addresses to builds/site/.
 """
@@ -26,6 +26,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "builds" / "site"
+SHARE_SIZE = 1080     # every link preview is the square scene picture from tools/make_scenes.py
+SHARE_DEFAULT = "1"   # the picture (builds/img/scenes/1_1/1.jpg) for pages that are not one character's
+
+
+def share_image(site, char_id=SHARE_DEFAULT):
+    """Link-preview picture of a character on the 1:1 scene."""
+    return f"{site['url']}/builds/img/scenes/1_1/{char_id}.jpg"
+
+
 COPY_FILES = ["style.css", "app.css", "config.js", "characters.json", "site.json", "games.json", "stories.json", "manifest.webmanifest"]
 
 
@@ -37,9 +46,9 @@ def head_for(site, c, history):
     """Title, description, canonical address, share image and robots for one page (c=None: home)."""
     if c is None:
         return dict(title=site["title"], description=site["description"], url=f"{site['url']}/",
-                    image=f"{site['url']}/builds/img/share/icon.jpg", square=True, robots="index, follow")
+                    image=share_image(site), robots="index, follow")
     stage_url = f"{site['url']}/{c['slug']}/"
-    image = f"{site['url']}/builds/img/share/{c['id']}.jpg"
+    image = share_image(site, c["id"])
     if history:
         return dict(title=f"Chat history with {c['name']} | {site['name']}",
                     description=f"Your saved chat with {c['name']}.",
@@ -62,7 +71,7 @@ def structured_data(site, c, history):
             website,
             {"@type": "WebPage", "@id": f"{page_url}#page", "url": page_url, "name": head_for(site, c, False)["title"],
              "description": head_for(site, c, False)["description"], "isPartOf": {"@id": f"{site['url']}/#website"},
-             "primaryImageOfPage": {"@type": "ImageObject", "url": f"{site['url']}/builds/img/share/{c['id']}.jpg"}},
+             "primaryImageOfPage": {"@type": "ImageObject", "url": share_image(site, c["id"])}},
             {"@type": "BreadcrumbList", "itemListElement": [
                 {"@type": "ListItem", "position": 1, "name": site["name"], "item": f"{site['url']}/"},
                 {"@type": "ListItem", "position": 2, "name": c["name"], "item": page_url}]},
@@ -83,9 +92,9 @@ def head_tags(site, h, ld):
         f'<meta property="og:description" content="{attr(h["description"])}">',
         f'<meta property="og:url" content="{attr(h["url"])}">',
         f'<meta property="og:image" content="{attr(h["image"])}">',
-        f'<meta property="og:image:width" content="{512 if h.get("square") else 1200}">',
-        f'<meta property="og:image:height" content="{512 if h.get("square") else 630}">',
-        f'<meta name="twitter:card" content="{"summary" if h.get("square") else "summary_large_image"}">',
+        f'<meta property="og:image:width" content="{SHARE_SIZE}">',
+        f'<meta property="og:image:height" content="{SHARE_SIZE}">',
+        f'<meta name="twitter:card" content="summary">',
         f'<meta name="twitter:title" content="{attr(h["title"])}">',
         f'<meta name="twitter:description" content="{attr(h["description"])}">',
         f'<meta name="twitter:image" content="{attr(h["image"])}">',
@@ -164,6 +173,25 @@ def tabbar(active):
     return f'  <nav class="tabbar" aria-label="Main"><div class="tabbar-in">{links}</div></nav>\n'
 
 
+def play_area(g, c):
+    """The playing area of a game page: a canvas for the runner, four petals for the memory game."""
+    if g.get("type") == "memory":
+        petals = "".join(f'<button type="button" class="petal p{i}" data-i="{i}" aria-label="Petal {i + 1}"></button>' for i in range(4))
+        return (f'        <img class="memory-ghost" src="{attr(c["stage"])}" alt="">\n'
+                '        <p class="m-status" id="mStatus" aria-live="polite"></p>\n'
+                f'        <div class="petals" id="petals" role="group" aria-label="{attr(g["title"])}">{petals}</div>\n'
+                '        <p class="sighs" id="sighs" aria-live="polite"></p>\n'
+                '        <button type="button" class="m-start" id="mStart">Begin</button>')
+    if g.get("type") == "rounds":
+        rooms = "".join(f'<button type="button" class="room" data-i="{i}" aria-label="Room {i + 1}"><span class="room-num">{i + 1}</span><span class="room-bar"><i></i></span></button>' for i in range(6))
+        return (f'        <img class="memory-ghost" src="{attr(c["stage"])}" alt="">\n'
+                '        <p class="m-status" id="mStatus" aria-live="polite"></p>\n'
+                f'        <div class="rooms" id="rooms" role="group" aria-label="{attr(g["title"])}">{rooms}</div>\n'
+                '        <p class="sighs" id="sighs" aria-live="polite"></p>\n'
+                '        <button type="button" class="m-start" id="mStart">Begin</button>')
+    return f'        <canvas id="game" tabindex="0" role="img" aria-label="{attr(g["title"])} game"></canvas>'
+
+
 def shell_pages(site, characters, games):
     """The app pages made from shell.html: / (chat list), /me/, /games/ and /games/<slug>/ for every game that is
     ready. Games still marked "ready": false are listed on the hub but get no page of their own (no empty pages
@@ -229,7 +257,7 @@ def shell_pages(site, characters, games):
       <ul class="links"><li><a href="privacy/" data-t="mePrivacy">Privacy</a></li></ul>
     </section>""")
     me_h = dict(title=f"Me | {site['name']}", description=f"Your profile and progress in {site['name']}.",
-                url=f"{site['url']}/me/", image=f"{site['url']}/builds/img/share/icon.jpg", square=True, robots="noindex, follow")
+                url=f"{site['url']}/me/", image=share_image(site), robots="noindex, follow")
     out.append(("me", fill("me", 1, me_h, me_content, None, "me"), me_h["url"], False))
 
     # /games/ : the hub
@@ -252,7 +280,7 @@ def shell_pages(site, characters, games):
                    + f'<p class="streak" id="streak">{icon("flame")}<span id="streakText"></span></p></div><ul id="questList"></ul></section>\n'
                    + '      <ul class="cards">\n' + "\n".join(cards) + "\n      </ul>\n    </section>")
     hub_h = dict(title=hub["title"], description=hub["description"], url=f"{site['url']}/games/",
-                 image=f"{site['url']}/builds/img/share/icon.jpg", square=True, robots="index, follow")
+                 image=share_image(site), robots="index, follow")
     out.append(("games", fill("hub", 1, hub_h, hub_content, structured_data(site, None, False), "games"), hub_h["url"], True))
 
     # /games/<slug>/ : one game (no tab bar: like opening a chat)
@@ -263,11 +291,11 @@ def shell_pages(site, characters, games):
         desc = g["description"].replace("{name}", c["name"])
         url = f"{site['url']}/games/{g['slug']}/"
         h = dict(title=f"{g['title']} with {c['name']} | {site['name']}", description=desc, url=url,
-                 image=f"{site['url']}/builds/img/share/{c['id']}.jpg", robots="index, follow")
+                 image=share_image(site, c["id"]), robots="index, follow")
         back = (f'<a class="back-btn" href="games/" data-t-label="backGames" aria-label="Back to games" title="Back to games">{icon("back")}</a>')
         content = (f'    <header class="app-bar">{back}<h1>{escape(g["title"])}</h1><p class="wallet" id="wallet" aria-live="polite"></p></header>\n'
                    f'    <section class="game">\n      <p class="intro">{escape(desc)}</p>\n'
-                   f'      <div class="play">\n        <canvas id="game" tabindex="0" role="img" aria-label="{attr(g["title"])} game"></canvas>\n'
+                   f'      <div class="play{" memory" if g.get("type") in ("memory", "rounds") else ""}{" rounds" if g.get("type") == "rounds" else ""}">\n{play_area(g, c)}\n'
                    f'        <div id="result" class="result" hidden>\n          <h2 id="rTitle"></h2>\n          <p id="rScore"></p>\n'
                    f'          <p id="rReward"></p>\n          <p id="rQuests" class="quests-done"></p>\n          <p id="rSay" class="say"></p>\n          <div class="actions">\n'
                    f'            <button id="rAgain" type="button">Play again</button>\n'

@@ -7,6 +7,10 @@
   // The public address the page calls (config.js WORKER_URL). One level below securhat.com, so Cloudflare's free
   // certificate covers it. tools/deploy_worker.py attaches it and turns the workers.dev address off.
   "domain": "geminimon.securhat.com",
+  // Where the Worker runs. Google does not serve the Gemini API from every place Cloudflare has a data centre (requests
+  // handled in Hong Kong are refused with "User location is not supported"), so the Worker is pinned near Singapore
+  // instead of running wherever the visitor happens to arrive.
+  "placement": { "region": "aws:ap-southeast-1" },
   // Plain (non-secret) variables, set on every deploy.
   "vars": {
     "ALLOWED_ORIGINS": "http://localhost,https://omonomon.securhat.com,https://hifebriansyah.github.io",

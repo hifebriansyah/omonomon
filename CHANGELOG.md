@@ -2,6 +2,9 @@
 
 Each version is one commit. Newest first.
 
+## 0.12.0 - Three more mini-games
+- Night Rounds, Quiet Wish and Hair Catch, with scene art from tools/make_scenes.py.
+
 ## 0.11.0 - Bond rewards, daily quests and streak
 - Chat earns bond XP with level-up toasts; Gemini's tone follows the bond level.
 - Daily quests, streak and ghost stories that unlock at bond levels 3 and 6.
