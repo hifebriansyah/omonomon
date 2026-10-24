@@ -1,0 +1,49 @@
+{
+  "hub": {
+    "title": "Games with the ghosts | Omon Omon",
+    "heading": "Games with the ghosts",
+    "description": "Play short mini-games with four Indonesian ghosts. Earn candles, grow your bond with each ghost and unlock more of their stories.",
+    "intro": "Each ghost has her own little game. Play to earn candles and grow your bond with her."
+  },
+  "games": [
+    {
+      "slug": "hop-hop",
+      "character": "1",
+      "ready": true,
+      "title": "Hop Hop",
+      "tagline": "hop over the graveyard",
+      "description": "Help {name}, the pocong who can only hop, jump over tombstones in this one-button endless runner. How far can you get?",
+      "how": { "en": "Tap, click or press Space to hop.", "id": "Ketuk, klik, atau tekan Spasi untuk melompat." },
+      "reactions": {
+        "low":    { "en": ["That was short. Even the dead last longer.", "Hm. Again."], "id": ["Pendek banget. Orang mati aja lebih awet.", "Hm. Ulang."] },
+        "mid":    { "en": ["Not terrible. Not good either.", "You hop like you mean it. Almost."], "id": ["Lumayan. Tapi belum bagus.", "Kamu lompat dengan niat. Hampir."] },
+        "high":   { "en": ["Fine. That was good. Don't let it go to your head.", "Impressive. For someone who still has legs."], "id": ["Oke. Itu bagus. Jangan sombong.", "Hebat. Buat yang masih punya kaki."] },
+        "record": { "en": ["A new record. I'm almost happy.", "Your best yet. Do not tell anyone I said so."], "id": ["Rekor baru. Aku hampir senang.", "Terbaikmu sejauh ini. Jangan bilang siapa-siapa."] }
+      }
+    },
+    {
+      "slug": "night-rounds",
+      "character": "2",
+      "ready": false,
+      "title": "Night Rounds",
+      "tagline": "answer the lights before they run out",
+      "description": "Help {name} on her night shift: tap the rooms that light up before their timers run out."
+    },
+    {
+      "slug": "quiet-wish",
+      "character": "3",
+      "ready": false,
+      "title": "Quiet Wish",
+      "tagline": "repeat the glowing petals",
+      "description": "A slow, calm memory game with {name}: repeat the glowing petals. No timer, no pressure."
+    },
+    {
+      "slug": "hair-catch",
+      "character": "4",
+      "ready": false,
+      "title": "Hair Catch",
+      "tagline": "catch the secrets",
+      "description": "Move left and right to help {name} catch falling secrets with her hair, and dodge the duds."
+    }
+  ]
+}

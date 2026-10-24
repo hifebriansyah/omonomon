@@ -11,14 +11,12 @@
 //   chat.js     sending, showing, clearing        composer.js  the message box
 //   router.js   addresses (/<slug>/, /<slug>/history/) and the page <head>
 
-import { state, byId } from "./state.js";
+import { state } from "./state.js";
 import { DATA_BASE } from "./rules.js";
-import { bubbleText, historyBtn, clearBtn } from "./dom.js";
-import { buildPicker } from "./stage.js";
-import { showRoute, pickCharacter, sendMessage, toggleHistory, clearChat } from "./chat.js";
-import { startRouter, isPlainClick } from "./router.js";
+import { bubbleText, historyBtn } from "./dom.js";
+import { showRoute, sendMessage, toggleHistory } from "./chat.js";
+import { startRouter } from "./router.js";
 import { initComposer } from "./composer.js";
-import { loadCharacter } from "./storage.js";
 
 async function getJson(url, what) {
   const res = await fetch(url);
@@ -36,7 +34,6 @@ document.addEventListener("pointerdown", () => document.documentElement.classLis
 async function init() {
   initComposer(sendMessage);
   historyBtn.addEventListener("click", toggleHistory);
-  clearBtn.addEventListener("click", clearChat);
 
   try {
     const [manifest, chars, site] = await Promise.all([
@@ -53,11 +50,8 @@ async function init() {
     const browser = (navigator.language || "").slice(0, 2);
     state.lastLang = manifest.langs.includes(browser) ? browser : manifest.defaultLang;
 
-    buildPicker(state.characters, pickCharacter, isPlainClick);
-    // The home page shows whoever you talked to last; a character's own address always shows her.
-    const saved = loadCharacter();
-    const home = byId(saved) ? saved : chars.default;
-    startRouter(showRoute, (r) => (r.id ? r : { ...r, id: home, history: false }));
+    // Every chat page is a character's own address; anything else falls back to the default character.
+    startRouter(showRoute, (r) => (r.id ? r : { ...r, id: chars.default, history: false }));
   } catch (err) {
     bubbleText.textContent =
       `Could not start (${err.message}). Run "python3 tools/build_all.py" once, then open the site through a web server (not as a file).`;

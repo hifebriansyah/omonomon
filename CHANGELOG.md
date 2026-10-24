@@ -2,6 +2,10 @@
 
 Each version is one commit. Newest first.
 
+## 0.9.0 - WhatsApp-style app shell and first game
+- shell.html with Chats, Games and Me tabs; the chat moves to chat.html.
+- Games hub and Hop Hop (endless runner); candles and bond XP saved in the browser.
+
 ## 0.8.0 - Privacy page and gamification plan
 - privacy.html added to the site and sitemap.
 - GAMIFICATION.md: plan for mini-games, bonds, quests and accounts.

@@ -51,10 +51,33 @@ export function rebuildHistory(id) {
   state.histories[id] = out;
 }
 
-// Which character was on stage last time.
-export function loadCharacter() {
-  try { return localStorage.getItem("character"); } catch { return null; }
+// Which view a chat was left in: "history" (the history panel was open) or the default stage.
+// The chat list opens a chat in the same view, so history > back > the same chat > still history.
+const MODE_PREFIX = "ghostmode:v1:";
+
+export function loadMode(id) {
+  try { return localStorage.getItem(MODE_PREFIX + id) === "history" ? "history" : "stage"; } catch { return "stage"; }
 }
-export function saveCharacter(id) {
-  try { localStorage.setItem("character", id); } catch {}
+
+export function saveMode(id, history) {
+  try {
+    if (history) localStorage.setItem(MODE_PREFIX + id, "history");
+    else localStorage.removeItem(MODE_PREFIX + id);
+  } catch {}
+}
+
+// When this visitor first met a ghost (the first time the list or her chat was shown). It dates her greeting and
+// the "last message" of a chat that has not started, like the first message of a new WhatsApp contact.
+const SEEN_PREFIX = "ghostseen:v1:";
+
+export function firstSeen(id) {
+  try {
+    const saved = Number(localStorage.getItem(SEEN_PREFIX + id));
+    if (Number.isFinite(saved) && saved > 0) return saved;
+    const now = Date.now();
+    localStorage.setItem(SEEN_PREFIX + id, String(now));
+    return now;
+  } catch {
+    return Date.now(); // no storage: the greeting just gets today's time
+  }
 }

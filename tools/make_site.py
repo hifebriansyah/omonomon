@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Build the deployable site in builds/site/ (no dependencies).
 
-GitHub Pages cannot route, so every address gets its own real HTML file, made from index.html:
+GitHub Pages cannot route, so every address gets its own real HTML file:
 
-    /                  home
-    /<slug>/           each character on stage
-    /<slug>/history/   each character's history panel (noindex)
-    /privacy/          the privacy page (from privacy.html)
+    /                  the chat list: the four ghosts (shell.html)
+    /<slug>/           each character's chat (chat.html)
+    /<slug>/history/   each character's history panel, noindex (chat.html)
+    /games/, /games/<slug>/   the game hub and each ready game (shell.html, games.json)
+    /me/               profile and progress, noindex (shell.html)
+    /privacy/          the privacy page (privacy.html)
     404.html, sitemap.xml, robots.txt
 
 Each page has its own title, description, canonical link, share tags and structured data, and the
@@ -15,17 +17,16 @@ The text rules mirror headFor() in assets/scripts/router.js: change one, change 
 
 Run after tools/make_images.py and tools/make_shard.py (tools/build_all.py runs all three).
 Test locally:  python3 tools/make_site.py && python3 -m http.server -d builds/site
-Server that serves this folder itself (Apache...):  python3 tools/make_site.py --dev
+Apache serving this folder: the repo's .htaccess maps the addresses to builds/site/.
 """
 import json
 import shutil
-import sys
 from html import escape
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "builds" / "site"
-COPY_FILES = ["style.css", "config.js", "characters.json", "site.json", "manifest.webmanifest"]
+COPY_FILES = ["style.css", "app.css", "config.js", "characters.json", "site.json", "games.json", "manifest.webmanifest"]
 
 
 def attr(s):
@@ -94,29 +95,21 @@ def head_tags(site, h, ld):
     return "\n  ".join(tags)
 
 
-def picker_links(characters, current):
-    out = []
-    for c in characters:
-        cur = ' aria-current="page"' if c is current else ""
-        out.append(f'<a href="{c["slug"]}/" data-id="{c["id"]}"{cur}><img src="{attr(c["image"])}" alt="">{escape(c["name"])}</a>')
-    return "".join(out)
-
-
 def render(template, site, characters, c, history, depth):
     """One page. `depth` is how many folders down it lives, which sets <base href>."""
     h = head_for(site, c, history)
-    shown = c or characters[0]  # home shows the default character until the script restores the last one
+    shown = c
     page = template
 
-    def put(old, new):  # a missing marker means index.html changed: fail loudly instead of shipping a bare page
+    def put(old, new):  # a missing marker means chat.html changed: fail loudly instead of shipping a bare page
         nonlocal page
         if old not in page:
-            raise SystemExit(f"make_site.py: not found in index.html: {old[:60]!r}")
+            raise SystemExit(f"make_site.py: not found in chat.html: {old[:60]!r}")
         page = page.replace(old, new, 1)
 
     put('<base href="./">', f'<base href="{"../" * depth or "./"}">')
     put("<title>Omon Omon</title>\n  <!-- @head -->", head_tags(site, h, structured_data(site, c, history)))
-    put("<!-- @picker -->", picker_links(characters, shown))
+    put('<img id="headAvatar" class="head-avatar" alt="">', f'<img id="headAvatar" class="head-avatar" src="{attr(shown["image"])}" alt="">')
     put('<h1 id="name">&nbsp;</h1>', f'<h1 id="name">{escape(shown["name"])}</h1>')
     put('<p id="status">&nbsp;</p>', f'<p id="status">{escape(shown["status"])}</p>')
     put('<p id="about" class="sr-only"></p>', f'<p id="about" class="sr-only">{escape(h["description"])}</p>')
@@ -144,6 +137,139 @@ def privacy_page(site):
     for key, value in values.items():
         page = page.replace("{{" + key + "}}", value)
     return page
+
+
+ICONS = {  # Lucide icons (ISC License)
+    "chats": '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+    "games": '<line x1="6" x2="10" y1="11" y2="11"/><line x1="8" x2="8" y1="9" y2="13"/><line x1="15" x2="15.01" y1="12" y2="12"/><line x1="18" x2="18.01" y1="10" y2="10"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/>',
+    "me": '<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+    "back": '<path d="m15 18-6-6 6-6"/>',
+    "more": '<circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>',
+    "ghost": '<path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/>',
+}
+
+
+def icon(name):
+    return f'<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">{ICONS[name]}</svg>'
+
+
+def tabbar(active):
+    """The bottom navigation of the app pages: Chats, Games, Me."""
+    tabs = [("chats", "./", "Chats", "tabChats"), ("games", "games/", "Games", "tabGames"), ("me", "me/", "Me", "tabMe")]
+    links = ""
+    for key, href, label, tkey in tabs:
+        cur = ' aria-current="page"' if key == active else ""
+        links += f'<a class="tab" href="{href}"{cur}>{icon(key)}<span data-t="{tkey}">{label}</span></a>'
+    return f'  <nav class="tabbar" aria-label="Main"><div class="tabbar-in">{links}</div></nav>\n'
+
+
+def shell_pages(site, characters, games):
+    """The app pages made from shell.html: / (chat list), /me/, /games/ and /games/<slug>/ for every game that is
+    ready. Games still marked "ready": false are listed on the hub but get no page of their own (no empty pages
+    for search engines). Returns [(folder relative to the site, html, public url, in_sitemap)]."""
+    template = (ROOT / "shell.html").read_text(encoding="utf-8")
+    by_id = {c["id"]: c for c in characters}
+    hub = games["hub"]
+
+    def fill(kind, depth, h, content, ld, active=None, game=None):
+        page = template
+        page = page.replace('<base href="./">', f'<base href="{"../" * depth or "./"}">')
+        page = page.replace("<!-- @head -->", head_tags(site, h, ld))
+        page = page.replace("<!-- @content -->", content)
+        page = page.replace("<!-- @tabbar -->", tabbar(active) if active else "")
+        values = {"themeColor": site["themeColor"], "page": kind, "game": game["slug"] if game else "",
+                  "char": game["character"] if game else "", "bodyClass": "" if active else ' class="no-tabs"'}
+        for key, value in values.items():
+            page = page.replace("{{" + key + "}}", value)
+        return page
+
+    def bar(title, extra=""):
+        return f'    <header class="app-bar"><h1>{escape(title)}</h1>{extra}</header>\n'
+
+    out = []
+
+    # / : the chat list
+    rows = []
+    for c in characters:
+        rows.append(
+            f'      <li class="row" data-id="{c["id"]}" style="--c:{c["accent"]}">'
+            f'<a class="contact" href="{c["slug"]}/" data-id="{c["id"]}" data-slug="{c["slug"]}">'
+            f'<img class="avatar" src="{attr(c["image"])}" alt=""><span class="contact-main">'
+            f'<span class="contact-top"><span class="c-title"><strong class="c-name">{escape(c["name"])}</strong>'
+            f'<span class="c-status">{escape(c["status"])}</span></span><time class="c-time"></time></span>'
+            f'<span class="c-preview"></span></span></a>'
+            f'<button class="more" type="button" aria-haspopup="menu" aria-expanded="false" data-t-label="moreOptions" '
+            f'aria-label="More options" title="More options">{icon("more")}</button></li>')
+    home_content = (bar(site["name"]) + f'    <p class="intro">{escape(site["description"])}</p>\n'
+                    + '    <ul class="contacts">\n' + "\n".join(rows) + "\n    </ul>")
+    home_h = head_for(site, None, False)
+    out.append(("", fill("home", 0, home_h, home_content, structured_data(site, None, False), "chats"), home_h["url"], True))
+
+    # /me/ : profile and progress (private page: not indexed, not in the sitemap)
+    bonds = "".join(
+        f'<li data-char="{c["id"]}" style="--c:{c["accent"]}"><img src="{attr(c["image"])}" alt="">'
+        f'<span class="who">{escape(c["name"])} <small>&middot; <span data-level>1</span></small><span class="bar"></span></span></li>'
+        for c in characters)
+    me_content = (bar("Me", "") + f"""    <section class="me">
+      <div class="profile"><span class="ph">{icon("ghost")}</span>
+        <div><strong data-t="meGuest">Guest</strong><p data-t="meNote">Your progress is saved in this browser.</p>
+        <button class="signin" type="button" disabled data-t="meSignIn">Sign in with Google (coming soon)</button></div></div>
+      <div class="stats"><div class="stat"><b id="meCandles">0</b><span data-t="meCandles">Candles</span></div>
+        <div class="stat"><b id="mePlayed">0</b><span data-t="mePlayed">Games played</span></div></div>
+      <h2 data-t="meBonds">Bonds</h2>
+      <ul class="bonds">{bonds}</ul>
+      <ul class="links"><li><a href="privacy/" data-t="mePrivacy">Privacy</a></li></ul>
+    </section>""")
+    me_h = dict(title=f"Me | {site['name']}", description=f"Your profile and progress in {site['name']}.",
+                url=f"{site['url']}/me/", image=f"{site['url']}/builds/img/share/home.jpg", robots="noindex, follow")
+    out.append(("me", fill("me", 1, me_h, me_content, None, "me"), me_h["url"], False))
+
+    # /games/ : the hub
+    cards = []
+    for g in games["games"]:
+        c = by_id[g["character"]]
+        desc = escape(g["description"].replace("{name}", c["name"]))
+        inner = (f'<img src="{attr(c["image"])}" alt=""><span class="card-text"><h2>{escape(g["title"])}</h2>'
+                 f'<span class="tagline">{escape(g["tagline"])}</span><span class="desc">{desc}</span></span>')
+        meta = '<span class="bond" data-bond></span><span class="best" data-best></span>'
+        if g["ready"]:
+            cards.append(f'      <li class="card" data-game="{g["slug"]}" data-char="{c["id"]}" style="--accent:{c["accent"]}"><a href="games/{g["slug"]}/">{inner}</a>'
+                         f'<div class="meta">{meta}</div></li>')
+        else:
+            cards.append(f'      <li class="card soon" data-game="{g["slug"]}" data-char="{c["id"]}"><div class="card-body">{inner}</div>'
+                         f'<div class="meta"><span class="soon-tag">Coming soon</span></div></li>')
+    hub_content = (bar(hub["heading"], '<p class="wallet" id="wallet" aria-live="polite"></p>')
+                   + f'    <section class="hub">\n      <p class="intro">{escape(hub["intro"])}</p>\n'
+                   + '      <ul class="cards">\n' + "\n".join(cards) + "\n      </ul>\n    </section>")
+    hub_h = dict(title=hub["title"], description=hub["description"], url=f"{site['url']}/games/",
+                 image=f"{site['url']}/builds/img/share/home.jpg", robots="index, follow")
+    out.append(("games", fill("hub", 1, hub_h, hub_content, structured_data(site, None, False), "games"), hub_h["url"], True))
+
+    # /games/<slug>/ : one game (no tab bar: like opening a chat)
+    for g in games["games"]:
+        if not g["ready"]:
+            continue
+        c = by_id[g["character"]]
+        desc = g["description"].replace("{name}", c["name"])
+        url = f"{site['url']}/games/{g['slug']}/"
+        h = dict(title=f"{g['title']} with {c['name']} | {site['name']}", description=desc, url=url,
+                 image=f"{site['url']}/builds/img/share/{c['id']}.jpg", robots="index, follow")
+        back = (f'<a class="back-btn" href="games/" data-t-label="backGames" aria-label="Back to games" title="Back to games">{icon("back")}</a>')
+        content = (f'    <header class="app-bar">{back}<h1>{escape(g["title"])}</h1><p class="wallet" id="wallet" aria-live="polite"></p></header>\n'
+                   f'    <section class="game">\n      <p class="intro">{escape(desc)}</p>\n'
+                   f'      <div class="play">\n        <canvas id="game" tabindex="0" role="img" aria-label="{attr(g["title"])} game"></canvas>\n'
+                   f'        <div id="result" class="result" hidden>\n          <h2 id="rTitle"></h2>\n          <p id="rScore"></p>\n'
+                   f'          <p id="rReward"></p>\n          <p id="rSay" class="say"></p>\n          <div class="actions">\n'
+                   f'            <button id="rAgain" type="button">Play again</button>\n'
+                   f'            <a id="rChat" href="{c["slug"]}/">Chat</a>\n          </div>\n        </div>\n      </div>\n'
+                   f'      <p class="how" id="how">{escape(g["how"]["en"])}</p>\n'
+                   f'      <noscript><p>This game needs JavaScript.</p></noscript>\n    </section>')
+        ld = json.dumps({"@context": "https://schema.org", "@type": "VideoGame", "name": g["title"], "description": desc,
+                         "url": url, "applicationCategory": "Game", "genre": "Arcade", "playMode": "SinglePlayer",
+                         "inLanguage": ["en", "id"], "image": h["image"],
+                         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}, ensure_ascii=False).replace("</", "<\\/")
+        out.append((f"games/{g['slug']}", fill("game", 2, h, content, ld, None, g), url, True))
+    return out
 
 
 def not_found(site):
@@ -175,24 +301,6 @@ def not_found(site):
 """
 
 
-def make_dev_pages():
-    """For a server that serves this folder itself (e.g. Apache at /for-fun/chat-learning/): write only
-    the /<slug>/ and /<slug>/history/ pages next to index.html, so a refresh on those addresses works.
-    Each folder holds a .gitignore of `*`, so nothing here is committed."""
-    site = json.loads((ROOT / "site.json").read_text(encoding="utf-8"))
-    characters = json.loads((ROOT / "characters.json").read_text(encoding="utf-8"))["characters"]
-    template = (ROOT / "index.html").read_text(encoding="utf-8")
-    for c in characters:
-        folder = ROOT / c["slug"]
-        if folder.exists():
-            shutil.rmtree(folder)
-        (folder / "history").mkdir(parents=True)
-        (folder / ".gitignore").write_text("*\n", encoding="utf-8")
-        (folder / "index.html").write_text(render(template, site, characters, c, False, 1)[0], encoding="utf-8")
-        (folder / "history" / "index.html").write_text(render(template, site, characters, c, True, 2)[0], encoding="utf-8")
-    print(f"ok dev pages: {', '.join(c['slug'] + '/' for c in characters)} next to index.html")
-
-
 def check_sitemap(urls, site):
     """Every public page (not marked noindex) must be listed in sitemap.xml. When you add a page, add its
     address to `urls` in main(); this check fails the build if you forget."""
@@ -211,12 +319,10 @@ def check_sitemap(urls, site):
 
 
 def main():
-    if "--dev" in sys.argv:
-        return make_dev_pages()
     site = json.loads((ROOT / "site.json").read_text(encoding="utf-8"))
     data = json.loads((ROOT / "characters.json").read_text(encoding="utf-8"))
     characters = data["characters"]
-    template = (ROOT / "index.html").read_text(encoding="utf-8")
+    template = (ROOT / "chat.html").read_text(encoding="utf-8")
 
     if OUT.exists():
         shutil.rmtree(OUT)
@@ -228,7 +334,7 @@ def main():
     if (ROOT / "builds").exists():
         shutil.copytree(ROOT / "builds", OUT / "builds", ignore=shutil.ignore_patterns("site"))  # images and data, not this folder itself
 
-    pages = [(OUT / "index.html", None, False, 0)]
+    pages = []
     for c in characters:
         pages.append((OUT / c["slug"] / "index.html", c, False, 1))
         pages.append((OUT / c["slug"] / "history" / "index.html", c, True, 2))
@@ -237,16 +343,24 @@ def main():
         html, _ = render(template, site, characters, c, history, depth)
         path.write_text(html, encoding="utf-8")
 
+    games = json.loads((ROOT / "games.json").read_text(encoding="utf-8"))
+    app_urls = []
+    app_pages = shell_pages(site, characters, games)
+    for folder, html, url, listed in app_pages:
+        (OUT / folder).mkdir(parents=True, exist_ok=True)
+        (OUT / folder / "index.html").write_text(html, encoding="utf-8")
+        if listed:
+            app_urls.append(url)
     (OUT / "privacy").mkdir()
     (OUT / "privacy" / "index.html").write_text(privacy_page(site), encoding="utf-8")
     (OUT / "404.html").write_text(not_found(site), encoding="utf-8")
-    urls = [f"{site['url']}/"] + [f"{site['url']}/{c['slug']}/" for c in characters] + [f"{site['url']}/privacy/"]
+    urls = app_urls + [f"{site['url']}/{c['slug']}/" for c in characters] + [f"{site['url']}/privacy/"]
     (OUT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         + "".join(f"  <url><loc>{escape(u)}</loc></url>\n" for u in urls) + "</urlset>\n", encoding="utf-8")
     check_sitemap(urls, site)
     (OUT / "robots.txt").write_text(f"User-agent: *\nAllow: /\n\nSitemap: {site['url']}/sitemap.xml\n", encoding="utf-8")
-    print(f"ok site: {len(pages)} pages + 404.html, sitemap.xml, robots.txt in {OUT.relative_to(ROOT)}/")
+    print(f"ok site: {len(pages) + len(app_pages)} pages + 404.html, sitemap.xml, robots.txt in {OUT.relative_to(ROOT)}/")
 
 
 if __name__ == "__main__":

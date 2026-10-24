@@ -10,7 +10,6 @@ export const state = {
   logs: {},             // character id -> [{who, text, g?, e?}]: messages shown and saved
   histories: {},        // character id -> [{role, text}]: context sent to Gemini
   pending: {},          // character id -> replies still on the way
-  epoch: {},            // character id -> bumps when its chat is cleared
   failures: 0,          // Gemini failures in a row (not counting "too many requests"); resets on a success
   trouble: null,        // characters.json "trouble": status text shown while Gemini keeps failing
 };

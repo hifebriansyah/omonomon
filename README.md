@@ -29,15 +29,13 @@ the source rules or the original art in `assets/img/`:
     python3 -m http.server -d builds/site     # open http://localhost:8000
 
 (`build_all.py` runs `tools/make_images.py`, `tools/make_shard.py` and `tools/make_site.py` in that order. Serve `builds/site/`,
-not the repo root: the repo's `index.html` is only the template, and `/pocomon/` exists only in `builds/site/`.)
+not the repo root: the repo has only templates (`chat.html`, `shell.html`), and the real pages such as `/pocomon/`
+exist only in `builds/site/`.)
 
-If your local server serves the repo folder itself (e.g. Apache at `/for-fun/chat-learning/`), run
-`python3 tools/build_all.py --dev`: it runs the same builds, but writes only the `/<slug>/` and `/<slug>/history/` pages next to
-`index.html` (git-ignored), so refreshing on those addresses works there too. Rerun it after editing
-`index.html` or `characters.json`.
-
-Or use the repo's `.htaccess` instead of `--dev`: it maps `/<slug>/` and `/<slug>/history/` to the pages in
-`builds/site/` (run `python3 tools/build_all.py` first). Apache needs `LoadModule rewrite_module ...` enabled and
+If your local server serves the repo folder itself (e.g. Apache at `/for-fun/chat-learning/`), the repo's `.htaccess`
+maps `/`, `/<slug>/`, `/<slug>/history/`, `/games/...`, `/me/`, `sitemap.xml` and `robots.txt` to the pages in
+`builds/site/` (run `python3 tools/build_all.py` first, and again after editing `chat.html`, `shell.html`,
+`characters.json` or `games.json`). Apache needs `LoadModule rewrite_module ...` enabled and
 `AllowOverride FileInfo` (or `All`) on the web folder in `httpd.conf`, then `brew services restart httpd`.
 
 ## Deploy
@@ -45,19 +43,27 @@ Repo Settings > Pages > Source: **GitHub Actions**. Every push to `main` runs `t
 publishes `builds/site/`. `builds/` (which holds `builds/site/`) is generated and git-ignored.
 
 ## Addresses and SEO
-GitHub Pages cannot route, so `tools/make_site.py` writes one real HTML file per address, from `index.html`:
+GitHub Pages cannot route, so `tools/make_site.py` writes one real HTML file per address. The app works like WhatsApp:
+a chat list with a bottom tab bar (Chats, Games, Me); opening a ghost opens her chat with a back arrow.
 
-| address | page | indexed |
-|---|---|---|
-| `/` | home: shows whoever you talked to last | yes |
-| `/<slug>/` e.g. `/pocomon/` | that character on stage | yes |
-| `/<slug>/history/` | her chat history panel open | no (`noindex`) |
+| address | page | template | indexed |
+|---|---|---|---|
+| `/` | chat list: the four ghosts, newest chat first with last message and time (Chats tab) | `shell.html` | yes |
+| `/<slug>/` e.g. `/pocomon/` | that character's chat | `chat.html` | yes |
+| `/<slug>/history/` | her chat history panel open | `chat.html` | no (`noindex`) |
+| `/games/`, `/games/<slug>/` | the game hub (Games tab) and one game (no tab bar) | `shell.html` | yes |
+| `/me/` | guest profile, candles, bond levels, Privacy link (Me tab) | `shell.html` | no (`noindex`) |
+| `/privacy/` | privacy page | `privacy.html` | yes |
 
 Each page has its own `<title>`, description, canonical link, Open Graph and Twitter tags, a 1200x630 share
 picture (`builds/img/share/`), JSON-LD, and the character links already in the HTML. Also generated: `404.html`
-(a real 404), `sitemap.xml` and `robots.txt`. In the browser, `router.js` makes the picker, the History button
+(a real 404), `sitemap.xml` and `robots.txt`. In the browser, `router.js` makes the History button
 and Back/Forward move between these addresses without reloading, and keeps the title and meta tags current.
 
+- Each chat remembers the view it was left in (`ghostmode:v1:<id>` in localStorage). The chat list links a chat to
+  `/<slug>/history/` when it was last left in history, and to `/<slug>/` otherwise. Clearing a chat resets it.
+- The first time a ghost is shown, the browser stores that time (`ghostseen:v1:<id>`). It is the time on a chat-list row
+  without a chat and the date of her greeting in the history panel, like a new WhatsApp contact.
 - The **slug** is the address and is its own field in `characters.json` (next to the numeric id), so renaming a
   label does not have to change the URL. Changing a slug changes a public link: do it rarely.
 - Page text lives in `characters.json` (`seo.tagline`, `seo.description` with `{name}`) and `site.json`
@@ -128,7 +134,14 @@ Instead of pasting `worker/worker.js` into the dashboard each time:
   backup replies, and after 3 in a row the status line shows `trouble` until the next success. For a stronger guard add a Cloudflare WAF rate-limiting rule on the Worker's own domain.
 
 - Chats are saved per character in the visitor's own browser (`localStorage`, last 60 messages each) and
-  restored on reload. Nothing is sent to a server for this. History > Clear deletes one character's chat.
+  restored on reload. Nothing is sent to a server for this. The chat list's ... menu > Clear chat deletes one character's chat.
+
+## Games
+`/games/` lists the mini-games and `/games/<slug>/` is one game (built by `tools/make_site.py` from `shell.html` and
+`games.json`; a game only gets a page once `"ready": true`). Code is in `assets/scripts/games/`: `progress.js`
+(candles, bond XP per ghost, best scores, daily candle cap, saved in this browser), `text.js` (EN/ID words),
+`hub.js`, `runner.js` (**Hop Hop**, Pocomon's endless runner) and `main.js`. New game: add it to `games.json`, write
+its module, reuse `recordRun()` for rewards. Plan and status: `GAMIFICATION.md`.
 
 ## Request log (Axiom, optional)
 If the Worker has the secret `AXIOM_TOKEN` (an ingest-only token for one dataset), it sends one line per request to
@@ -142,25 +155,29 @@ per hour, which character is busiest, how many Gemini calls (cost), which countr
 
 ## Code layout
 ```
-index.html, style.css, config.js, characters.json   the page template, its look, settings, characters
+chat.html, style.css     the chat page template and its look (the chat screens)
+shell.html, app.css      the template and look of the app pages (chat list, games, me)
+config.js, characters.json, games.json   settings, characters, games
 site.json          site address, name and home page text (SEO)
+assets/scripts/shell/   the app pages: main.js (entry), home.js (chat list), me.js
+assets/scripts/games/   progress, hub, Hop Hop, words (text.js)
 assets/scripts/    the page logic, split into small ES modules (see main.js for the map)
-  main.js          start-up: loads data, builds the picker, wires the buttons
+  main.js          start-up: loads data, shows the route, wires the buttons
   state.js         shared data (current character, saved chats, ...)
   dom.js           every page element the scripts use
   util.js          small helpers (hash and tokenizer, kept in sync with tools/make_shard.py)
   rules.js         lookup in the local rule library (builds/data/)
   replies.js       safety rule, then Gemini (via the Worker), then backup replies
   storage.js       saved chats in localStorage
-  stage.js         the big character, comic bubbles, picker, history panel (view only)
+  stage.js         the big character, comic bubbles, header, history panel (view only)
   chat.js          sending, showing and clearing messages; switching characters
   composer.js      the message box: length limit, counter, sending
   router.js        addresses (/<slug>/, /<slug>/history/) and the page <head>
 assets/img/        your big original art, 2048px (not published)
-assets/icons/      notes and license for the Lucide icons pasted inline in index.html (not published)
+assets/icons/      notes and license for the Lucide icons pasted inline in chat.html and the site generator (not published)
 builds/            everything Python generates (never edit by hand):
   img/             web images (WebP, about 6x smaller than PNG) made from assets/img by
-                   tools/make_images.py: thumbnails for the picker, stage/ holds the big cutouts
+                   tools/make_images.py: thumbnails for the chat list, stage/ holds the big cutouts
                    and the site icons (favicon.ico from favicon.png; app icons from appicon.png)
   data/            the reply library made by tools/make_shard.py
                    (all of builds/ is git-ignored and rebuilt on every deploy)
@@ -168,13 +185,13 @@ source/            the rule library source (tools/make_shard.py builds it into b
 worker/            the Cloudflare Worker (Gemini proxy and character prompts)
 tools/             build_all.py, make_images.py, make_shard.py, make_site.py, deploy_worker.py, gen_synthetic.py
 ```
-New module? Add a `<link rel="modulepreload">` line for it in `index.html` (the page then downloads all
+New module? Add a `<link rel="modulepreload">` line for it in `chat.html` (the page then downloads all
 modules at once instead of one import at a time; `tools/make_shard.py` warns if one is missing).
 The scripts use ES modules, so open the site through a web server (`python3 -m http.server`),
-not by double-clicking `index.html`. Serve `builds/site/` (see Run locally).
+not by double-clicking a template. Serve `builds/site/` (see Run locally).
 
 ## Characters
-The page has a picker with four ghost characters (`characters.json`, web images in `builds/img/`;
+The chat list has four ghost characters (`characters.json`, web images in `builds/img/`;
 the 2048px originals are in `assets/img/` and are not published):
 
 | id | name (a label) | personality |
@@ -212,7 +229,7 @@ or if a name appears in that text.
 
 `python3 tools/make_images.py` builds both sets. For the favicon, the white background of your picture is removed
 (only the white connected to the outside edge, like the characters), so draw it on plain white or already
-transparent. The app icon stays a full opaque square, which phones need. `index.html` links only the favicon
+transparent. The app icon stays a full opaque square, which phones need. `chat.html` links only the favicon
 as `rel="icon"` and the app icon as `apple-touch-icon`, so the tab never shows the busy app icon.
 If a source file is missing its set is skipped. Browsers cache favicons hard: after changing one,
 hard-refresh or reopen the tab.

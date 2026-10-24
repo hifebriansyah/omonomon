@@ -196,14 +196,14 @@ def main():
 
     check_characters()
 
-    # Every script module should be preloaded in index.html (otherwise the page loads
+    # Every script module should be preloaded in chat.html (otherwise the page loads
     # them in slow one-import-at-a-time waves). A missing entry is only slower, not broken.
-    page = Path("index.html")
+    page = Path("chat.html")
     if page.exists():
         html = page.read_text(encoding="utf-8")
         for f in sorted(Path("assets/scripts").glob("*.js")):
             if f"assets/scripts/{f.name}" not in html:
-                print(f"WARNING: assets/scripts/{f.name} is not preloaded in index.html")
+                print(f"WARNING: assets/scripts/{f.name} is not preloaded in chat.html")
 
     print(f"rules: {len(kept)} kept, {skipped} skipped (no triggers or replies)")
     print("per language: " + ", ".join(f"{l}={n}" for l, n in per_lang.items()))

@@ -4,6 +4,7 @@
   --text: #e4e7ed;
   --muted: #8a92a1;
   --accent: #a47fd0; /* changes with the selected character */
+  --page-w: 480px; /* every page is this wide at most: chat, list, games, me, privacy */
   --comic: "Comic Sans MS", "Comic Neue", "Chalkboard SE", "Marker Felt", "Segoe Print", system-ui, sans-serif;
 }
 
@@ -15,7 +16,7 @@ body {
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* the chat sits at the top of the window, like the chat list */
   justify-content: center;
   background: var(--bg);
   color: var(--text);
@@ -32,63 +33,42 @@ body {
 }
 
 .comic {
-  width: min(480px, 100%);
-  height: min(800px, 100vh);
-  height: min(800px, 100dvh);
+  width: min(var(--page-w), 100%);
+  height: 100vh; /* the card fills the window, so the message box sits at the bottom */
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 12px;
 }
 
-@media (max-width: 520px) {
-  .comic { height: 100vh; height: 100dvh; }
-}
-
 /* ---- Top bar ---- */
 .top { display: flex; align-items: center; gap: 6px; }
 
-.picker {
-  flex: 1 1 0; /* takes the row minus the History button's cell */
-  min-width: 0;
-  display: flex;
-  gap: 6px;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.picker::-webkit-scrollbar { display: none; }
-
-.picker a {
-  flex: 1 1 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  min-width: 60px;
-  padding: 4px 4px 3px;
-  border: 2px solid transparent;
-  border-radius: 12px;
-  background: transparent;
-  color: var(--muted);
-  font: inherit;
-  font-size: 0.68rem;
-  text-decoration: none;
-  cursor: pointer;
-  opacity: 0.75;
-}
-.picker a img {
-  width: 40px;
+.back-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
   height: 40px;
+  flex: none;
+  border-radius: 12px;
+  color: var(--text);
+  text-decoration: none;
+}
+.back-btn:hover { background: rgba(255, 255, 255, 0.08); }
+.back-btn .icon { width: 1.6em; height: 1.6em; }
+.head-avatar {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 2px solid var(--accent);
   border-radius: 50%;
   background: #eef1f8;
   object-fit: contain;
 }
-.picker a:hover { opacity: 1; }
-.picker a[aria-current="page"] {
-  opacity: 1;
-  color: var(--text);
-  border-color: var(--accent);
-}
+.head-text { flex: 1 1 0; min-width: 0; }
+.head-text h1 { margin: 0; font-size: 1.05rem; line-height: 1.2; }
+.head-text p { margin: 0; font-size: 0.78rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Focus ring: no ring for mouse use or stray keys such as Shift. It appears only while someone is
    moving between controls with Tab (main.js adds .using-tab), which is who needs it. */
 button:focus-visible, a:focus-visible { outline: none; }
@@ -107,41 +87,34 @@ button:focus-visible, a:focus-visible { outline: none; }
 }
 
 /* The History button is built like a character option: a 40px circle with a label underneath. */
+/* The History button is a round icon the same size as the avatar (44px); its name is for screen readers and the tooltip. */
 .hist-btn {
-  flex: 0 0 calc((100% - 24px) / 5); /* the row is five equal cells: four characters + this button */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  min-width: 60px;
-  padding: 4px 4px 3px;
-  border: 2px solid transparent;
-  border-radius: 12px;
+  flex: none;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
   background: transparent;
-  color: var(--muted);
-  font: inherit;
-  font-size: 0.68rem;
+  color: var(--ink);
   cursor: pointer;
 }
 .hist-circle {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--accent); /* the current character's theme colour */
   color: var(--ink);
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 .hist-btn:hover .hist-circle { filter: brightness(1.1); }
-.hist-btn[aria-expanded="true"] { color: var(--text); } /* no outline: only the selected character gets one */
-/* show the history icon and label when closed, the X and "Close" when open */
-.hist-btn .icon-close,
-.hist-btn .lbl-close { display: none; }
-.hist-btn[aria-expanded="true"] .icon-history,
-.hist-btn[aria-expanded="true"] .lbl-history { display: none; }
+/* show the history icon when closed, the X when open */
+.hist-btn .icon-close { display: none; }
+.hist-btn[aria-expanded="true"] .icon-history { display: none; }
 .hist-btn[aria-expanded="true"] .icon-close { display: block; }
-.hist-btn[aria-expanded="true"] .lbl-close { display: inline; }
 
 /* ---- Stage: the comic panel ---- */
 .stage {
@@ -153,7 +126,7 @@ button:focus-visible, a:focus-visible { outline: none; }
   align-items: center;
   justify-content: flex-end;  /* bubble sits right above the character and grows upward */
   gap: 0;
-  padding: 64px 14px 14px;
+  padding: 14px;
   overflow: hidden;
   border: 4px solid var(--ink);
   border-radius: 20px;
@@ -163,22 +136,6 @@ button:focus-visible, a:focus-visible { outline: none; }
   box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.55);
   transition: background-color 0.3s;
 }
-
-.tag {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 3px 12px 4px;
-  border: 3px solid var(--ink);
-  border-radius: 6px;
-  background: var(--accent);
-  color: var(--ink);
-  font-family: var(--comic);
-  transform: rotate(-2deg);
-  box-shadow: 3px 3px 0 var(--ink);
-}
-.tag h1 { margin: 0; font-size: 1.05rem; letter-spacing: 0.04em; text-transform: uppercase; }
-.tag p { margin: 0; font-size: 0.72rem; font-style: italic; }
 
 /* Speech bubbles */
 .bubble {
@@ -318,28 +275,6 @@ button:focus-visible, a:focus-visible { outline: none; }
   }
   .history:hover::-webkit-scrollbar-thumb { background-color: rgba(20, 21, 26, 0.5); }
 }
-.history-bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-bottom: 12px;
-  font-size: 0.72rem;
-  color: rgba(20, 21, 26, 0.65); /* dark text for the pale background */
-}
-.history-bar button {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border: 1px solid #b03a30;
-  border-radius: 999px;
-  background: transparent;
-  color: #8f2a22;
-  font: inherit;
-  cursor: pointer;
-}
-.history-bar button:hover { background: rgba(176, 58, 48, 0.12); }
 .messages { display: flex; flex-direction: column; gap: 10px; }
 .row { display: flex; align-items: flex-end; gap: 8px; max-width: 90%; }
 .row.bot { align-self: flex-start; }
@@ -395,17 +330,19 @@ button:focus-visible, a:focus-visible { outline: none; }
 .composer input:focus { box-shadow: 3px 3px 0 var(--accent); }
 
 .composer button {
-  padding: 0 20px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  aspect-ratio: 1; /* a circle as tall as the input */
+  padding: 0;
   border: 3px solid var(--ink);
-  border-radius: 999px;
+  border-radius: 50%;
   background: var(--accent);
   color: var(--ink);
-  font-family: var(--comic);
-  font-size: 1rem;
-  font-weight: 700;
   cursor: pointer;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.55);
 }
+.composer button .icon { width: 1.35em; height: 1.35em; margin-left: 2px; }
 .composer button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.55); }
 
 /* ---- Animation ---- */

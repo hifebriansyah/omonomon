@@ -11,9 +11,10 @@
   <link rel="icon" href="builds/img/favicon.ico" sizes="48x48">
   <meta name="theme-color" content="{{themeColor}}">
   <style>
-    :root { color-scheme: dark; }
+    :root { color-scheme: dark; --page-w: 480px; /* same width as every other page */ }
     body { margin: 0; background: {{themeColor}}; color: #e4e7ed; font: 1rem/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
-    main { max-width: 680px; margin: 0 auto; padding: 24px 16px 64px; }
+    * { box-sizing: border-box; }
+    main { max-width: var(--page-w); margin: 0 auto; padding: 24px 12px 64px; }
     h1 { font-size: 1.6rem; margin: 0 0 4px; }
     h2 { font-size: 1.1rem; margin: 28px 0 6px; }
     p, li { color: #cfd4de; }

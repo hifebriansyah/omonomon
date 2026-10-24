@@ -116,8 +116,3 @@ export function startRouter(onRoute, resolve) {
   handler(r);
   updateHead(r);
 }
-
-// Normal clicks on a link are ours; Ctrl/Cmd/Shift/middle clicks open the real page.
-export function isPlainClick(e) {
-  return e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey;
-}

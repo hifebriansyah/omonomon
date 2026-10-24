@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Template for the app pages: / (chat list), /games/, /games/<slug>/ and /me/. Filled in by tools/make_site.py
+       (see chat.html for the chat pages). The bottom tab bar is added on the pages that show it. -->
+  <base href="./">
+  <!-- @head -->
+  <link rel="icon" href="builds/img/favicon.ico" sizes="48x48">
+  <link rel="apple-touch-icon" href="builds/img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="{{themeColor}}">
+  <link rel="stylesheet" href="app.css">
+  <link rel="modulepreload" href="assets/scripts/shell/main.js">
+  <link rel="modulepreload" href="assets/scripts/shell/home.js">
+  <link rel="modulepreload" href="assets/scripts/shell/me.js">
+  <link rel="modulepreload" href="assets/scripts/games/hub.js">
+  <link rel="modulepreload" href="assets/scripts/games/runner.js">
+  <link rel="modulepreload" href="assets/scripts/games/progress.js">
+  <link rel="modulepreload" href="assets/scripts/games/text.js">
+  <link rel="modulepreload" href="assets/scripts/storage.js">
+  <link rel="modulepreload" href="assets/scripts/state.js">
+  <link rel="modulepreload" href="assets/scripts/time.js">
+</head>
+<body data-page="{{page}}" data-game="{{game}}" data-char="{{char}}"{{bodyClass}}>
+  <!-- Icons: Lucide (https://lucide.dev), ISC License, see assets/icons/ -->
+  <main class="app">
+<!-- @content -->
+  </main>
+<!-- @tabbar -->
+  <script type="module" src="assets/scripts/shell/main.js"></script>
+</body>
+</html>

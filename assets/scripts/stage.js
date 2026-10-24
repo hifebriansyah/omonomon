@@ -1,12 +1,12 @@
-// Everything you see: the big character, the comic bubbles, the picker and the
+// Everything you see: the big character, the comic bubbles, the header and the
 // history panel. These functions only change the page; they know nothing about
 // chats or Gemini.
 
 import {
-  stageEl, pickerEl, nameEl, statusEl, heroEl, bubbleEl, bubbleText,
+  stageEl, headAvatar, nameEl, statusEl, heroEl, bubbleEl, bubbleText,
   youBubble, youText, srEl, historyBtn, historyEl, messagesEl, input,
 } from "./dom.js";
-import { hrefFor } from "./router.js";
+import { timeFormat, dayKey, dayLabel } from "./time.js";
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const FONT_STEPS = [1.15, 1.05, 0.96, 0.88, 0.8, 0.74]; // rem
@@ -96,27 +96,7 @@ export function setScreenReaderText(text) {
   srEl.textContent = text;
 }
 
-// ---- Picker and character look ----
-
-// Each character is a real link (so it can be opened, shared and crawled). A normal click is
-// handled by `onPick` without reloading; the same markup is pre-built by tools/make_site.py.
-export function buildPicker(characters, onPick, isPlainClick) {
-  pickerEl.replaceChildren(...characters.map((c) => {
-    const a = document.createElement("a");
-    a.href = hrefFor(c);
-    a.dataset.id = c.id;
-    const img = document.createElement("img");
-    img.src = c.image;
-    img.alt = "";
-    a.append(img, document.createTextNode(c.name));
-    a.addEventListener("click", (e) => {
-      if (!isPlainClick(e)) return;
-      e.preventDefault();
-      onPick(c.id);
-    });
-    return a;
-  }));
-}
+// ---- Character look ----
 
 // While Gemini keeps failing the status line says so (text = null puts the character's own status back).
 let troubleText = null;
@@ -125,7 +105,7 @@ export function setTrouble(text, c) {
   if (c) statusEl.textContent = text || c.status;
 }
 
-// Put a character on stage: colour, picture, name, status, placeholder, picker highlight.
+// Put a character on stage: colour, picture, name, status, placeholder.
 export function applyCharacter(c) {
   layoutBubble();
   document.documentElement.style.setProperty("--accent", c.accent);
@@ -134,42 +114,19 @@ export function applyCharacter(c) {
   nameEl.textContent = c.name;
   statusEl.textContent = troubleText || c.status;
   input.placeholder = `Say something to ${c.name}...`;
-  pickerEl.querySelectorAll("a").forEach((a) => {
-    if (a.dataset.id === c.id) a.setAttribute("aria-current", "page");
-    else a.removeAttribute("aria-current");
-  });
+  headAvatar.src = c.image;
+  headAvatar.alt = "";
 }
 
 // ---- History panel: the full log for the open character ----
-
-// WhatsApp-style times and day labels. They follow the visitor's browser language and clock format
-// (an Indonesian browser gets "Hari ini", "Kemarin" and 24-hour times).
-const timeFormat = new Intl.DateTimeFormat(undefined, { hour: "2-digit", minute: "2-digit" });
-const dayKey = (t) => {
-  const d = new Date(t);
-  return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-};
-
-function dayLabel(t) {
-  const day = new Date(t);
-  const now = new Date();
-  const midnight = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-  const daysAgo = Math.round((midnight(now) - midnight(day)) / 86400000);
-  if (daysAgo === 0 || daysAgo === 1) {
-    const word = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" }).format(-daysAgo, "day"); // today / yesterday
-    return word.charAt(0).toLocaleUpperCase() + word.slice(1);
-  }
-  if (daysAgo > 1 && daysAgo < 7) return day.toLocaleDateString(undefined, { weekday: "long" });
-  const sameYear = day.getFullYear() === now.getFullYear();
-  return day.toLocaleDateString(undefined, { day: "numeric", month: "short", ...(sameYear ? {} : { year: "numeric" }) });
-}
 
 let lastDay = null;    // the day of the last row drawn, to know when to add a new date label
 let chatStart = null;  // when the first timed message was sent; the greeting has no time, so it uses this day
 
 function appendMessage(c, m) {
   // Messages saved before times existed have none, so they get no label. The greeting joins the first day.
-  const t = m.t ?? (m.g ? chatStart : null);
+  // The greeting has no time: it takes the day of the first message, or today while the chat is still empty.
+  const t = m.t ?? (m.g ? (chatStart ?? Date.now()) : null);
   if (t != null && dayKey(t) !== lastDay) {
     const label = document.createElement("div");
     label.className = "day-label";
