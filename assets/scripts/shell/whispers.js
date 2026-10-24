@@ -91,6 +91,7 @@ export async function startWhispers() {
     send.setAttribute("aria-label", T.commentSend);
     send.append(sendIcon());
     form.append(input, send);
+    for (const type of ["pointerdown", "mousedown"]) send.addEventListener(type, (e) => e.preventDefault()); // sending keeps the keyboard open
     const who = el("p", "c-as");
     const nick = el("strong", "", nickname());
     const change = el("a", "", T.commentChange);
@@ -234,7 +235,7 @@ export async function startWhispers() {
         timer = setTimeout(sync, 500);
       });
       const actions = el("div", "w-actions");
-      actions.append(love, button, shareButton(`${c.name}: ${w.text[lang] || w.text.en}`, `${location.origin}/whispers/?n=${w.n}`));
+      actions.append(love, button, shareButton(`${c.name}: ${w.text[lang] || w.text.en}`, `${location.origin}/whispers/${c.slug}/?n=${w.n}`));
       const thread = commentPanel(w, c, count);
       thread.panel.hidden = !single;
       button.setAttribute("aria-expanded", String(single));

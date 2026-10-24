@@ -17,6 +17,19 @@ export function initComposer(onSend) {
   }
   input.addEventListener("input", updateCount);
 
+  // A real keyboard, even on a phone or tablet (Bluetooth, a keyboard case): the first letter typed with nothing focused
+  // goes into the message box. The on-screen keyboard never opens by itself.
+  document.addEventListener("keydown", (e) => {
+    if (document.activeElement !== document.body || e.ctrlKey || e.metaKey || e.altKey || e.key.length !== 1) return;
+    input.focus();
+  });
+
+  // Like WhatsApp, sending keeps the keyboard open: pressing the send button must not take the focus away from the
+  // message box (that is what closes the phone keyboard).
+  const keepFocus = (e) => e.preventDefault();
+  form.querySelector("button").addEventListener("pointerdown", keepFocus);
+  form.querySelector("button").addEventListener("mousedown", keepFocus);
+
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const text = input.value.trim().slice(0, MAX_INPUT);
@@ -24,5 +37,6 @@ export function initComposer(onSend) {
     if (onSend(text) === false) return;
     input.value = "";
     updateCount();
+    input.focus();
   });
 }

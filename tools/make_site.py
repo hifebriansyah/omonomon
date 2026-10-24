@@ -272,6 +272,12 @@ def shell_pages(site, characters, games):
     wh_h = dict(title=f"Whispers | {site['name']}", description="Little updates the ghosts of Omon Omon post when the mood strikes.",
                 url=f"{site['url']}/whispers/", image=share_image(site), robots="noindex, follow")
     out.append(("whispers", fill("whispers", 1, wh_h, wh_content, None, "whispers"), wh_h["url"], False))
+    # /whispers/<slug>/ : the same page, with that ghost's share picture. A shared whisper links here (?n=<id>), because link
+    # previews read the static tags and never see which ghost the script shows.
+    for c in characters:
+        h = dict(wh_h, title=f"{c['name']}'s whispers | {site['name']}", url=f"{site['url']}/whispers/{c['slug']}/",
+                 description=f"Little updates {c['name']} posts when the mood strikes.", image=share_image(site, c["id"]))
+        out.append((f"whispers/{c['slug']}", fill("whispers", 2, h, wh_content, None, "whispers"), h["url"], False))
 
     # /loved/ : the whispers this visitor loved (kept in their browser: not indexed, reached from Me)
     back_me = f'<a class="back-btn" href="me/" data-t-label="backMe" aria-label="Back" title="Back">{icon("back")}</a>'

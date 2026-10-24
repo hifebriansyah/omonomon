@@ -18,7 +18,7 @@
 //   DELETE /comments/<n>                 {device}: a visitor deletes their own comment (kept in the database with deleted = 1, shown as "deleted")
 //   GET    /internal/comments            (secret INTERNAL_TOKEN) the newest comments, for moderation
 //   DELETE /internal/comment/<n>         (secret INTERNAL_TOKEN) remove one
-// A timer (cron) writes a whisper every 3 hours, one ghost after the other, by asking the Gemini Worker.
+// A timer (cron) writes a whisper every 15 minutes by asking the Gemini Worker: each hour every ghost posts once, in a shuffled order.
 //
 // The session token is a random 256-bit value sent as "Authorization: Bearer ...". Only its SHA-256 hash is stored.
 // (Bearer instead of a cookie so sign-in also works from http://localhost while developing.)
@@ -128,7 +128,7 @@ export const cleanName = (name) => (typeof name === "string" && name.trim() ? na
 // ---- whispers ----
 
 const GHOSTS = ["1", "2", "3", "4"];
-const WHISPER_EVERY_MS = 3 * 3600_000;
+const WHISPER_EVERY_MS = 15 * 60_000;  // one whisper per slot, so every ghost posts once an hour (a "round" of 4 slots)
 const WHISPER_KEEP_MS = 14 * 86400_000;
 const KINDS = [
   "a passing thought", "a small complaint about life as a ghost", "something you noticed tonight",
@@ -151,17 +151,42 @@ export function sameSecret(a, b) { // compares without stopping at the first dif
   return diff === 0;
 }
 
-// Ask the Gemini Worker for a whisper from `ghost` (default: the next ghost in turn) and keep it.
+// The order the ghosts post in during one round: a shuffle seeded by the round number, so it looks random but needs no
+// saved state and a repeated timer run picks the same ghost. If the round would open with the ghost who closed the round
+// before, its first two swap (the last place never moves, so the check against the previous round stays valid).
+function shuffled(round) {
+  let s = (round * 2654435761) >>> 0;
+  const rand = () => { // mulberry32
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(s ^ (s >>> 15), 1 | s);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  const order = [...GHOSTS];
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return order;
+}
+export function roundOrder(round) {
+  const order = shuffled(round);
+  if (order[0] === shuffled(round - 1).at(-1)) [order[0], order[1]] = [order[1], order[0]];
+  return order;
+}
+
+// Ask the Gemini Worker for a whisper from `ghost` (default: whose turn it is in this round) and keep it.
 // Returns the saved post, or null when this ghost already posted in this time slot.
 export async function makeWhisper(env, now = Date.now(), ghost) {
   const slot = Math.floor(now / WHISPER_EVERY_MS);
-  const id = ghost || GHOSTS[slot % GHOSTS.length];
+  const round = Math.floor(slot / GHOSTS.length);
+  const id = ghost || roundOrder(round)[slot % GHOSTS.length];
   if (!GHOSTS.includes(id)) throw new Error("unknown ghost");
   if (!ghost) {
     const done = await env.DB.prepare("SELECT n FROM whispers WHERE ghost = ?1 AND created_at >= ?2").bind(id, slot * WHISPER_EVERY_MS).first();
     if (done) return null; // the timer fired twice
   }
-  const kind = KINDS[(Math.floor(slot / GHOSTS.length) + Number(id)) % KINDS.length];
+  const kind = KINDS[(round + Number(id)) % KINDS.length];
   const recent = ((await env.DB.prepare("SELECT text_en FROM whispers WHERE ghost = ?1 ORDER BY created_at DESC LIMIT 3").bind(id).all()).results || []).map((r) => r.text_en);
   const res = await fetch(env.GEMINI_URL, {
     method: "POST",
@@ -519,7 +544,7 @@ export default {
     }
   },
 
-  // The timer (cron): one new whisper every 3 hours, one ghost after the other.
+  // The timer (cron): one new whisper every 15 minutes; each ghost once an hour, in a shuffled order.
   async scheduled(event, env, ctx) {
     ctx.waitUntil(
       makeWhisper(env, event.scheduledTime).catch((err) =>

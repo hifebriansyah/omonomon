@@ -66,7 +66,9 @@ export function selectCharacter(id) {
   stage.setScreenReaderText(lastBot.text);
   stage.animateHero("swap");
   stage.refreshHistory(c, log);
-  input.focus();
+  // A desktop (mouse, no touch screen) has a real keyboard: start typing at once. A phone or tablet would open the
+  // on-screen keyboard just by landing on the chat, so it is left alone (composer.js focuses on a real key press instead).
+  if (matchMedia("(hover: hover) and (pointer: fine)").matches && !navigator.maxTouchPoints) input.focus();
 }
 
 async function botReply(c, text) {

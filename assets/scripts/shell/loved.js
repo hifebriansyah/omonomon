@@ -47,7 +47,7 @@ export async function startLoved() {
         }
       });
       const actions = el("div", "w-actions");
-      actions.append(love, shareButton(`${c.name}: ${w.text[lang] || w.text.en}`, `${location.origin}/whispers/?n=${w.n}`));
+      actions.append(love, shareButton(`${c.name}: ${w.text[lang] || w.text.en}`, `${location.origin}/whispers/${c.slug ? `${c.slug}/` : ""}?n=${w.n}`));
       li.append(head, el("p", "w-text", w.text[lang] || w.text.en), actions);
       return li;
     }));

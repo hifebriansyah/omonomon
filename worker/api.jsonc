@@ -17,8 +17,9 @@
     "GEMINI_COMMENT_URL": "https://geminimon.securhat.com/comment",
     "SITE_ORIGIN": "https://omonomon.securhat.com"
   },
-  // The timer: every 3 hours (UTC) one ghost writes a new whisper. Free plans allow a few cron triggers per account.
-  "crons": ["0 */3 * * *"],
+  // The timer: every 15 minutes one ghost writes a new whisper, so each ghost posts once an hour (order shuffled per hour,
+  // never the same ghost twice in a row). Free plans allow a few cron triggers per account.
+  "crons": ["*/15 * * * *"],
   // At most 60 requests a minute from one IP address.
   "ratelimits": [
     { "name": "LIMITER", "namespace_id": "1002", "simple": { "limit": 60, "period": 60 } },

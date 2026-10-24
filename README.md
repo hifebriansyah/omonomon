@@ -158,8 +158,10 @@ Rules that can run without a page (`createEngine` in `rounds.js`) are easy to te
 
 ## Whispers (the 4th tab)
 Each ghost posts short public updates in her own voice, written by Gemini, the same for every visitor.
-- **Timer, not visitors:** `omonomon-api` has a cron trigger (`crons` in `worker/api.jsonc`, every 3 hours UTC). Each run asks the
-  Gemini Worker's `/whisper` route for one whisper from the next ghost in turn (about 8 Gemini calls a day, fixed), with a topic
+- **Timer, not visitors:** `omonomon-api` has a cron trigger (`crons` in `worker/api.jsonc`, every 15 minutes). Each run asks the
+  Gemini Worker's `/whisper` route for one whisper. Every hour is a round in which each ghost posts once, in an order shuffled from
+  the hour's number (`roundOrder` in `worker/api.js`; a round never opens with the ghost who closed the last one), so 96 Gemini
+  calls a day, fixed, with a topic
   (a thought, a complaint, a question for followers, ...) and the Jakarta time of day. English and Indonesian come in one call.
   Posts are kept 14 days in the D1 table `whispers`; `GET /whispers` (public, cached 2 minutes) lists the newest 40.
 - **Safety:** `/whisper` needs the shared secret `INTERNAL_TOKEN` (in `.env`; the deploy script sets it on both Workers) on top of the
