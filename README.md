@@ -121,8 +121,13 @@ the Google Cloud project, and watch usage.
        python3 tools/deploy_worker.py        # omonomon-gemini (worker/gemini.js, settings in worker/gemini.jsonc)
        python3 tools/setup_api.py            # once: the D1 database for omonomon-api
        python3 tools/deploy_worker.py api    # omonomon-api (worker/api.js, settings in worker/api.jsonc)
+       python3 tools/deploy_worker.py edge   # omonomon-edge (worker/edge.js): each whisper link (/whispers/?n=7) gets its own
+                                             # preview (that ghost's picture and her words), because the page is static and
+                                             # link previews do not run scripts. A route on omonomon.securhat.com/whispers*,
+                                             # no secrets; it reads the API Worker through a service binding.
+                                             # Check it: curl -s -D - -o /dev/null "https://omonomon.securhat.com/whispers/?n=7" | grep -i x-omon-edge
 
-   Each deploy also attaches the Worker's domain and turns its workers.dev address off.
+   Each deploy also attaches the Worker's domain (the edge Worker its route) and turns its workers.dev address off.
 
 ## Limits
 - `INPUT_MAX_CHARS` in `config.js` (default 200) caps what a visitor can type; the Worker also cuts every

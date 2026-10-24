@@ -4,6 +4,8 @@
 Setup: copy .env.example to .env and fill in the values (it is git-ignored). Then:
 
     python3 tools/deploy_worker.py          the Gemini chat Worker (worker/gemini.js, settings in worker/gemini.jsonc)
+    python3 tools/deploy_worker.py edge     the edge Worker (worker/edge.js, worker/edge.jsonc): per-whisper link previews,
+                                            run in front of omonomon.securhat.com/whispers* (a route, no secrets)
     python3 tools/deploy_worker.py api      the general API Worker (worker/api.js, settings in worker/api.jsonc;
                                             run tools/setup_api.py once first for its D1 database)
 
@@ -34,7 +36,7 @@ def load_env():
 
 
 # which Worker to deploy: config file and code file inside worker/
-TARGETS = {"gemini": ("gemini.jsonc", "gemini.js"), "api": ("api.jsonc", "api.js")}
+TARGETS = {"gemini": ("gemini.jsonc", "gemini.js"), "api": ("api.jsonc", "api.js"), "edge": ("edge.jsonc", "edge.js")}
 
 
 def read_config(name):
@@ -94,6 +96,26 @@ def attach_domain(base, account, token, cfg):
     print("workers.dev address off" if off.get("success") else f"workers.dev not changed ({(off.get('errors') or [{}])[0].get('message')})")
 
 
+def attach_route(base, account, token, cfg):
+    """Run the Worker in front of one path of an existing address (a route; safe to repeat)."""
+    pattern = cfg.get("route")
+    if not pattern:
+        return
+    zone_name = ".".join(pattern.split("/")[0].split(".")[-2:])
+    zones = call(base, token, "GET", f"/zones?name={zone_name}").get("result") or []
+    if not zones:
+        print(f"Route {pattern}: zone {zone_name} not found or the token cannot read it; add the route in the dashboard.")
+        return
+    zone = zones[0]["id"]
+    routes = call(base, token, "GET", f"/zones/{zone}/workers/routes").get("result") or []
+    old = next((r for r in routes if r["pattern"] == pattern), None)
+    body = {"pattern": pattern, "script": cfg["name"]}
+    res = call(base, token, "PUT", f"/zones/{zone}/workers/routes/{old['id']}", body) if old else call(base, token, "POST", f"/zones/{zone}/workers/routes", body)
+    print(f"Route {pattern} -> {cfg['name']}" if res.get("success") else f"Route {pattern} NOT set: {res.get('errors')}")
+    off = call(base, token, "POST", f"/accounts/{account}/workers/scripts/{cfg['name']}/subdomain", {"enabled": False})
+    print("workers.dev address off" if off.get("success") else f"workers.dev not changed ({(off.get('errors') or [{}])[0].get('message')})")
+
+
 def main():
     load_env()
     token = os.environ.get("CLOUDFLARE_API_TOKEN")
@@ -116,6 +138,7 @@ def main():
         if not db_file.exists():
             sys.exit("worker/api-db.json is missing: run  python3 tools/setup_api.py  first")
         bindings.append({"type": "d1", "name": cfg["d1"]["binding"], "id": json.loads(db_file.read_text())["database_id"]})
+    bindings += [{"type": "service", "name": x["binding"], "service": x["service"]} for x in cfg.get("services", [])]
     bindings += [{"type": "plain_text", "name": k, "text": v} for k, v in cfg.get("vars", {}).items()]
     metadata = {
         "main_module": code_file,
@@ -162,14 +185,17 @@ def main():
     if not payload.get("success"):
         sys.exit(f"Deploy failed: {payload.get('errors')}")
     print(f"Deployed worker '{cfg['name']}' ({len(code)} bytes).")
-    set_secret(base, account, cfg["name"], token, "AXIOM_TOKEN")
-    set_secret(base, account, cfg["name"], token, "INTERNAL_TOKEN")  # the secret the two Workers share (whispers)
+    if target != "edge":  # the edge Worker has no secrets
+        set_secret(base, account, cfg["name"], token, "AXIOM_TOKEN")
+        set_secret(base, account, cfg["name"], token, "INTERNAL_TOKEN")  # the secret the two Workers share (whispers)
     if cfg.get("crons"):
         res = call(base, token, "PUT", f"/accounts/{account}/workers/scripts/{cfg['name']}/schedules", [{"cron": c} for c in cfg["crons"]])
         print(f"Timer {', '.join(cfg['crons'])}" if res.get("success") else f"Timer NOT set: {res.get('errors')}")
     if target == "gemini":
         print("GEMINI_API_KEY is a secret you enter in the dashboard (Worker > Settings > Variables and Secrets); deploys keep it.")
     attach_domain(base, account, token, cfg)
+    attach_route(base, account, token, cfg)
+
 
 if __name__ == "__main__":
     main()

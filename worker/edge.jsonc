@@ -1,0 +1,18 @@
+{
+  // The edge Worker (worker/edge.js): per-whisper link previews. Separate from the other two Workers: it holds no secrets
+  // and no database. Deployed by: python3 tools/deploy_worker.py edge
+  "name": "omonomon-edge",
+  "main": "edge.js",
+  "compatibility_date": "2025-09-01",
+  // Runs in front of the site's own address for these paths only (the rest of the site never touches a Worker).
+  "route": "omonomon.securhat.com/whispers*",
+  // Its own address too, like the other two Workers (geminimon, apimon). Only an alias: anything asked for there is sent on to
+  // the same path on the site (see worker/edge.js).
+  "domain": "edgemon.securhat.com",
+  // Reaches the API Worker directly (a service binding), so its firewall rule for outside requests does not apply.
+  "services": [{ "binding": "API", "service": "omonomon-api" }],
+  "vars": {
+    "SITE_ORIGIN": "https://omonomon.securhat.com",
+    "SITE_NAME": "Omon Omon"
+  }
+}
