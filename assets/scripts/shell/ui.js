@@ -28,6 +28,7 @@ function icon(...paths) {
 
 export const bubbleIcon = () => icon("M7.9 20A9 9 0 1 0 4 16.1L2 22Z");
 export const heartIcon = () => icon("M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z");
+export const backIcon = () => icon("m12 19-7-7 7-7", "M19 12H5");   // the same arrow as the back buttons in the generated pages
 export const shareIcon = () => icon("M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13");
 
 // The share button under a whisper (url: that whisper's page): the phone's share sheet where there is one, otherwise the text is copied

@@ -8,7 +8,8 @@ export function smartBack(button) {
   let fromHere = false;
   try {
     const ref = document.referrer && new URL(document.referrer);
-    fromHere = Boolean(ref) && ref.origin === location.origin && ref.pathname !== location.pathname;
+    // the whisper opened from the feed has the same path (/whispers/) and only a different ?n=, so the query counts as part of the page
+    fromHere = Boolean(ref) && ref.origin === location.origin && ref.pathname + ref.search !== location.pathname + location.search;
   } catch {}
   const startLength = history.length;
   button.addEventListener("click", (e) => {

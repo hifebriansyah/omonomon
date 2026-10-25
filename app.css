@@ -88,6 +88,7 @@ body {
 .stat b { display: block; font-size: 1.4rem; }
 .stat span { font-size: 0.8rem; color: var(--muted); }
 .me { padding-top: 8px; } /* the page has no title bar, so keep the same space the bar used to give */
+.whispers-page { padding-top: 8px; } /* no title bar here either: the same space as /me/ */
 .me h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 18px 0 8px; }
 .bonds { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .bonds li { display: flex; align-items: center; gap: 10px; }
@@ -206,11 +207,11 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .whispers { list-style: none; margin: 0; padding: 0; }
 .whisper { padding: 14px 4px; border-bottom: 1px solid #2a2d36; }
 .w-head { display: flex; align-items: center; gap: 12px; }
+.w-head .back-btn { margin-left: -6px; margin-right: -4px; } /* the back button of a whisper opened on its own sits in the row with the avatar */
 .w-who { display: flex; flex-direction: column; min-width: 0; }
 .w-who time { font-size: 0.75rem; color: var(--muted); }
 .w-ad { padding: 10px 4px; }
 .w-ad ins { min-width: 250px; }
-.w-all { display: inline-block; margin: 16px 4px; font-size: 0.85rem; color: var(--muted); }
 .whisper .avatar { width: 46px; height: 46px; }
 .w-text { margin: 10px 0 6px; font-family: var(--comic); line-height: 1.45; color: #e8ebf2; overflow-wrap: anywhere; }
 /* The card for what the ghost found online: picture, title, source */

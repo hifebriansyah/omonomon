@@ -6,11 +6,12 @@ import { chatTime } from "../time.js";
 import { T, lang } from "../games/text.js";
 import { markSeen } from "./whisper-badge.js";
 import { nickname, deviceId, myComments, rememberComment, forgetComment } from "./identity.js";
-import { el, bubbleIcon, heartIcon, sendIcon, shareButton, linkCard } from "./ui.js";
+import { el, bubbleIcon, heartIcon, backIcon, sendIcon, shareButton, linkCard } from "./ui.js";
 import { isLoved, toggleLove } from "./loved-store.js";
 import { recordSocial } from "../games/progress.js";
 import { toast } from "../toast.js";
 import { rememberScroll, restoreScroll } from "./scroll-memory.js";
+import { smartBack } from "../back.js";
 import { adItem } from "./ads.js";
 
 const PAGE_SIZE = 20; // whispers per page in the feed (more load as the visitor scrolls)
@@ -196,6 +197,16 @@ export async function startWhispers() {
       pic.href = `${c.slug}/profile/`;
       pic.setAttribute("aria-label", c.name);
       pic.append(img);
+      if (single) {
+        // opened on its own: a back button right before the avatar, like the chat page's header, to the list of all whispers
+        const back = el("a", "back-btn");
+        back.href = "whispers/";
+        back.title = T.allWhispers;
+        back.setAttribute("aria-label", T.allWhispers);
+        back.append(backIcon());
+        smartBack(back);   // came from the feed or a profile: go back in history, so that page comes back with its scroll
+        head.append(back);
+      }
       head.append(pic, who);
       const text = el("p", "w-text");
       if (single) text.textContent = w.text[lang] || w.text.en;
@@ -289,9 +300,7 @@ export async function startWhispers() {
       }
       if (w && byId[w.ghost]) list.replaceChildren(whisperItem(w, byId[w.ghost], true));
       else say(T.whisperGone);
-      const all = el("a", "w-all", T.allWhispers);
-      all.href = "whispers/";
-      list.after(all);
+      await restoreScroll(null);   // back from a profile: put this page's scroll back too
     } else {
       // an ad after every few whispers (never at the end); only the feed has them, not a whisper's own page
       const ads = await getJson("site.json").then((site) => site.ads).catch(() => null);

@@ -283,7 +283,8 @@ def shell_pages(site, characters, games):
     out.append(("me", fill("me", 1, me_h, me_content, None, "me"), me_h["url"], False))
 
     # /whispers/ : the ghosts' latest public updates (written on a timer, filled in by the script: not indexed)
-    wh_content = (bar("Whispers", "", "tabWhispers") + '    <section class="whispers-page">\n      <p class="intro" data-t="whispersIntro">Little updates the ghosts post when the mood strikes.</p>\n'
+    # No visible title bar or intro line (the tabs already say where you are); the heading stays for screen readers and the page keeps the same top space as /me/.
+    wh_content = ('    <section class="whispers-page">\n      <h1 class="sr-only" data-t="tabWhispers">Whispers</h1>\n'
                   + '      <ul class="whispers" id="whisperList"></ul>\n      <p class="whisper-note" id="whisperNote" hidden></p>\n    </section>')
     wh_h = dict(title=f"Whispers | {site['name']}", description="Little updates the ghosts of Omon Omon post when the mood strikes.",
                 url=f"{site['url']}/whispers/", image=share_image(site), robots="noindex, follow")
