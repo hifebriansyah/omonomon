@@ -312,13 +312,31 @@ function addUsage(info, data, model) {
   info.model = model;
 }
 
+// Recurring nags to keep out of a whisper once they have shown up in the ghost's recent ones (English and Indonesian wording).
+const STOCK_NAGS = {
+  "drinking water": /\bwater\b|\bdrink|hydrat|\bminum|air putih/i,
+  "eating a meal": /\beat\b|\bate\b|\bmeals?\b|\blunch\b|\bdinner\b|\bbreakfast\b|\bmakan|sarapan/i,
+  "going to sleep": /\bsleep|\bbed\b|up late|stay up|\btidur|begadang/i,
+  "finishing chores": /\bchores?\b|kerjaan rumah|\bberes/i,
+  "posture or stretching": /posture|slouch|hunch|stretch|shoulders?\b|\bback\b|badan|bungkuk|pegal/i,
+  "resting your eyes": /\beyes?\b.*\b(rest|blink|look away|red)|\bblink|screen|monitor|layar|\bmata\b/i,
+  "wearing something warm": /jacket|\bsocks?\b|blanket|sweater|\bwarm\b|jaket|selimut|hangat/i,
+};
+
 async function writeWhisper(env, id, kind, when, avoid, info, linkInput) {
   const link = cleanLink(linkInput);
   const c = CHARACTERS[id];
   const head = `You are ${c.name}, a character in a small web chat. ${c.persona}`;
   const topic = String(kind || "a passing thought").slice(0, 260);
   const timing = String(when || "tonight").slice(0, 60);
-  const earlier = (Array.isArray(avoid) ? avoid : []).filter((x) => typeof x === "string").slice(0, 3).map((x) => `- ${x.slice(0, 220)}`);
+  const recent = (Array.isArray(avoid) ? avoid : []).filter((x) => typeof x === "string");
+  const earlier = recent.slice(0, 3).map((x) => `- ${x.slice(0, 220)}`);
+  // The stock nags this ghost has used in her recent whispers (up to 8). A whisper must not lean on them again: otherwise a ghost whose
+  // persona nags about water, food and sleep ends every whisper with "now go drink water".
+  const worn = Object.entries(STOCK_NAGS).filter(([, re]) => recent.slice(0, 8).some((x) => re.test(x))).map(([name]) => name);
+  const fresh = worn.length
+    ? `You have leaned on these stock lines too often lately: ${worn.join(", ")}. Do NOT mention them in this whisper, not even in passing. React to this topic itself instead.${id === "2" ? ` If you give a tip, make it fit the topic and pick something new each time (a jacket for the rain, resting your eyes, stretching, posture, washing hands, a short walk, putting the phone down, fresh air, not skipping a real break), or just react with no tip at all. A nag is not required in every whisper.` : ""}`
+    : "";
   const prompt = [
     head,
     WHISPER_RULES,
@@ -331,6 +349,7 @@ If the subject is heavy (a tragedy, death, crime, violence, disaster, politics, 
       : `Topic for this one: ${topic}.
 Private background, not something to write about: for the reader it is ${timing}. Do NOT name the day of the week or the time of day in the whisper (no "Sunday", "Minggu", "tonight", "pagi", "siang", "sore", "malam"), unless the topic above is itself about the time, a holiday or the season. Most of your whispers should not mention when they are written.`,
     earlier.length ? `Do not repeat or closely echo your earlier whispers:\n${earlier.join("\n")}` : "",
+    fresh,
     `EXAMPLES of how this character talks in chat (imitate the voice, not the content)\n${c.examples}`,
   ].filter(Boolean).join("\n\n");
   const generationConfig = {

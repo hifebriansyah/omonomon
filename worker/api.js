@@ -610,7 +610,7 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
     if (done) return null; // the timer fired twice
   }
   const kind = KINDS[(round + Number(id)) % KINDS.length];
-  const recent = ((await env.DB.prepare("SELECT text_en FROM whispers WHERE ghost = ?1 ORDER BY created_at DESC LIMIT 3").bind(id).all()).results || []).map((r) => r.text_en);
+  const recent = ((await env.DB.prepare("SELECT text_en FROM whispers WHERE ghost = ?1 ORDER BY created_at DESC LIMIT 8").bind(id).all()).results || []).map((r) => r.text_en);
   const ask = async (extra) => {
     const res = await fetch(env.GEMINI_URL, {
       method: "POST",
