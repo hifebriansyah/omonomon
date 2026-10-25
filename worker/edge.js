@@ -3,7 +3,7 @@
 // The site is static, so /whispers/?n=7 is the same HTML for every whisper and link previews (WhatsApp, Telegram, X ...)
 // never run its scripts: they would always show the default picture. This Worker sits in front of omonomon.securhat.com/whispers*,
 // looks the whisper up in the API and rewrites the preview tags of that one page, so the card shows the whisper's own ghost
-// (builds/img/scenes/1_1/<ghost>.jpg) and her words. Everything else, and any whisper that is gone, passes through untouched.
+// (builds/img/scenes/1_1/<ghost>.jpg) and her words, or the picture of the article the whisper reacts to when it has one. Everything else, and any whisper that is gone, passes through untouched.
 // Deployed by: python3 tools/deploy_worker.py edge   (route and variables in worker/edge.jsonc)
 
 const getOwn = (url) => fetch(url, { cf: { cacheTtl: 300, cacheEverything: true } }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
@@ -34,11 +34,21 @@ export default {
     const ghost = chars?.characters?.find((c) => c.id === whisper?.ghost);
     if (!page.ok || !whisper || !ghost) return tagged(page, `pass: page=${page.status} whisper=${Boolean(whisper)} ghost=${Boolean(ghost)}`);
 
-    const text = (whisper.text?.en || "").slice(0, 200);
-    const title = `${ghost.name} on ${env.SITE_NAME || "Omon Omon"}`;
-    const image = `${url.origin}/builds/img/scenes/1_1/${ghost.id}.jpg`;
+    // The words are in the language of the person who shared (?lang=en; the app's default is Indonesian), with the ghost's name in front.
+    const id = url.searchParams.get("lang") !== "en" && whisper.text?.id;
+    const site = env.SITE_NAME || "Omon Omon";
+    const text = `${ghost.name}: ${(id || whisper.text?.en || "")}`.slice(0, 220);
+    const title = id ? `${ghost.name} di ${site}` : `${ghost.name} on ${site}`;
+    // A whisper that points to an article, trend or video uses that picture; the ghost's own picture is the fallback.
+    const thumb = typeof whisper.link?.thumb === "string" && /^https:\/\//.test(whisper.link.thumb) ? whisper.link.thumb : null;
+    const image = thumb || `${url.origin}/builds/img/scenes/1_1/${ghost.id}.jpg`;
     const set = (value) => ({ element: (e) => e.setAttribute("content", value) });
+    // the static page declares a square picture of known size; an article's picture is usually wide, so drop those hints
+    const square = thumb ? { element: (e) => e.remove() } : {};
     return new HTMLRewriter()
+      .on('meta[property="og:image:width"]', square)
+      .on('meta[property="og:image:height"]', square)
+      .on('meta[name="twitter:card"]', thumb ? set("summary_large_image") : {})
       .on("title", { element: (e) => e.setInnerContent(title) })
       .on('meta[name="description"]', set(text))
       .on('meta[property="og:title"]', set(title))
