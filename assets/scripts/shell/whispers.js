@@ -262,7 +262,7 @@ export async function startWhispers() {
         timer = setTimeout(sync, 500);
       });
       const actions = el("div", "w-actions");
-      actions.append(love, button, shareButton(`${c.name}: ${w.text[lang] || w.text.en}`, `${location.origin}/whispers/${c.slug}/?n=${w.n}${lang === "en" ? "&lang=en" : ""}`));
+      actions.append(love, button, shareButton("", `${location.origin}/whispers/${c.slug}/?n=${w.n}${lang === "en" ? "&lang=en" : ""}`));
       const thread = commentPanel(w, c, count);
       thread.panel.hidden = !single;
       button.setAttribute("aria-expanded", String(single));

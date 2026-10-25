@@ -47,7 +47,7 @@ export async function startLoved() {
         }
       });
       const actions = el("div", "w-actions");
-      actions.append(love, shareButton(`${c.name}: ${w.text[lang] || w.text.en}`, `${location.origin}/whispers/${c.slug ? `${c.slug}/` : ""}?n=${w.n}`));
+      actions.append(love, shareButton("", `${location.origin}/whispers/${c.slug ? `${c.slug}/` : ""}?n=${w.n}${lang === "en" ? "&lang=en" : ""}`));
       li.append(head, el("p", "w-text", w.text[lang] || w.text.en), ...[linkCard(w.link)].filter(Boolean), actions);
       return li;
     }));

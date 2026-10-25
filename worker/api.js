@@ -223,15 +223,20 @@ export function roundOrder(round) {
 const FEEDS = [ // [site, RSS address]: sections with light subjects
   ["Antara", "https://www.antaranews.com/rss/tekno.xml"],
   ["Antara", "https://www.antaranews.com/rss/hiburan.xml"],
-  ["Antara", "https://www.antaranews.com/rss/olahraga.xml"],
   ["Antara", "https://www.antaranews.com/rss/humaniora.xml"],
   ["CNN Indonesia", "https://www.cnnindonesia.com/teknologi/rss"],
   ["CNN Indonesia", "https://www.cnnindonesia.com/gaya-hidup/rss"],
   ["CNN Indonesia", "https://www.cnnindonesia.com/hiburan/rss"],
-  ["CNN Indonesia", "https://www.cnnindonesia.com/olahraga/rss"],
 ];
 // A topic from Google Trends counts only through a news item from one of these sites (or any .id address).
-const INDONESIAN_SITE = /(^|\.)(id|co\.id|detik\.com|kompas\.com|cnnindonesia\.com|antaranews\.com|tribunnews\.com|liputan6\.com|kumparan\.com|suara\.com|tempo\.co|bola\.com|okezone\.com|idntimes\.com|cnbcindonesia\.com|merdeka\.com|jawapos\.com|sindonews\.com|bisnis\.com|viva\.co\.id|pikiran-rakyat\.com|suaramerdeka\.com|beritajatim\.com)$/;
+const INDONESIAN_SITE = /(^|\.)(id|co\.id|detik\.com|kompas\.com|cnnindonesia\.com|antaranews\.com|tribunnews\.com|liputan6\.com|kumparan\.com|suara\.com|tempo\.co|okezone\.com|idntimes\.com|cnbcindonesia\.com|merdeka\.com|jawapos\.com|sindonews\.com|bisnis\.com|viva\.co\.id|pikiran-rakyat\.com|suaramerdeka\.com|beritajatim\.com)$/;
+// No sports: not the sports feeds, and no topic, article or video that is about a match, a league, a team or an athlete.
+const SPORT = new RegExp([
+  "olahraga", "sepak ?bola", "\\bbola\\b", "\\bliga\\b", "piala", "timnas", "\\bpssi\\b", "\\bgol\\b", "pertandingan", "\\blaga\\b", "klasemen", "kualifikasi",
+  "motogp", "\\bf1\\b", "formula ?1", "balapan", "badminton", "bulu tangkis", "\\bbasket", "\\bnba\\b", "\\bvoli\\b", "tenis", "tinju", "\\bufc\\b", "\\bmma\\b",
+  "atlet", "olimpiade", "sea games", "asian games", "juara dunia", "striker", "kiper", "wasit", "persib", "persija", "arema", "renang", "\\bgolf\\b",
+  "football", "soccer", "premier league", "champions league", "world cup", "\\bfifa\\b", "grand prix", "tennis", "boxing", "olympic", "\\bnfl\\b", "\\bwwe\\b", "cricket", "marathon",
+].join("|"), "i");
 const HEAVY = new RegExp([
   "korupsi", "tersangka", "ditangkap", "penangkapan", "pembunuh", "dibunuh", "bunuh", "tewas", "meninggal", "wafat", "jenazah",
   "kecelakaan", "korban", "bencana", "gempa", "tsunami", "longsor", "kebakaran", "teroris", "\\bbom\\b", "narkoba", "sabu",
@@ -394,7 +399,7 @@ const SOURCE_ORDER = ["article", "trend", "video"];
 
 // Fit to show: a title and a picture, nothing heavy, not used before.
 export const fitsWhisper = (c, seen) =>
-  Boolean(c.url && c.thumb && c.title.length >= 8 && c.title.length <= 200 && !HEAVY.test(`${c.title} ${c.summary}`) && !seen.has(c.url));
+  Boolean(c.url && c.thumb && c.title.length >= 8 && c.title.length <= 200 && !HEAVY.test(`${c.title} ${c.summary}`) && !SPORT.test(`${c.title} ${c.summary} ${c.source || ""}`) && !seen.has(c.url));
 
 // Up to four things to talk about, the kind of this time slot first (articles, trends and videos take turns), then the others.
 async function findLinks(env, now, seen) {

@@ -32,6 +32,7 @@ export const shareIcon = () => icon("M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M1
 
 // The share button under a whisper (url: that whisper's page): the phone's share sheet where there is one, otherwise the text is copied
 // (the word "Copied" shows beside the icon for a moment).
+// text is optional: with none, only the link is shared (the link preview already carries the words)
 export function shareButton(text, url = `${location.origin}/`) {
   const button = el("button", "w-share");
   button.type = "button";
@@ -41,8 +42,8 @@ export function shareButton(text, url = `${location.origin}/`) {
   button.append(shareIcon(), note);
   button.addEventListener("click", async () => {
     try {
-      if (navigator.share) { await navigator.share({ text, url }); return; }
-      await navigator.clipboard.writeText(`${text}\n${url}`);
+      if (navigator.share) { await navigator.share(text ? { text, url } : { url }); return; }
+      await navigator.clipboard.writeText(text ? `${text}\n${url}` : url);
       note.textContent = T.copiedWord;
       setTimeout(() => { note.textContent = ""; }, 1800);
     } catch {} // the visitor closed the share sheet, or copying is not allowed: nothing to do
