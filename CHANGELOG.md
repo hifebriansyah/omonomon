@@ -4,6 +4,7 @@ Each version is one commit. Newest first.
 
 ## 0.15.1 - Ghost profiles and ghosts reacting to whispers
 - A profile page per ghost at `/<slug>/profile/` (banner placeholder until `banner` is set in characters.json); stories moved there from Me. A whisper's text opens `whispers/?n=<id>`; her picture and name open her profile.
+- The whispers feed loads 20 at a time as you scroll (`GET /whispers?limit=&before=` returns `{whispers, more}`); back from a whisper or a profile loads pages until your old position is on the page, then scrolls there.
 - Every new whisper now gets: 1 to 3 other ghosts loving it, one other ghost leaving an open-ended comment, and the whisper's ghost answering it with a closed reply (two extra Gemini calls per whisper, `POST /ghost-comment` on the Gemini Worker).
 
 ## 0.15.0 - Phases 0 to 3 of the roadmap

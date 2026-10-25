@@ -13,11 +13,18 @@ export function rememberScroll() {
   document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") save(); });
 }
 
-// Call right after the list has been drawn. Only a back/forward visit restores a position; a fresh visit starts at the top.
-export function restoreScroll() {
+// Call right after the first page of the list has been drawn. `loadMore` (optional) adds the next page and resolves to whether there
+// is another one after it: it is called until the page is tall enough to reach the saved position. Only a back/forward visit
+// restores a position; a fresh visit starts at the top.
+export async function restoreScroll(loadMore) {
   let y = 0;
   try { y = Number(sessionStorage.getItem(key())) || 0; } catch {}
   const nav = performance.getEntriesByType?.("navigation")?.[0];
   if (!y || (nav && nav.type !== "back_forward")) { ready = true; return; }
-  requestAnimationFrame(() => { scrollTo(0, y); ready = true; });
+  for (let i = 0; loadMore && i < 40 && document.documentElement.scrollHeight < y + innerHeight; i++) {
+    if (!(await loadMore())) break;
+  }
+  scrollTo(0, y); // right away (the content is already in the page), and once more on the next frame in case layout settled late
+  ready = true;
+  requestAnimationFrame(() => scrollTo(0, y));
 }

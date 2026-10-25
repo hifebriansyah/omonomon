@@ -15,7 +15,7 @@
 //                                        measured by the Worker's clock between this call and the score
 //   POST   /scores       {token, score, nickname}  a finished run: kept as this week's best when plausible; answers {accepted, rank}
 //   GET    /leaderboard/<game>           this week's top 20 {entries: [{rank, nickname, score}], me: {rank, score}|null, week}
-//   GET    /whispers                     the ghosts' latest public updates, newest first (no sign-in)
+//   GET    /whispers                     the ghosts' latest public updates, newest first (no sign-in); ?limit=&before=<n> pages through them: {whispers, more}
 //   GET    /whispers/<n>                 one whisper by its number (older ones are no longer in the list above)
 //   POST   /internal/whisper             (secret INTERNAL_TOKEN) write one now; {ghost} optional
 //   DELETE /internal/whisper/<n>         (secret INTERNAL_TOKEN) remove one
@@ -166,7 +166,9 @@ export const cleanName = (name) => (typeof name === "string" && name.trim() ? na
 
 const GHOSTS = ["1", "2", "3", "4"];
 const WHISPER_EVERY_MS = 15 * 60_000;  // one whisper per slot, so every ghost posts once an hour (a "round" of 4 slots)
-const WHISPER_KEEP_MS = 14 * 86400_000;
+// How long whispers (with their comments and loves) are kept. null keeps them for good; a number of milliseconds deletes older ones
+// each time a new whisper is written. At about 100 whispers a day this grows the database by roughly 50 MB a year (D1 allows 500 MB).
+const WHISPER_KEEP_MS = null;
 const KINDS = [
   "a passing thought", "a small complaint about life as a ghost", "something you noticed tonight",
   "a question for the people who follow you", "a bit of gossip from the graveyard", "a tiny wish",
@@ -505,9 +507,11 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
     .bind(id, String(en).slice(0, 220), idText ? String(idText).slice(0, 220) : null, now,
       link?.url ?? null, link ? link.title.slice(0, 200) : null, link ? link.source.slice(0, 60) : null, link?.thumb ?? null).first();
   await reactToWhisper(env, { n: saved.n, ghost: id, en }, now).catch(() => {}); // the other ghosts react; a failure only means no reaction
-  await env.DB.prepare("DELETE FROM comments WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
-  await env.DB.prepare("DELETE FROM loves WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
-  await env.DB.prepare("DELETE FROM whispers WHERE created_at < ?1").bind(now - WHISPER_KEEP_MS).run();
+  if (WHISPER_KEEP_MS) {
+    await env.DB.prepare("DELETE FROM comments WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
+    await env.DB.prepare("DELETE FROM loves WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
+    await env.DB.prepare("DELETE FROM whispers WHERE created_at < ?1").bind(now - WHISPER_KEEP_MS).run();
+  }
   return { n: saved.n, ghost: id, t: now, text: { en, id: idText || null }, link: link ? { url: link.url, title: link.title, source: link.source, thumb: link.thumb } : null };
 }
 
@@ -777,14 +781,18 @@ export default {
       }
 
       if (path === "/whispers" && request.method === "GET") {
+        // The newest whispers first, a page at a time: ?limit=<1..50, default 40> and ?before=<whisper number> for the next page.
+        const q = new URL(request.url).searchParams;
+        const limit = Math.min(50, Math.max(1, Math.floor(Number(q.get("limit"))) || 40));
+        const before = Math.max(0, Math.floor(Number(q.get("before"))) || 0);
         const rows = (await env.DB.prepare(
           "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, w.link_url, w.link_title, w.link_source, w.thumb_url, " +
           "(SELECT COUNT(*) FROM comments c WHERE c.whisper_n = w.n AND c.deleted = 0) AS comments, " +
           "(SELECT COUNT(*) FROM loves l WHERE l.whisper_n = w.n) AS loves " +
-          "FROM whispers w ORDER BY w.created_at DESC LIMIT 40"
-        ).all()).results || [];
+          "FROM whispers w WHERE (?1 = 0 OR w.n < ?1) ORDER BY w.n DESC LIMIT ?2"
+        ).bind(before, limit + 1).all()).results || [];   // one more than asked for, to know whether another page exists
         return reply(
-          { whispers: rows.map(shapeWhisper) },
+          { whispers: rows.slice(0, limit).map(shapeWhisper), more: rows.length > limit },
           200, { "Cache-Control": "public, max-age=120" }
         );
       }

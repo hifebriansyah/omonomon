@@ -13,6 +13,7 @@ import { toast } from "../toast.js";
 import { rememberScroll, restoreScroll } from "./scroll-memory.js";
 import { adItem } from "./ads.js";
 
+const PAGE_SIZE = 20; // whispers per page in the feed (more load as the visitor scrolls)
 const ghostsById = {}; // every ghost by id, filled when the feed loads (a comment may come from a ghost other than the whisper's)
 const badgeToast = (ids) => { if (ids.length) toast(ids.map((id) => T.badgeUnlocked(T.badges[id]?.[0] || id))); };
 
@@ -171,7 +172,7 @@ export async function startWhispers() {
 
   // ---- the feed ----
   try {
-    const [{ whispers }, { characters }] = await Promise.all([getJson(`${base}/whispers`), getJson("characters.json")]);
+    const [{ whispers, more: moreAfterFirst }, { characters }] = await Promise.all([getJson(`${base}/whispers?limit=${PAGE_SIZE}`), getJson("characters.json")]);
     const byId = Object.fromEntries(characters.map((c) => [c.id, c]));
     Object.assign(ghostsById, byId);
     // One whisper as a list item. On its own page (single) the comments are open from the start.
@@ -293,19 +294,54 @@ export async function startWhispers() {
       all.href = "whispers/";
       list.after(all);
     } else {
-      const items = whispers.filter((w) => byId[w.ghost]).map((w) => whisperItem(w, byId[w.ghost], false));
       // an ad after every few whispers (never at the end); only the feed has them, not a whisper's own page
       const ads = await getJson("site.json").then((site) => site.ads).catch(() => null);
-      if (ads?.every) {
-        for (let i = ads.every; i < items.length; i += ads.every + 1) {
-          const ad = adItem(ads);
-          if (ad) items.splice(i, 0, ad);
+      let shown = 0;
+      const toItems = (batch) => {
+        const out = [];
+        for (const w of batch.filter((x) => byId[x.ghost])) {
+          if (ads?.every && shown > 0 && shown % ads.every === 0) { const ad = adItem(ads); if (ad) out.push(ad); }
+          out.push(whisperItem(w, byId[w.ghost], false));
+          shown++;
         }
-      }
-      list.replaceChildren(...items);
-      restoreScroll(); // coming back from a whisper or a profile: the feed is where the visitor left it
+        return out;
+      };
+      let oldest = whispers.length ? whispers[whispers.length - 1].n : 0;
+      let more = Boolean(moreAfterFirst);
+      let loading = null;
+      const tail = el("li", "w-tail"); // sits at the end of the list: when it comes near the screen, the next page loads
+      const tailSay = (text, retry) => {
+        tail.replaceChildren();
+        if (text) tail.append(el("span", "", text));
+        if (retry) { const b = el("button", "w-retry", T.retryWord); b.type = "button"; b.addEventListener("click", () => loadMore()); tail.append(b); }
+      };
+      // Load the next page and add it to the list. Resolves to whether there is still more.
+      const loadMore = () => (loading ||= (async () => {
+        try {
+          tailSay(T.loadingWord, false);
+          const page = await getJson(`${base}/whispers?limit=${PAGE_SIZE}&before=${oldest}`);
+          if (page.whispers.length) oldest = page.whispers[page.whispers.length - 1].n;
+          tail.before(...toItems(page.whispers));
+          more = Boolean(page.more) && page.whispers.length > 0;
+          tailSay(more ? "" : T.feedEnd, false);
+        } catch {
+          tailSay(T.whisperError, true);
+          return false;
+        } finally {
+          loading = null;
+        }
+        if (!more) { observer.disconnect(); }
+        return more;
+      })());
+      const observer = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting) && more && !loading) loadMore(); }, { rootMargin: "800px 0px" });
+
+      list.replaceChildren(...toItems(whispers), tail);
+      tailSay(more ? "" : whispers.length ? T.feedEnd : "", false);
       say(whispers.length ? "" : T.whisperNone);
       if (whispers.length) markSeen(whispers[0].t);
+      // coming back from a whisper or a profile: keep loading pages until the place the visitor left is on the page, then go there
+      await restoreScroll(more ? loadMore : null);
+      if (more) observer.observe(tail);
     }
   } catch {
     say(T.whisperError);

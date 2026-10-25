@@ -1,4 +1,4 @@
-// The whispers a visitor loved. Kept in this browser, each with a copy of its text: the feed deletes whispers after 14 days,
+// The whispers a visitor loved. Kept in this browser, each with a copy of its text: the feed may delete old whispers,
 // but a loved one stays here. (Not saved to the account yet.)
 
 const KEY = "ghostloved:v1";

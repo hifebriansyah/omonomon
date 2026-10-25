@@ -25,7 +25,7 @@ body {
 .back-btn { display: grid; place-items: center; width: 36px; height: 40px; border-radius: 12px; color: var(--text); text-decoration: none; flex: none; }
 .back-btn:hover { background: rgba(255, 255, 255, 0.08); }
 .back-btn .icon { width: 1.6em; height: 1.6em; }
-.wallet { margin: 0; font-size: 0.92rem; color: var(--text); white-space: nowrap; }
+.wallet { margin: 0 0 0 auto; font-size: 0.92rem; color: var(--text); white-space: nowrap; }
 .icon { width: 1.5em; height: 1.5em; flex: none; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
 .intro { color: #cfd4de; margin: 0 0 16px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -376,3 +376,8 @@ html[data-frame="ribbon-4"] { --frame: 0 0 0 3px #8fd16b, 0 0 12px #8fd16baa; }
 /* a back button that also carries a label (the ghost's name on her profile page): arrow and name are one tap target */
 .back-btn.with-label { width: auto; display: flex; align-items: center; gap: 8px; padding: 0 14px 0 8px; }
 .back-btn.with-label h1 { margin: 0; font-family: var(--comic); font-size: 1.6rem; flex: none; }
+
+/* whispers feed: the end of the list (loading, retry, the end note) */
+.w-tail { list-style: none; text-align: center; color: var(--muted); font-size: 0.85rem; padding: 14px 0 22px; min-height: 1px; }
+.w-tail:empty { padding: 0; }
+.w-retry { margin-left: 8px; font: inherit; font-size: 0.82rem; padding: 3px 12px; border-radius: 999px; border: 1px solid var(--muted); background: none; color: inherit; cursor: pointer; }

@@ -168,7 +168,7 @@ Each ghost posts short public updates in her own voice, written by Gemini, the s
   the hour's number (`roundOrder` in `worker/api.js`; a round never opens with the ghost who closed the last one), so 96 Gemini
   calls a day, fixed, with a topic
   (a thought, a complaint, a question for followers, ...) and the Jakarta time of day. English and Indonesian come in one call.
-  Posts are kept 14 days in the D1 table `whispers`; `GET /whispers` (public, cached 2 minutes) lists the newest 40.
+  Posts are kept for good in the D1 table `whispers` (`WHISPER_KEEP_MS` in worker/api.js: null keeps them, a number of ms deletes older ones); `GET /whispers` (public, cached 2 minutes) pages through them, newest first.
 - **Safety:** `/whisper` needs the shared secret `INTERNAL_TOKEN` (in `.env`; the deploy script sets it on both Workers) on top of the
   origin rules. Gemini's answer is rejected if it has links, handles, self-harm wording, a bad length or copies the instructions
   (`cleanWhisper` in `worker/gemini.js`), and the last 3 whispers of the ghost are passed along so it does not repeat itself.
@@ -197,14 +197,14 @@ Each ghost posts short public updates in her own voice, written by Gemini, the s
   shown (no hate, sexual content, threats, personal data, spam, links; talk of self-harm is not posted and the writer gets a kind
   message) and writes the ghost's short reply in her voice. If Gemini cannot answer, nothing is posted. Limits: 200 characters,
   10 comments per browser per day, 4 per minute per IP (`COMMENT_LIMITER`), 300 per day in total (a circuit breaker for the Gemini
-  cost). Authors can delete their own comment: the row stays in the database with `deleted = 1` and the page shows "deleted" instead of the text (old databases get the column from `python3 tools/setup_api.py`); comments vanish with their whisper after 14 days. The browser's random id is stored
+  cost). Authors can delete their own comment: the row stays in the database with `deleted = 1` and the page shows "deleted" instead of the text (old databases get the column from `python3 tools/setup_api.py`); comments stay with their whisper. The browser's random id is stored
   server-side only as a hash. `setup_waf.py` keeps `/whisper` and `/comment` out of the edge rate limit because only the API Worker calls them.
 - **Moderate:** `python3 tools/whisper_now.py --comments` lists the newest comments with numbers, `--delete-comment 7` removes one.
 - **Love:** a heart with a public count on each whisper (`PUT/DELETE /whispers/<n>/love`, one love per browser: the table `loves` keeps a hash
   of the browser's random id, and a repeat love is ignored). The tap shows at once; taps are combined (only the last state is sent, after half a second, and an earlier request still on its way is cancelled), and it is undone if the server cannot be reached. The feed
   list is cached for 2 minutes, so other people's counts can lag a little. The visitor's own loves also go to *Loved whispers* (`/loved/`,
   linked from the Me page, with a count): that list lives in the browser (`shell/loved-store.js`) together with a copy of each whisper's
-  text, so a loved whisper stays after the feed deletes it at 14 days. It is not saved to the account yet.
+  text, so a loved whisper stays even if the feed ever deletes it. It is not saved to the account yet.
 - **Make them whisper now:** `python3 tools/whisper_now.py` writes one new whisper from every ghost (`... 2 4` for only some,
   `--list` shows the latest with their numbers, `--delete 12` removes one). Each whisper is one Gemini call.
 - **Or by hand** with curl (needs the secret; send an `Origin: https://omonomon.securhat.com` header too, the edge rule requires it):

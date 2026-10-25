@@ -374,8 +374,9 @@ def shell_pages(site, characters, games):
         url = f"{site['url']}/games/{g['slug']}/"
         h = dict(title=f"{g['title']} with {c['name']} | {site['name']}", description=desc, url=url,
                  image=share_image(site, c["id"]), robots="index, follow")
-        back = (f'<a class="back-btn" href="games/" data-t-label="backGames" aria-label="Back to games" title="Back to games">{icon("back")}</a>')
-        content = (f'    <header class="app-bar">{back}<h1>{escape(g["title"])}</h1><p class="wallet" id="wallet" aria-live="polite"></p></header>\n'
+        back = (f'<a class="back-btn with-label" href="games/" data-t-label="backGames" aria-label="Back to games" title="Back to games">'
+                f'{icon("back")}<h1>{escape(g["title"])}</h1></a>')  # the arrow and the game's name are one back button
+        content = (f'    <header class="app-bar">{back}<p class="wallet" id="wallet" aria-live="polite"></p></header>\n'
                    f'    <section class="game">\n      <p class="intro">{escape(desc)}</p>\n'
                    f'      <div class="play{" memory" if g.get("type") in ("memory", "rounds") else ""}{" rounds" if g.get("type") == "rounds" else ""}{" module" if g.get("type") == "module" else ""}">\n{play_area(g, c)}\n'
                    f'        <div id="result" class="result" hidden>\n          <h2 id="rTitle"></h2>\n          <p id="rScore"></p>\n'
