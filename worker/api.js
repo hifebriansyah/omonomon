@@ -445,18 +445,42 @@ const shapeWhisper = (r, site) => ({
 // Things worth a whisper right now, beyond the news: this week's event (for its host), an Indonesian holiday, the season, a
 // kind comment a visitor left lately. Returns a short topic for the Gemini Worker, or null.
 const HOLIDAYS = { "01-01": "New Year's Day", "04-21": "Kartini Day", "05-02": "National Education Day", "06-01": "Pancasila Day", "08-17": "Indonesian Independence Day", "10-28": "Youth Pledge Day", "10-31": "Halloween night", "11-10": "Heroes' Day", "12-25": "Christmas Day", "12-31": "New Year's Eve" };
+const SEASON_EVERY_MS = 6 * 3600_000;   // how often any ghost may post about the weather or the season
+async function postedSeasonRecently(env, now) {
+  const row = await env.DB.prepare(
+    "SELECT n FROM whispers WHERE created_at > ?1 AND link_url IS NULL AND (text_en LIKE '%rain%' OR text_en LIKE '%damp%' OR text_en LIKE '%soaked%' OR text_en LIKE '%drizzle%' OR text_en LIKE '%dust%' OR text_en LIKE '%heat%' OR text_en LIKE '%hujan%' OR text_id LIKE '%hujan%') LIMIT 1"
+  ).bind(now - SEASON_EVERY_MS).first().catch(() => null);
+  return Boolean(row);
+}
+
+const GAME_WEEK_EVERY_MS = 24 * 3600_000;   // how often the host may announce her game week
+async function announcedGameWeek(env, id, now) {
+  const row = await env.DB.prepare(
+    "SELECT n FROM whispers WHERE ghost = ?1 AND created_at > ?2 AND (text_en LIKE '%bond XP%' OR text_en LIKE '%game week%' OR text_en LIKE '%mini game%') LIMIT 1"
+  ).bind(id, now - GAME_WEEK_EVERY_MS).first().catch(() => null);
+  return Boolean(row);
+}
+
 export async function whisperContext(env, now, id, slot) {
   const jakarta = new Date(now + 7 * 3600_000);
   const day = jakarta.toISOString().slice(5, 10);
-  if (hostOfWeek(now) === id && slot % 2 === 0) return "this week you host the game week of this little app: tell readers, in your own way, that your mini game gives double bond XP all week (do not give a link)";
-  if (HOLIDAYS[day]) return `today is ${HOLIDAYS[day]} in Indonesia: say something about it in your own voice`;
+  // The host announces the game week at most once a day. (It used to be every other time she posted: eight times in a day.)
+  if (hostOfWeek(now) === id && slot % 2 === 0 && !(await announcedGameWeek(env, id, now))) return { kind: "this week you host the game week of this little app: tell readers, in your own way, that your mini game gives double bond XP all week (do not give a link)" };
+  if (HOLIDAYS[day]) return { kind: `today is ${HOLIDAYS[day]} in Indonesia: say something about it in your own voice` };
   if (slot % 3 !== 0) return null; // the rest of the time whispers stay about what was found online
+  // The latest visitor comment of the last day that no whisper has answered yet (and that says enough to answer: 8 characters or more).
   const comment = await env.DB.prepare(
-    "SELECT body FROM comments WHERE kind = 'user' AND deleted = 0 AND created_at > ?1 ORDER BY created_at DESC LIMIT 1"
+    "SELECT n, body FROM comments WHERE kind = 'user' AND deleted = 0 AND answered_by IS NULL AND length(trim(body)) >= 8 AND created_at > ?1 ORDER BY created_at DESC LIMIT 1"
   ).bind(now - 86400_000).first().catch(() => null);
-  if (comment?.body && slot % 6 === 0) return `a visitor wrote under one of the whispers lately: "${String(comment.body).slice(0, 100)}". Answer them kindly without naming them, as a new whisper`;
+  if (comment?.body && slot % 6 === 0) {
+    const said = String(comment.body).replace(/\s+/g, " ").trim().slice(0, 80);
+    return { commentN: comment.n, kind: `a visitor wrote under one of the whispers lately: "${said}". Begin your whisper by quoting what they wrote exactly, in quotation marks and in the language they wrote it (do not translate the quote, in either version), so that readers know what you are answering. Then answer kindly in your own voice. Do not name the visitor.` };
+  }
+  // A weather or season whisper at most once every few hours, from any ghost. (When the season was the fallback every time, the feed filled with
+  // rain: eight rain whispers in a day.) Without one, the whisper stays about what was found online.
+  if (await postedSeasonRecently(env, now)) return null;
   const month = jakarta.getUTCMonth() + 1;
-  return month >= 10 || month <= 3 ? "it is the rainy season in Indonesia: say something about the rain, the damp or the sound of it" : "it is the dry season in Indonesia: say something about the heat, the dust or the clear night sky";
+  return { kind: month >= 10 || month <= 3 ? "it is the rainy season in Indonesia: say something about the rain, the damp or the sound of it" : "it is the dry season in Indonesia: say something about the heat, the dust or the clear night sky" };
 }
 
 // Every new whisper gets company from the other ghosts: one to three of them love it (at random), one of them comments with an
@@ -627,9 +651,10 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
   let data = null;
   let animeKey = null;
   const topic = await whisperContext(env, now, id, slot).catch(() => null);
+  let answeredComment = null;   // the visitor comment this whisper answers, marked once the whisper is saved
   if (topic) { // a whisper about the moment instead of a link
-    const got = await ask({ kind: topic }).catch(() => null);
-    if (got?.res.ok && got.data?.whisper?.en) data = got.data;
+    const got = await ask({ kind: topic.kind }).catch(() => null);
+    if (got?.res.ok && got.data?.whisper?.en) { data = got.data; answeredComment = topic.commentN ?? null; }
   }
   for (const c of data ? [] : await findLinks(env, now, seen).catch(() => [])) {
     const got = await ask({ link: { kind: c.kind, title: c.title, summary: c.summary, source: c.source } }).catch(() => null);
@@ -649,6 +674,7 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
   const saved = await env.DB.prepare("INSERT INTO whispers (ghost, text_en, text_id, created_at, link_url, link_title, link_source, thumb_url, anime_image) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9) RETURNING n")
     .bind(id, String(en).slice(0, 220), idText ? String(idText).slice(0, 220) : null, now,
       link?.url ?? null, link ? link.title.slice(0, 200) : null, link ? link.source.slice(0, 60) : null, link?.thumb ?? null, animeKey).first();
+  if (answeredComment) await env.DB.prepare("UPDATE comments SET answered_by = ?1 WHERE n = ?2").bind(saved.n, answeredComment).run().catch(() => {}); // answered once
   await reactToWhisper(env, { n: saved.n, ghost: id, en }, now).catch(() => {}); // the other ghosts react; a failure only means no reaction
   if (WHISPER_KEEP_MS) {
     await env.DB.prepare("DELETE FROM comments WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();

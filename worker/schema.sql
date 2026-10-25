@@ -52,7 +52,8 @@ CREATE TABLE IF NOT EXISTS comments (
   body         TEXT NOT NULL,
   device_hash  TEXT,                       -- SHA-256 of a random id kept in the visitor's browser (user comments)
   created_at   INTEGER NOT NULL,
-  deleted      INTEGER NOT NULL DEFAULT 0  -- 1: the visitor deleted it; the row and text stay, but the page only shows "deleted"
+  deleted      INTEGER NOT NULL DEFAULT 0, -- 1: the visitor deleted it; the row and text stay, but the page only shows "deleted"
+  answered_by  INTEGER                     -- the whisper in which a ghost answered this visitor comment (each is answered once; NULL: not yet)
 );
 CREATE INDEX IF NOT EXISTS comments_whisper ON comments(whisper_n, created_at);
 CREATE INDEX IF NOT EXISTS comments_device ON comments(device_hash, created_at);

@@ -271,8 +271,17 @@ const WHISPER_RULES = `WHISPER RULES
 
 // Anything public must pass: plain, a sensible length, no links or handles, no touchy subjects.
 const WHISPER_BAD = /https?:|www\.|@|#\w|suicid|self[- ]?harm|kill (my|your)self|bunuh diri|mengakhiri hidup|mati sendiri|overdose|\bsex|\bporn/i;
+// Remove quote marks that only wrap a whole reply ("like this") or that are a lone stray one. A quote inside the text stays: a whisper may start
+// with the visitor's words in quotation marks, and stripping the first mark would leave a closing one with no opening one.
+function unquote(s) {
+  const marks = s.match(/["\u201c\u201d]/g) || [];
+  if (marks.length === 2 && /^["\u201c]/.test(s) && /["\u201d]$/.test(s)) return s.slice(1, -1).trim();
+  if (marks.length === 1) return s.replace(/["\u201c\u201d]/g, "").trim();
+  return s;
+}
+
 export function cleanWhisper(text) {
-  const s = String(text ?? "").replace(/\s+/g, " ").trim().replace(/^["\u201c]+|["\u201d]+$/g, "").trim();
+  const s = unquote(String(text ?? "").replace(/\s+/g, " ").trim());
   return s.length >= 8 && s.length <= 220 && !WHISPER_BAD.test(s) ? s : null;
 }
 
@@ -441,7 +450,7 @@ async function writeReaction(env, id, mode, other, text, comment, info) {
 // both judges whether the nickname and comment may be public and writes the ghost's short answer.
 // Fails closed: anything unclear means the comment is not posted.
 export function cleanReply(text) {
-  const s = String(text ?? "").replace(/\s+/g, " ").trim().replace(/^["\u201c]+|["\u201d]+$/g, "").trim();
+  const s = unquote(String(text ?? "").replace(/\s+/g, " ").trim());
   return s.length >= 2 && s.length <= 200 && !WHISPER_BAD.test(s) ? s : null;
 }
 
