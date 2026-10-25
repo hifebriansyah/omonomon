@@ -4,6 +4,7 @@
 Setup: copy .env.example to .env and fill in the values (it is git-ignored). Then:
 
     python3 tools/deploy_worker.py          the Gemini chat Worker (worker/gemini.js, settings in worker/gemini.jsonc)
+    python3 tools/deploy_worker.py feeds    the feeds Worker (worker/feeds.js): securhat.com/feeds rendered on the server
     python3 tools/deploy_worker.py edge     the edge Worker (worker/edge.js, worker/edge.jsonc): per-whisper link previews,
                                             run in front of omonomon.securhat.com/whispers* (a route, no secrets)
     python3 tools/deploy_worker.py api      the general API Worker (worker/api.js, settings in worker/api.jsonc;
@@ -37,7 +38,7 @@ def load_env():
 
 
 # which Worker to deploy: config file and code file inside worker/
-TARGETS = {"gemini": ("gemini.jsonc", "gemini.js"), "api": ("api.jsonc", "api.js"), "edge": ("edge.jsonc", "edge.js")}
+TARGETS = {"gemini": ("gemini.jsonc", "gemini.js"), "api": ("api.jsonc", "api.js"), "edge": ("edge.jsonc", "edge.js"), "feeds": ("feeds.jsonc", "feeds.js")}
 
 
 def read_config(name):
@@ -141,6 +142,8 @@ def main():
         if not db_file.exists():
             sys.exit("worker/api-db.json is missing: run  python3 tools/setup_api.py  first")
         bindings.append({"type": "d1", "name": cfg["d1"]["binding"], "id": json.loads(db_file.read_text())["database_id"]})
+    if cfg.get("r2"):
+        bindings.append({"type": "r2_bucket", "name": cfg["r2"]["binding"], "bucket_name": cfg["r2"]["bucket"]})
     bindings += [{"type": "service", "name": x["binding"], "service": x["service"]} for x in cfg.get("services", [])]
     bindings += [{"type": "plain_text", "name": k, "text": v} for k, v in cfg.get("vars", {}).items()]
     metadata = {
@@ -188,7 +191,7 @@ def main():
     if not payload.get("success"):
         sys.exit(f"Deploy failed: {payload.get('errors')}")
     print(f"Deployed worker '{cfg['name']}' ({len(code)} bytes).")
-    if target != "edge":  # the edge Worker has no secrets
+    if target not in ("edge", "feeds"):  # the edge and feeds Workers have no secrets
         set_secret(base, account, cfg["name"], token, "AXIOM_TOKEN")
         set_secret(base, account, cfg["name"], token, "INTERNAL_TOKEN")  # the secret the two Workers share (whispers)
         if target == "api":

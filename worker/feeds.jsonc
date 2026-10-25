@@ -1,0 +1,17 @@
+{
+  // The feeds Worker (worker/feeds.js): securhat.com/feeds, the whispers rendered on the server as a plain, crawlable page.
+  // It holds no secrets and no database; it reads the API Worker through a service binding. Deployed by:
+  //   python3 tools/deploy_worker.py feeds
+  "name": "omonomon-feeds",
+  "main": "feeds.js",
+  "compatibility_date": "2025-09-01",
+  // Runs in front of these paths of the apex site only. The apex's DNS records must be proxied by Cloudflare (orange cloud), or
+  // the route never sees a request.
+  "route": "securhat.com/feeds*",
+  "services": [{ "binding": "API", "service": "omonomon-api" }],
+  "vars": {
+    "SITE_ORIGIN": "https://omonomon.securhat.com",
+    "FEEDS_ORIGIN": "https://securhat.com",
+    "ADSENSE_CLIENT": "ca-pub-1659849465532275"
+  }
+}

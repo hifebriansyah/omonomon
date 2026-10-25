@@ -27,6 +27,10 @@ export default {
     // Asked on the Worker's own address (edgemon...): only an alias, so send the visitor on to the same path on the site,
     // where the route gives the page its preview.
     if (url.hostname !== new URL(env.SITE_ORIGIN).hostname) return Response.redirect(`${env.SITE_ORIGIN}${url.pathname}${url.search}`, 301);
+    // /whispers/img/<n>.jpg: the redrawn picture of a whisper's article (tools/remake_image.py). It is served here, on the site's own address,
+    // because <img> tags send no Origin and the API Worker's public address refuses requests without one.
+    const picture = /^\/whispers\/img\/(\d{1,10})\.jpg$/.exec(url.pathname);
+    if (picture && request.method === "GET") return tagged(await env.API.fetch(`https://api.internal/img/${picture[1]}.jpg`), "picture");
     const n = url.searchParams.get("n") || "";
     if (request.method !== "GET" || !/^\d{1,10}$/.test(n)) return tagged(await fetch(request), "skip");
 

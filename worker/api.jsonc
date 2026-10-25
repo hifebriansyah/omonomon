@@ -9,6 +9,10 @@
   "domain": "apimon.securhat.com",
   // D1 database (name "omonomon"). Its id is written to worker/api-db.json by tools/setup_api.py.
   "d1": { "binding": "DB", "name": "omonomon" },
+  // R2 bucket (object storage) for the link pictures that were redone because the source's was too small. Created by
+  // tools/setup_api.py; the Worker reaches it as env.IMAGES and serves the files itself, so the bucket stays private.
+  // (Redone pictures are 1-2 MB each, which is why this is R2 and not Workers KV.)
+  "r2": { "binding": "IMAGES", "bucket": "omonomon-images" },
   // Plain (non-secret) variables, set on every deploy.
   "vars": {
     "GOOGLE_CLIENT_ID": "620395952409-mv96o61s4ep74n5vuohqvvk23tvt0i6p.apps.googleusercontent.com",

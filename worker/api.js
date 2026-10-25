@@ -16,6 +16,8 @@
 //   POST   /scores       {token, score, nickname}  a finished run: kept as this week's best when plausible; answers {accepted, rank}
 //   GET    /leaderboard/<game>           this week's top 20 {entries: [{rank, nickname, score}], me: {rank, score}|null, week}
 //   GET    /whispers                     the ghosts' latest public updates, newest first (no sign-in); ?limit=&before=<n> pages through them: {whispers, more}
+//   GET    /img/<n>.jpg                  the redrawn picture of a whisper's article (made by tools/remake_image.py; reached through
+//                                         the edge Worker as /whispers/img/<n>.jpg, since an <img> sends no Origin)
 //   GET    /whispers/<n>                 one whisper by its number (older ones are no longer in the list above)
 //   POST   /internal/whisper             (secret INTERNAL_TOKEN) write one now; {ghost} optional
 //   DELETE /internal/whisper/<n>         (secret INTERNAL_TOKEN) remove one
@@ -417,9 +419,15 @@ async function findLinks(env, now, seen) {
   return found.slice(0, 4);
 }
 
-const shapeWhisper = (r) => ({
+// base: the site's /whispers address (the edge Worker serves /whispers/img/<n>.jpg). When tools/remake_image.py has redrawn the article's picture (anime_image is its key in R2) the pages
+// get that one as `thumb`; the source's own picture stays in the database (thumb_url) and is still given as `original`.
+const shapeWhisper = (r, base) => ({
   n: r.n, ghost: r.ghost, t: r.created_at, comments: r.comments, loves: r.loves, text: { en: r.text_en, id: r.text_id },
-  link: r.link_url ? { url: r.link_url, title: r.link_title, source: r.link_source, thumb: r.thumb_url } : null,
+  link: r.link_url ? {
+    url: r.link_url, title: r.link_title, source: r.link_source,
+    thumb: r.anime_image ? `${base}/img/${r.n}.jpg` : r.thumb_url,
+    original: r.thumb_url,
+  } : null,
 });
 
 // Things worth a whisper right now, beyond the news: this week's event (for its host), an Indonesian holiday, the season, a
@@ -717,6 +725,21 @@ export default {
     };
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+
+    // GET /img/<whisper number>.jpg: the redrawn picture of a whisper's article (see tools/remake_image.py). Public, like any picture,
+    // so it comes before the origin check (an <img> sends no Origin); the key is looked up in the database, never taken from the address.
+    const img = /^\/img\/(\d{1,10})\.jpg$/.exec(new URL(request.url).pathname);
+    if (img && request.method === "GET" && env.IMAGES) {
+      const cached = await caches.default.match(request);   // kept at the edge, so most views never reach the database or R2
+      if (cached) return cached;
+      const row = await env.DB.prepare("SELECT anime_image FROM whispers WHERE n = ?1").bind(Number(img[1])).first();
+      const obj = row?.anime_image ? await env.IMAGES.get(row.anime_image) : null;
+      if (!obj) return new Response("not found", { status: 404 });
+      const res = new Response(obj.body, { headers: { "Content-Type": obj.httpMetadata?.contentType || "image/jpeg", "Cache-Control": "public, max-age=604800", "Access-Control-Allow-Origin": "*" } });
+      ctx.waitUntil(caches.default.put(request, res.clone()));
+      return res;
+    }
+
     if (!originOk) return reply({ error: "forbidden" }, 403);
 
     if (env.LIMITER) {
@@ -791,13 +814,13 @@ export default {
         const limit = Math.min(50, Math.max(1, Math.floor(Number(q.get("limit"))) || 40));
         const before = Math.max(0, Math.floor(Number(q.get("before"))) || 0);
         const rows = (await env.DB.prepare(
-          "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, w.link_url, w.link_title, w.link_source, w.thumb_url, " +
+          "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, w.link_url, w.link_title, w.link_source, w.thumb_url, w.anime_image, " +
           "(SELECT COUNT(*) FROM comments c WHERE c.whisper_n = w.n AND c.deleted = 0) AS comments, " +
           "(SELECT COUNT(*) FROM loves l WHERE l.whisper_n = w.n) AS loves " +
           "FROM whispers w WHERE (?1 = 0 OR w.n < ?1) ORDER BY w.n DESC LIMIT ?2"
         ).bind(before, limit + 1).all()).results || [];   // one more than asked for, to know whether another page exists
         return reply(
-          { whispers: rows.slice(0, limit).map(shapeWhisper), more: rows.length > limit },
+          { whispers: rows.slice(0, limit).map((r) => shapeWhisper(r, `${env.SITE_ORIGIN}/whispers`)), more: rows.length > limit },
           200, { "Cache-Control": "public, max-age=120" }
         );
       }
@@ -805,14 +828,14 @@ export default {
       const oneWhisper = /^\/whispers\/(\d{1,10})$/.exec(path);
       if (oneWhisper && request.method === "GET") {
         const r = await env.DB.prepare(
-          "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, w.link_url, w.link_title, w.link_source, w.thumb_url, " +
+          "SELECT w.n, w.ghost, w.text_en, w.text_id, w.created_at, w.link_url, w.link_title, w.link_source, w.thumb_url, w.anime_image, " +
           "(SELECT COUNT(*) FROM comments c WHERE c.whisper_n = w.n AND c.deleted = 0) AS comments, " +
           "(SELECT COUNT(*) FROM loves l WHERE l.whisper_n = w.n) AS loves " +
           "FROM whispers w WHERE w.n = ?1"
         ).bind(Number(oneWhisper[1])).first();
         if (!r) return reply({ error: "not found" }, 404);
         return reply(
-          { whisper: shapeWhisper(r) },
+          { whisper: shapeWhisper(r, `${env.SITE_ORIGIN}/whispers`) },
           200, { "Cache-Control": "public, max-age=60" }
         );
       }
@@ -927,6 +950,8 @@ export default {
       const removal = /^\/internal\/whisper\/(\d{1,10})$/.exec(path);
       if (removal && request.method === "DELETE") {
         if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
+        const had = await env.DB.prepare("SELECT anime_image FROM whispers WHERE n = ?1").bind(Number(removal[1])).first();
+        if (env.IMAGES && had?.anime_image) await env.IMAGES.delete(had.anime_image).catch(() => {});
         await env.DB.prepare("DELETE FROM whispers WHERE n = ?1").bind(Number(removal[1])).run();
         return reply({ ok: true });
       }

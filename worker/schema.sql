@@ -35,7 +35,8 @@ CREATE TABLE IF NOT EXISTS whispers (
   link_url    TEXT,                        -- what the whisper points to: an Indonesian article, a trending topic or a video
   link_title  TEXT,
   link_source TEXT,                        -- the site or channel
-  thumb_url   TEXT                         -- its picture (https only)
+  thumb_url   TEXT,                        -- the source's own picture (https only), kept as it was
+  anime_image TEXT                         -- key in the R2 bucket of the picture redrawn by tools/remake_image.py (NULL: not redrawn yet)
 );
 CREATE INDEX IF NOT EXISTS whispers_time ON whispers(created_at DESC);
 

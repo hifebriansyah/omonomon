@@ -5,7 +5,7 @@ No Node, no wrangler, stdlib only. Safe to run again: it reuses what already exi
     python3 tools/setup_api.py          create/find the D1 database, apply worker/schema.sql (writes worker/api-db.json)
     python3 tools/deploy_worker.py api  then upload worker/api.js (this also attaches its domain)
 
-The API token in .env needs: Account > D1 > Edit, Account > Workers Scripts > Edit and, for the domain,
+The API token in .env needs: Account > D1 > Edit, Account > Workers R2 Storage > Edit (for the pictures bucket), Account > Workers Scripts > Edit and, for the domain,
 Zone > Workers Routes > Edit plus Zone > DNS > Edit on securhat.com.
 """
 import json
@@ -57,6 +57,16 @@ def database(account, token, name):
     return created["uuid"]
 
 
+def bucket(account, token, name):
+    """The R2 bucket called `name`: found, or created (private; the API Worker serves its files)."""
+    found = need(api("GET", f"/accounts/{account}/r2/buckets", token), "Listing R2 buckets")
+    if any(b["name"] == name for b in found.get("buckets", [])):
+        print(f"R2 bucket '{name}' exists")
+        return
+    need(api("POST", f"/accounts/{account}/r2/buckets", token, {"name": name}), "Creating the R2 bucket")
+    print(f"Created R2 bucket '{name}'")
+
+
 # Columns added after the first release. SQLite has no "ADD COLUMN IF NOT EXISTS", so each statement may fail with
 # "duplicate column name" on a database that already has it; that is fine.
 MIGRATIONS = [
@@ -69,6 +79,7 @@ MIGRATIONS = [
     "ALTER TABLE whispers ADD COLUMN link_title TEXT",
     "ALTER TABLE whispers ADD COLUMN link_source TEXT",
     "ALTER TABLE whispers ADD COLUMN thumb_url TEXT",
+    "ALTER TABLE whispers ADD COLUMN anime_image TEXT",
 ]
 
 
@@ -92,6 +103,8 @@ def main():
     db_id = database(account, token, cfg["d1"]["name"])
     (ROOT / "worker" / "api-db.json").write_text(json.dumps({"database_id": db_id}, indent=2) + "\n", encoding="utf-8")
     apply_schema(account, token, db_id)
+    if cfg.get("r2"):
+        bucket(account, token, cfg["r2"]["bucket"])
     print("Next:  python3 tools/deploy_worker.py api")
 
 
