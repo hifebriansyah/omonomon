@@ -30,7 +30,11 @@ export default {
     // /whispers/img/<n>.jpg: the redrawn picture of a whisper's article (tools/remake_image.py). It is served here, on the site's own address,
     // because <img> tags send no Origin and the API Worker's public address refuses requests without one.
     const picture = /^\/whispers\/img\/(\d{1,10})\.jpg$/.exec(url.pathname);
-    if (picture && request.method === "GET") return tagged(await env.API.fetch(`https://api.internal/img/${picture[1]}.jpg`), "picture");
+    if (picture && (request.method === "GET" || request.method === "HEAD")) {
+      // link-preview bots (WhatsApp, Slack, LinkedIn ...) often ask with HEAD first; they get the same headers without the body
+      const res = await env.API.fetch(`https://api.internal/img/${picture[1]}.jpg${url.search}`);
+      return tagged(request.method === "HEAD" ? new Response(null, { status: res.status, headers: res.headers }) : res, "picture");
+    }
     const n = url.searchParams.get("n") || "";
     if (request.method !== "GET" || !/^\d{1,10}$/.test(n)) return tagged(await fetch(request), "skip");
 
@@ -42,7 +46,10 @@ export default {
     const id = url.searchParams.get("lang") !== "en" && whisper.text?.id;
     const site = env.SITE_NAME || "Omon Omon";
     const text = `${ghost.name}: ${(id || whisper.text?.en || "")}`.slice(0, 220);
-    const title = id ? `${ghost.name} di ${site}` : `${ghost.name} on ${site}`;
+    // A whisper about an article is titled with the article's own headline (the ghost's name and words stay in the description);
+    // one without an article keeps "<ghost> on <site>".
+    const headline = typeof whisper.link?.title === "string" ? whisper.link.title.replace(/\s+/g, " ").trim().slice(0, 120) : "";
+    const title = headline || (id ? `${ghost.name} di ${site}` : `${ghost.name} on ${site}`);
     // A whisper that points to an article, trend or video uses that picture; the ghost's own picture is the fallback.
     const thumb = typeof whisper.link?.thumb === "string" && /^https:\/\//.test(whisper.link.thumb) ? whisper.link.thumb : null;
     const image = thumb || `${url.origin}/builds/img/scenes/1_1/${ghost.id}.jpg`;

@@ -36,6 +36,8 @@
 // Worker settings (see worker/api.jsonc): D1 binding DB, rate limit binding LIMITER, and the plain variables
 //   GOOGLE_CLIENT_ID   the OAuth client ID (public)
 //   ALLOWED_ORIGINS    comma-separated site origins that may call this API
+//   IMAGE_DAILY_MAX    most anime article pictures made on Workers AI in 24 hours (default 85: its free allowance); IMAGE_GEMINI_DAILY_MAX
+//                      most made by the Gemini fallback when that allowance is used up (default 10; each is a paid Gemini call)
 //   GEMINI_URL         address of the Gemini Worker's /whisper route; GEMINI_COMMENT_URL its /comment route;
 //                      SITE_ORIGIN the Origin header sent with them
 //   (rate limit bindings LIMITER for everything and COMMENT_LIMITER for posting comments)
@@ -419,14 +421,24 @@ async function findLinks(env, now, seen) {
   return found.slice(0, 4);
 }
 
-// base: the site's /whispers address (the edge Worker serves /whispers/img/<n>.jpg). When tools/remake_image.py has redrawn the article's picture (anime_image is its key in R2) the pages
-// get that one as `thumb`; the source's own picture stays in the database (thumb_url) and is still given as `original`.
-const shapeWhisper = (r, base) => ({
+// The picture people see for a whisper's article:
+//   - a whisper made after anime pictures started (n above ORIGINAL_OK_UNTIL) shows ONLY its anime redraw (anime_image is its key in R2), never the
+//     source's own picture: it is redrawn before the whisper is posted, and when that fails the article's card shows no picture until the
+//     timer has made one (backfillAnime);
+//   - a whisper posted before that (n up to ORIGINAL_OK_UNTIL) keeps showing the source's picture unless it has been redrawn.
+// The redraw is given through Cloudflare's image resizing (/cdn-cgi/image/...), which shrinks the stored picture to a size link previews
+// accept (WhatsApp ignores pictures over about 300 KB); `onerror=redirect` serves the stored file if the resizer refuses (free plan: 5,000 a month).
+// The source's own picture always stays in the database (thumb_url).
+// Raise IMAGE_VERSION when the stored pictures or these options change: the new address skips every cache that holds the old file.
+const ORIGINAL_OK_UNTIL = 128;
+const IMAGE_VERSION = 7;
+const IMAGE_OPTIONS = "width=900,quality=75,format=jpeg,onerror=redirect";
+const animeUrl = (site, n) => `${site}/cdn-cgi/image/${IMAGE_OPTIONS}/whispers/img/${n}.jpg?v=${IMAGE_VERSION}`;
+const shapeWhisper = (r, site) => ({
   n: r.n, ghost: r.ghost, t: r.created_at, comments: r.comments, loves: r.loves, text: { en: r.text_en, id: r.text_id },
   link: r.link_url ? {
     url: r.link_url, title: r.link_title, source: r.link_source,
-    thumb: r.anime_image ? `${base}/img/${r.n}.jpg` : r.thumb_url,
-    original: r.thumb_url,
+    thumb: r.anime_image ? animeUrl(site, r.n) : r.n <= ORIGINAL_OK_UNTIL ? r.thumb_url : null,
   } : null,
 });
 
@@ -474,6 +486,118 @@ export async function reactToWhisper(env, whisper, now, rng = Math.random) {
   await insert(whisper.ghost, saved.n, answer, now + 2);
 }
 
+// ---- the anime picture of an article ----
+// Every whisper that points to an article gets its picture redrawn as anime by Cloudflare Workers AI (FLUX.2 klein, env.AI), kept in the
+// R2 bucket as the whisper's anime_image. Nothing else is ever shown (see shapeWhisper). It happens automatically, in two places:
+//   - animeFor: while a new whisper is made, before it is saved, so it is posted with its picture. The model refuses some pictures
+//     ("output flagged"); then the next article candidate is tried, and with none left the whisper is a plain thought. There is no other
+//     fallback: the source's own picture is never shown for a new whisper.
+//   - backfillAnime: on every timer tick, for new whispers that still have none (a safety net). Tried at most 3 times (anime_tries).
+// One redraw is about 110 neurons (about $0.001); Workers AI gives 10,000 neurons a day free, which is about 90 pictures, hence the daily
+// limit IMAGE_DAILY_MAX (85). Keys are anime/<time>-<ghost or number>.jpg: the time in them is what the limit counts.
+const IMAGE_DAILY_MAX_DEFAULT = 85;
+const ANIME_MODEL = "@cf/black-forest-labs/flux-2-klein-4b";
+const ANIME_PROMPT = "Redraw the entire input image as a beautiful 2D Japanese anime frame inspired by the visual style of *Frieren: Beyond Journey's End*.\n\nPRESERVE THE ORIGINAL:\nKeep the same scene, camera angle, background, scenery, subject identity, facial features, hairstyle, clothing, pose, and body proportions. Change only the visual rendering style, and recompose for the square frame as described below.\n\nRECOMPOSE FROM 16:9 TO 1:1:\nThe input photo is a wide 16:9 landscape frame, and the output must be a square 1:1 frame. Do not stretch, squash, or distort anything to make it fit: every person, face, hand, and object keeps its natural proportions. Instead, reframe the scene properly for a square: keep all main subjects and key objects fully visible, in the same arrangement relative to each other, and extend the background naturally on the top or bottom (or trim only empty edge space) so the result looks like a deliberately composed square shot of the same scene from the same camera angle. Place the main subject well within the square, with balanced, comfortable margins.\n\nHAND AND FINGER ACCURACY:\nCarefully reconstruct both hands with anatomically correct human anatomy. Preserve the original hand positions, gestures, and interaction with objects. Draw each visible finger clearly, with correct length, natural joints, realistic spacing, and anatomically correct connections to the palm. Keep fingers separate and distinct wherever they are separate in the reference. Preserve the original number of fingers. Do not merge, duplicate, omit, twist, deform, or add fingers. Maintain natural wrist alignment and believable hand proportions. If a hand is partially hidden or obscured in the original, preserve that exact occlusion instead of inventing visible details. Do not change the original gesture.\n\nANIME RENDERING:\nClean, delicate Japanese anime linework; soft painterly shading; natural gradients; vibrant, harmonious colors; detailed hair; expressive yet faithful facial features; cinematic lighting; and a beautifully painted fantasy atmosphere inspired by *Frieren: Beyond Journey's End*.\n\nCOLOR AND CONTRAST:\nUse vibrant colors, deep true blacks, rich shadows, and excellent contrast resembling a high-quality OLED display. Preserve detail in dark areas without crushing shadow details or making the image unnaturally oversaturated.\n\nSTRICT CONSTRAINTS:\nKeep all main subjects and key objects, with the same relative arrangement. No stretching, squashing, or distortion; no camera angle changes, no new subjects, and no missing subjects. No text, letters, logos, or watermarks. Square 1:1 aspect ratio.\n\nThe final result must look like a professionally illustrated anime frame, with accurate hands and fingers and the original image faithfully preserved.";
+const SOURCE_IMAGE_MAX_BYTES = 6 * 1024 * 1024;
+
+async function animeLeft(env, now) {
+  const limit = Number(env.IMAGE_DAILY_MAX ?? IMAGE_DAILY_MAX_DEFAULT);
+  const made = (await env.DB.prepare("SELECT COUNT(*) AS n FROM whispers WHERE anime_image LIKE 'anime/%-%' AND CAST(substr(anime_image, 7, 13) AS INTEGER) >= ?1").bind(now - 24 * 3600 * 1000).first())?.n || 0;
+  return limit - made;
+}
+
+// The Gemini fallback: used ONLY when Workers AI answers that the free daily allowance of neurons is used up (never for a refused or broken
+// picture). It asks the Gemini Worker's /image-test route (Nano Banana 2.1 at its cheapest setting, about $0.04 a picture) to redraw the same
+// picture with the same prompt, and is limited to IMAGE_GEMINI_DAILY_MAX a day (10) so that it can never run up a bill. Its keys are
+// anime/g-<time>-<ghost or number>.jpg, which keeps them out of the Workers AI count (animeLeft). Returns the key, or null.
+const IMAGE_GEMINI_DAILY_MAX_DEFAULT = 10;
+async function geminiFallback(env, thumb, key) {
+  const limit = Number(env.IMAGE_GEMINI_DAILY_MAX ?? IMAGE_GEMINI_DAILY_MAX_DEFAULT);
+  const made = (await env.DB.prepare("SELECT COUNT(*) AS n FROM whispers WHERE anime_image LIKE 'anime/g-%' AND CAST(substr(anime_image, 9, 13) AS INTEGER) >= ?1").bind(Date.now() - 24 * 3600 * 1000).first())?.n || 0;
+  if (made >= limit) return null;
+  const res = await fetch(env.GEMINI_URL.replace(/\/whisper\/?$/, "/image-test"), {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Origin: env.SITE_ORIGIN, "X-Internal-Token": env.INTERNAL_TOKEN },
+    body: JSON.stringify({ url: thumb, prompt: ANIME_PROMPT }),
+    signal: AbortSignal.timeout(50000),
+  });
+  const image = (await res.json().catch(() => null))?.image;
+  if (!res.ok || !image?.data) return null;
+  const gkey = key.replace("anime/", "anime/g-");
+  await env.IMAGES.put(gkey, Uint8Array.from(atob(image.data), (c) => c.charCodeAt(0)), { httpMetadata: { contentType: image.mime || "image/jpeg" } });
+  return gkey;
+}
+
+// Redraw the picture at `thumb` and store it under `key`; returns key, or null when anything goes wrong (refused, unreachable, too big).
+// Every try is written to Axiom as url "cron:anime" with the outcome.
+async function redrawTo(env, thumb, key) {
+  const started = Date.now();
+  let outcome = "error";
+  let detail;
+  let neurons = null;   // what Cloudflare reported for this call; null when it did not say (never a guess)
+  let exhausted = false; // Workers AI said the free daily allowance is used up
+  let via = "workers-ai";
+  try {
+    const src = await fetch(thumb, { headers: { "User-Agent": "Mozilla/5.0 (compatible; OmonOmonBot/1.0)" }, signal: AbortSignal.timeout(10000), redirect: "follow" });
+    const mime = (src.headers.get("Content-Type") || "").split(";")[0].trim();
+    if (!src.ok || !/^image\/(jpeg|png|webp)$/.test(mime)) { outcome = "source"; detail = `${src.status} ${mime}`; return null; }
+    const bytes = new Uint8Array(await src.arrayBuffer());
+    if (bytes.length > SOURCE_IMAGE_MAX_BYTES) { outcome = "source"; detail = "too big"; return null; }
+    const form = new FormData();
+    form.append("prompt", ANIME_PROMPT);
+    form.append("width", "1024");
+    form.append("height", "1024");
+    form.append("input_image_0", new Blob([bytes], { type: mime }), "source");
+    const packed = new Response(form);   // serialises the form and makes its Content-Type with the boundary
+    // returnRawResponse gives the HTTP answer, whose cf-ai-neurons header says what this call used (the plain result does not)
+    const res = await env.AI.run(ANIME_MODEL, { multipart: { body: packed.body, contentType: packed.headers.get("content-type") } }, { returnRawResponse: true });
+    let out = res;
+    if (res instanceof Response) {
+      const reported = res.headers.get("cf-ai-neurons");
+      neurons = reported === null || reported === "" || Number.isNaN(Number(reported)) ? null : Number(reported);
+      const answer = await res.json().catch(() => null);
+      if (!res.ok) {
+        exhausted = res.status === 429 || answer?.errors?.[0]?.code === 4006;
+        throw new Error(answer?.errors?.[0]?.message || `HTTP ${res.status}`);
+      }
+      out = answer?.result ?? answer;
+    }
+    if (!out?.image) { outcome = "empty"; return null; }
+    await env.IMAGES.put(key, Uint8Array.from(atob(out.image), (c) => c.charCodeAt(0)), { httpMetadata: { contentType: "image/jpeg" } });
+    outcome = "ok";
+    return key;
+  } catch (err) {
+    detail = String(err.message || err).slice(0, 160);
+    outcome = /flagged|3030/.test(detail) ? "refused" : "error";
+    if (exhausted) {   // the allowance is used up: Gemini, within its own small daily limit
+      outcome = "exhausted";
+      const gkey = await geminiFallback(env, thumb, key).catch((e) => { detail = `${detail} | gemini: ${String(e.message || e).slice(0, 60)}`; return null; });
+      if (gkey) { outcome = "ok"; via = "gemini"; return gkey; }
+    }
+    return null;
+  } finally {
+    logRequest(env, { waitUntil: (p) => p }, { _time: new Date().toISOString(), worker: "api", url: "cron:anime", model: via === "gemini" ? "gemini-nano-banana-2.1" : ANIME_MODEL, via, redraw: outcome, neurons, error: detail, ms: Date.now() - started, message: `image: ${thumb}`.slice(0, 200) });
+  }
+}
+
+async function animeFor(env, link, now, ghost) {
+  if (!env.IMAGES || !link?.thumb || (await animeLeft(env, now)) <= 0) return null;
+  return redrawTo(env, link.thumb, `anime/${now}-${ghost}.jpg`);
+}
+
+// Up to `max` of the whispers made since anime pictures started that have none yet (their redraw failed or hit the daily limit), newest first,
+// one Gemini call each (within the daily limit). Older whispers are not touched: they keep their original picture (tools/remake_image.py can still do them).
+export async function backfillAnime(env, now = Date.now(), max = 2) {
+  if (!env.IMAGES) return;
+  for (let i = 0; i < max && (await animeLeft(env, now)) > 0; i++) {
+    const row = await env.DB.prepare("SELECT n, thumb_url FROM whispers WHERE link_url IS NOT NULL AND thumb_url IS NOT NULL AND anime_image IS NULL AND anime_tries < 3 AND n > ?1 ORDER BY n DESC LIMIT 1").bind(ORIGINAL_OK_UNTIL).first();
+    if (!row) return;
+    await env.DB.prepare("UPDATE whispers SET anime_tries = anime_tries + 1 WHERE n = ?1").bind(row.n).run();
+    const key = await redrawTo(env, row.thumb_url, `anime/${now}-${row.n}.jpg`).catch(() => null);
+    if (key) await env.DB.prepare("UPDATE whispers SET anime_image = ?1 WHERE n = ?2 AND anime_image IS NULL").bind(key, row.n).run();
+  }
+}
+
 // Ask the Gemini Worker for a whisper from `ghost` (default: whose turn it is in this round) and keep it.
 // Returns the saved post, or null when this ghost already posted in this time slot.
 export async function makeWhisper(env, now = Date.now(), ghost) {
@@ -501,6 +625,7 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
   const seen = new Set(((await env.DB.prepare("SELECT link_url FROM whispers WHERE link_url IS NOT NULL ORDER BY created_at DESC LIMIT 300").all()).results || []).map((r) => r.link_url));
   let link = null;
   let data = null;
+  let animeKey = null;
   const topic = await whisperContext(env, now, id, slot).catch(() => null);
   if (topic) { // a whisper about the moment instead of a link
     const got = await ask({ kind: topic }).catch(() => null);
@@ -508,7 +633,12 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
   }
   for (const c of data ? [] : await findLinks(env, now, seen).catch(() => [])) {
     const got = await ask({ link: { kind: c.kind, title: c.title, summary: c.summary, source: c.source } }).catch(() => null);
-    if (got?.res.ok && got.data?.whisper?.en) { link = { ...c, thumb: await betterThumb(c) }; data = got.data; break; }
+    if (got?.res.ok && got.data?.whisper?.en) {
+      const thumb = await betterThumb(c);
+      animeKey = await animeFor(env, { thumb }, now, id).catch(() => null);   // a picture that cannot be redrawn: try the next article
+      if (!animeKey) continue;
+      link = { ...c, thumb }; data = got.data; break;
+    }
   }
   if (!data) {
     const got = await ask({});
@@ -516,16 +646,16 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
     data = got.data;
   }
   const { en, id: idText } = data.whisper;
-  const saved = await env.DB.prepare("INSERT INTO whispers (ghost, text_en, text_id, created_at, link_url, link_title, link_source, thumb_url) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8) RETURNING n")
+  const saved = await env.DB.prepare("INSERT INTO whispers (ghost, text_en, text_id, created_at, link_url, link_title, link_source, thumb_url, anime_image) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9) RETURNING n")
     .bind(id, String(en).slice(0, 220), idText ? String(idText).slice(0, 220) : null, now,
-      link?.url ?? null, link ? link.title.slice(0, 200) : null, link ? link.source.slice(0, 60) : null, link?.thumb ?? null).first();
+      link?.url ?? null, link ? link.title.slice(0, 200) : null, link ? link.source.slice(0, 60) : null, link?.thumb ?? null, animeKey).first();
   await reactToWhisper(env, { n: saved.n, ghost: id, en }, now).catch(() => {}); // the other ghosts react; a failure only means no reaction
   if (WHISPER_KEEP_MS) {
     await env.DB.prepare("DELETE FROM comments WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
     await env.DB.prepare("DELETE FROM loves WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
     await env.DB.prepare("DELETE FROM whispers WHERE created_at < ?1").bind(now - WHISPER_KEEP_MS).run();
   }
-  return { n: saved.n, ghost: id, t: now, text: { en, id: idText || null }, link: link ? { url: link.url, title: link.title, source: link.source, thumb: link.thumb } : null };
+  return { n: saved.n, ghost: id, t: now, text: { en, id: idText || null }, link: link ? { url: link.url, title: link.title, source: link.source, thumb: animeKey ? animeUrl(env.SITE_ORIGIN, saved.n) : null } : null };
 }
 
 // ---- comments ----
@@ -820,7 +950,7 @@ export default {
           "FROM whispers w WHERE (?1 = 0 OR w.n < ?1) ORDER BY w.n DESC LIMIT ?2"
         ).bind(before, limit + 1).all()).results || [];   // one more than asked for, to know whether another page exists
         return reply(
-          { whispers: rows.slice(0, limit).map((r) => shapeWhisper(r, `${env.SITE_ORIGIN}/whispers`)), more: rows.length > limit },
+          { whispers: rows.slice(0, limit).map((r) => shapeWhisper(r, env.SITE_ORIGIN)), more: rows.length > limit },
           200, { "Cache-Control": "public, max-age=120" }
         );
       }
@@ -835,7 +965,7 @@ export default {
         ).bind(Number(oneWhisper[1])).first();
         if (!r) return reply({ error: "not found" }, 404);
         return reply(
-          { whisper: shapeWhisper(r, `${env.SITE_ORIGIN}/whispers`) },
+          { whisper: shapeWhisper(r, env.SITE_ORIGIN) },
           200, { "Cache-Control": "public, max-age=60" }
         );
       }
@@ -1135,7 +1265,9 @@ export default {
     ctx.waitUntil(
       makeWhisper(env, event.scheduledTime).then((w) => (w ? pushWhisper(env, { ghost: w.ghost, en: w.text.en, id: w.text.id }, event.scheduledTime).catch(() => {}) : null)).catch((err) =>
         logRequest(env, ctx, { _time: new Date().toISOString(), worker: "api", url: "cron:whisper", status: 500, error: String(err.message).slice(0, 120) })
-      )
+      ).then(() => backfillAnime(env, event.scheduledTime).catch((err) =>   // then the older whispers that still have no anime picture
+        logRequest(env, ctx, { _time: new Date().toISOString(), worker: "api", url: "cron:anime", status: 500, error: String(err.message).slice(0, 120) })
+      ))
     );
   },
 };

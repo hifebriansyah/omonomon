@@ -80,6 +80,7 @@ MIGRATIONS = [
     "ALTER TABLE whispers ADD COLUMN link_source TEXT",
     "ALTER TABLE whispers ADD COLUMN thumb_url TEXT",
     "ALTER TABLE whispers ADD COLUMN anime_image TEXT",
+    "ALTER TABLE whispers ADD COLUMN anime_tries INTEGER NOT NULL DEFAULT 0",
 ]
 
 

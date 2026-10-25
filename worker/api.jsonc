@@ -12,11 +12,15 @@
   // R2 bucket (object storage) for the link pictures that were redone because the source's was too small. Created by
   // tools/setup_api.py; the Worker reaches it as env.IMAGES and serves the files itself, so the bucket stays private.
   // (Redone pictures are 1-2 MB each, which is why this is R2 and not Workers KV.)
+  // Workers AI (FLUX.2 klein redraws the article pictures as anime; its free 10,000 neurons a day cover about 90 pictures).
+  "ai": { "binding": "AI" },
   "r2": { "binding": "IMAGES", "bucket": "omonomon-images" },
   // Plain (non-secret) variables, set on every deploy.
   "vars": {
     "GOOGLE_CLIENT_ID": "620395952409-mv96o61s4ep74n5vuohqvvk23tvt0i6p.apps.googleusercontent.com",
     "ALLOWED_ORIGINS": "https://omonomon.securhat.com,http://localhost",
+    "IMAGE_DAILY_MAX": "85",
+    "IMAGE_GEMINI_DAILY_MAX": "10",
     "GEMINI_URL": "https://geminimon.securhat.com/whisper",
     "GEMINI_COMMENT_URL": "https://geminimon.securhat.com/comment",
     "SITE_ORIGIN": "https://omonomon.securhat.com",

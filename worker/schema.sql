@@ -36,7 +36,8 @@ CREATE TABLE IF NOT EXISTS whispers (
   link_title  TEXT,
   link_source TEXT,                        -- the site or channel
   thumb_url   TEXT,                        -- the source's own picture (https only), kept as it was
-  anime_image TEXT                         -- key in the R2 bucket of the picture redrawn by tools/remake_image.py (NULL: not redrawn yet)
+  anime_image TEXT,                        -- key in the R2 bucket of the picture redrawn as anime (NULL: not redrawn yet)
+  anime_tries INTEGER NOT NULL DEFAULT 0   -- how many times the timer tried to redraw it (it gives up after 3)
 );
 CREATE INDEX IF NOT EXISTS whispers_time ON whispers(created_at DESC);
 

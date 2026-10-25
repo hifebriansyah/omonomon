@@ -142,6 +142,8 @@ def main():
         if not db_file.exists():
             sys.exit("worker/api-db.json is missing: run  python3 tools/setup_api.py  first")
         bindings.append({"type": "d1", "name": cfg["d1"]["binding"], "id": json.loads(db_file.read_text())["database_id"]})
+    if cfg.get("ai"):
+        bindings.append({"type": "ai", "name": cfg["ai"]["binding"]})
     if cfg.get("r2"):
         bindings.append({"type": "r2_bucket", "name": cfg["r2"]["binding"], "bucket_name": cfg["r2"]["bucket"]})
     bindings += [{"type": "service", "name": x["binding"], "service": x["service"]} for x in cfg.get("services", [])]

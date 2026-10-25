@@ -532,14 +532,17 @@ function logRequest(env, ctx, event) {
   );
 }
 
-// ---- redo a link's picture ----
-// Called by the API Worker (secret INTERNAL_TOKEN) when an article's picture is too small or blurry. Fetches the picture, asks a Gemini
-// image model to redraw it as a clean 1:1 illustration and returns the new picture as base64. Nothing is stored here.
-const IMAGE_PROMPT = "Turn this picture into a hand-drawn Japanese anime illustration in the style of a 2026 Madhouse Studio TV anime: " +
-  "bold clean ink outlines, flat cel shading with soft gradients, painterly detailed backgrounds, cinematic lighting, expressive stylised faces. " +
-  "This must look like an anime frame drawn by an animator and must NOT look like a photograph or a 3D render. " +
-  "Keep the same subject and composition, in a square 1:1 frame. Do not add any text, letters, logos or watermarks.";
-const IMAGE_MAX_BYTES = 6 * 1024 * 1024;
+// ---- /image-test: try a Gemini image model on a picture (for comparisons; nothing in the app calls it) ----
+// POST with the secret INTERNAL_TOKEN and the site's Origin, like the other internal routes. Body (all optional except the picture):
+//   url             https address of the picture, or  data (base64) + mime (image/jpeg, image/png or image/webp)
+//   prompt          default: the Madhouse-style anime prompt below (TEST_PROMPT)
+//   model           default gemini-nano-banana-2.1 (others: gemini-3.1-flash-image-preview, gemini-3.1-flash-lite-image, gemini-3-pro-image)
+//   aspectRatio     default 1:1;   imageSize 1K | 2K | 4K (default 1K; this model refuses 512)
+//   thinkingLevel   default minimal;   mediaResolution  default MEDIA_RESOLUTION_LOW
+// Answers {image: {data (base64), mime, model, usage}}; the token counts are also in the request log (Axiom) like every Gemini call.
+// Each call is a paid image call (about $0.04 at the defaults). The app's redraws use Workers AI (worker/api.js); the API Worker calls this route
+// only as its fallback when Workers AI's free daily allowance is used up (geminiFallback, at most 10 a day), with the live prompt in `prompt`.
+const TEST_PROMPT = "Turn this picture into a hand-drawn Japanese anime illustration in the style of a 2026 Madhouse Studio TV anime: bold clean ink outlines, flat cel shading with soft gradients, painterly detailed backgrounds, cinematic lighting, expressive stylised faces. This must look like an anime frame drawn by an animator and must NOT look like a photograph or a 3D render. Keep the same subject and composition, in a square 1:1 frame. Do not add any text, letters, logos or watermarks.";
 
 function toBase64(bytes) {
   let bin = "";
@@ -547,32 +550,41 @@ function toBase64(bytes) {
   return btoa(bin);
 }
 
-async function redoImage(env, url, info, modelOverride, promptOverride) {
-  if (!/^https:\/\//i.test(url || "")) throw Object.assign(new Error("bad url"), { status: 400 });
-  const src = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; OmonOmonBot/1.0)" }, signal: AbortSignal.timeout(10000), redirect: "follow" });
-  const mime = (src.headers.get("Content-Type") || "").split(";")[0].trim();
-  if (!src.ok || !/^image\/(jpeg|png|webp)$/.test(mime)) throw Object.assign(new Error(`source not usable (${src.status} ${mime})`), { status: 422 });
-  const bytes = new Uint8Array(await src.arrayBuffer());
-  if (bytes.length > IMAGE_MAX_BYTES) throw Object.assign(new Error("source too big"), { status: 422 });
-  const model = modelOverride || env.GEMINI_IMAGE_MODEL || "gemini-nano-banana-2.1";
-  info.geminiCalls += 1;
-  info.upstream = `image ${model}`;
+async function testImage(env, body, info) {
+  let data = body.data;
+  let mime = body.mime;
+  if (!data) {
+    if (!/^https:\/\//i.test(body.url || "")) throw Object.assign(new Error("send url (https) or data + mime"), { status: 400 });
+    const src = await fetch(body.url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; OmonOmonBot/1.0)" }, signal: AbortSignal.timeout(10000), redirect: "follow" });
+    mime = (src.headers.get("Content-Type") || "").split(";")[0].trim();
+    const bytes = new Uint8Array(await src.arrayBuffer());
+    if (!src.ok || bytes.length > 6 * 1024 * 1024) throw Object.assign(new Error(`source not usable (${src.status}, ${bytes.length} bytes)`), { status: 422 });
+    data = toBase64(bytes);
+  }
+  if (!/^image\/(jpeg|png|webp)$/.test(mime || "")) throw Object.assign(new Error("mime must be image/jpeg, image/png or image/webp"), { status: 400 });
+  const model = body.model || "gemini-nano-banana-2.1";
+  info.geminiCalls++;
   const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-goog-api-key": env.GEMINI_API_KEY },
     body: JSON.stringify({
-      contents: [{ role: "user", parts: [{ text: promptOverride || IMAGE_PROMPT }, { inlineData: { mimeType: mime, data: toBase64(bytes) } }] }],
-      generationConfig: { responseModalities: ["IMAGE"], imageConfig: { aspectRatio: "1:1" } },
+      contents: [{ role: "user", parts: [{ text: body.prompt || TEST_PROMPT }, { inlineData: { mimeType: mime, data } }] }],
+      generationConfig: {
+        responseModalities: ["IMAGE"],
+        imageConfig: { aspectRatio: body.aspectRatio || "1:1", ...(body.imageSize ? { imageSize: body.imageSize } : {}) },
+        thinkingConfig: { thinkingLevel: body.thinkingLevel || "minimal" },
+        mediaResolution: body.mediaResolution || "MEDIA_RESOLUTION_LOW",
+      },
     }),
     signal: AbortSignal.timeout(60000),
   });
-  const data = await res.json().catch(() => ({}));
-  addUsage(info, data, model);
-  if (!res.ok) throw Object.assign(new Error(`gemini ${res.status}: ${String(data?.error?.message || "").slice(0, 200)}`), { status: 502 });
-  const part = data.candidates?.[0]?.content?.parts?.find((x) => x.inlineData?.data || x.inline_data?.data);
-  const inline = part?.inlineData || part?.inline_data;
-  if (!inline?.data) throw Object.assign(new Error(`no image returned (${data.candidates?.[0]?.finishReason || data.promptFeedback?.blockReason || "?"})`), { status: 502 });
-  return { mime: inline.mimeType || inline.mime_type || "image/png", data: inline.data, model, sourceBytes: bytes.length, usage: info.usage };
+  const answer = await res.json().catch(() => null);
+  addUsage(info, answer, model);
+  if (!res.ok) throw Object.assign(new Error(`gemini ${res.status}: ${String(answer?.error?.message || "").slice(0, 200)}`), { status: 502 });
+  const inline = answer?.candidates?.[0]?.content?.parts?.find((x) => x.inlineData || x.inline_data);
+  const image = inline?.inlineData || inline?.inline_data;
+  if (!image?.data) throw Object.assign(new Error(`no image returned (${answer?.candidates?.[0]?.finishReason || answer?.promptFeedback?.blockReason || "?"})`), { status: 502 });
+  return { data: image.data, mime: image.mimeType || image.mime_type || "image/png", model, usage: info.usage };
 }
 
 export default {
@@ -740,11 +752,11 @@ Write the updated note: at most 300 characters, plain text, third person ("The u
       }
     }
 
-    if (new URL(request.url).pathname.replace(/\/+$/, "") === "/image") {
+    if (new URL(request.url).pathname.replace(/\/+$/, "") === "/image-test") {
       if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
-      info.message = `image: ${clip(body.url, 160)}`;
+      info.message = `image-test: ${clip(body.model || "default", 40)} ${clip(body.url || "(data)", 140)}`;
       try {
-        return reply({ image: await redoImage(env, body.url, info, body.model, body.prompt) });
+        return reply({ image: await testImage(env, body, info) });
       } catch (err) {
         return reply({ error: err.message || "failed" }, err.status || 502);
       }
