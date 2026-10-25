@@ -3,7 +3,7 @@
 // chats or Gemini.
 
 import {
-  stageEl, headAvatar, nameEl, statusEl, heroEl, bubbleEl, bubbleText,
+  stageEl, headAvatar, headLink, nameEl, statusEl, heroEl, bubbleEl, bubbleText,
   youBubble, youText, srEl, historyBtn, historyEl, messagesEl, input,
 } from "./dom.js";
 import { timeFormat, dayKey, dayLabel } from "./time.js";
@@ -145,7 +145,7 @@ export function applyCharacter(c) {
   heroEl.src = c.stage;
   heroEl.alt = c.name;
   nameEl.textContent = c.name;
-  headAvatar.dataset.slug = c.slug; // a tap on her picture or name opens her profile page (see main.js)
+  headLink.href = new URL(`${c.slug}/profile/`, document.baseURI).href; // her picture, name and status open her profile page
   statusEl.textContent = troubleText || statusOf(c);
   input.placeholder = T.sayTo(c.name);
   // the labels the page ships with are English

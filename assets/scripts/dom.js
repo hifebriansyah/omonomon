@@ -5,6 +5,7 @@ const $ = (id) => document.getElementById(id);
 
 export const stageEl = $("stage");
 export const headAvatar = $("headAvatar");
+export const headLink = $("headLink");
 export const nameEl = $("name");
 export const statusEl = $("status");
 export const heroEl = $("hero");

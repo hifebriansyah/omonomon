@@ -208,8 +208,6 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .w-head { display: flex; align-items: center; gap: 12px; }
 .w-who { display: flex; flex-direction: column; min-width: 0; }
 .w-who time { font-size: 0.75rem; color: var(--muted); }
-.w-link { color: inherit; text-decoration: none; }
-.w-link:hover time { text-decoration: underline; }
 .w-ad { padding: 10px 4px; }
 .w-ad ins { min-width: 250px; }
 .w-all { display: inline-block; margin: 16px 4px; font-size: 0.85rem; color: var(--muted); }
@@ -371,6 +369,9 @@ html[data-frame="ribbon-4"] { --frame: 0 0 0 3px #8fd16b, 0 0 12px #8fd16baa; }
 .bond-link { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; flex: 1; min-width: 0; }
 /* whispers: her picture and name open her profile, her text opens the whisper */
 .w-pic, .w-name { color: inherit; text-decoration: none; }
+.w-pic { display: block; flex: none; line-height: 0; }
+.w-name { display: flex; flex-direction: column; min-width: 0; } /* name above time, tight, as before */
+.w-name strong, .w-name time { display: block; } /* two lines whatever the link itself does */
 .w-text-link { color: inherit; text-decoration: none; }
 
 /* a back button that also carries a label (the ghost's name on her profile page): arrow and name are one tap target */

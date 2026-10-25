@@ -186,12 +186,11 @@ export async function startWhispers() {
       const who = el("div", "w-who");
       const time = el("time", "", chatTime(w.t));
       time.dateTime = new Date(w.t).toISOString();
-      const when = single ? time : el("a", "w-link");   // in the feed the time opens that whisper's own page
-      if (!single) { when.href = `whispers/?n=${w.n}`; when.append(time); }
+      // the name and the time are one link to her profile page (the whisper's own page opens from its text)
       const name = el("a", "w-name");
       name.href = `${c.slug}/profile/`;
-      name.append(el("strong", "", c.name));
-      who.append(name, when);
+      name.append(el("strong", "", c.name), time);
+      who.append(name);
       // her picture and name open her profile page
       const pic = el("a", "w-pic");
       pic.href = `${c.slug}/profile/`;

@@ -120,6 +120,7 @@ def render(template, site, characters, c, history, depth):
 
     put('<base href="./">', f'<base href="{"../" * depth or "./"}">')
     put("<title>Omon Omon</title>\n  <!-- @head -->", head_tags(site, h, structured_data(site, c, history)))
+    put('<a id="headLink" class="head-link" href="./">', f'<a id="headLink" class="head-link" href="{shown["slug"]}/profile/">')  # picture, name and status open her profile
     put('<img id="headAvatar" class="head-avatar" alt="">', f'<img id="headAvatar" class="head-avatar" src="{attr(shown["image"])}" alt="">')
     put('<h1 id="name">&nbsp;</h1>', f'<h1 id="name">{escape(shown["name"])}</h1>')
     put('<p id="status">&nbsp;</p>', f'<p id="status">{escape(shown["status"])}</p>')
