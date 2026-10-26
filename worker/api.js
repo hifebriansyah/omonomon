@@ -17,6 +17,7 @@
 //   GET    /leaderboard/<game>           this week's top 20 {entries: [{rank, nickname, score}], me: {rank, score}|null, week}
 //   GET    /whispers                     the ghosts' latest public updates, newest first (no sign-in); ?limit=&before=<n> pages through them: {whispers, more}
 //   POST   /internal/redraw/<n>          redraw an article whisper's picture now (secret INTERNAL_TOKEN)
+//   POST   /internal/crop-check/<n>      fetch that whisper's source picture the way a redraw does and answer its size (no AI; secret INTERNAL_TOKEN)
 //   GET    /img/<n>.jpg                  the redrawn picture of a whisper's article (made by tools/remake_image.py; reached through
 //                                         the edge Worker as /whispers/img/<n>.jpg, since an <img> sends no Origin)
 //   GET    /whispers/<n>                 one whisper by its number (older ones are no longer in the list above)
@@ -170,9 +171,9 @@ export const cleanName = (name) => (typeof name === "string" && name.trim() ? na
 // ---- whispers ----
 
 const GHOSTS = ["1", "2", "3", "4"];
-// One whisper per slot, a "round" is 4 slots (every ghost posts once). The timer still ticks every 15 minutes (it also redraws pictures);
-// only the first tick of a slot makes a whisper. Temporarily 2 hours while the Workers AI free allowance is used up; the normal value is 15 * 60_000.
-const WHISPER_EVERY_MS = 2 * 60 * 60_000;
+// One whisper per slot, so every ghost posts once an hour (a "round" of 4 slots). The timer ticks every 15 minutes (it also redraws pictures);
+// only the first tick of a slot makes a whisper. For a slower pace use a longer slot, e.g. 2 * 60 * 60_000 (a whisper every 2 hours).
+const WHISPER_EVERY_MS = 15 * 60_000;
 // How long whispers (with their comments and loves) are kept. null keeps them for good; a number of milliseconds deletes older ones
 // each time a new whisper is written. At about 100 whispers a day this grows the database by roughly 50 MB a year (D1 allows 500 MB).
 const WHISPER_KEEP_MS = null;
@@ -434,14 +435,19 @@ async function findLinks(env, now, seen) {
 // The source's own picture always stays in the database (thumb_url).
 // Raise IMAGE_VERSION when the stored pictures or these options change: the new address skips every cache that holds the old file.
 const ORIGINAL_OK_UNTIL = 128;
-const IMAGE_VERSION = 8;
-const IMAGE_OPTIONS = "width=900,quality=75,format=jpeg,onerror=redirect";
-const animeUrl = (site, n) => `${site}/cdn-cgi/image/${IMAGE_OPTIONS}/whispers/img/${n}.jpg?v=${IMAGE_VERSION}`;
+const IMAGE_VERSION = 10;
+// A square (900x900) crop of the stored picture, centred on its main subjects (gravity=auto); the stored file keeps its own shape. The share address in
+// worker/edge.js reads "height=900" from this to know the picture is square.
+const IMAGE_OPTIONS = "width=900,height=900,fit=cover,gravity=auto,quality=75,format=jpeg,onerror=redirect";
+// The address also carries the time in the picture's key (anime/<time>-<id>.jpg), which is new for every redraw: browsers keep these pictures for a
+// week, so a redone picture needs a new address or they keep showing the old one.
+const pictureStamp = (key) => { const m = /(\d{10,})/.exec(key || ""); return m ? `&k=${m[1]}` : ""; };
+const animeUrl = (site, n, key) => `${site}/cdn-cgi/image/${IMAGE_OPTIONS}/whispers/img/${n}.jpg?v=${IMAGE_VERSION}${pictureStamp(key)}`;
 const shapeWhisper = (r, site) => ({
   n: r.n, ghost: r.ghost, t: r.created_at, comments: r.comments, loves: r.loves, text: { en: r.text_en, id: r.text_id },
   link: r.link_url ? {
     url: r.link_url, title: r.link_title, source: r.link_source,
-    thumb: r.anime_image ? animeUrl(site, r.n) : r.n <= ORIGINAL_OK_UNTIL ? r.thumb_url : null,
+    thumb: r.anime_image ? animeUrl(site, r.n, r.anime_image) : r.n <= ORIGINAL_OK_UNTIL ? r.thumb_url : null,
   } : null,
 });
 
@@ -524,7 +530,12 @@ export async function reactToWhisper(env, whisper, now, rng = Math.random) {
 // limit IMAGE_DAILY_MAX (85). Keys are anime/<time>-<ghost or number>.jpg: the time in them is what the limit counts.
 const IMAGE_DAILY_MAX_DEFAULT = 85;
 const ANIME_MODEL = "@cf/black-forest-labs/flux-2-klein-4b";
-const ANIME_PROMPT = "Redraw the entire input image as a beautiful 2D Japanese anime frame inspired by the visual style of *Frieren: Beyond Journey's End*.\n\nPRESERVE THE ORIGINAL:\nKeep the same scene, camera angle, background, scenery, subject identity, facial features, hairstyle, clothing, pose, and body proportions. Change only the visual rendering style, and recompose for the square frame as described below.\n\nRECOMPOSE FROM 16:9 TO 1:1:\nThe input photo is a wide 16:9 landscape frame, and the output must be a square 1:1 frame. Do not stretch, squash, or distort anything to make it fit: every person, face, hand, and object keeps its natural proportions. Instead, reframe the scene properly for a square: keep all main subjects and key objects fully visible, in the same arrangement relative to each other, and extend the background naturally on the top or bottom (or trim only empty edge space) so the result looks like a deliberately composed square shot of the same scene from the same camera angle. Place the main subject well within the square, with balanced, comfortable margins.\n\nHAND AND FINGER ACCURACY:\nCarefully reconstruct both hands with anatomically correct human anatomy. Preserve the original hand positions, gestures, and interaction with objects. Draw each visible finger clearly, with correct length, natural joints, realistic spacing, and anatomically correct connections to the palm. Keep fingers separate and distinct wherever they are separate in the reference. Preserve the original number of fingers. Do not merge, duplicate, omit, twist, deform, or add fingers. Maintain natural wrist alignment and believable hand proportions. If a hand is partially hidden or obscured in the original, preserve that exact occlusion instead of inventing visible details. Do not change the original gesture.\n\nANIME RENDERING:\nClean, delicate Japanese anime linework; soft painterly shading; natural gradients; vibrant, harmonious colors; detailed hair; expressive yet faithful facial features; cinematic lighting; and a beautifully painted fantasy atmosphere inspired by *Frieren: Beyond Journey's End*.\n\nCOLOR AND CONTRAST:\nUse vibrant colors, deep true blacks, rich shadows, and excellent contrast resembling a high-quality OLED display. Preserve detail in dark areas without crushing shadow details or making the image unnaturally oversaturated.\n\nSTRICT CONSTRAINTS:\nKeep all main subjects and key objects, with the same relative arrangement. No stretching, squashing, or distortion; no camera angle changes, no new subjects, and no missing subjects. No text, letters, logos, or watermarks. Square 1:1 aspect ratio.\n\nThe final result must look like a professionally illustrated anime frame, with accurate hands and fingers and the original image faithfully preserved.";
+const ANIME_PROMPT = "Redraw the entire input image as a beautiful 2D Japanese anime frame inspired by the visual style of *Frieren: Beyond Journey's End*.\n\nPRESERVE THE ORIGINAL:\nKeep the same scene, camera angle, background, scenery, subject identity, facial features, hairstyle, clothing, pose, and body proportions. Change only the visual rendering style, and recompose for the square frame as described below.\n\nRECOMPOSE FROM 16:9 TO 1:1:\nThe input photo is a wide 16:9 landscape frame, and the output must be a square 1:1 frame. Do not stretch, squash, or distort anything to make it fit: every person, face, hand, and object keeps its natural proportions. Instead, reframe the scene properly for a square: keep all main subjects and key objects fully visible, in the same arrangement relative to each other, and extend the background naturally on the top or bottom (or trim only empty edge space) so the result looks like a deliberately composed square shot of the same scene from the same camera angle. Place the main subject well within the square, with balanced, comfortable margins.\n\nHAND AND FINGER ACCURACY:\nCarefully reconstruct both hands with anatomically correct human anatomy. Preserve the original hand positions, gestures, and interaction with objects. Draw each visible finger clearly, with correct length, natural joints, realistic spacing, and anatomically correct connections to the palm. Keep fingers separate and distinct wherever they are separate in the reference. Preserve the original number of fingers. Do not merge, duplicate, omit, twist, deform, or add fingers. Maintain natural wrist alignment and believable hand proportions. If a hand is partially hidden or obscured in the original, preserve that exact occlusion instead of inventing visible details. Do not change the original gesture.\n\nANIME RENDERING:\nClean, delicate Japanese anime linework; soft painterly shading; natural gradients; vibrant, harmonious colors; detailed hair; expressive yet faithful facial features; cinematic lighting; and a beautifully painted fantasy atmosphere inspired by *Frieren: Beyond Journey's End*.\n\nCOLOR AND CONTRAST:\nUse vibrant colors, deep true blacks, rich shadows, and excellent contrast resembling a high-quality OLED display. Preserve detail in dark areas without crushing shadow details or making the image unnaturally oversaturated.\n\nSTRICT CONSTRAINTS:\nKeep all main subjects and key objects, with the same relative arrangement. No stretching, squashing, or distortion; no camera angle changes, no new subjects, and no missing subjects. No text, letters, logos, or watermarks. Remove any news-agency or publisher logo, watermark, photographer credit, caption bar, border, or frame that is part of the source photo; show only the scene itself, edge to edge. Square 1:1 aspect ratio.\n\nThe final result must look like a professionally illustrated anime frame, with accurate hands and fingers and the original image faithfully preserved.";
+// FLUX is asked for a picture of the source's own shape (see outputSize), so for it the square-frame instructions come out and it is told to keep the framing.
+const KLEIN_PROMPT = ANIME_PROMPT
+  .replace(/\nRECOMPOSE FROM 16:9 TO 1:1:\n[^\n]*\n/, "")
+  .replace(", and recompose for the square frame as described below", "")
+  .replace("Square 1:1 aspect ratio.", "Keep the same framing and aspect ratio as the input, with nothing cut off.");
 const SOURCE_IMAGE_MAX_BYTES = 6 * 1024 * 1024;
 
 async function animeLeft(env, now) {
@@ -533,19 +544,69 @@ async function animeLeft(env, now) {
   return limit - made;
 }
 
+function toBase64(bytes) {
+  let bin = "";
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
+}
+
+// The width and height of a JPEG, PNG or WebP from its first bytes (no decoding), or null when it cannot be told.
+export function imageSize(b) {
+  const u32 = (o) => ((b[o] << 24) | (b[o + 1] << 16) | (b[o + 2] << 8) | b[o + 3]) >>> 0;
+  if (b.length > 24 && b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47) return { w: u32(16), h: u32(20) };   // PNG
+  if (b.length > 4 && b[0] === 0xff && b[1] === 0xd8) {   // JPEG: the first "start of frame" marker holds the size
+    let o = 2;
+    while (o + 9 < b.length) {
+      if (b[o] !== 0xff) { o++; continue; }
+      const m = b[o + 1];
+      if (m === 0xff) { o++; continue; }
+      if ((m >= 0xc0 && m <= 0xcf) && m !== 0xc4 && m !== 0xc8 && m !== 0xcc) return { h: (b[o + 5] << 8) | b[o + 6], w: (b[o + 7] << 8) | b[o + 8] };
+      o += 2 + ((b[o + 2] << 8) | b[o + 3]);
+    }
+    return null;
+  }
+  if (b.length > 30 && b[0] === 0x52 && b[1] === 0x49 && b[8] === 0x57 && b[9] === 0x45) {   // WebP
+    const kind = String.fromCharCode(b[12], b[13], b[14], b[15]);
+    if (kind === "VP8 ") return { w: (b[26] | (b[27] << 8)) & 0x3fff, h: (b[28] | (b[29] << 8)) & 0x3fff };
+    if (kind === "VP8L") return { w: 1 + (((b[22] & 0x3f) << 8) | b[21]), h: 1 + (((b[24] & 0x0f) << 10) | (b[23] << 2) | ((b[22] & 0xc0) >> 6)) };
+    if (kind === "VP8X") return { w: 1 + (b[24] | (b[25] << 8) | (b[26] << 16)), h: 1 + (b[27] | (b[28] << 8) | (b[29] << 16)) };
+  }
+  return null;
+}
+
+// The size to ask FLUX for: the source's own shape, long side 1024, both sides a multiple of 16. A square source (or one whose size is unknown)
+// gives 1024x1024. Forcing a square on a 16:9 picture stretches the scene, so a source that is not square keeps its shape (the page shows it as it is).
+export function outputSize(size) {
+  if (!size || !size.w || !size.h) return { width: 1024, height: 1024 };
+  const long = Math.max(size.w, size.h);
+  const fit = (n) => Math.min(1024, Math.max(256, Math.round(((n * 1024) / long) / 16) * 16));
+  return { width: fit(size.w), height: fit(size.h) };
+}
+
+// The source picture as it is (a square crop would cut away part of a wide photo, often one of its subjects; FLUX gets the photo's own shape instead,
+// see outputSize). Answers {bytes, mime} or {error}.
+async function fetchSource(thumb) {
+  const res = await fetch(thumb, { headers: { "User-Agent": "Mozilla/5.0 (compatible; OmonOmonBot/1.0)" }, signal: AbortSignal.timeout(10000), redirect: "follow" }).catch((e) => ({ ok: false, status: 0, headers: new Headers(), failed: String(e.message || e) }));
+  const mime = (res.headers.get("Content-Type") || "").split(";")[0].trim();
+  if (!res.ok || !/^image\/(jpeg|png|webp)$/.test(mime)) return { error: `${res.status || res.failed} ${mime}` };
+  const bytes = new Uint8Array(await res.arrayBuffer());
+  if (bytes.length > SOURCE_IMAGE_MAX_BYTES) return { error: "too big" };
+  return { bytes, mime };
+}
+
 // The Gemini fallback: used ONLY when Workers AI answers that the free daily allowance of neurons is used up (never for a refused or broken
 // picture). It asks the Gemini Worker's /image-test route (Nano Banana 2.1 at its cheapest setting, about $0.04 a picture) to redraw the same
 // picture with the same prompt, and is limited to IMAGE_GEMINI_DAILY_MAX a day (10) so that it can never run up a bill. Its keys are
 // anime/g-<time>-<ghost or number>.jpg, which keeps them out of the Workers AI count (animeLeft). Returns the key, or null.
 const IMAGE_GEMINI_DAILY_MAX_DEFAULT = 10;
-async function geminiFallback(env, thumb, key) {
+async function geminiFallback(env, source, key) {
   const limit = Number(env.IMAGE_GEMINI_DAILY_MAX ?? IMAGE_GEMINI_DAILY_MAX_DEFAULT);
   const made = (await env.DB.prepare("SELECT COUNT(*) AS n FROM whispers WHERE anime_image LIKE 'anime/g-%' AND CAST(substr(anime_image, 9, 13) AS INTEGER) >= ?1").bind(Date.now() - 24 * 3600 * 1000).first())?.n || 0;
   if (made >= limit) return null;
   const res = await fetch(env.GEMINI_URL.replace(/\/whisper\/?$/, "/image-test"), {
     method: "POST",
     headers: { "Content-Type": "application/json", Origin: env.SITE_ORIGIN, "X-Internal-Token": env.INTERNAL_TOKEN },
-    body: JSON.stringify({ url: thumb, prompt: ANIME_PROMPT }),
+    body: JSON.stringify({ data: toBase64(source.bytes), mime: source.mime, prompt: ANIME_PROMPT }),
     signal: AbortSignal.timeout(50000),
   });
   const image = (await res.json().catch(() => null))?.image;
@@ -557,11 +618,11 @@ async function geminiFallback(env, thumb, key) {
 
 // One call to FLUX.2 klein (it takes a multipart form). Answers {out, neurons} or, when Cloudflare refuses, {error, exhausted, neurons}.
 // returnRawResponse gives the HTTP answer, whose cf-ai-neurons header says what the call used (the plain result does not).
-async function runKlein(env, bytes, mime) {
+async function runKlein(env, bytes, mime, { width, height } = { width: 1024, height: 1024 }) {
   const form = new FormData();
-  form.append("prompt", ANIME_PROMPT);
-  form.append("width", "1024");
-  form.append("height", "1024");
+  form.append("prompt", KLEIN_PROMPT);
+  form.append("width", String(width));
+  form.append("height", String(height));
   form.append("input_image_0", new Blob([bytes], { type: mime }), "source");
   const packed = new Response(form);   // serialises the form and makes its Content-Type with the boundary
   const res = await env.AI.run(ANIME_MODEL, { multipart: { body: packed.body, contentType: packed.headers.get("content-type") } }, { returnRawResponse: true });
@@ -585,13 +646,15 @@ async function redrawTo(env, thumb, key, trace = {}) {
   let neurons = null;   // what Cloudflare reported for this call; null when it did not say (never a guess)
   let exhausted = false; // Workers AI said the free daily allowance is used up
   let via = "workers-ai";
+  let source = null;     // the source picture, cropped to a square (see fetchSource)
+  let sizes = null;      // "source size -> size asked of FLUX", for the log
   try {
-    const src = await fetch(thumb, { headers: { "User-Agent": "Mozilla/5.0 (compatible; OmonOmonBot/1.0)" }, signal: AbortSignal.timeout(10000), redirect: "follow" });
-    const mime = (src.headers.get("Content-Type") || "").split(";")[0].trim();
-    if (!src.ok || !/^image\/(jpeg|png|webp)$/.test(mime)) { outcome = "source"; detail = `${src.status} ${mime}`; return null; }
-    const bytes = new Uint8Array(await src.arrayBuffer());
-    if (bytes.length > SOURCE_IMAGE_MAX_BYTES) { outcome = "source"; detail = "too big"; return null; }
-    const run = await runKlein(env, bytes, mime);
+    source = await fetchSource(thumb);
+    if (source.error) { outcome = "source"; detail = source.error; return null; }
+    const srcSize = imageSize(source.bytes);
+    const outSize = outputSize(srcSize);
+    sizes = `${srcSize ? `${srcSize.w}x${srcSize.h}` : "?"} -> ${outSize.width}x${outSize.height}`;
+    const run = await runKlein(env, source.bytes, source.mime, outSize);
     neurons = run.neurons;
     if (run.error) { exhausted = Boolean(run.exhausted); throw new Error(run.error); }
     const out = run.out;
@@ -602,15 +665,15 @@ async function redrawTo(env, thumb, key, trace = {}) {
   } catch (err) {
     detail = String(err.message || err).slice(0, 320);
     outcome = /flagged|3030/.test(detail) ? "refused" : "error";
-    if (exhausted) {   // the allowance is used up: Gemini, within its own small daily limit
+    if (exhausted && !trace.noGemini) {   // the allowance is used up: Gemini, within its own small daily limit (unless the caller said no)
       outcome = "exhausted";
-      const gkey = await geminiFallback(env, thumb, key).catch((e) => { detail = `${detail} | gemini: ${String(e.message || e).slice(0, 60)}`; return null; });
+      const gkey = await geminiFallback(env, source, key).catch((e) => { detail = `${detail} | gemini: ${String(e.message || e).slice(0, 60)}`; return null; });
       if (gkey) { outcome = "ok"; via = "gemini"; return gkey; }
     }
     return null;
   } finally {
     Object.assign(trace, { via, outcome, neurons, detail, ms: Date.now() - started });   // for the caller (the on-demand route answers with it)
-    logRequest(env, { waitUntil: (p) => p }, { _time: new Date().toISOString(), worker: "api", url: "cron:anime", model: via === "gemini" ? "gemini-nano-banana-2.1" : ANIME_MODEL, via, redraw: outcome, neurons, error: detail, ms: Date.now() - started, message: `image: ${thumb}`.slice(0, 200) });
+    logRequest(env, { waitUntil: (p) => p }, { _time: new Date().toISOString(), worker: "api", url: "cron:anime", model: via === "gemini" ? "gemini-nano-banana-2.1" : ANIME_MODEL, via, redraw: outcome, neurons, error: detail, ms: Date.now() - started, sizes, message: `image: ${thumb}`.slice(0, 200) });
   }
 }
 
@@ -691,7 +754,7 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
     await env.DB.prepare("DELETE FROM loves WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
     await env.DB.prepare("DELETE FROM whispers WHERE created_at < ?1").bind(now - WHISPER_KEEP_MS).run();
   }
-  return { n: saved.n, ghost: id, t: now, text: { en, id: idText || null }, link: link ? { url: link.url, title: link.title, source: link.source, thumb: animeKey ? animeUrl(env.SITE_ORIGIN, saved.n) : null } : null };
+  return { n: saved.n, ghost: id, t: now, text: { en, id: idText || null }, link: link ? { url: link.url, title: link.title, source: link.source, thumb: animeKey ? animeUrl(env.SITE_ORIGIN, saved.n, animeKey) : null } : null };
 }
 
 // ---- comments ----
@@ -1106,12 +1169,25 @@ export default {
       // POST /internal/redraw/<whisper number>: redraw that article whisper's picture now (the same steps as the timer: the free allowance, then
       // Gemini within its daily limit). Answers {ok, key, via, outcome, neurons, ms}. A picture it already
       // had is replaced.
+      // POST /internal/crop-check/<whisper number>: fetch that whisper's source picture the way a redraw does and say what came back (no AI, nothing
+      // stored): {size: {w, h}, square, bytes, out}. the size is the source's own, and `out` is the size a redraw would ask of FLUX.
+      const cropCheck = /^\/internal\/crop-check\/(\d{1,10})$/.exec(path);
+      if (cropCheck && request.method === "POST") {
+        if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
+        const row = await env.DB.prepare("SELECT thumb_url FROM whispers WHERE n = ?1 AND thumb_url IS NOT NULL").bind(Number(cropCheck[1])).first();
+        if (!row) return reply({ error: "no whisper with a picture has that number" }, 404);
+        const source = await fetchSource(row.thumb_url);
+        if (source.error) return reply({ error: source.error }, 502);
+        const size = imageSize(source.bytes);
+        return reply({ ok: true, size, square: size ? size.w === size.h : null, bytes: source.bytes.length, out: outputSize(size) });
+      }
+
       const redraw = /^\/internal\/redraw\/(\d{1,10})$/.exec(path);
       if (redraw && request.method === "POST") {
         if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
         const row = await env.DB.prepare("SELECT n, thumb_url, anime_image FROM whispers WHERE n = ?1 AND link_url IS NOT NULL AND thumb_url IS NOT NULL").bind(Number(redraw[1])).first();
         if (!row) return reply({ error: "no article whisper with a picture has that number" }, 404);
-        const trace = {};
+        const trace = { noGemini: new URL(request.url).searchParams.get("gemini") === "0" };   // ?gemini=0: the free allowance only, no paid fallback
         const key = await redrawTo(env, row.thumb_url, `anime/${Date.now()}-${row.n}.jpg`, trace);
         if (key) {
           await env.DB.prepare("UPDATE whispers SET anime_image = ?1 WHERE n = ?2").bind(key, row.n).run();

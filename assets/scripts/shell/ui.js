@@ -56,12 +56,18 @@ export const sendIcon = () => icon("M3.714 3.048a.498.498 0 0 0-.683.627l2.843 7
 // The card under a whisper for what the ghost found: its picture, title and where it is from. It opens the original in a new tab.
 // Only https addresses are used, whatever the server sent.
 const https = (u) => typeof u === "string" && /^https:\/\//.test(u);
+// An Instagram reel (instagram.com/reel/<id>, /reels/<id> or its /embed/ page): its card opens the reel itself (the plain address, without tracking
+// parameters; on a phone with the Instagram app it opens the app) and shows a play button on its cover.
+const reelId = (url) => /^https:\/\/www\.instagram\.com\/reels?\/([\w-]{5,20})\/?(?:embed\/?)?(?:[?#]|$)/.exec(url)?.[1] || null;
+
 export function linkCard(link) {
   if (!link || !https(link.url)) return null;
+  const reel = reelId(link.url);
   const a = el("a", "w-card");
-  a.href = link.url;
+  a.href = reel ? `https://www.instagram.com/reel/${reel}/` : link.url;
   a.target = "_blank";
   a.rel = "noopener noreferrer nofollow";
+  let media = null;   // the picture (and, for a reel, the play button on it)
   if (https(link.thumb)) {
     const img = el("img");
     img.src = link.thumb;
@@ -69,7 +75,16 @@ export function linkCard(link) {
     img.loading = "lazy";
     img.referrerPolicy = "no-referrer";  // some sites refuse pictures that come with another site's address
     img.addEventListener("error", () => img.remove()); // a picture that is gone leaves just the title
-    a.append(img);
+    if (reel) { media = el("span", "w-card-media"); media.append(img); } else a.append(img);
+  } else if (reel) {
+    media = el("span", "w-card-media w-card-nocover");   // a reel without a cover still gets its play button, on a plain panel
+  }
+  if (media) {
+    const play = el("span", "w-card-play");
+    play.setAttribute("aria-hidden", "true");
+    play.append(el("span", "", "\u25B6"));
+    media.append(play);
+    a.append(media);
   }
   const text = el("span", "w-card-text");
   text.append(el("strong", "", String(link.title || link.url)), el("small", "", String(link.source || new URL(link.url).hostname)));

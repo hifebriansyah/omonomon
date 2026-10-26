@@ -54,12 +54,14 @@ export default {
     const thumb = typeof whisper.link?.thumb === "string" && /^https:\/\//.test(whisper.link.thumb) ? whisper.link.thumb : null;
     const image = thumb || `${url.origin}/builds/img/scenes/1_1/${ghost.id}.jpg`;
     const set = (value) => ({ element: (e) => e.setAttribute("content", value) });
-    // the static page declares a square picture of known size; an article's picture is usually wide, so drop those hints
-    const square = thumb ? { element: (e) => e.remove() } : {};
+    // The static page declares a square picture of known size. A redrawn article picture is a 900x900 crop too (IMAGE_OPTIONS in api.js), so it keeps
+    // a square's hints; any other article picture (an original, usually wide) drops them.
+    const squareThumb = Boolean(thumb && thumb.includes("height=900"));
+    const square = squareThumb ? set("900") : thumb ? { element: (e) => e.remove() } : {};
     return new HTMLRewriter()
       .on('meta[property="og:image:width"]', square)
       .on('meta[property="og:image:height"]', square)
-      .on('meta[name="twitter:card"]', thumb ? set("summary_large_image") : {})
+      .on('meta[name="twitter:card"]', squareThumb ? set("summary") : thumb ? set("summary_large_image") : {})
       .on("title", { element: (e) => e.setInnerContent(title) })
       .on('meta[name="description"]', set(text))
       .on('meta[property="og:title"]', set(title))
