@@ -17,7 +17,6 @@
 //   GET    /leaderboard/<game>           this week's top 20 {entries: [{rank, nickname, score}], me: {rank, score}|null, week}
 //   GET    /whispers                     the ghosts' latest public updates, newest first (no sign-in); ?limit=&before=<n> pages through them: {whispers, more}
 //   POST   /internal/redraw/<n>          redraw an article whisper's picture now (secret INTERNAL_TOKEN)
-//   POST   /internal/crop-check/<n>      fetch that whisper's source picture the way a redraw does and answer its size (no AI; secret INTERNAL_TOKEN)
 //   GET    /img/<n>.jpg                  the redrawn picture of a whisper's article (made by tools/remake_image.py; reached through
 //                                         the edge Worker as /whispers/img/<n>.jpg, since an <img> sends no Origin)
 //   GET    /whispers/<n>                 one whisper by its number (older ones are no longer in the list above)
@@ -1169,19 +1168,6 @@ export default {
       // POST /internal/redraw/<whisper number>: redraw that article whisper's picture now (the same steps as the timer: the free allowance, then
       // Gemini within its daily limit). Answers {ok, key, via, outcome, neurons, ms}. A picture it already
       // had is replaced.
-      // POST /internal/crop-check/<whisper number>: fetch that whisper's source picture the way a redraw does and say what came back (no AI, nothing
-      // stored): {size: {w, h}, square, bytes, out}. the size is the source's own, and `out` is the size a redraw would ask of FLUX.
-      const cropCheck = /^\/internal\/crop-check\/(\d{1,10})$/.exec(path);
-      if (cropCheck && request.method === "POST") {
-        if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
-        const row = await env.DB.prepare("SELECT thumb_url FROM whispers WHERE n = ?1 AND thumb_url IS NOT NULL").bind(Number(cropCheck[1])).first();
-        if (!row) return reply({ error: "no whisper with a picture has that number" }, 404);
-        const source = await fetchSource(row.thumb_url);
-        if (source.error) return reply({ error: source.error }, 502);
-        const size = imageSize(source.bytes);
-        return reply({ ok: true, size, square: size ? size.w === size.h : null, bytes: source.bytes.length, out: outputSize(size) });
-      }
-
       const redraw = /^\/internal\/redraw\/(\d{1,10})$/.exec(path);
       if (redraw && request.method === "POST") {
         if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);

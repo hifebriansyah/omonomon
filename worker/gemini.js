@@ -560,7 +560,7 @@ function logRequest(env, ctx, event) {
   );
 }
 
-// ---- /image-test: try a Gemini image model on a picture (for comparisons; nothing in the app calls it) ----
+// ---- /image-test: redraw a picture with a Gemini image model (for comparisons, and the API Worker's paid fallback when the free Workers AI allowance is used up) ----
 // POST with the secret INTERNAL_TOKEN and the site's Origin, like the other internal routes. Body (all optional except the picture):
 //   url             https address of the picture, or  data (base64) + mime (image/jpeg, image/png or image/webp)
 //   prompt          default: the Madhouse-style anime prompt below (TEST_PROMPT)
