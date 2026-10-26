@@ -88,7 +88,7 @@ body {
 .stat b { display: block; font-size: 1.4rem; }
 .stat span { font-size: 0.8rem; color: var(--muted); }
 .me { padding-top: 8px; } /* the page has no title bar, so keep the same space the bar used to give */
-.whispers-page { padding-top: 8px; } /* no title bar here either: the same space as /me/ */
+.whispers-page, .hub { padding-top: 14px; } /* no title bar on these pages either: the first thing starts 14px down, as on /me/ (8px + the profile's 6px) and under a title bar */
 .me h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 18px 0 8px; }
 .bonds { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .bonds li { display: flex; align-items: center; gap: 10px; }

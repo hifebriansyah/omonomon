@@ -25,8 +25,7 @@ export async function localizeData(page) {
       for (const li of document.querySelectorAll(".contacts li[data-id]")) text(".c-status", byId[li.dataset.id]?.statusId, li);
     } else if (page === "hub") {
       const hub = games.hub.id;
-      text(".app-bar h1", hub.heading);
-      text(".hub .intro", hub.intro);
+      text(".hub h1", hub.heading);
       if (hub.title) document.title = hub.title;
       for (const card of document.querySelectorAll(".card[data-game]")) {
         const g = games.games.find((x) => x.slug === card.dataset.game);

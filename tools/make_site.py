@@ -237,7 +237,7 @@ def shell_pages(site, characters, games):
             f'<span class="c-preview"></span></span></a>'
             f'<button class="more" type="button" aria-haspopup="menu" aria-expanded="false" data-t-label="moreOptions" '
             f'aria-label="More options" title="More options">{icon("more")}</button></li>')
-    home_content = (bar(site["name"]) + f'    <p class="intro" data-t="homeIntro">{escape(site["description"])}</p>\n'
+    home_content = (bar(site["name"])
                     + '    <ul class="contacts">\n' + "\n".join(rows) + "\n    </ul>"
                     + '\n    <p class="legal"><a href="privacy/" data-t="mePrivacy">Privacy</a></p>')
     home_h = head_for(site, None, False)
@@ -355,8 +355,8 @@ def shell_pages(site, characters, games):
     leaderboard = ('      <section class="leaderboard" id="leaderboard" aria-labelledby="lbHead" hidden><h2 id="lbHead" data-t="lbTitle">This week\'s best</h2>'
                    f'<div class="lb-tabs" id="lbTabs" role="group">{lb_tabs}</div><ol id="lbList"></ol><p class="lb-me" id="lbMe" aria-live="polite"></p>'
                    '<p class="lb-note" data-t="lbResets">Starts again every Monday.</p></section>\n')
-    hub_content = (bar(hub["heading"], '<p class="wallet" id="wallet" aria-live="polite"></p>')
-                   + f'    <section class="hub">\n      <p class="intro">{escape(hub["intro"])}</p>\n'
+    # No visible title bar, candle count or intro line (the tabs already say where you are); the heading stays for screen readers.
+    hub_content = (f'    <section class="hub">\n      <h1 class="sr-only">{escape(hub["heading"])}</h1>\n'
                    + f'      <section class="quests" aria-labelledby="questsTitle"><div class="quests-head"><h2 id="questsTitle" data-t="questsTitle">Today\'s quests</h2>'
                    + f'<p class="streak" id="streak">{icon("flame")}<span id="streakText"></span></p></div><ul id="questList"></ul></section>\n'
                    + '      <section class="event" id="eventBanner" hidden><img src="" alt=""><div><strong data-event-title></strong><p data-event-body></p></div><span class="event-count" data-event-count></span></section>\n'

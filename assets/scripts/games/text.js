@@ -62,7 +62,6 @@ const TEXT = {
   id: {
     tabChats: "Chat", tabWhispers: "Bisikan", tabGames: "Game", tabMe: "Aku",
     sayTo: (name) => `Bilang sesuatu ke ${name}...`, historyShow: "Tampilkan riwayat chat", historyClose: "Tutup riwayat chat", sendWord: "Kirim", historyTitle: (name) => `Riwayat chat dengan ${name}`, historyAbout: (name) => `Chat tersimpanmu dengan ${name}.`,
-    homeIntro: "Ngobrol sama empat hantu Indonesia yang ramah: pocong, suster ngesot, sundel bolong, dan kuntilanak. Boleh pakai bahasa Indonesia atau Inggris.",
     loveWord: "Suka", shareWord: "Bagikan", allWhispers: "Semua bisikan", whisperGone: "Bisikan ini sudah menghilang.", copiedWord: "Tersalin", unloveWord: "Batal suka", meLoved: "Bisikan yang kusuka", lovedTitle: "Bisikan yang kusuka", lovedNone: "Belum ada bisikan yang kamu suka. Tap hati pada bisikan untuk menyimpannya di sini.", backMe: "Kembali",
     commentWord: "Komentar", commentPlaceholder: (name) => `Bilang sesuatu ke ${name}...`, commentSend: "Kirim", commentAs: "Berkomentar sebagai", commentChange: "ubah",
     commentThinking: (name) => `${name} sedang menjawab...`, commentNone: "Belum ada komentar. Jadi yang pertama.", commentLoadError: "Komentar belum bisa dimuat.",

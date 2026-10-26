@@ -16,6 +16,7 @@
 //   POST   /scores       {token, score, nickname}  a finished run: kept as this week's best when plausible; answers {accepted, rank}
 //   GET    /leaderboard/<game>           this week's top 20 {entries: [{rank, nickname, score}], me: {rank, score}|null, week}
 //   GET    /whispers                     the ghosts' latest public updates, newest first (no sign-in); ?limit=&before=<n> pages through them: {whispers, more}
+//   POST   /internal/redraw/<n>          redraw an article whisper's picture now (secret INTERNAL_TOKEN)
 //   GET    /img/<n>.jpg                  the redrawn picture of a whisper's article (made by tools/remake_image.py; reached through
 //                                         the edge Worker as /whispers/img/<n>.jpg, since an <img> sends no Origin)
 //   GET    /whispers/<n>                 one whisper by its number (older ones are no longer in the list above)
@@ -28,7 +29,7 @@
 //   DELETE /comments/<n>                 {device}: a visitor deletes their own comment (kept in the database with deleted = 1, shown as "deleted")
 //   GET    /internal/comments            (secret INTERNAL_TOKEN) the newest comments, for moderation
 //   DELETE /internal/comment/<n>         (secret INTERNAL_TOKEN) remove one
-// A timer (cron) writes a whisper every 15 minutes by asking the Gemini Worker: each hour every ghost posts once, in a shuffled order.
+// A timer (cron) writes a whisper once per slot (WHISPER_EVERY_MS) by asking the Gemini Worker: in a round every ghost posts once, in a shuffled order.
 //
 // The session token is a random 256-bit value sent as "Authorization: Bearer ...". Only its SHA-256 hash is stored.
 // (Bearer instead of a cookie so sign-in also works from http://localhost while developing.)
@@ -169,7 +170,9 @@ export const cleanName = (name) => (typeof name === "string" && name.trim() ? na
 // ---- whispers ----
 
 const GHOSTS = ["1", "2", "3", "4"];
-const WHISPER_EVERY_MS = 15 * 60_000;  // one whisper per slot, so every ghost posts once an hour (a "round" of 4 slots)
+// One whisper per slot, a "round" is 4 slots (every ghost posts once). The timer still ticks every 15 minutes (it also redraws pictures);
+// only the first tick of a slot makes a whisper. Temporarily 2 hours while the Workers AI free allowance is used up; the normal value is 15 * 60_000.
+const WHISPER_EVERY_MS = 2 * 60 * 60_000;
 // How long whispers (with their comments and loves) are kept. null keeps them for good; a number of milliseconds deletes older ones
 // each time a new whisper is written. At about 100 whispers a day this grows the database by roughly 50 MB a year (D1 allows 500 MB).
 const WHISPER_KEEP_MS = null;
@@ -431,7 +434,7 @@ async function findLinks(env, now, seen) {
 // The source's own picture always stays in the database (thumb_url).
 // Raise IMAGE_VERSION when the stored pictures or these options change: the new address skips every cache that holds the old file.
 const ORIGINAL_OK_UNTIL = 128;
-const IMAGE_VERSION = 7;
+const IMAGE_VERSION = 8;
 const IMAGE_OPTIONS = "width=900,quality=75,format=jpeg,onerror=redirect";
 const animeUrl = (site, n) => `${site}/cdn-cgi/image/${IMAGE_OPTIONS}/whispers/img/${n}.jpg?v=${IMAGE_VERSION}`;
 const shapeWhisper = (r, site) => ({
@@ -552,9 +555,30 @@ async function geminiFallback(env, thumb, key) {
   return gkey;
 }
 
+// One call to FLUX.2 klein (it takes a multipart form). Answers {out, neurons} or, when Cloudflare refuses, {error, exhausted, neurons}.
+// returnRawResponse gives the HTTP answer, whose cf-ai-neurons header says what the call used (the plain result does not).
+async function runKlein(env, bytes, mime) {
+  const form = new FormData();
+  form.append("prompt", ANIME_PROMPT);
+  form.append("width", "1024");
+  form.append("height", "1024");
+  form.append("input_image_0", new Blob([bytes], { type: mime }), "source");
+  const packed = new Response(form);   // serialises the form and makes its Content-Type with the boundary
+  const res = await env.AI.run(ANIME_MODEL, { multipart: { body: packed.body, contentType: packed.headers.get("content-type") } }, { returnRawResponse: true });
+  if (!(res instanceof Response)) return { out: res, neurons: null };
+  const reported = res.headers.get("cf-ai-neurons");
+  const neurons = reported === null || reported === "" || Number.isNaN(Number(reported)) ? null : Number(reported);
+  const text = await res.text().catch(() => "");
+  let answer = null;
+  try { answer = JSON.parse(text); } catch { /* not JSON: the raw text is used below */ }
+  const why = answer?.errors?.[0]?.message || answer?.error?.message || (typeof answer?.error === "string" ? answer.error : "") || text.slice(0, 160);
+  if (!res.ok) return { error: why ? `HTTP ${res.status} ${why}` : `HTTP ${res.status}`, exhausted: res.status === 429 || answer?.errors?.[0]?.code === 4006, neurons };
+  return { out: answer?.result ?? answer, neurons };
+}
+
 // Redraw the picture at `thumb` and store it under `key`; returns key, or null when anything goes wrong (refused, unreachable, too big).
 // Every try is written to Axiom as url "cron:anime" with the outcome.
-async function redrawTo(env, thumb, key) {
+async function redrawTo(env, thumb, key, trace = {}) {
   const started = Date.now();
   let outcome = "error";
   let detail;
@@ -567,31 +591,16 @@ async function redrawTo(env, thumb, key) {
     if (!src.ok || !/^image\/(jpeg|png|webp)$/.test(mime)) { outcome = "source"; detail = `${src.status} ${mime}`; return null; }
     const bytes = new Uint8Array(await src.arrayBuffer());
     if (bytes.length > SOURCE_IMAGE_MAX_BYTES) { outcome = "source"; detail = "too big"; return null; }
-    const form = new FormData();
-    form.append("prompt", ANIME_PROMPT);
-    form.append("width", "1024");
-    form.append("height", "1024");
-    form.append("input_image_0", new Blob([bytes], { type: mime }), "source");
-    const packed = new Response(form);   // serialises the form and makes its Content-Type with the boundary
-    // returnRawResponse gives the HTTP answer, whose cf-ai-neurons header says what this call used (the plain result does not)
-    const res = await env.AI.run(ANIME_MODEL, { multipart: { body: packed.body, contentType: packed.headers.get("content-type") } }, { returnRawResponse: true });
-    let out = res;
-    if (res instanceof Response) {
-      const reported = res.headers.get("cf-ai-neurons");
-      neurons = reported === null || reported === "" || Number.isNaN(Number(reported)) ? null : Number(reported);
-      const answer = await res.json().catch(() => null);
-      if (!res.ok) {
-        exhausted = res.status === 429 || answer?.errors?.[0]?.code === 4006;
-        throw new Error(answer?.errors?.[0]?.message || `HTTP ${res.status}`);
-      }
-      out = answer?.result ?? answer;
-    }
+    const run = await runKlein(env, bytes, mime);
+    neurons = run.neurons;
+    if (run.error) { exhausted = Boolean(run.exhausted); throw new Error(run.error); }
+    const out = run.out;
     if (!out?.image) { outcome = "empty"; return null; }
     await env.IMAGES.put(key, Uint8Array.from(atob(out.image), (c) => c.charCodeAt(0)), { httpMetadata: { contentType: "image/jpeg" } });
     outcome = "ok";
     return key;
   } catch (err) {
-    detail = String(err.message || err).slice(0, 160);
+    detail = String(err.message || err).slice(0, 320);
     outcome = /flagged|3030/.test(detail) ? "refused" : "error";
     if (exhausted) {   // the allowance is used up: Gemini, within its own small daily limit
       outcome = "exhausted";
@@ -600,6 +609,7 @@ async function redrawTo(env, thumb, key) {
     }
     return null;
   } finally {
+    Object.assign(trace, { via, outcome, neurons, detail, ms: Date.now() - started });   // for the caller (the on-demand route answers with it)
     logRequest(env, { waitUntil: (p) => p }, { _time: new Date().toISOString(), worker: "api", url: "cron:anime", model: via === "gemini" ? "gemini-nano-banana-2.1" : ANIME_MODEL, via, redraw: outcome, neurons, error: detail, ms: Date.now() - started, message: `image: ${thumb}`.slice(0, 200) });
   }
 }
@@ -1093,6 +1103,23 @@ export default {
         return reply({ ok: true });
       }
 
+      // POST /internal/redraw/<whisper number>: redraw that article whisper's picture now (the same steps as the timer: the free allowance, then
+      // Gemini within its daily limit). Answers {ok, key, via, outcome, neurons, ms}. A picture it already
+      // had is replaced.
+      const redraw = /^\/internal\/redraw\/(\d{1,10})$/.exec(path);
+      if (redraw && request.method === "POST") {
+        if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
+        const row = await env.DB.prepare("SELECT n, thumb_url, anime_image FROM whispers WHERE n = ?1 AND link_url IS NOT NULL AND thumb_url IS NOT NULL").bind(Number(redraw[1])).first();
+        if (!row) return reply({ error: "no article whisper with a picture has that number" }, 404);
+        const trace = {};
+        const key = await redrawTo(env, row.thumb_url, `anime/${Date.now()}-${row.n}.jpg`, trace);
+        if (key) {
+          await env.DB.prepare("UPDATE whispers SET anime_image = ?1 WHERE n = ?2").bind(key, row.n).run();
+          if (row.anime_image && row.anime_image !== key) await env.IMAGES.delete(row.anime_image).catch(() => {});
+        }
+        return reply({ ok: Boolean(key), key, ...trace, error: key ? undefined : trace.detail || trace.outcome }, key ? 200 : 502);
+      }
+
       if (path === "/internal/whisper" && request.method === "POST") {
         if (!sameSecret(request.headers.get("X-Internal-Token"), env.INTERNAL_TOKEN)) return reply({ error: "forbidden" }, 403);
         const { ghost } = await readJson();
@@ -1284,7 +1311,7 @@ export default {
     }
   },
 
-  // The timer (cron): one new whisper every 15 minutes; each ghost once an hour, in a shuffled order.
+  // The timer (cron): ticks every 15 minutes; one new whisper per slot (WHISPER_EVERY_MS), each ghost once a round, in a shuffled order.
   async scheduled(event, env, ctx) {
     ctx.waitUntil(env.DB.prepare("DELETE FROM runs WHERE created_at < ?1").bind(event.scheduledTime - 2 * MAX_RUN_SECS * 1000).run().catch(() => {}));
     ctx.waitUntil(pushStreaks(env, event.scheduledTime).catch(() => {}));
