@@ -237,6 +237,7 @@ const FEEDS = [ // [site, RSS address]: sections with light subjects
 ];
 // A topic from Google Trends counts only through a news item from one of these sites (or any .id address).
 const INDONESIAN_SITE = /(^|\.)(id|co\.id|detik\.com|kompas\.com|cnnindonesia\.com|antaranews\.com|tribunnews\.com|liputan6\.com|kumparan\.com|suara\.com|tempo\.co|okezone\.com|idntimes\.com|cnbcindonesia\.com|merdeka\.com|jawapos\.com|sindonews\.com|bisnis\.com|viva\.co\.id|pikiran-rakyat\.com|suaramerdeka\.com|beritajatim\.com)$/;
+const ENGLISH_EDITION = /^(en|english)\./;
 // No sports: not the sports feeds, and no topic, article or video that is about a match, a league, a team or an athlete.
 const SPORT = new RegExp([
   "olahraga", "sepak ?bola", "\\bbola\\b", "\\bliga\\b", "piala", "timnas", "\\bpssi\\b", "\\bgol\\b", "pertandingan", "\\blaga\\b", "klasemen", "kualifikasi",
@@ -298,7 +299,9 @@ export function parseTrends(xml) {
     const traffic = plain(tagText(item, "ht:approx_traffic"));
     for (const n of item.matchAll(/<ht:news_item>([\s\S]*?)<\/ht:news_item>/g)) {
       const url = httpsUrl(tagText(n[1], "ht:news_item_url") || "");
-      if (!url || !INDONESIAN_SITE.test(new URL(url).hostname.replace(/^www\./, ""))) continue;
+      const host = url ? new URL(url).hostname.replace(/^www\./, "") : "";
+      // Not an English edition (en.antaranews.com passes INDONESIAN_SITE as a subdomain of antaranews.com): the page and its card would be English.
+      if (!url || ENGLISH_EDITION.test(host) || !INDONESIAN_SITE.test(host)) continue;
       out.push({
         kind: "trend", url, source: plain(tagText(n[1], "ht:news_item_source")) || "Google Trends",
         title: plain(tagText(n[1], "ht:news_item_title")),
@@ -474,7 +477,10 @@ export async function whisperContext(env, now, id, slot) {
   const day = jakarta.toISOString().slice(5, 10);
   // The host announces the game week at most once a day. (It used to be every other time she posted: eight times in a day.)
   if (hostOfWeek(now) === id && slot % 2 === 0 && !(await announcedGameWeek(env, id, now))) return { kind: "this week you host the game week of this little app: tell readers, in your own way, that your mini game gives double bond XP all week (do not give a link)" };
-  if (HOLIDAYS[day]) return { kind: `today is ${HOLIDAYS[day]} in Indonesia: say something about it in your own voice` };
+  // On a holiday only about one slot in two hours is about it (the rest of the day the whispers stay about what was found online): when every slot
+  // was, the feed filled with 40 whispers about Youth Pledge Day in one morning.
+  const holidayEvery = Math.max(1, Math.round((2 * 3600_000) / WHISPER_EVERY_MS));
+  if (HOLIDAYS[day] && slot % holidayEvery === 0) return { kind: `today is ${HOLIDAYS[day]} in Indonesia: say something about it in your own voice` };
   if (slot % 3 !== 0) return null; // the rest of the time whispers stay about what was found online
   // The latest visitor comment of the last day that no whisper has answered yet (and that says enough to answer: 8 characters or more).
   const comment = await env.DB.prepare(
@@ -529,12 +535,13 @@ export async function reactToWhisper(env, whisper, now, rng = Math.random) {
 // limit IMAGE_DAILY_MAX (85). Keys are anime/<time>-<ghost or number>.jpg: the time in them is what the limit counts.
 const IMAGE_DAILY_MAX_DEFAULT = 85;
 const ANIME_MODEL = "@cf/black-forest-labs/flux-2-klein-4b";
-const ANIME_PROMPT = "Redraw the entire input image as a beautiful 2D Japanese anime frame inspired by the visual style of *Frieren: Beyond Journey's End*.\n\nPRESERVE THE ORIGINAL:\nKeep the same scene, camera angle, background, scenery, subject identity, facial features, hairstyle, clothing, pose, and body proportions. Change only the visual rendering style, and recompose for the square frame as described below.\n\nRECOMPOSE FROM 16:9 TO 1:1:\nThe input photo is a wide 16:9 landscape frame, and the output must be a square 1:1 frame. Do not stretch, squash, or distort anything to make it fit: every person, face, hand, and object keeps its natural proportions. Instead, reframe the scene properly for a square: keep all main subjects and key objects fully visible, in the same arrangement relative to each other, and extend the background naturally on the top or bottom (or trim only empty edge space) so the result looks like a deliberately composed square shot of the same scene from the same camera angle. Place the main subject well within the square, with balanced, comfortable margins.\n\nHAND AND FINGER ACCURACY:\nCarefully reconstruct both hands with anatomically correct human anatomy. Preserve the original hand positions, gestures, and interaction with objects. Draw each visible finger clearly, with correct length, natural joints, realistic spacing, and anatomically correct connections to the palm. Keep fingers separate and distinct wherever they are separate in the reference. Preserve the original number of fingers. Do not merge, duplicate, omit, twist, deform, or add fingers. Maintain natural wrist alignment and believable hand proportions. If a hand is partially hidden or obscured in the original, preserve that exact occlusion instead of inventing visible details. Do not change the original gesture.\n\nANIME RENDERING:\nClean, delicate Japanese anime linework; soft painterly shading; natural gradients; vibrant, harmonious colors; detailed hair; expressive yet faithful facial features; cinematic lighting; and a beautifully painted fantasy atmosphere inspired by *Frieren: Beyond Journey's End*.\n\nCOLOR AND CONTRAST:\nUse vibrant colors, deep true blacks, rich shadows, and excellent contrast resembling a high-quality OLED display. Preserve detail in dark areas without crushing shadow details or making the image unnaturally oversaturated.\n\nSTRICT CONSTRAINTS:\nKeep all main subjects and key objects, with the same relative arrangement. No stretching, squashing, or distortion; no camera angle changes, no new subjects, and no missing subjects. No text, letters, logos, or watermarks. Remove any news-agency or publisher logo, watermark, photographer credit, caption bar, border, or frame that is part of the source photo; show only the scene itself, edge to edge. Square 1:1 aspect ratio.\n\nThe final result must look like a professionally illustrated anime frame, with accurate hands and fingers and the original image faithfully preserved.";
-// FLUX is asked for a picture of the source's own shape (see outputSize), so for it the square-frame instructions come out and it is told to keep the framing.
-const KLEIN_PROMPT = ANIME_PROMPT
-  .replace(/\nRECOMPOSE FROM 16:9 TO 1:1:\n[^\n]*\n/, "")
-  .replace(", and recompose for the square frame as described below", "")
-  .replace("Square 1:1 aspect ratio.", "Keep the same framing and aspect ratio as the input, with nothing cut off.");
+const ANIME_PROMPT = "Redraw the entire input image as a beautiful 2D Japanese anime frame inspired by the visual style of *Frieren: Beyond Journey's End*.\n\nPRESERVE THE ORIGINAL:\nKeep the same scene, camera angle, background, scenery, subject identity, facial features, hairstyle, clothing, pose, and body proportions. Change only the visual rendering style, and recompose for the square frame as described below.\n\nRECOMPOSE FROM 16:9 TO 1:1:\nThe input photo is a wide 16:9 landscape frame, and the output must be a square 1:1 frame. Do not stretch, squash, or distort anything to make it fit: every person, face, hand, and object keeps its natural proportions. Instead, reframe the scene properly for a square: keep all main subjects and key objects fully visible, in the same arrangement relative to each other, and extend the background naturally on the top or bottom (or trim only empty edge space) so the result looks like a deliberately composed square shot of the same scene from the same camera angle. Place the main subject well within the square, with balanced, comfortable margins.\n\nANIME RENDERING:\nClean, delicate Japanese anime linework; soft painterly shading; natural gradients; vibrant, harmonious colors; detailed hair; expressive yet faithful facial features; cinematic lighting; and a beautifully painted fantasy atmosphere inspired by *Frieren: Beyond Journey's End*.\n\nCOLOR AND CONTRAST:\nUse vibrant colors, deep true blacks, rich shadows, and excellent contrast resembling a high-quality OLED display. Preserve detail in dark areas without crushing shadow details or making the image unnaturally oversaturated.\n\nSTRICT CONSTRAINTS:\nKeep all main subjects and key objects, with the same relative arrangement. No stretching, squashing, or distortion; no camera angle changes, no new subjects, and no missing subjects. If the photo has no person, animal, or character in it, the result has none either: never add a person, a face, or hands that are not in the photo. No text, letters, logos, or watermarks. Remove any news-agency or publisher logo, watermark, photographer credit, caption bar, border, or frame that is part of the source photo; show only the scene itself, edge to edge. Square 1:1 aspect ratio.\n\nThe final result must look like a professionally illustrated anime frame, and the original image faithfully preserved.";
+// FLUX.2 klein is a small model: it follows a short prompt better than the long one above (which stays for Gemini). It is asked for a
+// picture of the source's own shape (see outputSize), so it keeps the framing. Keep in step with PROMPT in tools/remake_image.py.
+const KLEIN_PROMPT = "Redraw this photo as a 2D Japanese anime frame in the style of Frieren: Beyond Journey's End: clean, delicate " +
+  "linework, soft painterly shading, vibrant harmonious colors, deep blacks, rich contrast, cinematic lighting. Keep the same scene, " +
+  "subjects, layout, camera angle, framing and aspect ratio; change only the drawing style. Add no people or objects that are not in " +
+  "the photo. Remove all text, logos, watermarks, captions and borders.";
 const SOURCE_IMAGE_MAX_BYTES = 6 * 1024 * 1024;
 
 async function animeLeft(env, now) {
@@ -585,7 +592,7 @@ export function outputSize(size) {
 // The source picture as it is (a square crop would cut away part of a wide photo, often one of its subjects; FLUX gets the photo's own shape instead,
 // see outputSize). Answers {bytes, mime} or {error}.
 async function fetchSource(thumb) {
-  const res = await fetch(thumb, { headers: { "User-Agent": "Mozilla/5.0 (compatible; OmonOmonBot/1.0)" }, signal: AbortSignal.timeout(10000), redirect: "follow" }).catch((e) => ({ ok: false, status: 0, headers: new Headers(), failed: String(e.message || e) }));
+  const res = await fetch(thumb, { headers: { "User-Agent": "Mozilla/5.0 (compatible; OmonOmonBot/1.0)" }, signal: AbortSignal.timeout(25000), redirect: "follow" }).catch((e) => ({ ok: false, status: 0, headers: new Headers(), failed: String(e.message || e) }));
   const mime = (res.headers.get("Content-Type") || "").split(";")[0].trim();
   if (!res.ok || !/^image\/(jpeg|png|webp)$/.test(mime)) return { error: `${res.status || res.failed} ${mime}` };
   const bytes = new Uint8Array(await res.arrayBuffer());

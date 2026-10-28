@@ -14,7 +14,9 @@
   // Plain (non-secret) variables, set on every deploy.
   "vars": {
     "ALLOWED_ORIGINS": "http://localhost,https://omonomon.securhat.com,https://hifebriansyah.github.io",
-    "THINKING_BUDGET": "0"
+    "THINKING_BUDGET": "0",
+    // Ghost comments and replies under whispers (the whisper itself and the chat stay on gemini-3.8-flash).
+    "REACTION_MODEL": "gemini-3.5-flash-lite"
   },
   // Secrets are never in the repo. GEMINI_API_KEY: enter it in the Cloudflare dashboard (Worker > Settings >
   // Variables and Secrets). AXIOM_TOKEN: put it in .env and the deploy script sets it. Deploys keep both.

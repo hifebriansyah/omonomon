@@ -384,6 +384,8 @@ html[data-frame="ribbon-4"] { --frame: 0 0 0 3px #8fd16b, 0 0 12px #8fd16baa; }
 .back-btn.with-label h1 { margin: 0; font-family: var(--comic); font-size: 1.6rem; flex: none; }
 
 /* whispers feed: the end of the list (loading, retry, the end note) */
+.w-new { position: sticky; top: 10px; z-index: 6; display: flex; justify-content: center; height: 0; list-style: none; margin: 0; padding: 0; overflow: visible; } /* the "N new whispers" pill: takes no room, stays at the top while the feed scrolls */
+.w-new button { margin-top: 4px; font: inherit; font-size: 0.85rem; padding: 6px 16px; border-radius: 999px; border: 0; background: var(--accent); color: #14161c; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45); cursor: pointer; }
 .w-tail { list-style: none; text-align: center; color: var(--muted); font-size: 0.85rem; padding: 14px 0 22px; min-height: 1px; }
 .w-tail:empty { padding: 0; }
 .w-retry { margin-left: 8px; font: inherit; font-size: 0.82rem; padding: 3px 12px; border-radius: 999px; border: 1px solid var(--muted); background: none; color: inherit; cursor: pointer; }

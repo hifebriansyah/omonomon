@@ -347,6 +347,53 @@ export async function startWhispers() {
       tailSay(more ? "" : whispers.length ? T.feedEnd : "", false);
       say(whispers.length ? "" : T.whisperNone);
       if (whispers.length) markSeen(whispers[0].t);
+      // ---- new whispers ----
+      // An installed app window has no reload button, so the feed looks for newer whispers by itself (every minute, and when the window comes back to the
+      // front) and shows a pill "N new whispers"; a tap on it puts them at the top. Tapping the Whispers tab again does the same, without reloading.
+      let top = whispers.length ? whispers[0].n : 0;
+      let waiting = [];   // newer whispers found, newest first, not on the page yet
+      let pill = null;
+      let lastCheck = Date.now();
+      const showWaiting = () => {
+        const fresh = waiting.filter((w) => byId[w.ghost]);
+        const gap = waiting.length >= PAGE_SIZE;   // so many new ones that the page would miss some of them in between: start over
+        waiting = [];
+        if (pill) { pill.remove(); pill = null; }
+        if (gap) { location.reload(); return; }
+        if (fresh.length) {
+          list.prepend(...fresh.map((w) => whisperItem(w, byId[w.ghost], false)));
+          top = Math.max(top, ...fresh.map((w) => w.n));
+          markSeen(fresh[0].t);
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      };
+      const checkNew = async (fresh = false) => {
+        if (document.hidden && !fresh) return;
+        lastCheck = Date.now();
+        try {
+          const page = await getJson(`${base}/whispers?limit=${PAGE_SIZE}${fresh ? `&x=${Date.now()}` : ""}`);   // &x= skips the 2 minute cache
+          waiting = page.whispers.filter((w) => w.n > top);
+        } catch { return; }   // offline or an error: try again at the next check
+        if (!waiting.length) { if (pill) { pill.remove(); pill = null; } return; }
+        if (!pill) {
+          const b = el("button", "", "");
+          b.type = "button";
+          b.addEventListener("click", showWaiting);
+          pill = el("li", "w-new");
+          pill.append(b);
+          list.prepend(pill);
+        }
+        pill.firstChild.textContent = `\u2191 ${T.newWhispers(waiting.length)}`;
+      };
+      setInterval(() => checkNew(), 60_000);
+      document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - lastCheck > 20_000) checkNew(); });
+      window.addEventListener("focus", () => { if (Date.now() - lastCheck > 20_000) checkNew(); });
+      document.querySelector('.tabbar a.tab[data-tab="whispers"]')?.addEventListener("click", async (e) => {
+        e.preventDefault();   // already here: look for new whispers and go to the top instead of loading the page again
+        await checkNew(true);
+        if (waiting.length) showWaiting(); else window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
       // coming back from a whisper or a profile: keep loading pages until the place the visitor left is on the page, then go there
       await restoreScroll(more ? loadMore : null);
       if (more) observer.observe(tail);
