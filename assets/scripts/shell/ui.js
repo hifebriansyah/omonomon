@@ -60,6 +60,20 @@ const https = (u) => typeof u === "string" && /^https:\/\//.test(u);
 // parameters; on a phone with the Instagram app it opens the app) and shows a play button on its cover.
 const reelId = (url) => /^https:\/\/www\.instagram\.com\/reels?\/([\w-]{5,20})\/?(?:embed\/?)?(?:[?#]|$)/.exec(url)?.[1] || null;
 
+// A plain thought (a whisper with no link or picture) is shown as a square sticky note: pastel paper, white text. The paper colour is the
+// ghost's own (a softened version of her accent, deep enough for white letters), so the colour tells who wrote it; the text stays real text
+// (copyable, readable by screen readers).
+const NOTE_COLORS = { pocomon: "#a07fd6", ngesomon: "#e2707f", sundemon: "#d99a3a", kuntimon: "#4db58a" };
+export function noteFrame(w, text, href, ghost) {
+  const note = el(href ? "a" : "div", "w-note");
+  if (href) note.href = href;
+  note.style.setProperty("--note", NOTE_COLORS[ghost?.slug] || ghost?.accent || "#8d9ae8");
+  note.style.setProperty("--tilt", `${(Number(w.n) || 0) % 2 ? -0.7 : 0.6}deg`);
+  note.dataset.size = text.length <= 50 ? "s" : text.length <= 100 ? "m" : "l";   // short thoughts get bigger letters
+  note.append(el("span", "w-note-text", text));
+  return note;
+}
+
 export function linkCard(link) {
   if (!link || !https(link.url)) return null;
   const reel = reelId(link.url);

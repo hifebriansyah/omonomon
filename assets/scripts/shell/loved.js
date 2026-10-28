@@ -3,7 +3,7 @@
 
 import { chatTime } from "../time.js";
 import { T, lang } from "../games/text.js";
-import { el, heartIcon, shareButton, linkCard } from "./ui.js";
+import { el, heartIcon, shareButton, linkCard, noteFrame } from "./ui.js";
 import { lovedList, removeLove } from "./loved-store.js";
 import { deviceId } from "./identity.js";
 
@@ -48,7 +48,7 @@ export async function startLoved() {
       });
       const actions = el("div", "w-actions");
       actions.append(love, shareButton("", `${location.origin}/whispers/${c.slug ? `${c.slug}/` : ""}?n=${w.n}${lang === "en" ? "&lang=en" : ""}`));
-      li.append(head, el("p", "w-text", w.text[lang] || w.text.en), ...[linkCard(w.link)].filter(Boolean), actions);
+      li.append(head, linkCard(w.link) ? el("p", "w-text", w.text[lang] || w.text.en) : noteFrame(w, w.text[lang] || w.text.en, undefined, c), ...[linkCard(w.link)].filter(Boolean), actions);
       return li;
     }));
     note.textContent = items.length ? "" : T.lovedNone;

@@ -6,7 +6,7 @@ import { chatTime } from "../time.js";
 import { T, lang } from "../games/text.js";
 import { markSeen } from "./whisper-badge.js";
 import { nickname, deviceId, myComments, rememberComment, forgetComment } from "./identity.js";
-import { el, bubbleIcon, heartIcon, backIcon, sendIcon, shareButton, linkCard } from "./ui.js";
+import { el, bubbleIcon, heartIcon, backIcon, sendIcon, shareButton, linkCard, noteFrame } from "./ui.js";
 import { isLoved, toggleLove } from "./loved-store.js";
 import { recordSocial } from "../games/progress.js";
 import { toast } from "../toast.js";
@@ -208,12 +208,17 @@ export async function startWhispers() {
         head.append(back);
       }
       head.append(pic, who);
-      const text = el("p", "w-text");
-      if (single) text.textContent = w.text[lang] || w.text.en;
-      else { // in the feed the text opens that whisper's own page (whispers/?n=<id>)
-        const open = el("a", "w-text-link", w.text[lang] || w.text.en);
-        open.href = `whispers/?n=${w.n}`;
-        text.append(open);
+      const words = w.text[lang] || w.text.en;
+      let text;
+      if (!linkCard(w.link)) text = noteFrame(w, words, single ? undefined : `whispers/?n=${w.n}`, c);   // a plain thought: a sticky note (in the feed it opens that whisper's own page)
+      else {
+        text = el("p", "w-text");
+        if (single) text.textContent = words;
+        else { // in the feed the text opens that whisper's own page (whispers/?n=<id>)
+          const open = el("a", "w-text-link", words);
+          open.href = `whispers/?n=${w.n}`;
+          text.append(open);
+        }
       }
 
       const count = el("span", "w-count", String(w.comments || 0));

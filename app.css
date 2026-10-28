@@ -214,6 +214,13 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .w-ad ins { min-width: 250px; }
 .whisper .avatar { width: 46px; height: 46px; }
 .w-text { margin: 10px 0 6px; font-family: var(--comic); line-height: 1.45; color: #e8ebf2; overflow-wrap: anywhere; }
+/* A plain thought is a square sticky note: pastel paper (--note, set per whisper), white text, a strip of tape on top */
+.w-note { position: relative; display: grid; place-items: center; box-sizing: border-box; width: 100%; max-width: 480px; aspect-ratio: 1 / 1; margin: 14px 0 10px; padding: 11% 10%; border-radius: 6px; background: linear-gradient(160deg, color-mix(in srgb, var(--note) 90%, #fff), var(--note)); color: #fff; text-align: center; text-decoration: none; font-family: var(--comic); font-weight: 700; line-height: 1.3; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.38), inset 0 -22px 30px rgba(0, 0, 0, 0.07); transform: rotate(var(--tilt, 0deg)); container-type: inline-size; overflow-wrap: anywhere; }
+.w-note::before { content: ""; position: absolute; top: -9px; left: 50%; width: 22%; height: 20px; border-radius: 2px; background: rgba(255, 255, 255, 0.38); transform: translateX(-50%) rotate(-2deg); }
+.w-note-text { display: block; font-size: 1.45rem; font-size: clamp(1.1rem, 10cqw, 2.4rem); }
+.w-note[data-size="m"] .w-note-text { font-size: 1.25rem; font-size: clamp(1rem, 7.6cqw, 2rem); }
+.w-note[data-size="l"] .w-note-text { font-size: 1.1rem; font-size: clamp(0.95rem, 6.2cqw, 1.6rem); }
+a.w-note:hover { filter: brightness(1.04); }
 /* The card for what the ghost found online: picture, title, source */
 .w-card { display: flex; flex-direction: column; margin: 6px 0 8px; overflow: hidden; border: 1px solid #2f333d; border-radius: 12px; background: #20232b; color: inherit; text-decoration: none; }
 .w-card:hover { border-color: var(--c, var(--accent)); }
