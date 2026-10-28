@@ -10,9 +10,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
-SIZE = 1080          # the picture, in pixels
+SIZE = 800           # the picture, in pixels
 SS = 2               # drawn at twice the size, then scaled down: smooth edges
-BACKGROUND = (20, 22, 28)
 # the paper colour of each ghost: the same as NOTE_COLORS in assets/scripts/shell/ui.js
 COLORS = {"pocomon": "#a07fd6", "ngesomon": "#e2707f", "sundemon": "#d99a3a", "kuntimon": "#4db58a"}
 HERE = Path(__file__).resolve().parent
@@ -100,7 +99,7 @@ def wrap(text, font, max_width):
 
 
 def render_note(slug, text, n, font_path):
-    ns = 860 * SS                      # the note, in drawing pixels
+    ns = SIZE * SS                     # the note fills the whole picture, in drawing pixels
     k = ns / 480                       # one CSS pixel of the 480px note
     color = rgb(COLORS.get(slug, "#8d9ae8"))
     # paper: a soft light at the top, the ghost's colour below
@@ -138,24 +137,8 @@ def render_note(slug, text, n, font_path):
         wd.text((x, y), line, font=font, fill=(255, 255, 255, 255))
     note.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(2 * k)))
     note.alpha_composite(words)
-    # rounded corners
-    corners = Image.new("L", (ns, ns), 0)
-    ImageDraw.Draw(corners).rounded_rectangle([0, 0, ns - 1, ns - 1], radius=6 * k, fill=255)
-    note.putalpha(corners)
-
-    # the table: dark, a shadow, the note turned by its small tilt (the same alternation as the page), a strip of tape
-    canvas = Image.new("RGBA", (SIZE * SS, SIZE * SS), BACKGROUND + (255,))
-    tilt = -0.7 if n % 2 else 0.6      # CSS degrees turn clockwise, Pillow's turn counter-clockwise
-    left = top_y = (SIZE * SS - ns) // 2
-    shadow = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
-    ImageDraw.Draw(shadow).rounded_rectangle([left, top_y + 8 * k, left + ns, top_y + ns + 8 * k], radius=6 * k, fill=(0, 0, 0, 105))
-    canvas.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(9 * k)))
-    turned = note.rotate(-tilt, resample=Image.BICUBIC, expand=True)
-    canvas.alpha_composite(turned, ((SIZE * SS - turned.width) // 2, (SIZE * SS - turned.height) // 2))
-    tape = Image.new("RGBA", (round(0.22 * ns), round(20 * k)), (255, 255, 255, 97))
-    tape = tape.rotate(2, resample=Image.BICUBIC, expand=True)    # CSS rotate(-2deg)
-    canvas.alpha_composite(tape, ((SIZE * SS - tape.width) // 2, round(top_y - 9 * k)))
-    return canvas.convert("RGB").resize((SIZE, SIZE), Image.LANCZOS)
+    # the picture is the note itself, edge to edge: no tilt, no tape, no border, square corners (JPEG has no transparency)
+    return note.convert("RGB").resize((SIZE, SIZE), Image.LANCZOS)
 
 
 def jpeg(image):

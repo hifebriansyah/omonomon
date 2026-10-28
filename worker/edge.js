@@ -70,7 +70,7 @@ export default {
     // The static page declares a square picture of known size. A redrawn article picture is a 900x900 crop too (IMAGE_OPTIONS in api.js), so it keeps
     // a square's hints; any other article picture (an original, usually wide) drops them.
     const squareThumb = Boolean(thumb && thumb.includes("height=900"));
-    const square = squareThumb ? set("900") : note ? set("1080") : thumb ? { element: (e) => e.remove() } : {};   // the note picture is 1080x1080
+    const square = squareThumb ? set("900") : note ? set("800") : thumb ? { element: (e) => e.remove() } : {};   // the note picture is 800x800
     return new HTMLRewriter()
       .on('meta[property="og:image:width"]', square)
       .on('meta[property="og:image:height"]', square)
