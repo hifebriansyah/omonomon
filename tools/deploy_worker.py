@@ -200,6 +200,7 @@ def main():
             set_secret(base, account, cfg["name"], token, "YOUTUBE_API_KEY")  # optional: popular Indonesian videos for whispers
             set_secret(base, account, cfg["name"], token, "VAPID_PRIVATE_JWK")  # optional: Web Push to subscribers
             set_secret(base, account, cfg["name"], token, "TURNSTILE_SECRET")  # optional: the bot check on a first sign-in
+            set_secret(base, account, cfg["name"], token, "NOTE_RENDER_TOKEN")  # optional: the secret shared with the Vercel function that draws a plain thought's share picture
     if cfg.get("crons"):
         res = call(base, token, "PUT", f"/accounts/{account}/workers/scripts/{cfg['name']}/schedules", [{"cron": c} for c in cfg["crons"]])
         print(f"Timer {', '.join(cfg['crons'])}" if res.get("success") else f"Timer NOT set: {res.get('errors')}")

@@ -19,6 +19,8 @@
 //   POST   /internal/redraw/<n>          redraw an article whisper's picture now (secret INTERNAL_TOKEN)
 //   GET    /img/<n>.jpg                  the redrawn picture of a whisper's article (made by tools/remake_image.py; reached through
 //                                         the edge Worker as /whispers/img/<n>.jpg, since an <img> sends no Origin)
+//   GET    /note/<n>.jpg (-en.jpg)       the sticky-note picture of a plain thought, for link previews (drawn by the Vercel function vercel/api/render.py
+//                                         right after the whisper is posted and kept in R2; reached through the edge Worker as /whispers/note/<n>.jpg)
 //   GET    /whispers/<n>                 one whisper by its number (older ones are no longer in the list above)
 //   POST   /internal/whisper             (secret INTERNAL_TOKEN) write one now; {ghost} optional
 //   DELETE /internal/whisper/<n>         (secret INTERNAL_TOKEN) remove one
@@ -754,6 +756,7 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
     .bind(id, String(en).slice(0, 220), idText ? String(idText).slice(0, 220) : null, now,
       link?.url ?? null, link ? link.title.slice(0, 200) : null, link ? link.source.slice(0, 60) : null, link?.thumb ?? null, animeKey).first();
   if (answeredComment) await env.DB.prepare("UPDATE comments SET answered_by = ?1 WHERE n = ?2").bind(saved.n, answeredComment).run().catch(() => {}); // answered once
+  if (!link) await drawNote(env, saved.n, id, en, idText).catch((err) => console.log(`note picture #${saved.n}: ${err.message}`));   // a plain thought: its sticky-note picture for link previews
   await reactToWhisper(env, { n: saved.n, ghost: id, en }, now).catch(() => {}); // the other ghosts react; a failure only means no reaction
   if (WHISPER_KEEP_MS) {
     await env.DB.prepare("DELETE FROM comments WHERE whisper_n IN (SELECT n FROM whispers WHERE created_at < ?1)").bind(now - WHISPER_KEEP_MS).run();
@@ -761,6 +764,37 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
     await env.DB.prepare("DELETE FROM whispers WHERE created_at < ?1").bind(now - WHISPER_KEEP_MS).run();
   }
   return { n: saved.n, ghost: id, t: now, text: { en, id: idText || null }, link: link ? { url: link.url, title: link.title, source: link.source, thumb: animeKey ? animeUrl(env.SITE_ORIGIN, saved.n, animeKey) : null } : null };
+}
+
+// A plain thought gets a sticky-note picture for link previews (the same note as on the whisper page). A small Python function on Vercel draws it
+// (vercel/api/render.py: POST {slug, text, n} with the shared secret, answers a JPEG); the picture is kept in R2 as note/<n>.jpg (the Indonesian words,
+// or the English ones when there are no others) and note/<n>-en.jpg (the English words). Needs NOTE_RENDER_URL (a variable) and NOTE_RENDER_TOKEN
+// (a secret); without them nothing happens, and a failure only means the link preview keeps the ghost's scene picture.
+const NOTE_SLUGS = { "1": "pocomon", "2": "ngesomon", "3": "sundemon", "4": "kuntimon" };   // characters.json ids
+async function drawNote(env, n, ghost, en, idText) {
+  const slug = NOTE_SLUGS[String(ghost)];
+  if (!env.NOTE_RENDER_URL || !env.NOTE_RENDER_TOKEN || !env.IMAGES || !slug) return;
+  const one = async (suffix, text) => {
+    const res = await fetch(env.NOTE_RENDER_URL, { method: "POST", headers: { "Content-Type": "application/json", "X-Token": env.NOTE_RENDER_TOKEN }, body: JSON.stringify({ slug, text: String(text).slice(0, 220), n }), signal: AbortSignal.timeout(25000) });
+    if (!res.ok) throw new Error(`the note renderer answered ${res.status}`);
+    await env.IMAGES.put(`note/${n}${suffix}.jpg`, await res.arrayBuffer(), { httpMetadata: { contentType: "image/jpeg" } });
+  };
+  const [main, english] = await Promise.allSettled([one("", idText || en), idText && en ? one("-en", en) : Promise.resolve()]);
+  if (main.status === "rejected") throw main.reason;
+  if (english.status === "rejected") console.log(`note picture #${n} (English): ${english.reason?.message}`);
+}
+
+// A safety net on the timer: the newest plain thoughts that still have no picture (the call above failed or was too slow) are drawn now.
+export async function backfillNotes(env, max = 2) {
+  if (!env.NOTE_RENDER_URL || !env.IMAGES) return;
+  const rows = (await env.DB.prepare("SELECT n, ghost, text_en, text_id FROM whispers WHERE link_url IS NULL ORDER BY n DESC LIMIT 6").all()).results || [];
+  let done = 0;
+  for (const r of rows) {
+    if (done >= max) break;
+    if (await env.IMAGES.head(`note/${r.n}.jpg`)) continue;
+    await drawNote(env, r.n, r.ghost, r.text_en, r.text_id).catch((err) => console.log(`note picture #${r.n}: ${err.message}`));
+    done++;
+  }
 }
 
 // ---- comments ----
@@ -973,6 +1007,15 @@ export default {
       const res = new Response(obj.body, { headers: { "Content-Type": obj.httpMetadata?.contentType || "image/jpeg", "Cache-Control": "public, max-age=604800", "Access-Control-Allow-Origin": "*" } });
       ctx.waitUntil(caches.default.put(request, res.clone()));
       return res;
+    }
+
+    // GET /note/<whisper number>.jpg and /note/<n>-en.jpg: the sticky-note picture of a plain thought (see tools/make_note_image.py). Public like /img.
+    // The R2 key is built from the digits of the address only.
+    const note = /^\/note\/(\d{1,10})(-en)?\.jpg$/.exec(new URL(request.url).pathname);
+    if (note && (request.method === "GET" || request.method === "HEAD") && env.IMAGES) {
+      const obj = await env.IMAGES.get(`note/${note[1]}${note[2] || ""}.jpg`);
+      if (!obj) return new Response("not found", { status: 404, headers: { "Cache-Control": "public, max-age=60" } });   // a minute: it is drawn shortly after the post
+      return new Response(request.method === "HEAD" ? null : obj.body, { headers: { "Content-Type": "image/jpeg", "Cache-Control": "public, max-age=86400", "Access-Control-Allow-Origin": "*" } });
     }
 
     if (!originOk) return reply({ error: "forbidden" }, 403);
@@ -1389,6 +1432,8 @@ export default {
         logRequest(env, ctx, { _time: new Date().toISOString(), worker: "api", url: "cron:whisper", status: 500, error: String(err.message).slice(0, 120) })
       ).then(() => backfillAnime(env, event.scheduledTime).catch((err) =>   // then the older whispers that still have no anime picture
         logRequest(env, ctx, { _time: new Date().toISOString(), worker: "api", url: "cron:anime", status: 500, error: String(err.message).slice(0, 120) })
+      )).then(() => backfillNotes(env).catch((err) =>   // and the newest plain thoughts that still have no sticky-note picture
+        logRequest(env, ctx, { _time: new Date().toISOString(), worker: "api", url: "cron:note", status: 500, error: String(err.message).slice(0, 120) })
       ))
     );
   },

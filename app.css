@@ -226,7 +226,7 @@ button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outlin
 .w-note-text { position: relative; z-index: 1; }
 /* Sundemon's note cries: three dark tear drops fall from the top edge behind the words, each with a faint trail, then fade and start over.
    Sizes are in cqw (a hundredth of the note's width), so the drops scale with the note. */
-.w-note-tears { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; z-index: 0; }
+.w-note-tears { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; z-index: 0; transform: rotate(calc(var(--tilt, 0deg) * -1)) scale(calc(1.01 + cos(var(--tilt, 0deg)) - 1 + sin(max(var(--tilt, 0deg), var(--tilt, 0deg) * -1)))); }   /* turned back against the note's own tilt, so the drops fall straight down on screen at any tilt (the scale, 1 + sin of the angle, keeps the corners covered) */
 .w-note-tears i { position: absolute; top: 0; left: 20%; width: 2.2cqw; height: 3.3cqw; border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%; background: rgba(20, 12, 0, 0.4); opacity: 0; animation: w-tear 9s ease-in infinite; }
 .w-note-tears i::before { content: ""; position: absolute; left: 50%; bottom: 78%; width: 0.6cqw; height: 15cqw; transform: translateX(-50%); border-radius: 999px; background: linear-gradient(to top, rgba(20, 12, 0, 0.3), rgba(20, 12, 0, 0)); }
 .w-note-tears i:nth-child(2) { left: 58%; animation-duration: 11s; animation-delay: -3.5s; }

@@ -1,0 +1,5 @@
+{
+  "functions": {
+    "api/render.py": { "maxDuration": 30, "memory": 1024, "includeFiles": "{note_render.py,fonts/**}" }
+  }
+}

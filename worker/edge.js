@@ -35,6 +35,12 @@ export default {
       const res = await env.API.fetch(`https://api.internal/img/${picture[1]}.jpg${url.search}`);
       return tagged(request.method === "HEAD" ? new Response(null, { status: res.status, headers: res.headers }) : res, "picture");
     }
+    // /whispers/note/<n>.jpg (and -en.jpg): the sticky-note picture of a plain thought (tools/make_note_image.py), served from R2 by the API Worker
+    const noteImage = /^\/whispers\/note\/(\d{1,10})(-en)?\.jpg$/.exec(url.pathname);
+    if (noteImage && (request.method === "GET" || request.method === "HEAD")) {
+      const res = await env.API.fetch(`https://api.internal/note/${noteImage[1]}${noteImage[2] || ""}.jpg`, { method: request.method });
+      return tagged(res, "note picture");
+    }
     const n = url.searchParams.get("n") || "";
     if (request.method !== "GET" || !/^\d{1,10}$/.test(n)) return tagged(await fetch(request), "skip");
 
@@ -52,16 +58,23 @@ export default {
     const title = headline || (id ? `${ghost.name} di ${site}` : `${ghost.name} on ${site}`);
     // A whisper that points to an article, trend or video uses that picture; the ghost's own picture is the fallback.
     const thumb = typeof whisper.link?.thumb === "string" && /^https:\/\//.test(whisper.link.thumb) ? whisper.link.thumb : null;
-    const image = thumb || `${url.origin}/builds/img/scenes/1_1/${ghost.id}.jpg`;
+    // A plain thought (no article) shows its own sticky note when that picture has been drawn (a minute or two after the post); until then, the ghost's scene.
+    let note = null;
+    if (!thumb) {
+      const key = `${n}${url.searchParams.get("lang") === "en" && whisper.text?.id ? "-en" : ""}`;   // the English picture exists only when the whisper also has Indonesian words
+      const found = await env.API.fetch(`https://api.internal/note/${key}.jpg`, { method: "HEAD" }).catch(() => null);
+      if (found?.ok) note = `${url.origin}/whispers/note/${key}.jpg`;
+    }
+    const image = thumb || note || `${url.origin}/builds/img/scenes/1_1/${ghost.id}.jpg`;
     const set = (value) => ({ element: (e) => e.setAttribute("content", value) });
     // The static page declares a square picture of known size. A redrawn article picture is a 900x900 crop too (IMAGE_OPTIONS in api.js), so it keeps
     // a square's hints; any other article picture (an original, usually wide) drops them.
     const squareThumb = Boolean(thumb && thumb.includes("height=900"));
-    const square = squareThumb ? set("900") : thumb ? { element: (e) => e.remove() } : {};
+    const square = squareThumb ? set("900") : note ? set("1080") : thumb ? { element: (e) => e.remove() } : {};   // the note picture is 1080x1080
     return new HTMLRewriter()
       .on('meta[property="og:image:width"]', square)
       .on('meta[property="og:image:height"]', square)
-      .on('meta[name="twitter:card"]', squareThumb ? set("summary") : thumb ? set("summary_large_image") : {})
+      .on('meta[name="twitter:card"]', squareThumb || note ? set("summary") : thumb ? set("summary_large_image") : {})
       .on("title", { element: (e) => e.setInnerContent(title) })
       .on('meta[name="description"]', set(text))
       .on('meta[property="og:title"]', set(title))

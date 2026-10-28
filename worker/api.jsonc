@@ -19,6 +19,8 @@
   "vars": {
     "GOOGLE_CLIENT_ID": "620395952409-mv96o61s4ep74n5vuohqvvk23tvt0i6p.apps.googleusercontent.com",
     "ALLOWED_ORIGINS": "https://omonomon.securhat.com,http://localhost",
+    // The Vercel function that draws the sticky-note picture of a plain thought (vercel/api/render.py); the shared secret is NOTE_RENDER_TOKEN
+    "NOTE_RENDER_URL": "https://omonomon-notes.vercel.app/api/render",
     "IMAGE_DAILY_MAX": "85",
     "IMAGE_GEMINI_DAILY_MAX": "10",
     "GEMINI_URL": "https://geminimon.securhat.com/whisper",
