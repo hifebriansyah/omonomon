@@ -65,11 +65,17 @@ const reelId = (url) => /^https:\/\/www\.instagram\.com\/reels?\/([\w-]{5,20})\/
 // (copyable, readable by screen readers).
 const NOTE_COLORS = { pocomon: "#a07fd6", ngesomon: "#e2707f", sundemon: "#d99a3a", kuntimon: "#4db58a" };
 export function noteFrame(w, text, href, ghost) {
-  const note = el(href ? "a" : "div", "w-note");
+  const note = el(href ? "a" : "div", /^[a-z]+$/.test(ghost?.slug || "") ? `w-note w-note-${ghost.slug}` : "w-note");   // her own pattern on the paper (see app.css)
   if (href) note.href = href;
   note.style.setProperty("--note", NOTE_COLORS[ghost?.slug] || ghost?.accent || "#8d9ae8");
   note.style.setProperty("--tilt", `${(Number(w.n) || 0) % 2 ? -0.7 : 0.6}deg`);
   note.dataset.size = text.length <= 50 ? "s" : text.length <= 100 ? "m" : "l";   // short thoughts get bigger letters
+  if (ghost?.slug === "sundemon") {   // her note cries: three slow tear drops fall behind the words (drawn by CSS only, see app.css)
+    const tears = el("span", "w-note-tears");
+    tears.setAttribute("aria-hidden", "true");
+    tears.append(el("i"), el("i"), el("i"));
+    note.append(tears);
+  }
   note.append(el("span", "w-note-text", text));
   return note;
 }
