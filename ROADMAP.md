@@ -5,7 +5,7 @@ more games, a 3D track with three.js, and a monetization plan. Each phase can sh
 
 The constraints still hold:
 - Free hosting: GitHub Pages, Cloudflare Workers and D1.
-- Python tooling and plain ES modules; no Node build step.
+- Python tooling for images, scenes, shards, Vercel and Worker ops; Node 24 (Vite + React Router 7 + TypeScript + Tailwind 4 + Storybook) for the front-end SPA and pre-rendered pages.
 - Nothing secret in the repo.
 - No pet names, and no "just a bot" lines.
 - Character IDs are numbers.
@@ -26,7 +26,7 @@ What is missing:
 ## Phase 0: Foundation (do first, all small)
 | # | Work | Size | Why |
 |---|---|---|---|
-| 0.1 | Versioned script and style URLs at build time (`main.js?v=<hash>`, set by `build_all.py`) | S | Fixes the stale-cache bug for good, with no Cloudflare rule needed |
+| 0.1 | Versioned script and style URLs at build time (Vite hashed assets + Workbox precache) | S | Fixes the stale-cache bug for good, with no Cloudflare rule needed |
 | 0.2 | Move the Worker and game tests into `tests/` and run them in CI | M | Lets later phases go fast without breaking chat or saves |
 | 0.3 | Error reporting from the page: `window.onerror` sends to the API Worker, which writes to Axiom (rate limited) | S | Bugs on phones show up in the log, not in DMs |
 | 0.4 | Axiom dashboard: requests, 429s, Gemini calls a day, comments, game runs | S | See what people actually use before building more |
@@ -43,8 +43,8 @@ What is missing:
 
 ## Phase 2: More games
 Each ghost gets a second game; then shared games bring them together. The rules for every new game:
-- It runs on the existing frame: `progress.js`, the result screen, quests and the `games.json` entry.
-- It is under 300 lines and works with touch and keys.
+- It runs on the existing frame: `app/features/games/progress.ts`, the result screen, quests and the `games.json` / `games.d/*.json` entry.
+- It is split into `logic.ts` (pure) and `Game.tsx` (view) under `app/features/games/<slug>/` and works with touch and keys.
 - It has an option for reduced motion.
 - It has EN and ID text.
 
@@ -75,15 +75,14 @@ global daily cap, so cost stays bounded.
 - Short how-to-play clips (animated WebP).
 
 ## Phase 2b: 3D with three.js
-three.js gives the app the depth that 2D cutouts can't. It still fits "no Node build":
-- A pinned copy of `three.module.min.js` (and the few addons that are needed) is saved in `assets/vendor/three/`.
-- An import map points to it, so there is no CDN at run time. It is about 170 KB gzipped.
-- It loads only on pages that use it, through a lazy `import()`.
-- Every 3D feature has a 2D fallback. It falls back when WebGL is missing, when Save-Data is on, on low-end devices (`navigator.deviceMemory` of 2 or less), and when reduced motion is set.
+three.js (via React Three Fiber in `app/features/three/`) gives the app the depth that 2D cutouts can't:
+- `three` and `@react-three/fiber` come from npm, bundled only into the lazy-loaded 3D chunks (`three-LICENSE.txt` is copied into the build output).
+- It loads only on pages that use it, through `React.lazy()`.
+- Every 3D feature has a 2D fallback. It falls back when WebGL2 is missing, when Save-Data is on, on low-end devices (`navigator.deviceMemory` of 2 or less), and when reduced motion is set.
 
 | # | Work | Size |
 |---|---|---|
-| 3D.1 | **Shared 3D kit** (`assets/scripts/three/`): a renderer that pauses when the tab is hidden, a pixel-ratio cap of 2, fog, a moonlight and lantern light rig, the ghost cutouts as camera-facing sprites with a soft glow, and a small particle system (fireflies, dust, mist). Built once and used by everything below | M |
+| 3D.1 | **Shared 3D kit** (`app/features/three/scene-kit.tsx`): a renderer that pauses when the tab or canvas is hidden, a pixel-ratio cap of 2, fog, a moonlight and lantern light rig, the ghost cutouts as camera-facing sprites with a soft glow, and a small particle system (fireflies, dust, mist). Built once and used by everything below | M |
 | 3D.2 | **Chat stage, 2.5D**: the ghost stands in a small 3D scene (a bamboo grove, a hospital corridor, a garden, a banyan tree) with slow parallax from the phone tilting or the mouse, plus mist. The bubble stays HTML. It ties into the shop's backgrounds | M |
 | 3D.3 | **Hop Hop 3D** (*Lompat Kubur*): a three-lane endless runner through a graveyard, with Pocomon hopping toward the camera. Swipe to change lanes and tap to hop. The 2D Hop Hop stays as the fallback | L |
 | 3D.4 | **Rumah Hantu** (*Haunted House*): a short first-person walk through rooms. Each room is one ghost's mini puzzle (find 5 hidden items, light the lanterns in order). Joystick on touch, WASD on desktop | L |

@@ -1,0 +1,152 @@
+/* Omon Omon: Tailwind CSS plus the design tokens of the old app.css and style.css.
+   Components use utilities. What utilities cannot say (keyframes, looks set on <html> by the Candle shop) lives here. */
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+/* data-tab-focus: keyboard focus rings only while someone is really tabbing (see components/FocusRings.tsx). */
+@custom-variant using-tab (&:where(.using-tab, .using-tab *));
+
+@theme {
+  /* colours */
+  --color-bg: #1b1d23;
+  --color-ink: #14151a;
+  --color-text: #e4e7ed;
+  --color-muted: #8a92a1;
+  --color-soft: #cfd4de; /* intro text */
+  --color-preview: #b6bcc9; /* last message in the chat list */
+  --color-panel: #262932;
+  --color-row: #20232b; /* row hover */
+  --color-line: #2a2d36; /* row divider */
+  --color-edge: #3a3e4a;
+  --color-menu: #2b2f39;
+  --color-menu-line: #3d4250;
+  --color-paper: #eef1f8; /* behind avatars */
+  --color-candle: #ffb454;
+  --color-gold: #f5c542;
+  --color-good: #7bd88f;
+  --color-bad: #ff6b81;
+  --color-link: #c9b3ee;
+
+  /* fonts */
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-comic: "Comic Sans MS", "Comic Neue", "Chalkboard SE", "Marker Felt", "Segoe Print", system-ui, sans-serif;
+
+  /* sizes */
+  --container-page: 520px; /* every page is this wide at most: chat, list, games, me, privacy */
+  --radius-card: 14px;
+  --radius-bubble: 22px;
+  --shadow-comic: 3px 3px 0 var(--color-ink);
+  --shadow-comic-lg: 6px 6px 0 rgba(0, 0, 0, 0.55);
+
+  /* animations (the keyframes are below) */
+  --animate-bob: bob 3.2s linear infinite;
+  --animate-hop: hop 0.45s ease-out;
+  --animate-pop: pop 0.9s ease-out both;
+  --animate-blink: blink 1.2s ease-in-out infinite;
+  --animate-toast-in: toast-in 0.25s ease-out;
+  --animate-shake: shake 0.3s linear;
+}
+
+:root {
+  --accent: #a47fd0; /* the current ghost's colour; pages set it */
+  --bubble-bg: #fff;
+  --bubble-ink: var(--color-ink);
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-text);
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    background: var(--color-bg);
+  }
+  [hidden] {
+    display: none !important;
+  }
+  :focus-visible {
+    outline: none;
+  }
+  .using-tab :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+  }
+}
+
+/* A slow float and sway, as a sine wave sampled every 1/12 of the cycle (so it needs linear timing). It starts and ends at
+   rest: a loop that begins tilted makes the picture snap the moment it starts, after the entrance and after a hop. */
+@keyframes bob {
+  0% { transform: translateY(0px) rotate(0deg); }
+  8.33% { transform: translateY(-0.54px) rotate(0.3deg); }
+  16.67% { transform: translateY(-2px) rotate(0.52deg); }
+  25% { transform: translateY(-4px) rotate(0.6deg); }
+  33.33% { transform: translateY(-6px) rotate(0.52deg); }
+  41.67% { transform: translateY(-7.46px) rotate(0.3deg); }
+  50% { transform: translateY(-8px) rotate(0deg); }
+  58.33% { transform: translateY(-7.46px) rotate(-0.3deg); }
+  66.67% { transform: translateY(-6px) rotate(-0.52deg); }
+  75% { transform: translateY(-4px) rotate(-0.6deg); }
+  83.33% { transform: translateY(-2px) rotate(-0.52deg); }
+  91.67% { transform: translateY(-0.54px) rotate(-0.3deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+@keyframes hop {
+  0% { transform: scale(1, 1); }
+  30% { transform: scale(0.95, 1.07) translateY(-14px); }
+  60% { transform: scale(1.04, 0.96); }
+  100% { transform: scale(1, 1); }
+}
+/* The ghost slowly appears: blurry and faint at first, flickering once on the way, then clear. */
+@keyframes pop {
+  0% { opacity: 0; filter: blur(10px) drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22)); }
+  35% { opacity: 0.5; filter: blur(5px) drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22)); }
+  50% { opacity: 0.4; filter: blur(6px) drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22)); }
+  75% { opacity: 0.85; filter: blur(2px) drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22)); }
+  100% { opacity: 1; filter: blur(0) drop-shadow(0 5px 0 rgba(20, 21, 26, 0.22)); }
+}
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-4px); }
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translate(-50%, 10px); }
+}
+@keyframes shake {
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* ---- Looks from the Candle shop and from bond rewards (set on <html> by features/games/cosmetics.ts) ---- */
+/* The stage is any element with data-stage-look. */
+html[data-ghost-stage="1"] [data-stage-look] { background-color: color-mix(in srgb, var(--accent) 35%, #fff); background-image: radial-gradient(circle at 80% 18%, #fff8d8 0 22px, transparent 24px), radial-gradient(color-mix(in srgb, var(--accent) 55%, transparent) 1.7px, transparent 2.2px); background-size: auto, 14px 14px; }
+html[data-ghost-stage="2"] [data-stage-look] { background-image: repeating-linear-gradient(0deg, color-mix(in srgb, var(--accent) 35%, transparent) 0 2px, transparent 2px 28px), radial-gradient(color-mix(in srgb, var(--accent) 45%, transparent) 1.7px, transparent 2.2px); background-size: auto, 14px 14px; }
+html[data-ghost-stage="3"] [data-stage-look] { background-image: radial-gradient(ellipse 7px 4px at 20% 30%, color-mix(in srgb, var(--accent) 70%, #fff) 99%, transparent), radial-gradient(ellipse 7px 4px at 70% 60%, color-mix(in srgb, var(--accent) 70%, #fff) 99%, transparent), radial-gradient(color-mix(in srgb, var(--accent) 45%, transparent) 1.7px, transparent 2.2px); background-size: 90px 90px, 120px 120px, 14px 14px; }
+html[data-ghost-stage="4"] [data-stage-look] { background-image: linear-gradient(160deg, transparent 0 60%, color-mix(in srgb, var(--accent) 40%, transparent) 60% 100%), radial-gradient(color-mix(in srgb, var(--accent) 55%, transparent) 1.7px, transparent 2.2px); background-size: auto, 14px 14px; }
+html[data-stage="stripes"] [data-stage-look] { background-image: repeating-linear-gradient(45deg, color-mix(in srgb, var(--accent) 35%, transparent) 0 10px, transparent 10px 22px); background-size: auto; }
+html[data-stage="grid"] [data-stage-look] { background-color: #fffdf4; background-image: linear-gradient(color-mix(in srgb, var(--accent) 40%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--accent) 40%, transparent) 1px, transparent 1px); background-size: 20px 20px; }
+html[data-stage="stars"] [data-stage-look] { background-color: #1b1f3a; background-image: radial-gradient(#fff 1px, transparent 1.6px), radial-gradient(#ffe9a8 1.2px, transparent 2px); background-size: 37px 37px, 61px 61px; background-position: 0 0, 18px 22px; }
+html[data-stage="dusk"] [data-stage-look] { background-color: #3a2a4d; background-image: radial-gradient(circle at 78% 20%, #fff3c4 0 18px, transparent 20px), linear-gradient(#3a2a4d, color-mix(in srgb, var(--accent) 45%, #f4a36b)); background-size: auto; }
+html[data-bubble="mint"] { --bubble-bg: #dcf7e8; }
+html[data-bubble="rose"] { --bubble-bg: #fde0e6; }
+html[data-bubble="sky"] { --bubble-bg: #dcecff; }
+html[data-bubble="night"] { --bubble-bg: #25274d; --bubble-ink: #f1f1ff; }
+html[data-frame="gold"] { --frame: 0 0 0 3px #f5c542, 0 0 12px #f5c542aa; }
+html[data-frame="ember"] { --frame: 0 0 0 3px #ff7a45, 0 0 12px #ff5a1faa; }
+html[data-frame="moon"] { --frame: 0 0 0 3px #cfe3ff, 0 0 14px #9fc4ffcc; }
+html[data-frame="rainbow"] { --frame: 0 0 0 3px #ff6b9d, 0 0 0 6px #ffd166, 0 0 0 9px #6bd6ff; }
+html[data-frame="ribbon-1"] { --frame: 0 0 0 3px #a47fd0, 0 0 12px #a47fd0aa; }
+html[data-frame="ribbon-2"] { --frame: 0 0 0 3px #4ec9b0, 0 0 12px #4ec9b0aa; }
+html[data-frame="ribbon-3"] { --frame: 0 0 0 3px #f28fb5, 0 0 12px #f28fb5aa; }
+html[data-frame="ribbon-4"] { --frame: 0 0 0 3px #8fd16b, 0 0 12px #8fd16baa; }
+/* time of day in Jakarta: night darkens the stage a little */
+html[data-tod="night"] [data-stage-look] { box-shadow: inset 0 0 0 999px rgba(12, 12, 48, 0.3), 6px 6px 0 rgba(0, 0, 0, 0.55); }
+html[data-tod="evening"] [data-stage-look] { box-shadow: inset 0 0 0 999px rgba(70, 30, 70, 0.1), 6px 6px 0 rgba(0, 0, 0, 0.55); }
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-safe-only { animation: none !important; }
+}

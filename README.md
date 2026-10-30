@@ -22,43 +22,50 @@ answers crisis phrases with a caring, non-gloomy reply; keep it intact.
 3. Add a Spanish `safety.es.json` with local crisis resources.
 
 ## Run locally
-Needs Python 3 and Pillow, numpy and scipy (`pip3 install pillow numpy scipy`). Run both builds once, and again after you change
-the source rules or the original art in `assets/img/`:
+Needs Node 24+ and Python 3 with Pillow, numpy and scipy (`pip3 install pillow numpy scipy`). Run the Python asset/data build once (and again after you change the source rules or original art in `assets/img/`), then run the Vite dev server or production build:
 
-    python3 tools/build_all.py          # images, rule shards, then the site pages in builds/site/
-    python3 -m http.server -d builds/site     # open http://localhost:8000
+    npm ci
+    python3 tools/build_all.py          # images, scene cards, and rule shards in build/img/ and build/data/
+    npm run dev                         # Vite dev server with HMR at http://localhost:5173
+    npm run storybook                   # Storybook component workbench at http://localhost:6006
 
-(`build_all.py` runs `tools/make_images.py`, `tools/make_shard.py` and `tools/make_site.py` in that order. Serve `builds/site/`,
-not the repo root: the repo has only templates (`chat.html`, `shell.html`), and the real pages such as `/pocomon/`
-exist only in `builds/site/`.)
+To build and serve the static production site locally:
+
+    npm run build-storybook             # builds Storybook into build/client/storybook/
+    npm run build                       # React Router pre-render + Workbox SW + postbuild into build/client/
+    npx serve build/client              # or python3 -m http.server -d build/client
 
 If your local server serves the repo folder itself (e.g. Apache at `/for-fun/chat-learning/`), the repo's `.htaccess`
-maps `/`, `/<slug>/`, `/<slug>/history/`, `/games/...`, `/me/`, `sitemap.xml` and `robots.txt` to the pages in
-`builds/site/` (run `python3 tools/build_all.py` first, and again after editing `chat.html`, `shell.html`,
-`characters.json` or `games.json`). Apache needs `LoadModule rewrite_module ...` enabled and
+maps `/`, `/<slug>/`, `/<slug>/history/`, `/games/...`, `/me/`, `/storybook/...`, `sitemap.xml` and `robots.txt` to the pages in
+`build/client/` (run `python3 tools/build_all.py` and `npm run build` first; when serving from a subfolder such as `/for-fun/chat-learning`, build with `BASE_PATH=/for-fun/chat-learning npm run build`). Apache needs `LoadModule rewrite_module ...` enabled and
 `AllowOverride FileInfo` (or `All`) on the web folder in `httpd.conf`, then `brew services restart httpd`.
 
 ## Deploy
-Repo Settings > Pages > Source: **GitHub Actions**. Every push to `main` runs `tools/build_all.py` and
-publishes `builds/site/`. `builds/` (which holds `builds/site/`) is generated and git-ignored.
+Repo Settings > Pages > Source: **GitHub Actions**. Every push to `main` runs `python3 tools/build_all.py`, `npm run lint`, `npm run typecheck`, `npm run build-storybook`, and `npm run build`, then
+publishes `build/client/` (including `/storybook/`). `build/` is generated and git-ignored.
 
 ## Addresses and SEO
-GitHub Pages cannot route, so `tools/make_site.py` writes one real HTML file per address. The app works like WhatsApp:
-a chat list with a bottom tab bar (Chats, Games, Me); opening a ghost opens her chat with a back arrow.
+GitHub Pages cannot route dynamically, so React Router (`react-router.config.ts`) pre-renders one real HTML file per address in both English (`/`) and Indonesian (`/id/`), and `scripts/postbuild.ts` stamps `<base href>` and generates `404.html`, `sitemap.xml` (`scripts/sitemap.ts`), and `robots.txt`. The app works like WhatsApp:
+a chat list with a bottom tab bar (Chats, Whispers, Room, Games, Me); opening a ghost opens her chat with a back arrow.
 
-| address | page | template | indexed |
+| address | page | route module | indexed |
 |---|---|---|---|
-| `/` | chat list: the four ghosts, newest chat first with last message and time (Chats tab) | `shell.html` | yes |
-| `/<slug>/` e.g. `/pocomon/` | that character's chat | `chat.html` | yes |
-| `/<slug>/history/` | her chat history panel open | `chat.html` | no (`noindex`) |
-| `/games/`, `/games/<slug>/` | the game hub (Games tab) and one game (no tab bar) | `shell.html` | yes |
-| `/me/` | guest profile, candles, bond levels, Privacy link (Me tab) | `shell.html` | no (`noindex`) |
-| `/privacy/` | privacy page | `privacy.html` | yes |
+| `/` (and `/id/`) | chat list: the four ghosts, newest chat first with last message and time (Chats tab) | `app/routes/home.tsx` | yes |
+| `/<slug>/` e.g. `/pocomon/` | that character's chat | `app/routes/character.tsx` | yes |
+| `/<slug>/history/` | her chat history panel open | `app/routes/character-history.tsx` | no (`noindex`) |
+| `/<slug>/profile/` | ghost profile, bio, bond progress, unlocked stories | `app/routes/character-profile.tsx` | yes |
+| `/whispers/` | public ghost feed and comments (Whispers tab) | `app/routes/whispers.tsx` | yes |
+| `/loved/` | visitor's loved whispers saved in browser | `app/routes/loved.tsx` | no (`noindex`) |
+| `/room/` | interactive 3D/2D ghost room with furniture & decorations | `app/routes/room.tsx` | yes |
+| `/games/`, `/games/<slug>/` | the game hub (Games tab) and one game (no tab bar) | `app/routes/games-hub.tsx`, `app/routes/game.tsx` | yes |
+| `/leaderboard/` | weekly and all-time game leaderboards | `app/routes/leaderboard.tsx` | yes |
+| `/me/` | guest/Google profile, candles, bond levels, badges, Privacy link (Me tab) | `app/routes/me.tsx` | no (`noindex`) |
+| `/privacy/` | privacy page | `app/routes/privacy.tsx` | yes |
+| `/storybook/` | interactive component & scene workbench | Storybook static build | no |
 
-Each page has its own `<title>`, description, canonical link, Open Graph and Twitter tags, a square share
-picture (a character on the 1:1 scene, `builds/img/scenes/1_1/`, made by `tools/make_scenes.py`), JSON-LD, and the character links already in the HTML. Also generated: `404.html`
-(a real 404), `sitemap.xml` and `robots.txt`. In the browser, `router.js` makes the History button
-and Back/Forward move between these addresses without reloading, and keeps the title and meta tags current.
+Each page has its own `<title>`, description, canonical link, `hreflang` (`en`, `id`, `x-default`), Open Graph and Twitter tags, a square share
+picture (a character on the 1:1 scene, `build/img/scenes/1_1/`, made by `tools/make_scenes.py`), and JSON-LD built from a single source of truth in `app/features/seo/head.ts`. Also generated: `404.html`
+(a real 404), `sitemap.xml` and `robots.txt`.
 
 - Each chat remembers the view it was left in (`ghostmode:v1:<id>` in localStorage). The chat list links a chat to
   `/<slug>/history/` when it was last left in history, and to `/<slug>/` otherwise. Clearing a chat resets it.
@@ -68,8 +75,7 @@ and Back/Forward move between these addresses without reloading, and keeps the t
   label does not have to change the URL. Changing a slug changes a public link: do it rarely.
 - Page text lives in `characters.json` (`seo.tagline`, `seo.description` with `{name}`) and `site.json`
   (site address, name, home title and description). `site.json` > `url` must match your custom domain.
-- The head text is built twice, in `tools/make_site.py` and `headFor()` in `router.js`: change both together.
-- `<base href>` is `./`, `../` or `../../` per page, so the site also works from a sub-folder.
+- `<base href>` is `./`, `../`, `../../`, or `../../../` per page (stamped by `scripts/postbuild.ts`), so the site also works from a sub-folder.
 
 ## Benchmark
     python3 tools/gen_synthetic.py /tmp/syn
@@ -86,14 +92,14 @@ requests from your site's origin. It does only two things: Gemini replies and th
 (accounts, game progress, later features) lives in the separate **omonomon-api** Worker (`worker/api.js`,
 at `apimon.securhat.com`), so nothing there can touch the Gemini key or budget.
 
-Setup (no Node needed):
+Setup (no Node needed for deploying the Workers):
 1. Get a key at https://aistudio.google.com/apikey (use a dedicated key/project).
 2. Deploy from your machine (see "Deploy the Workers" below): `python3 tools/deploy_worker.py`.
 3. dash.cloudflare.com > Workers & Pages > omonomon-gemini > Settings > Variables and Secrets:
    add `GEMINI_API_KEY` (type **Secret**) = your key. Deploys keep it. The other settings (`ALLOWED_ORIGINS`,
    `THINKING_BUDGET`) are plain variables kept in `worker/gemini.jsonc` and set on every deploy; optional
    `GEMINI_MODEL` (default `gemini-3.8-flash`) can be added there too.
-4. `WORKER_URL` in `config.js` is the Worker's domain (`https://geminimon.securhat.com/`). Commit and push.
+4. `VITE_WORKER_URL` in `.env.production` (read by `app/config.ts`) is the Worker's domain (`https://geminimon.securhat.com/`). Commit and push.
 
 Where the Worker runs matters: Google refuses the Gemini API from some places Cloudflare has data centres (Hong Kong
 answers "User location is not supported"), and a Worker normally runs in the data centre nearest the visitor. So
@@ -130,7 +136,7 @@ the Google Cloud project, and watch usage.
    Each deploy also attaches the Worker's domain (the edge Worker its route) and turns its workers.dev address off.
 
 ## Limits
-- `INPUT_MAX_CHARS` in `config.js` (default 200) caps what a visitor can type; the Worker also cuts every
+- `INPUT_MAX_CHARS` in `app/config.ts` (default 200) caps what a visitor can type; the Worker also cuts every
   message to 300 characters (`MAX_CHARS`), because a page-only limit can be bypassed.
 - `HISTORY_TURNS` (default 8) is how many earlier messages go to Gemini.
 - The Worker allows 20 requests a minute per IP (`ratelimits` in `worker/gemini.jsonc`, sent as a Cloudflare
@@ -143,25 +149,27 @@ the Google Cloud project, and watch usage.
   restored on reload. Nothing is sent to a server for this. The chat list's ... menu > Clear chat deletes one character's chat.
 
 ## Games
-`/games/` lists the mini-games and `/games/<slug>/` is one game (built by `tools/make_site.py` from `shell.html` and
-`games.json`; a game only gets a page once `"ready": true`). Code is in `assets/scripts/games/`:
+`/games/` lists the mini-games and `/games/<slug>/` is one game (pre-rendered from `games.json`; a game only gets a page once `"ready": true`). Code is in `app/features/games/`:
 
-| game | ghost | module | how it plays |
+| game | ghost | folder | how it plays |
 |---|---|---|---|
-| Hop Hop | 1 | `runner.js` | one-button endless runner: hop over tombstones |
-| Night Rounds | 2 | `rounds.js` | tap the rooms that light up before the timer runs out; 3 missed calls end the shift |
-| Quiet Wish | 3 | `memory.js` | slow memory game with four petals; no timer, 3 sighs |
-| Hair Catch | 4 | `catch.js` | slide to catch falling secrets with her hair, dodge the dark ones; 3 lives |
+| Hop Hop | 1 | `runner/` | one-button endless runner: hop over tombstones |
+| Night Rounds | 2 | `rounds/` | tap the rooms that light up before the timer runs out; 3 missed calls end the shift |
+| Quiet Wish | 3 | `memory/` | slow memory game with four petals; no timer, 3 sighs |
+| Hair Catch | 4 | `catch/` | slide to catch falling secrets with her hair, dodge the dark ones; 3 lives |
+| Congklak | 1 | `congklak/` | traditional Indonesian mancala board against Pocomon |
+| Ghost Riddles | 3 | `ghost-riddles/` | bilingual Indonesian folklore word-guessing riddles |
+| Dare Night | all | `dare-night/` | pass-and-play or solo party prompts with the ghosts |
+| Daily Challenge | all | `daily/` | daily seeded game challenge with streak bonus |
+| Hop Hop 3D | 1 | `hop-hop-3d/` | 3D endless lane hopper in React Three Fiber (with 2D fallback) |
+| Lantern Flight | 4 | `lantern-flight/` | 3D lantern flight through banyan branches (with 2D fallback) |
+| Haunted Ward | 2 | `haunted-house/` | 3D corridor inspection puzzle (with 2D fallback) |
 
-`games.json` holds each game's text, `type` (`runner`, `rounds`, `memory`, `catch`), reactions per score tier, and its balance:
+`games.json` holds each game's text, `type`, reactions per score tier, and its balance:
 `tiers` (score limits for the low/mid reactions), `recordMin` (score from which a new best gets the record reaction) and
-`scorePerCandle` (points per candle; the games score on different scales). `progress.js` (candles, bond, best scores, daily
-caps, saved in this browser), `quests.js`, `text.js` (EN/ID words), `hub.js`, `account.js` and `shell/main.js` are shared.
-New game: add it to `games.json`, write its module (return `{ restart, destroy }`, call `onOver(score)`), add its type to
-`play_area()` in `tools/make_site.py` and to the dispatch in `shell/main.js`; `recordRun()` pays the rewards.
-Rules that can run without a page (`createEngine` in `rounds.js`) are easy to test alone.
+`scorePerCandle` (points per candle; the games score on different scales). See `app/features/games/README.md` for how to add a new game.
 
-## Whispers (the 4th tab)
+## Whispers (the 2nd tab)
 Each ghost posts short public updates in her own voice, written by Gemini, the same for every visitor.
 - **Timer, not visitors:** `omonomon-api` has a cron trigger (`crons` in `worker/api.jsonc`, every 15 minutes). Each run asks the
   Gemini Worker's `/whisper` route for one whisper. Every hour is a round in which each ghost posts once, in an order shuffled from
@@ -185,14 +193,12 @@ Each ghost posts short public updates in her own voice, written by Gemini, the s
   `og:image` when it exists and really is a picture (`betterThumb`: the page's `<head>` is read, the image is checked with a small
   request, tiny placeholders are refused); otherwise the picture from the feed is used. New columns on `whispers`
   (`link_url`, `link_title`, `link_source`, `thumb_url`) come from `python3 tools/setup_api.py`.
-- **Language:** the pages and whispers use English or Indonesian. `lang` in `games/text.js` is the choice made on the Me page (a switch, kept in
-  the browser as `ghostlang`), and Indonesian until a visitor chooses. Page text lives in `games/text.js` (`T`, one block per language); text that lives in data files has
-  an Indonesian version next to the English one and is filled in by `shell/localize.js` (hub, games, ghost status lines) and `stage.js`/`router.js`
-  (chat pages): `games.json` > `hub.id` and each game's `id` (tagline, description), `characters.json` > `statusId` and `seo.id`, `site.json` >
-  `titleId`/`descriptionId`. When you add a game or a ghost, add those Indonesian fields too, or the English text shows. Changing it reloads the page; the chat's greeting and backup replies follow it
-  too (`main.js`).
-- **Page:** `/whispers/` (`shell/whispers.js`, not indexed) and an unread dot on the tab (`shell/whisper-badge.js`).
-- **Comments:** under each whisper anyone can comment, no sign-in. The nickname is made up for the visitor (`shell/identity.js`) and can
+- **Language:** the pages and whispers use English or Indonesian. Language is managed by `i18next` (`app/i18n/index.ts`, stored in
+  the browser as `ghostlang`) and defaults to Indonesian until a visitor chooses or visits an `/id/` URL. UI strings live in `app/i18n/en.ts` and `app/i18n/id.ts`; text that lives in data files has
+  an Indonesian version next to the English one: `games.json` > `hub.id` and each game's `id` (tagline, description), `characters.json` > `statusId` and `seo.id`, `site.json` >
+  `titleId`/`descriptionId`. When you add a game or a ghost, add those Indonesian fields too, or the English text shows.
+- **Page:** `/whispers/` (`app/features/whispers/WhispersFeed.tsx`) and an unread dot on the tab (`app/features/whispers/whisper-badge.ts`).
+- **Comments:** under each whisper anyone can comment, no sign-in. The nickname is made up for the visitor (`app/features/whispers/identity.ts`) and can
   be changed on the Me page. Each comment goes to the Gemini Worker's `/comment` route, which in one call decides whether it may be
   shown (no hate, sexual content, threats, personal data, spam, links; talk of self-harm is not posted and the writer gets a kind
   message) and writes the ghost's short reply in her voice. If Gemini cannot answer, nothing is posted. Limits: 200 characters,
@@ -203,7 +209,7 @@ Each ghost posts short public updates in her own voice, written by Gemini, the s
 - **Love:** a heart with a public count on each whisper (`PUT/DELETE /whispers/<n>/love`, one love per browser: the table `loves` keeps a hash
   of the browser's random id, and a repeat love is ignored). The tap shows at once; taps are combined (only the last state is sent, after half a second, and an earlier request still on its way is cancelled), and it is undone if the server cannot be reached. The feed
   list is cached for 2 minutes, so other people's counts can lag a little. The visitor's own loves also go to *Loved whispers* (`/loved/`,
-  linked from the Me page, with a count): that list lives in the browser (`shell/loved-store.js`) together with a copy of each whisper's
+  linked from the Me page, with a count): that list lives in the browser (`app/features/whispers/loved-store.ts`) together with a copy of each whisper's
   text, so a loved whisper stays even if the feed ever deletes it. It is not saved to the account yet.
 - **Make them whisper now:** `python3 tools/whisper_now.py` writes one new whisper from every ghost (`... 2 4` for only some,
   `--list` shows the latest with their numbers, `--delete 12` removes one). Each whisper is one Gemini call.
@@ -214,16 +220,16 @@ Each ghost posts short public updates in her own voice, written by Gemini, the s
         -H "Content-Type: application/json" -H "X-Internal-Token: $INTERNAL_TOKEN" -d '{}'
       # delete post number 12
       curl -X DELETE https://apimon.securhat.com/internal/whisper/12 -H "Origin: https://omonomon.securhat.com" \
-        -H "X-Internal-Token: $INTERNAL_TOKEN"
+        -H "Content-Type: application/json" -H "X-Internal-Token: $INTERNAL_TOKEN"
 
-- The tab is called "Whispers" ("Bisikan" in Indonesian): change `tabWhispers` in `assets/scripts/games/text.js` and the label in `tools/make_site.py`.
+- The tab is called "Whispers" ("Bisikan" in Indonesian): change `tabWhispers` in `app/i18n/en.ts` and `app/i18n/id.ts`.
 
 ## Bond, quests and streak
-- **Bond XP** (per ghost, levels 1 to 10, titles from Stranger to Soulmate in `text.js`): games give 5 XP plus 2 per candle; every
+- **Bond XP** (per ghost, levels 1 to 10, titles from Stranger to Soulmate in `app/i18n/`): games give 5 XP plus 2 per candle; every
   message sent gives 2 XP, up to 20 XP a day per ghost. Level-ups show a toast in the chat.
-- **Payoffs:** the Me page opens each ghost's stories (`stories.json`, at bond levels 3 and 6); Gemini gets the bond level
+- **Payoffs:** the Me page and character profile page open each ghost's stories (`stories.json`, at bond levels 3 and 6); Gemini gets the bond level
   and lets it colour the ghost's tone in four steps (levels 1-2, 3-5, 6-8, 9-10; `BOND_TONES` in `worker/gemini.js`).
-- **Daily quests:** three a day, the same for everyone, picked from the date (`assets/scripts/games/quests.js`: one about
+- **Daily quests:** three a day, the same for everyone, picked from the date (`app/features/games/quests.ts`: one about
   chatting, one about games, one about bond XP). Each pays candles; finishing all three adds a 10 candle bonus.
 - **Streak:** finishing at least one quest a day keeps it going; a missed day resets it to 1. The best streak is kept.
 - Today's counters stay on the device; candles, bond, bests and the streak are saved to the account and merged (larger value wins,
@@ -238,16 +244,16 @@ sign in with Google on the Me page and their progress follows them across device
   creates the account on first sign-in, and gives back a random session token (only its SHA-256 hash is stored).
   Endpoints: `POST /auth/google`, `GET /me`, `PUT /progress`, `POST /auth/logout`, `DELETE /me`.
   Progress is merged, never overwritten: for every number the larger value wins. Numbers are capped and odd keys dropped.
-- Client: `assets/scripts/games/account.js` (sign-in, refresh, sign out, delete account, push after each run) and the
-  Me page. The session token is kept in `localStorage` (Bearer header, not a cookie, so sign-in also works on localhost).
+- Client: `app/features/account/account.ts` (sign-in, refresh, sign out, delete account, push after each run) and the
+  Me page (`app/features/shell/MePage.tsx`). The session token is kept in `localStorage` (Bearer header, not a cookie, so sign-in also works on localhost).
 - Setup (needs an API token with Account > D1 > Edit; the other permissions are the ones the chat Worker already uses):
 
       python3 tools/setup_api.py           # create the D1 database and its tables (writes worker/api-db.json)
       python3 tools/deploy_worker.py api   # upload worker/api.js (settings in worker/api.jsonc) and attach apimon.securhat.com
 
-  Then set `API_URL` in `config.js` and push. The sign-in button appears only when `API_URL` is set.
+  Then set `VITE_API_URL` in `.env.production` and push. The sign-in button appears only when `API_URL` is set.
 - Google console: the OAuth client needs `https://omonomon.securhat.com` and `http://localhost` as authorized
-  JavaScript origins. The client ID is public (`config.js` and `worker/api.jsonc`); the client secret is not used.
+  JavaScript origins. The client ID is public (`.env.production` and `worker/api.jsonc`); the client secret is not used.
 - Privacy: the account stores the Google id and email only. Chat logs are never linked to accounts. Delete account on the
   Me page removes the user, sessions and progress.
 
@@ -273,47 +279,38 @@ per hour, which character is busiest, how many Gemini calls (cost), which countr
 
 ## Code layout
 ```
-chat.html, style.css     the chat page template and its look (the chat screens)
-shell.html, app.css      the template and look of the app pages (chat list, games, me)
-config.js, characters.json, games.json   settings, characters, games
-site.json          site address, name and home page text (SEO)
-assets/scripts/shell/   the app pages: main.js (entry), home.js (chat list), me.js
-assets/scripts/games/   progress, hub, Hop Hop, words (text.js)
-assets/scripts/    the page logic, split into small ES modules (see main.js for the map)
-  main.js          start-up: loads data, shows the route, wires the buttons
-  state.js         shared data (current character, saved chats, ...)
-  dom.js           every page element the scripts use
-  util.js          small helpers (hash and tokenizer, kept in sync with tools/make_shard.py)
-  rules.js         lookup in the local rule library (builds/data/)
-  replies.js       safety rule, then Gemini (via the Worker), then backup replies
-  storage.js       saved chats in localStorage
-  stage.js         the big character, comic bubbles, header, history panel (view only)
-  chat.js          sending, showing and clearing messages; switching characters
-  composer.js      the message box: length limit, counter, sending
-  router.js        addresses (/<slug>/, /<slug>/history/) and the page <head>
-assets/img/        your big original art, 2048px (not published)
-assets/icons/      notes and license for the Lucide icons pasted inline in chat.html and the site generator (not published)
-builds/            everything Python generates (never edit by hand):
-  img/             web images (WebP, about 6x smaller than PNG) made from assets/img by
-                   tools/make_images.py: thumbnails for the chat list, stage/ holds the big cutouts, heads/ the head-only pictures in the chat bubbles (tools/make_scenes.py)
-                   and the site icons (favicon.ico from favicon.png; app icons from appicon.png)
-  data/            the reply library made by tools/make_shard.py
-                   (all of builds/ is git-ignored and rebuilt on every deploy)
-source/            the rule library source (tools/make_shard.py builds it into builds/data/)
-worker/            the Cloudflare Workers: gemini.js (Gemini proxy, character prompts, request log) and api.js (accounts, progress)
-tools/             build_all.py, make_images.py, make_shard.py, make_site.py, deploy_worker.py, setup_api.py, setup_waf.py, whisper_now.py, gen_synthetic.py
+app/
+  root.tsx, routes.ts        React Router 7 root layout, route table (English + /id/ prefix)
+  routes/                    thin route modules (meta + page component)
+  config.ts                  typed config from import.meta.env (VITE_WORKER_URL, VITE_API_URL, ...)
+  data/                      static JSON imports (characters.json, games.json, site.json, stories.json)
+  i18n/                      i18next setup and EN/ID translation dictionaries
+  lib/                       storage.ts (sole localStorage/sessionStorage wrapper), util.ts (fnv1a, normalize)
+  styles/                    tokens.css, tailwind.css, chat.css, shell.css
+  features/
+    chat/                    ChatScreen, Stage2D, Composer, HistoryDrawer, rules, replies, chat store
+    shell/                   TabShell, HomeList, Profile, MePage, PrivacyPage, TopBar, InstallBanner, ToastHost
+    whispers/                WhispersFeed, WhisperCard, CommentPanel,LovedList, identity, badge-toast
+    games/                   Hub, GamePage, LeaderboardPage, progress, quests, sound, and 11 games
+    three/                   React Three Fiber StageCanvas, ChatBackdrop, RoomPage, Room2D, scene-kit
+    seo/                     head.ts (single source of truth for titles, meta, canonical, hreflang, JSON-LD)
+    account/                 Google Sign-In and cloud progress sync (account.ts)
+    pwa/                     Workbox service worker (sw.ts) and registration (register.ts)
+.storybook/                  Storybook 10 configuration and global decorators (lang, 3D, ghost, viewport)
+scripts/                     postbuild.ts (<base href>, 404.html, robots.txt, assets copy) and sitemap.ts
+characters.json, games.json, site.json, stories.json   character, game, SEO, and story definitions
+assets/img/                  your big original art, 2048px (not published)
+build/                       generated output (git-ignored, never edit by hand):
+  img/                       web images (WebP) made from assets/img by tools/make_images.py and tools/make_scenes.py
+  data/                      the reply library made by tools/make_shard.py
+  client/                    static site output generated by `npm run build` (published to GitHub Pages)
+source/                      the rule library source (tools/make_shard.py builds it into build/data/)
+worker/                      the Cloudflare Workers: gemini.js, api.js, and edge.js
+tools/                       build_all.py, make_images.py, make_scenes.py, make_shard.py, deploy_worker.py, setup_api.py, setup_waf.py, whisper_now.py, gen_synthetic.py
 ```
-New module? Add a `<link rel="modulepreload">` line for it in `chat.html` (the page then downloads all
-modules at once instead of one import at a time; `tools/make_shard.py` warns if one is missing).
-**Cache busting:** `make_site.py` (`stamp_versions`) adds `?v=<hash>` to every script, style and JSON address in `builds/site/`
-(page tags, `import` lines and `fetch("x.json")` calls). The hash covers all of those files, so any change gives every one a new
-address and browsers, the installed app and Cloudflare fetch them fresh. Write data paths as plain strings (`"characters.json"`,
-not built from a variable) so the build can find them. Pages themselves are cached 10 minutes by GitHub Pages.
-The scripts use ES modules, so open the site through a web server (`python3 -m http.server`),
-not by double-clicking a template. Serve `builds/site/` (see Run locally).
 
 ## Characters
-The chat list has four ghost characters (`characters.json`, web images in `builds/img/`;
+The chat list has four ghost characters (`characters.json`, web images in `build/img/`;
 the 2048px originals are in `assets/img/` and are not published):
 
 | id | name (a label) | personality |
@@ -325,7 +322,7 @@ the 2048px originals are in `assets/img/` and are not published):
 
 **The id is a number and never changes; the name is only a label.** Everything that must stay put is keyed by
 the number: saved chats in people's browsers (`ghostchat:v1:2`), the Worker's persona (`CHARACTERS["2"]`),
-the original art (`assets/img/2.png`) and the generated images (`builds/img/2.webp`). So you can rename a
+the original art (`assets/img/2.png`) and the generated images (`build/img/2.webp`). So you can rename a
 character by editing only `name` (and the greeting/typing text that mentions it) in `characters.json`: her
 saved history, images and persona are untouched. Saved chats don't store the greeting, so even that
 text follows the new name. New character: use the next number (highest + 1) and never reuse a retired one.
@@ -339,19 +336,19 @@ or if a name appears in that text.
 - If Gemini fails: Pocomon uses the JSON library; the others use a few backup lines
   from `characters.json` (`fallback`). Crisis phrases always use the local safety rule.
 - Add a character: pick the next id (say `5`), put the big PNG (white background is fine) in `assets/img/5.png` and the head-only one in `assets/img/head-5.png`,
-  add an entry to `characters.json` (`id`: `"5"`, `image`: `builds/img/5.webp`, `stage`: `builds/img/stage/5.webp`, `head`: `builds/img/heads/5.webp`, and the head art in `assets/img/head-5.png`),
-  add `"5": {...}` to `CHARACTERS` in `worker/gemini.js`, and run `python3 tools/build_all.py`
+  add an entry to `characters.json` (`id`: `"5"`, `image`: `build/img/5.webp`, `stage`: `build/img/stage/5.webp`, `head`: `build/img/heads/5.webp`, and the head art in `assets/img/head-5.png`),
+  add `"5": {...}` to `CHARACTERS` in `worker/gemini.js`, and run `python3 tools/build_all.py` and `npm run build`
   (needs `pip3 install pillow numpy scipy`; GitHub Actions does the same on deploy) to cut out the background and make the web images.
 
 ## Site icons (two separate sets)
 | Source (you edit) | Becomes | Used for |
 |---|---|---|
-| `assets/img/favicon.png` | `builds/img/favicon.ico` (16/32/48 px, **transparent**) | the browser tab |
+| `assets/img/favicon.png` | `build/img/favicon.ico` (16/32/48 px, **transparent**) | the browser tab |
 | `assets/img/appicon.png` | `apple-touch-icon.png` (180), `icon-192.png`, `icon-512.png` (opaque) | phone home screens, Android/Chrome install |
 
 `python3 tools/make_images.py` builds both sets. For the favicon, the white background of your picture is removed
 (only the white connected to the outside edge, like the characters), so draw it on plain white or already
-transparent. The app icon stays a full opaque square, which phones need. `chat.html` links only the favicon
+transparent. The app icon stays a full opaque square, which phones need. `app/root.tsx` links only the favicon
 as `rel="icon"` and the app icon as `apple-touch-icon`, so the tab never shows the busy app icon.
 If a source file is missing its set is skipped. Browsers cache favicons hard: after changing one,
 hard-refresh or reopen the tab.
@@ -359,13 +356,12 @@ hard-refresh or reopen the tab.
 ## Install as an app (PWA)
 `manifest.webmanifest` makes the site installable ("Install app" in Chrome and Edge, "Add to Home screen"
 on Android; iPhone uses the `apple-touch-icon`). Edit it for the name and colours. Its icons are
-`builds/img/icon-192.png` and `icon-512.png`, which `make_images.py` builds from **`assets/img/appicon.png`**
+`build/img/icon-192.png` and `icon-512.png`, which `make_images.py` builds from **`assets/img/appicon.png`**
 (never from `favicon.png`, which is only the tab icon). `id` gives the installed app a fixed identity, so later edits to
 `start_url` or the name don't make Chrome treat it as a different app. Don't rename or move
-`manifest.webmanifest`: browsers then stop updating apps people already installed. There is deliberately no service worker, so
-the installed app is the same site in its own window and still needs the internet (the chat does anyway).
+`manifest.webmanifest`: browsers then stop updating apps people already installed. `app/features/pwa/sw.ts` (built with `vite-plugin-pwa` `injectManifest`) precaches hashed assets and caches `build/img/` and `build/data/` while keeping Worker requests (`geminimon`, `apimon`) `NetworkOnly`.
 
 ## Look
-Comic style: the selected character is shown big on a halftone panel in her accent colour.
+Comic style: the selected character is shown big on a halftone panel in her accent colour (with an optional React Three Fiber 2.5D backdrop).
 Her reply appears in a speech bubble (typed out letter by letter, click to skip); your last
 message is the small bubble at the bottom right. The History button opens the full log.

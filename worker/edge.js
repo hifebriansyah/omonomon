@@ -3,7 +3,7 @@
 // The site is static, so /whispers/?n=7 is the same HTML for every whisper and link previews (WhatsApp, Telegram, X ...)
 // never run its scripts: they would always show the default picture. This Worker sits in front of omonomon.securhat.com/whispers*,
 // looks the whisper up in the API and rewrites the preview tags of that one page, so the card shows the whisper's own ghost
-// (builds/img/scenes/1_1/<ghost>.jpg) and her words, or the picture of the article the whisper reacts to when it has one. Everything else, and any whisper that is gone, passes through untouched.
+// (build/img/scenes/1_1/<ghost>.jpg) and her words, or the picture of the article the whisper reacts to when it has one. Everything else, and any whisper that is gone, passes through untouched.
 // Deployed by: python3 tools/deploy_worker.py edge   (route and variables in worker/edge.jsonc)
 
 const getOwn = (url) => fetch(url, { cf: { cacheTtl: 300, cacheEverything: true } }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
@@ -65,7 +65,7 @@ export default {
       const found = await env.API.fetch(`https://api.internal/note/${key}.jpg`, { method: "HEAD" }).catch(() => null);
       if (found?.ok) note = `${url.origin}/whispers/note/${key}.jpg`;
     }
-    const image = thumb || note || `${url.origin}/builds/img/scenes/1_1/${ghost.id}.jpg`;
+    const image = thumb || note || `${url.origin}/build/img/scenes/1_1/${ghost.id}.jpg`;
     const set = (value) => ({ element: (e) => e.setAttribute("content", value) });
     // The static page declares a square picture of known size. A redrawn article picture is a 900x900 crop too (IMAGE_OPTIONS in api.js), so it keeps
     // a square's hints; any other article picture (an original, usually wide) drops them.

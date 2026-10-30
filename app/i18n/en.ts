@@ -1,0 +1,327 @@
+// English page text (was the `en` table in assets/scripts/games/text.js plus the words in the HTML templates).
+// {{x}} is filled in by i18next; keys ending in _one/_other are plurals (pass `count`).
+
+const en = {
+  "tabChats": "Chats",
+  "tabWhispers": "Whispers",
+  "tabGames": "Games",
+  "tabMe": "Me",
+  "sayTo": "Say something to {{name}}...",
+  "historyShow": "Show chat history",
+  "historyClose": "Close chat history",
+  "sendWord": "Send",
+  "historyTitle": "Chat history with {{name}}",
+  "historyAbout": "Your saved chat with {{name}}.",
+  "loveWord": "Love",
+  "shareWord": "Share",
+  "allWhispers": "All whispers",
+  "whisperGone": "This whisper has faded away.",
+  "copiedWord": "Copied",
+  "unloveWord": "Remove love",
+  "meLoved": "Loved whispers",
+  "lovedTitle": "Loved whispers",
+  "lovedNone": "No loved whispers yet. Tap the heart on a whisper to keep it here.",
+  "backMe": "Back",
+  "commentWord": "Comment",
+  "commentPlaceholder": "Say something to {{name}}...",
+  "commentSend": "Send",
+  "commentAs": "Commenting as",
+  "commentChange": "change",
+  "commentThinking": "{{name}} is answering...",
+  "commentNone": "No comments yet. Be the first.",
+  "commentLoadError": "Could not load the comments.",
+  "commentRefused": "This comment can't be shown here. Please keep it kind.",
+  "commentCare": "That sounds heavy. Comments here are public, so it can't be posted. Please talk to someone you trust, or find a helpline at findahelpline.com.",
+  "commentLimit": "That's enough comments for now. Try again later.",
+  "commentLater": "Comments are resting right now. Please try again in a bit.",
+  "commentError": "Could not send the comment.",
+  "commentDelete": "Delete my comment",
+  "commentDeleted": "deleted",
+  "commentGhost": "ghost",
+  "meLanguage": "Language",
+  "meNickname": "Nickname",
+  "meSave": "Save",
+  "meRandom": "Random",
+  "meNickNote": "Shown next to your comments on whispers.",
+  "meNickBad": "2 to 24 letters, numbers, spaces, - or _.",
+  "meNickSaved": "Saved.",
+  "whisperNone": "No whispers yet. Check back soon.",
+  "whisperError": "Could not load the whispers right now.",
+  "backChats": "Back to chats",
+  "backGames": "Back to games",
+  "you": "You:",
+  "moreOptions": "More options",
+  "clearChat": "Clear chat",
+  "clearConfirm": "Clear your chat with {{name}}?",
+  "candles": "Candles",
+  "bond": "Bond level",
+  "best": "Best",
+  "score": "Score",
+  "again": "Play again",
+  "over": "Game over",
+  "record": "New best!",
+  "reward_one": "+{{count}} candle, +{{xp}} bond",
+  "reward_other": "+{{count}} candles, +{{xp}} bond",
+  "capped": "Daily candle limit reached, but the bond still grows.",
+  "levelUp": "Bond level {{l}}!",
+  "tapToStart": "Tap or press Space to start",
+  "chatWith": "Chat with {{name}}",
+  "meGuest": "Guest",
+  "meNote": "Your progress is saved in this browser.",
+  "meSignIn": "Sign in with Google (coming soon)",
+  "meCandles": "Candles",
+  "mePlayed": "Games played",
+  "meBonds": "Bonds",
+  "mePrivacy": "Privacy",
+  "meSignOut": "Sign out",
+  "meDelete": "Delete account",
+  "meSavedAccount": "Your progress is saved to your account.",
+  "meSignedInAs": "Signed in as {{email}}",
+  "meSignedIn": "Signed in",
+  "meDeleteConfirm": "Delete your account and the progress saved on our server? This cannot be undone. Progress in this browser stays.",
+  "meSignInError": "Sign-in did not work. Please try again.",
+  "memWatch": "Watch...",
+  "memYourTurn": "Your turn",
+  "memWellDone": "Well remembered",
+  "memSigh": "...a sigh. Again.",
+  "memBegin": "Begin",
+  "memSighs_one": "{{count}} sigh left",
+  "memSighs_other": "{{count}} sighs left",
+  "memPetal": "Petal {{i}}",
+  "rdBegin": "Start the shift",
+  "rdCalling": "Rooms are calling...",
+  "rdThanks": "Thank you!",
+  "rdMissed": "A call was missed",
+  "rdLives_one": "{{count}} missed call left",
+  "rdLives_other": "{{count}} missed calls left",
+  "rdRoom": "Room {{i}}",
+  "questsTitle": "Today's quests",
+  "streakDays_one": "{{count}} day streak",
+  "streakDays_other": "{{count}} day streak",
+  "streakNone": "No streak yet",
+  "questDone": "Quest done: {{label}} (+{{candles}} candles)",
+  "allQuestsDone": "All quests done! +{{bonus}} candles",
+  "bondLevelUp": "Bond with {{name}}: level {{level}}, {{title}}",
+  "storyUnlocked": "New story unlocked on the Me page",
+  "meStories": "Stories",
+  "meStoryLocked": "Unlocks at bond level {{level}}",
+  "meStreak": "Best streak",
+  "meDays": "days",
+  "lbTitle": "This week's best",
+  "lbEmpty": "No scores yet this week. Be the first.",
+  "lbError": "Could not load the scores right now.",
+  "lbSignIn": "Sign in with Google on the Me page to put your score on the board.",
+  "lbYou": "You: #{{rank}} with {{score}}",
+  "lbRank": "Weekly rank #{{rank}}",
+  "lbBad": "Your score or nickname could not be put on the board.",
+  "lbResets": "Starts again every Monday.",
+  "shopTitle": "Candle shop",
+  "shopBuy": "{{n}} candles",
+  "shopOwned": "Owned",
+  "shopWear": "Wear",
+  "shopWorn": "Worn",
+  "shopDefault": "Default look",
+  "shopPoor": "Not enough candles yet",
+  "shopBalance": "You have {{n}} candles",
+  "shopStage": "Stage looks",
+  "shopBubble": "Bubble colours",
+  "shopBought": "Bought. It is on now.",
+  "shopGhostStage": "Each ghost also gets her own stage look at bond level 5, and her ribbon frame at level 8.",
+  "shopFrame": "Profile frames",
+  "shopRoom": "Ghost Room furniture",
+  "meRoom": "My Ghost Room",
+  "roomTitle": "Ghost Room",
+  "roomShare": "Share my room",
+  "roomCopied": "Link copied",
+  "roomEmpty": "Your room is empty. Buy furniture in the Candle shop on the Me page.",
+  "roomShared": "A friend's room",
+  "shopRibbon": "{{n}}'s ribbon",
+  "shopItems": {
+    "frame-gold": "Gold",
+    "frame-ember": "Ember",
+    "frame-moon": "Moonlight",
+    "frame-rainbow": "Rainbow",
+    "furn-lamp": "Lamp",
+    "furn-rug": "Rug",
+    "furn-poster": "Poster",
+    "furn-plant": "Plant",
+    "furn-window": "Window",
+    "furn-bed": "Bed",
+    "stage-stripes": "Stripes",
+    "stage-grid": "Notebook grid",
+    "stage-stars": "Starry night",
+    "stage-dusk": "Graveyard dusk",
+    "bubble-mint": "Mint",
+    "bubble-rose": "Rose",
+    "bubble-sky": "Sky",
+    "bubble-night": "Midnight"
+  },
+  "eventTitle": "This week: {{name}} hosts",
+  "eventBody": "Double bond XP in her games. Play {{n}} runs for +{{reward}} candles.",
+  "eventProgress": "{{have}}/{{n}}",
+  "eventDone": "Done this week",
+  "eventDouble": "Event week: double bond XP",
+  "eventPaid": "Weekly quest done: +{{c}} candles",
+  "me3d": "3D scenes",
+  "me3dLabel": "Show the 3D backdrop in chats",
+  "filterAll": "All",
+  "filterQuick": "Quick (under 1 min)",
+  "newTag": "NEW",
+  "continueGame": "Continue: {{name}}",
+  "meNotify": "Notifications",
+  "meNotifyLabel": "Tell me when a ghost whispers, and before my streak ends",
+  "notifyOn": "Notifications are on. At most one a day.",
+  "notifyDenied": "Notifications are blocked in this browser.",
+  "notifyUnsupported": "This browser cannot show notifications here.",
+  "notifyError": "Could not turn notifications on. Try again later.",
+  "profileStories": "Stories",
+  "profileWhispers": "Latest whispers",
+  "profileGames": "Games",
+  "bannerSoon": "Banner coming soon",
+  "loadingWord": "Loading...",
+  "retryWord": "Try again",
+  "feedEnd": "That is all the whispers for now.",
+  "newWhispers_one": "{{count}} new whisper",
+  "newWhispers_other": "{{count}} new whispers",
+  "meBadges": "Badges",
+  "badgeUnlocked": "Badge earned: {{name}}",
+  "badges": {
+    "first-run": [
+      "First steps",
+      "Finish your first game"
+    ],
+    "plays-10": [
+      "Regular",
+      "Play 10 games"
+    ],
+    "plays-50": [
+      "Night owl",
+      "Play 50 games"
+    ],
+    "all-games": [
+      "Everything once",
+      "Play all four games"
+    ],
+    "hop-500": [
+      "Long hopper",
+      "Score 500 in Hop Hop"
+    ],
+    "rounds-300": [
+      "Good shift",
+      "Score 300 in Night Rounds"
+    ],
+    "wish-75": [
+      "Good memory",
+      "Score 75 in Quiet Wish"
+    ],
+    "catch-300": [
+      "Secret keeper",
+      "Score 300 in Hair Catch"
+    ],
+    "streak-3": [
+      "Three in a row",
+      "A 3 day streak"
+    ],
+    "streak-7": [
+      "A whole week",
+      "A 7 day streak"
+    ],
+    "candles-100": [
+      "A few candles",
+      "Earn 100 candles"
+    ],
+    "candles-500": [
+      "A glowing room",
+      "Earn 500 candles"
+    ],
+    "plays-100": [
+      "Can't stop",
+      "Play 100 games"
+    ],
+    "hop-1000": [
+      "Marathon hopper",
+      "Score 1000 in Hop Hop"
+    ],
+    "streak-14": [
+      "Two weeks",
+      "A 14 day streak"
+    ],
+    "candles-1000": [
+      "A sea of candles",
+      "Earn 1000 candles"
+    ],
+    "bond-3-all": [
+      "Welcome guest",
+      "Bond level 3 with all four ghosts"
+    ],
+    "bond-10": [
+      "Soulmate",
+      "Bond level 10 with any ghost"
+    ],
+    "comments-10": [
+      "Chatterbox",
+      "Post 10 comments on whispers"
+    ],
+    "first-love": [
+      "Soft spot",
+      "Love your first whisper"
+    ],
+    "bond-5": [
+      "Close friend",
+      "Bond level 5 with any ghost"
+    ],
+    "bond-5-all": [
+      "Everyone's friend",
+      "Bond level 5 with all four ghosts"
+    ]
+  },
+  "titles": [
+    "Stranger",
+    "Acquaintance",
+    "Neighbour",
+    "Friend",
+    "Good friend",
+    "Close friend",
+    "Confidant",
+    "Trusted",
+    "Inseparable",
+    "Soulmate"
+  ],
+  "pageNotFoundTitle": "Page not found",
+  "nobodyHome": "Nobody lives here",
+  "notFoundBody": "This page does not exist.",
+  "notFoundBack": "Go back to {{site}}",
+  "notFoundPick": "and pick a ghost to chat with.",
+  "meTitle": "Me",
+  "meDescription": "Your profile and progress in {{site}}.",
+  "whispersDescription": "Little updates the ghosts of Omon Omon post when the mood strikes.",
+  "whispersOf": "{{name}}'s whispers",
+  "whispersOfDescription": "Little updates {{name}} posts when the mood strikes.",
+  "lovedDescription": "Whispers you loved, kept on this device.",
+  "roomDescription": "Your own little ghost room, decorated with what you bought with Candles.",
+  "gameTitle": "{{game}} with {{name}}",
+  "privacyTitle": "Privacy",
+  "privacyDescription": "What {{site}} stores, who processes it, and how to delete it.",
+  "comingSoon": "Coming soon",
+  "filterGames": "Filter games",
+  "backWord": "Back",
+  "needsJs": "This game needs JavaScript.",
+  "gameStartError": "Could not start the game ({{error}}).",
+  "oldBrowser": "Your browser is too old for Omon Omon. Please update it, or open the site in a recent Chrome, Safari or Firefox.",
+  "dismiss": "Dismiss",
+  "updateReady": "A new version of Omon Omon is ready.",
+  "updateNow": "Reload",
+  "languageEnglish": "English",
+  "languageIndonesian": "Indonesia",
+  "mainNav": "Main",
+  "petal": "Petal {{i}}",
+  "room": "Room {{i}}"
+} as const;
+
+type Shape<V> = V extends string ? string : V extends readonly string[] ? readonly string[] : V extends Record<string, readonly string[]> ? Record<string, readonly string[]> : Record<string, string>;
+type En = typeof en;
+// Every key of en.ts, with the same kind of value. Singular plural forms (_one) are optional: Indonesian has none.
+export type Messages = { [K in keyof En as K extends `${string}_one` ? never : K]: Shape<En[K]> } & {
+  [K in keyof En as K extends `${string}_one` ? K : never]?: string;
+};
+export default en;

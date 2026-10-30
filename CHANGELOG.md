@@ -2,6 +2,11 @@
 
 Each version is one commit. Newest first.
 
+## 0.16.0 - React + Vite + Storybook front-end rewrite
+- Rewrote the front end as a TypeScript + React 19 + React Router 7 (`ssr: false` with pre-rendering) + Vite 8 + Tailwind CSS 4 + Zustand 5 single-page app in `app/`, with Storybook 10 published at `/storybook/`.
+- Pre-rendered Indonesian addresses under `/id/...` with `hreflang` links and alternates in `sitemap.xml` (`scripts/sitemap.ts`, `scripts/postbuild.ts`), replacing `tools/make_site.py`.
+- Rewrote the 3D kit, Ghost Room, chat backdrop, and 3D games (`hop-hop-3d`, `lantern-flight`, `haunted-house`) with React Three Fiber (`app/features/three/`, `app/features/games/*/Scene3D.tsx`), keeping all 2D fallbacks and existing `localStorage` keys (`app/lib/storage.ts`).
+
 ## 0.15.1 - Ghost profiles and ghosts reacting to whispers
 - A profile page per ghost at `/<slug>/profile/` (banner placeholder until `banner` is set in characters.json); stories moved there from Me. A whisper's text opens `whispers/?n=<id>`; her picture and name open her profile.
 - The whispers feed loads 20 at a time as you scroll (`GET /whispers?limit=&before=` returns `{whispers, more}`); back from a whisper or a profile loads pages until your old position is on the page, then scrolls there.

@@ -1,5 +1,56 @@
 {
+  "name": "omon-omon",
   "private": true,
   "type": "module",
-  "scripts": { "test": "node --test tests/*.test.mjs" }
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "react-router dev",
+    "build": "rm -rf build/client build/server && react-router build && node scripts/postbuild.ts",
+    "preview": "vite preview --outDir build/client",
+    "typecheck": "react-router typegen && tsc",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build -o build/storybook",
+    "test": "node --test tests/worker.test.mjs tests/push.test.mjs"
+  },
+  "dependencies": {
+    "@react-router/node": "7.18.5",
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.2",
+    "i18next": "26.5.12",
+    "isbot": "5.1.32",
+    "lucide-react": "1.65.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-i18next": "17.1.9",
+    "react-router": "7.18.5",
+    "three": "0.185.1",
+    "zustand": "5.0.16"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.5",
+    "@react-router/dev": "7.18.5",
+    "@storybook/addon-a11y": "10.6.5",
+    "@storybook/react-vite": "10.6.5",
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "24.19.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/three": "0.185.4",
+    "eslint": "9.39.5",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-storybook": "10.6.5",
+    "globals": "16.5.0",
+    "prettier": "3.9.10",
+    "storybook": "10.6.5",
+    "tailwindcss": "4.3.3",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.72.1",
+    "vite": "8.3.5",
+    "workbox-build": "7.4.1",
+    "workbox-window": "7.4.1"
+  }
 }

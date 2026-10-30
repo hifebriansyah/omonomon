@@ -8,12 +8,31 @@
     {
       "id": "1",
       "name": "Pocomon",
-      "image": "builds/img/1.webp",
+      "image": "build/img/1.webp",
       "accent": "#a47fd0",
       "status": "no sugarcoating",
-      "library": true,
-      "stage": "builds/img/stage/1.webp",
-      "head": "builds/img/heads/1.webp",
+      "greeting": {
+        "en": "Oh. You're here. I suppose that's something...",
+        "id": "Oh. Kamu datang. Ya sudahlah... duduk saja, hujannya belum reda."
+      },
+      "fallback": {
+        "en": [
+          "I don't understand. Nobody ever does.",
+          "Hmm. Even my sighs have no reply to that.",
+          "That's... something. Everything is, in the end. Nothing.",
+          "Say something else. Or don't. It makes no difference.",
+          "I would answer, but the gloom ate my words."
+        ],
+        "id": [
+          "Aku nggak ngerti. Memang jarang ada yang ngerti.",
+          "Hmm. Bahkan helaan napasku nggak punya jawaban buat itu.",
+          "Itu... sesuatu. Semuanya memang sesuatu, ujung-ujungnya nggak ada.",
+          "Bilang yang lain aja. Atau nggak usah. Sama saja.",
+          "Mau kujawab, tapi kata-kataku keburu ditelan mendung."
+        ]
+      },
+      "stage": "build/img/stage/1.webp",
+      "head": "build/img/heads/1.webp",
       "slug": "pocomon",
       "seo": {
         "tagline": "the gloomy pocong who says it straight",
@@ -60,7 +79,7 @@
     {
       "id": "2",
       "name": "Ngesomon",
-      "image": "builds/img/2.webp",
+      "image": "build/img/2.webp",
       "accent": "#e0707a",
       "status": "busy, but listening",
       "greeting": {
@@ -81,8 +100,8 @@
           "Kepala kakak lagi berantakan malam ini. Tanya lagi sebentar lagi ya?"
         ]
       },
-      "stage": "builds/img/stage/2.webp",
-      "head": "builds/img/heads/2.webp",
+      "stage": "build/img/stage/2.webp",
+      "head": "build/img/heads/2.webp",
       "slug": "ngesomon",
       "seo": {
         "tagline": "the big-sister nurse ghost",
@@ -129,7 +148,7 @@
     {
       "id": "3",
       "name": "Sundemon",
-      "image": "builds/img/3.webp",
+      "image": "build/img/3.webp",
       "accent": "#e3b850",
       "status": "nothing lasts",
       "greeting": {
@@ -150,8 +169,8 @@
           "Pikiranku berkabut malam ini... tanya lagi nanti ya?"
         ]
       },
-      "stage": "builds/img/stage/3.webp",
-      "head": "builds/img/heads/3.webp",
+      "stage": "build/img/stage/3.webp",
+      "head": "build/img/heads/3.webp",
       "slug": "sundemon",
       "seo": {
         "tagline": "the gentle sundel bolong who listens",
@@ -198,7 +217,7 @@
     {
       "id": "4",
       "name": "Kuntimon",
-      "image": "builds/img/4.webp",
+      "image": "build/img/4.webp",
       "accent": "#5fcf8f",
       "status": "curious about you",
       "greeting": {
@@ -219,8 +238,8 @@
           "Ooh otakku tiba-tiba poof! Tanya lagi sebentar ya?"
         ]
       },
-      "stage": "builds/img/stage/4.webp",
-      "head": "builds/img/heads/4.webp",
+      "stage": "build/img/stage/4.webp",
+      "head": "build/img/heads/4.webp",
       "slug": "kuntimon",
       "seo": {
         "tagline": "the curious kuntilanak",

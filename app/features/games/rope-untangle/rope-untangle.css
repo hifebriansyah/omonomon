@@ -1,0 +1,14 @@
+/* Tali Lepas (was the <style id="css-rope-untangle"> the old module injected). Class names are prefixed, so it can stay loaded. */
+.tl{display:flex;flex-direction:column;gap:8px;height:100%;min-height:inherit;padding:10px;box-sizing:border-box;color:#eee;font-family:var(--font-comic)}
+.tl-bar{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700}
+.tl-time{font-size:1.4rem}.tl-time[data-low="1"]{color:#ff6b6b}
+.tl-meter{height:5px;background:#ffffff22;border-radius:3px;overflow:hidden}.tl-meter i{display:block;height:100%;background:var(--accent,#9aa);width:100%}
+.tl-svg{flex:1;min-height:0;width:100%;max-height:70vh;aspect-ratio:1/1;align-self:center;background:#0006;border-radius:10px;touch-action:none}
+.tl-rope{stroke:#d8d0c0;stroke-width:.9;stroke-linecap:round}.tl-rope.bad{stroke:#ff4d4d;stroke-width:1.2}
+.tl-knot{fill:var(--accent,#9aa);stroke:#fff;stroke-width:.6;cursor:grab}.tl-knot.drag{fill:#fff}
+.tl-hit{fill:transparent;cursor:grab;touch-action:none}
+.tl-msg{min-height:1.3em;text-align:center;font-size:.9rem}
+.tl-btn{font:inherit;padding:8px 14px;border-radius:8px;border:1px solid #fff5;background:#ffffff18;color:inherit;cursor:pointer}
+.tl-btn:focus-visible{outline:2px solid #fff}
+.tl-ok{animation:tlp .5s}@keyframes tlp{50%{filter:brightness(1.8)}}
+.tl-reduce .tl-ok{animation:none}

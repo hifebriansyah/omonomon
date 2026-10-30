@@ -1,0 +1,18 @@
+/* Tebak Hantu (was the <style id="css-guess-the-ghost"> the old module injected). Class names are prefixed, so it can stay loaded. */
+.th{display:flex;flex-direction:column;gap:12px;padding:14px;height:100%;min-height:inherit;box-sizing:border-box;overflow:auto;font-family:var(--font-comic)}
+.th-top{display:flex;justify-content:space-between;font-size:.85rem;opacity:.85}
+.th-line{background:rgba(255,255,255,.08);border:2px solid var(--accent,#c7a);border-radius:14px;padding:16px;font-size:1.1rem;line-height:1.4;text-align:center;min-height:3.6em;display:flex;align-items:center;justify-content:center}
+.th-who{text-align:center;font-size:.9rem;opacity:.85}
+.th-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.th-opt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;border-radius:12px;border:2px solid transparent;background:rgba(255,255,255,.1);color:inherit;font:inherit;cursor:pointer}
+.th-opt:hover:not(:disabled),.th-opt:focus-visible{border-color:var(--accent,#c7a);outline:none}
+.th-opt img{width:52px;height:52px;object-fit:cover;border-radius:50%}
+.th-opt.ok{border-color:#5c5;background:rgba(80,200,80,.25)}
+.th-opt.bad{border-color:#e55;background:rgba(230,80,80,.25)}
+.th-opt:disabled{cursor:default}
+.th-fb{min-height:3em;text-align:center;font-size:.95rem}
+.th-next{align-self:center;padding:8px 22px;border-radius:999px;border:0;background:var(--accent,#c7a);color:#111;font:inherit;font-weight:700;cursor:pointer}
+.th-next[hidden]{display:none}
+.th-pop{animation:thpop .25s ease}
+@keyframes thpop{from{transform:scale(.96);opacity:.4}to{transform:none;opacity:1}}
+.th-still .th-pop{animation:none}

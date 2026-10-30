@@ -1,0 +1,9 @@
+build/
+storybook-static/
+.react-router/
+node_modules/
+assets/
+worker/
+vercel/
+tools/
+tests/

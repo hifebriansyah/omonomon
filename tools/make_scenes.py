@@ -7,11 +7,11 @@ Backgrounds, your own art:
   assets/img/bg-9_16.png  portrait
 Characters: assets/img/<id>.png, cut out here at full resolution (see cutout) and shrunk once, so edges stay smooth.
 
-For every background it writes, into builds/img/scenes/<ratio>/:
+For every background it writes, into build/img/scenes/<ratio>/:
   <id>.jpg    one character on the background (id from characters.json)
-and, into builds/img/heads/: <id>.webp, the head only, from assets/img/head-<id>.png, background removed, on a square transparent canvas.
+and, into build/img/heads/: <id>.webp, the head only, from assets/img/head-<id>.png, background removed, on a square transparent canvas.
 Nothing uses these yet: look at them, decide where each goes, then wire it in (make_site.py).
-Everything in builds/ is generated: never edit it by hand.
+Everything in build/ is generated: never edit it by hand.
 
 Needs numpy and scipy as well: pip3 install pillow numpy scipy
 
@@ -126,7 +126,7 @@ def main():
             heroes.append((c["id"], cutout(src)))
             head_src = ROOT / "assets" / "img" / f"head-{c['id']}.png"
             if head_src.exists():
-                heads = ROOT / "builds" / "img" / "heads"
+                heads = ROOT / "build" / "img" / "heads"
                 heads.mkdir(parents=True, exist_ok=True)
                 head(head_src).save(heads / f"{c['id']}.webp", "WEBP", quality=90, alpha_quality=100, method=6)
             else:
@@ -138,7 +138,7 @@ def main():
         if not bgpath.exists():
             print(f"skip {ratio}: {bgpath.relative_to(ROOT)} not found")
             continue
-        out = ROOT / "builds" / "img" / "scenes" / ratio
+        out = ROOT / "build" / "img" / "scenes" / ratio
         out.mkdir(parents=True, exist_ok=True)
         for cid, hero in heroes:
             scene = background(bgpath, size)

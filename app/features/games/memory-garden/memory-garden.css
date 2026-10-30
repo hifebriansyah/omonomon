@@ -1,0 +1,12 @@
+/* Bunga Kenangan (was the <style id="css-memory-garden"> the old module injected). Class names are prefixed, so it can stay loaded. */
+.bk{display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px;width:100%;height:100%;min-height:inherit;box-sizing:border-box;justify-content:center;color:#e8e2f0}
+.bk-bar{display:flex;gap:18px;font-size:14px;opacity:.85}.bk-bar b{font-size:18px;font-variant-numeric:tabular-nums}
+.bk-grid{display:grid;gap:4px;width:min(92%,420px);aspect-ratio:1;touch-action:none}
+.bk-c{border:0;border-radius:12px;background:rgba(255,255,255,.07);font-size:min(7vw,30px);line-height:1;padding:0;cursor:pointer;transition:transform .18s,opacity .25s,background .2s;color:var(--c)}
+.bk-c:focus-visible{outline:2px solid var(--accent,#fff);outline-offset:1px}
+.bk-c.sel{background:rgba(255,255,255,.25);transform:scale(1.08)}
+.bk-c.pop{opacity:0;transform:scale(.4)}
+.bk-c.no{animation:bk-wig .3s}
+@keyframes bk-wig{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.bk-msg{min-height:20px;font-size:13px;opacity:.8;text-align:center}
+.bk.calm .bk-c,.bk.calm .bk-c.no{transition:none;animation:none}

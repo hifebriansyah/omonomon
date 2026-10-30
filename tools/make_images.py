@@ -3,20 +3,20 @@
 
 For every character in characters.json it reads the original assets/img/<id>.png, removes the white background connected to the
 image edge (white dresses and faces stay), crops to the character, and writes:
-  builds/img/stage/<id>.webp  the big cutout shown on stage
-  builds/img/<id>.webp        a 256px square thumbnail for the picker
+  build/img/stage/<id>.webp   the big cutout shown on stage
+  build/img/<id>.webp         a 256px square thumbnail for the picker
 (WebP at quality 90: about 6x smaller than PNG and visually the same. Change WEBP_QUALITY
 below to trade size for quality; 100 with lossless=True would be a perfect copy.)
 
 It also builds two separate sets of site icons:
   Tab icon, from assets/img/favicon.png (white background is removed, so it is transparent):
-    builds/img/favicon.ico            16, 32 and 48 px
+    build/img/favicon.ico             16, 32 and 48 px
   App icon, from assets/img/appicon.png (kept whole, opaque; phones need a solid square):
-    builds/img/apple-touch-icon.png   180 px, iPhone/iPad home screen
-    builds/img/icon-192.png           192 px, Android and Chrome
-    builds/img/icon-512.png           512 px, Android and Chrome
+    build/img/apple-touch-icon.png    180 px, iPhone/iPad home screen
+    build/img/icon-192.png            192 px, Android and Chrome
+    build/img/icon-512.png            512 px, Android and Chrome
 Each set is skipped, with a note, if its source file is missing.
-Everything in builds/ is generated and git-ignored: never edit it by hand. GitHub Actions
+Everything in build/ is generated and git-ignored: never edit it by hand. GitHub Actions
 runs this script on every deploy; run it yourself to see the images locally.
 
 The link-preview pictures (a character on the 1:1 scene) are made by tools/make_scenes.py.
@@ -95,7 +95,7 @@ def make_favicon(out):
 
 
 def main():
-    out = ROOT / "builds" / "img"
+    out = ROOT / "build" / "img"
     (out / "stage").mkdir(parents=True, exist_ok=True)
     for pattern in ("*.png", "*.webp", "*.ico"):
         for old in list(out.glob(pattern)) + list((out / "stage").glob(pattern)):

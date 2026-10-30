@@ -3,6 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:          # the long-lived refactor branch is checked too: build only, no deploy
   workflow_dispatch:
 
 permissions:
@@ -11,17 +12,13 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
-# Node.js is never chosen here: each action below brings its own. These versions all run on Node 24 (the older ones, checkout v4,
-# setup-python v5, configure-pages v5, upload-pages-artifact v3 and deploy-pages v4, run on Node 20, which GitHub is retiring).
+# These action versions all run on Node 24. The site itself is built with the Node LTS in .nvmrc.
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -29,13 +26,35 @@ jobs:
           python-version: "3.12"
       - name: Install Python packages
         run: pip install pillow numpy scipy   # make_images.py needs Pillow; make_scenes.py also needs numpy and scipy
-      - name: Run tests
-        run: node --test tests/*.test.mjs    # the Worker and the game rules (Node 22 wants file paths, not a folder; the shell expands the *)
-      - name: Build site
-        run: python3 tools/build_all.py      # images -> rule shards -> builds/site (one HTML page per address)
-      - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v5
+      - uses: actions/setup-node@v6
         with:
-          path: builds/site
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Worker tests
+        # Only the Worker tests: the old front-end tests are in tests/legacy/ and switched off until the tests phase
+        # (see refactor.md, "Tests"). Front-end tests (Vitest, Storybook, Playwright) come back in that phase.
+        run: npm test
+      - name: Pictures and rule shards
+        run: python3 tools/build_all.py      # build/img and build/data (the pages are built by React Router below)
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build-storybook         # a broken story fails the build; copied to /storybook/ by the next step
+      - run: npm run build                   # pre-renders every address in both languages into build/client
+      - uses: actions/configure-pages@v6
+        if: github.event_name != 'pull_request'
+      - uses: actions/upload-pages-artifact@v5
+        if: github.event_name != 'pull_request'
+        with:
+          path: build/client
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v5

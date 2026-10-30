@@ -1,6 +1,6 @@
-# Local Apache only (GitHub Pages ignores this file, and it is not copied into builds/site/).
-# Serves the pages made by `python3 tools/build_all.py` for /privacy/, /<slug>/, /<slug>/history/, /whispers/<slug>/, sitemap.xml and
-# robots.txt, so refreshing on those addresses works. Needs mod_rewrite and `AllowOverride FileInfo` (or All) for this folder.
+# Local Apache only (GitHub Pages ignores this file, and it is not copied into build/client/).
+# Serves the pre-rendered pages in build/client/ for /privacy/, /<slug>/, /<slug>/history/, /whispers/<slug>/, /id/...,
+# sitemap.xml and robots.txt, so refreshing on those addresses works. Needs mod_rewrite and `AllowOverride FileInfo` (or All) for this folder.
 # Always check with the server for a fresh copy while developing (a 304 answer is cheap), so edited scripts and
 # styles never come from the browser cache. GitHub Pages sets its own caching and ignores this file.
 <IfModule mod_headers.c>
@@ -9,19 +9,20 @@
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  # games.json and sw.js in the repo root are sources: the built copies hold the merged game list (games.d/*.json) and the filled-in worker
-  RewriteRule ^(games\.json|sw\.js)$ builds/site/$1 [L]
+  # Built files that also have sources in the repo root (or live only in build/client/) come from build/client/
+  RewriteRule ^(games\.json|sw\.js|manifest\.webmanifest|sitemap\.xml|robots\.txt|404\.html|three-LICENSE\.txt)$ build/client/$1 [L]
+  # Static bundles and Storybook assets
+  RewriteRule ^storybook/(build/.*)$ $1 [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^(assets/.*|storybook/.+)$ build/client/$1 [L]
   # / -> the built chat list
-  RewriteRule ^$ builds/site/index.html [L]
+  RewriteRule ^$ build/client/index.html [L]
   # /privacy -> /privacy/ (GitHub Pages does this itself; the pages' relative paths need the slash)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^((games|whispers)/[a-z0-9-]+|[a-z0-9-]+(/(history|profile))?)$ %{REQUEST_URI}/ [R=301,L]
-  # /sitemap.xml and /robots.txt -> the built copies
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteRule ^(sitemap\.xml|robots\.txt)$ builds/site/$1 [L]
-  # /privacy/ -> builds/site/privacy/index.html
+  RewriteRule ^((id/)?((games|whispers)/[a-z0-9-]+|[a-z0-9-]+(/(history|profile))?))$ %{REQUEST_URI}/ [R=301,L]
+  # /privacy/ -> build/client/privacy/index.html (including /id/... copies and /storybook/)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^((games|whispers)/([a-z0-9-]+/)?|[a-z0-9-]+/((history|profile)/)?)$ builds/site/$1index.html [L]
+  RewriteRule ^((id/)?((games|whispers)/([a-z0-9-]+/)?|[a-z0-9-]+/((history|profile)/)?))$ build/client/$1index.html [L]
 </IfModule>

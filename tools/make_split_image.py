@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
-"""Local experiment: cut a redrawn sheet (made by tools/make_grid_image.py and redrawn by Gemini) back into its single square pictures.
+"""Local experiment: cut a redrawn sheet back into its single square pictures.
 
-    python3 tools/make_split_image.py --url builds/grids/grid-2x2-20261026-171356-anime-1k.jpg
+    python3 tools/make_split_image.py --url build/grids/grid-2x2-20261026-171356-anime-1k.jpg
     python3 tools/make_split_image.py --url https://example.com/sheet.jpg --grid 3
     python3 tools/make_split_image.py --url sheet.jpg --size 900 --trim 6
 
 --url     an https address or a path on this machine. The sheet is square.
---grid    cells per side (2 = 2x2, 3 = 3x3). Default: read from the .json next to a sheet made by make_grid_image.py, else 2.
+--grid    cells per side (2 = 2x2, 3 = 3x3). Default: read from the .json next to a sheet, else 2.
 --trim    pixels cut off every edge of a tile, to drop the thin black lines Gemini draws between the panels (default 3).
 --size    scale every tile to this many pixels square (default: keep the size).
 
-The tiles are saved in builds/grids/split-<sheet name>/, row by row, left to right: named after their whisper number (189.jpg ...)
-when the sheet's .json (the one make_grid_image.py wrote, found by dropping "-anime..." from the name) is there, else tile-<row>-<col>.jpg.
+The tiles are saved in build/grids/split-<sheet name>/, row by row, left to right: named after their whisper number (189.jpg ...)
+when the sheet's .json (found by dropping "-anime..." from the name) is there, else tile-<row>-<col>.jpg.
 Nothing is uploaded and nothing in the database or the bucket changes.
 
 Needs Pillow (pip install pillow).
@@ -30,7 +30,7 @@ except ImportError:
     sys.exit("This script needs Pillow: pip install pillow")
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT_DIR = ROOT / "builds" / "grids"
+OUT_DIR = ROOT / "build" / "grids"
 
 
 def load(url):
