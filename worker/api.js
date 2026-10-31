@@ -229,10 +229,10 @@ export function roundOrder(round) {
 // or religion is dropped here, and the Gemini Worker can still turn down one it finds heavy. Only links to Indonesian
 // sites are used, and only pictures served over https.
 
-const FEEDS = [ // [site, RSS address]: sections with light subjects
-  ["Antara", "https://www.antaranews.com/rss/tekno.xml"],
-  ["Antara", "https://www.antaranews.com/rss/hiburan.xml"],
-  ["Antara", "https://www.antaranews.com/rss/humaniora.xml"],
+const FEEDS = [ // [site, RSS address]: sections with light subjects (plus Antara's live feeds, filtered by HEAVY and SPORT)
+  ["Antara", "https://www.antaranews.com/rss/terkini.xml"],
+  ["Antara", "https://www.antaranews.com/rss/top-news.xml"],
+  ["Antara", "https://www.antaranews.com/rss/metro-lintas-kota.xml"],
   ["CNN Indonesia", "https://www.cnnindonesia.com/teknologi/rss"],
   ["CNN Indonesia", "https://www.cnnindonesia.com/gaya-hidup/rss"],
   ["CNN Indonesia", "https://www.cnnindonesia.com/hiburan/rss"],
@@ -244,8 +244,8 @@ const ENGLISH_EDITION = /^(en|english)\./;
 const SPORT = new RegExp([
   "olahraga", "sepak ?bola", "\\bbola\\b", "\\bliga\\b", "piala", "timnas", "\\bpssi\\b", "\\bgol\\b", "pertandingan", "\\blaga\\b", "klasemen", "kualifikasi",
   "motogp", "\\bf1\\b", "formula ?1", "balapan", "badminton", "bulu tangkis", "\\bbasket", "\\bnba\\b", "\\bvoli\\b", "tenis", "tinju", "\\bufc\\b", "\\bmma\\b",
-  "atlet", "olimpiade", "sea games", "asian games", "juara dunia", "striker", "kiper", "wasit", "persib", "persija", "arema", "renang", "\\bgolf\\b",
-  "football", "soccer", "premier league", "champions league", "world cup", "\\bfifa\\b", "grand prix", "tennis", "boxing", "olympic", "\\bnfl\\b", "\\bwwe\\b", "cricket", "marathon",
+  "atlet", "olimpiade", "sea games", "asian games", "juara dunia", "striker", "kiper", "wasit", "persib", "persija", "arema", "persipura", "persela", "persebaya", "renang", "\\bgolf\\b",
+  "football", "soccer", "premier league", "champions league", "world cup", "\\bfifa\\b", "grand prix", "tennis", "boxing", "olympic", "\\bnfl\\b", "\\bwwe\\b", "cricket", "marathon", "\\bfc\\b", "\\bh2h\\b",
 ].join("|"), "i");
 const HEAVY = new RegExp([
   "korupsi", "tersangka", "ditangkap", "penangkapan", "pembunuh", "dibunuh", "bunuh", "tewas", "meninggal", "wafat", "jenazah",
@@ -276,17 +276,27 @@ export function httpsUrl(url) {
   }
 }
 
-// The articles of one RSS feed: [{url, title, summary, thumb, source, kind}]
+export function parsePubDate(raw, url = "") {
+  const clean = plain(raw).replace(/\bWIB\b/i, "+0700").replace(/\bWITA\b/i, "+0800").replace(/\bWIT\b/i, "+0900");
+  const t = clean ? Date.parse(clean) : NaN;
+  if (Number.isFinite(t)) return t;
+  const m = /\/(20\d{2})(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(\d{2})(\d{2})(\d{2})[-/]/.exec(String(url || ""));
+  if (m) return Date.parse(`${m[1]}-${m[2]}-${m[3]}T${m[4]}:${m[5]}:${m[6]}+07:00`);
+  return null;
+}
+
+// The articles of one RSS feed: [{url, title, summary, thumb, source, kind, publishedAt}]
 export function parseFeed(xml, source) {
   return [...String(xml).matchAll(/<item>([\s\S]*?)<\/item>/g)].map((m) => {
     const item = m[1];
     const description = tagText(item, "description") || "";
+    const url = httpsUrl(tagText(item, "link") || tagText(item, "guid") || "");
     return {
-      kind: "article", source,
-      url: httpsUrl(tagText(item, "link") || tagText(item, "guid") || ""),
+      kind: "article", source, url,
       title: plain(tagText(item, "title")),
       summary: plain(description).slice(0, 300),
       thumb: httpsUrl(attr(item, "enclosure", "url") || attr(item, "media:content", "url") || (/<img[^>]+src="([^"]+)"/.exec(unxml(description)) || [])[1] || ""),
+      publishedAt: parsePubDate(tagText(item, "pubDate") || tagText(item, "dc:date") || "", url),
     };
   });
 }
@@ -309,6 +319,7 @@ export function parseTrends(xml) {
         title: plain(tagText(n[1], "ht:news_item_title")),
         summary: `Trending in Indonesia right now: "${topic}"${traffic ? ` (${traffic} searches)` : ""}.`,
         thumb: httpsUrl(tagText(n[1], "ht:news_item_picture") || tagText(item, "ht:picture") || ""),
+        publishedAt: parsePubDate("", url),
       });
       break; // one article per topic
     }
@@ -321,8 +332,8 @@ const fetchFeed = (url, accept = "application/rss+xml, application/xml, text/xml
     .then((r) => { if (!r.ok) throw new Error(`${url} ${r.status}`); return r; });
 
 const SOURCES = {
-  async article(env, slot) { // three feeds per time slot, rotating through the list
-    const picks = [0, 1, 2].map((i) => FEEDS[(slot + i * 3) % FEEDS.length]);
+  async article(env, slot) { // three distinct feeds per time slot, rotating through the list
+    const picks = [0, 1, 2].map((i) => FEEDS[(slot + i * 2) % FEEDS.length]);
     const lists = await Promise.all(picks.map(([site, url]) => fetchFeed(url).then((r) => r.text()).then((x) => parseFeed(x, site)).catch(() => [])));
     return lists.flat();
   },
@@ -408,23 +419,65 @@ export async function betterThumb(c) {
   return c.thumb;
 }
 const SOURCE_ORDER = ["article", "trend", "video"];
+const ARTICLE_MAX_AGE_MS = 24 * 3600_000; // regular feed articles must be from the last 24 hours; popular trends and videos may be older
 
-// Fit to show: a title and a picture, nothing heavy, not used before.
-export const fitsWhisper = (c, seen) =>
-  Boolean(c.url && c.thumb && c.title.length >= 8 && c.title.length <= 200 && !HEAVY.test(`${c.title} ${c.summary}`) && !SPORT.test(`${c.title} ${c.summary} ${c.source || ""}`) && !seen.has(c.url));
+export function linkKey(url) {
+  const clean = httpsUrl(url);
+  if (!clean) return "";
+  try {
+    const u = new URL(clean);
+    u.hash = "";
+    for (const k of [...u.searchParams.keys()]) {
+      if (/^(utm_|fbclid$|gclid$|ref$|source$)/i.test(k)) u.searchParams.delete(k);
+    }
+    return (u.origin + u.pathname.replace(/\/+$/, "") + u.search).toLowerCase();
+  } catch {
+    return clean.toLowerCase();
+  }
+}
+
+export const titleKey = (title) => plain(title).toLowerCase();
+
+// Fit to show: a title and a picture, nothing heavy, recent (unless from a popularity feed without a known older date), and never used before.
+export const fitsWhisper = (c, seen, now = Date.now()) => {
+  const uKey = linkKey(c?.url);
+  const tKey = titleKey(c?.title);
+  const recentEnough = c?.kind === "article"
+    ? (Number.isFinite(c?.publishedAt) && now - c.publishedAt <= ARTICLE_MAX_AGE_MS)
+    : (!Number.isFinite(c?.publishedAt) || now - c.publishedAt <= ARTICLE_MAX_AGE_MS);
+  return Boolean(
+    c?.url && c?.thumb && c.title?.length >= 8 && c.title.length <= 200 &&
+    recentEnough &&
+    !HEAVY.test(`${c.title} ${c.summary}`) &&
+    !SPORT.test(`${c.title} ${c.summary} ${c.source || ""}`) &&
+    !seen.has(c.url) && (!uKey || !seen.has(uKey)) && (!tKey || !seen.has(tKey))
+  );
+};
 
 // Up to four things to talk about, the kind of this time slot first (articles, trends and videos take turns), then the others.
 async function findLinks(env, now, seen) {
   const slot = Math.floor(now / WHISPER_EVERY_MS);
+  const picked = new Set(seen);
   const found = [];
   for (let i = 0; i < SOURCE_ORDER.length && found.length < 4; i++) {
     const kind = SOURCE_ORDER[(slot + i) % SOURCE_ORDER.length];
-    const list = (await SOURCES[kind](env, slot).catch(() => [])).filter((c) => fitsWhisper(c, seen));
+    const list = (await SOURCES[kind](env, slot).catch(() => [])).filter((c) => fitsWhisper(c, picked, now));
     for (let j = list.length - 1; j > 0; j--) { // shuffled, so the newest is not always the one chosen
       const k = Math.floor(Math.random() * (j + 1));
       [list[j], list[k]] = [list[k], list[j]];
     }
-    found.push(...list.slice(0, i === 0 ? 3 : 2));
+    const take = [];
+    for (const c of list) {
+      if (take.length >= (i === 0 ? 3 : 2)) break;
+      if (!fitsWhisper(c, picked, now)) continue;
+      picked.add(c.url);
+      const uKey = linkKey(c.url);
+      const tKey = titleKey(c.title);
+      if (uKey) picked.add(uKey);
+      if (tKey) picked.add(tKey);
+      take.push(c);
+    }
+    found.push(...take);
   }
   return found.slice(0, 4);
 }
@@ -727,7 +780,11 @@ export async function makeWhisper(env, now = Date.now(), ghost) {
   };
   // Every whisper is about something found online. A candidate the ghost turns down (heavy subject) or that fails is skipped;
   // with nothing usable, the whisper is a plain thought, as before.
-  const seen = new Set(((await env.DB.prepare("SELECT link_url FROM whispers WHERE link_url IS NOT NULL ORDER BY created_at DESC LIMIT 300").all()).results || []).map((r) => r.link_url));
+  const seen = new Set();
+  for (const r of (await env.DB.prepare("SELECT link_url, link_title FROM whispers WHERE link_url IS NOT NULL").all()).results || []) {
+    if (r.link_url) { seen.add(r.link_url); const uk = linkKey(r.link_url); if (uk) seen.add(uk); }
+    if (r.link_title) { const tk = titleKey(r.link_title); if (tk) seen.add(tk); }
+  }
   let link = null;
   let data = null;
   let animeKey = null;
