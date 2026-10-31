@@ -17,7 +17,9 @@ self.addEventListener("install", (event) => {
   event.waitUntil(
     caches
       .open(CACHE)
-      .then((cache) => Promise.all(PRECACHE.map((url) => cache.add(scope(url)).catch(() => {}))))
+      .then((cache) =>
+        Promise.all(PRECACHE.map((url) => cache.add(new Request(scope(url), { cache: url.startsWith("assets/") ? "default" : "reload" })).catch(() => {}))),
+      )
       .then(() => self.skipWaiting()),
   );
 });
