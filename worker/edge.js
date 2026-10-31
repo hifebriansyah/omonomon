@@ -1,10 +1,10 @@
 // Omon Omon edge Worker: gives each whisper link its own preview.
 //
-// The site is static, so /whispers/?n=7 is the same HTML for every whisper and link previews (WhatsApp, Telegram, X ...)
-// never run its scripts: they would always show the default picture. This Worker sits in front of omonomon.securhat.com/whispers*,
+// The site is static, so /whispers/?n=7 (and /id/whispers/?n=7) is the same HTML for every whisper and link previews (WhatsApp, Telegram, X ...)
+// never run its scripts: they would always show the default picture. This Worker sits in front of omonomon.securhat.com/whispers* and /id/whispers*,
 // looks the whisper up in the API and rewrites the preview tags of that one page, so the card shows the whisper's own ghost
 // (build/img/scenes/1_1/<ghost>.jpg) and her words, or the picture of the article the whisper reacts to when it has one. Everything else, and any whisper that is gone, passes through untouched.
-// Deployed by: python3 tools/deploy_worker.py edge   (route and variables in worker/edge.jsonc)
+// Deployed by: python3 tools/deploy_worker.py edge   (routes and variables in worker/edge.jsonc)
 
 const getOwn = (url) => fetch(url, { cf: { cacheTtl: 300, cacheEverything: true } }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
 // The API Worker is called through a service binding (env.API), not over the internet: its public address only answers
@@ -29,14 +29,14 @@ export default {
     if (url.hostname !== new URL(env.SITE_ORIGIN).hostname) return Response.redirect(`${env.SITE_ORIGIN}${url.pathname}${url.search}`, 301);
     // /whispers/img/<n>.jpg: the redrawn picture of a whisper's article (tools/remake_image.py). It is served here, on the site's own address,
     // because <img> tags send no Origin and the API Worker's public address refuses requests without one.
-    const picture = /^\/whispers\/img\/(\d{1,10})\.jpg$/.exec(url.pathname);
+    const picture = /^\/(?:id\/)?whispers\/img\/(\d{1,10})\.jpg$/.exec(url.pathname);
     if (picture && (request.method === "GET" || request.method === "HEAD")) {
       // link-preview bots (WhatsApp, Slack, LinkedIn ...) often ask with HEAD first; they get the same headers without the body
       const res = await env.API.fetch(`https://api.internal/img/${picture[1]}.jpg${url.search}`);
       return tagged(request.method === "HEAD" ? new Response(null, { status: res.status, headers: res.headers }) : res, "picture");
     }
     // /whispers/note/<n>.jpg (and -en.jpg): the sticky-note picture of a plain thought (tools/make_note_image.py), served from R2 by the API Worker
-    const noteImage = /^\/whispers\/note\/(\d{1,10})(-en)?\.jpg$/.exec(url.pathname);
+    const noteImage = /^\/(?:id\/)?whispers\/note\/(\d{1,10})(-en)?\.jpg$/.exec(url.pathname);
     if (noteImage && (request.method === "GET" || request.method === "HEAD")) {
       const res = await env.API.fetch(`https://api.internal/note/${noteImage[1]}${noteImage[2] || ""}.jpg`, { method: request.method });
       return tagged(res, "note picture");

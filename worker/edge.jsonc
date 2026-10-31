@@ -5,7 +5,7 @@
   "main": "edge.js",
   "compatibility_date": "2025-09-01",
   // Runs in front of the site's own address for these paths only (the rest of the site never touches a Worker).
-  "route": "omonomon.securhat.com/whispers*",
+  "routes": ["omonomon.securhat.com/whispers*", "omonomon.securhat.com/id/whispers*"],
   // Its own address too, like the other two Workers (geminimon, apimon). Only an alias: anything asked for there is sent on to
   // the same path on the site (see worker/edge.js).
   "domain": "edgemon.securhat.com",

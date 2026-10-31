@@ -99,21 +99,22 @@ def attach_domain(base, account, token, cfg):
 
 
 def attach_route(base, account, token, cfg):
-    """Run the Worker in front of one path of an existing address (a route; safe to repeat)."""
-    pattern = cfg.get("route")
-    if not pattern:
+    """Run the Worker in front of one or more paths of an existing address (routes; safe to repeat)."""
+    patterns = cfg.get("routes") or ([cfg["route"]] if cfg.get("route") else [])
+    if not patterns:
         return
-    zone_name = ".".join(pattern.split("/")[0].split(".")[-2:])
+    zone_name = ".".join(patterns[0].split("/")[0].split(".")[-2:])
     zones = call(base, token, "GET", f"/zones?name={zone_name}").get("result") or []
     if not zones:
-        print(f"Route {pattern}: zone {zone_name} not found or the token cannot read it; add the route in the dashboard.")
+        print(f"Route {patterns[0]}: zone {zone_name} not found or the token cannot read it; add the route in the dashboard.")
         return
     zone = zones[0]["id"]
     routes = call(base, token, "GET", f"/zones/{zone}/workers/routes").get("result") or []
-    old = next((r for r in routes if r["pattern"] == pattern), None)
-    body = {"pattern": pattern, "script": cfg["name"]}
-    res = call(base, token, "PUT", f"/zones/{zone}/workers/routes/{old['id']}", body) if old else call(base, token, "POST", f"/zones/{zone}/workers/routes", body)
-    print(f"Route {pattern} -> {cfg['name']}" if res.get("success") else f"Route {pattern} NOT set: {res.get('errors')}")
+    for pattern in patterns:
+        old = next((r for r in routes if r["pattern"] == pattern), None)
+        body = {"pattern": pattern, "script": cfg["name"]}
+        res = call(base, token, "PUT", f"/zones/{zone}/workers/routes/{old['id']}", body) if old else call(base, token, "POST", f"/zones/{zone}/workers/routes", body)
+        print(f"Route {pattern} -> {cfg['name']}" if res.get("success") else f"Route {pattern} NOT set: {res.get('errors')}")
     off = call(base, token, "POST", f"/accounts/{account}/workers/scripts/{cfg['name']}/subdomain", {"enabled": False})
     print("workers.dev address off" if off.get("success") else f"workers.dev not changed ({(off.get('errors') or [{}])[0].get('message')})")
 
